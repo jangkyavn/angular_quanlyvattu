@@ -1,0 +1,24 @@
+.login-form {
+    max-width: 300px;
+  }
+
+.login-form-button {
+  width: 100%;
+}
+
+.container-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height:100%;
+}
+
+.form-control {
+  border-radius: 0 5px 5px 0 !important;
+}
+
+.ant-card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;   
+}

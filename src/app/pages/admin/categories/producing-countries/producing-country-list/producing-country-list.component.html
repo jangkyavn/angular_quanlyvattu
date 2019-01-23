@@ -1,0 +1,39 @@
+<nz-breadcrumb style="margin:16px 0;">
+  <nz-breadcrumb-item>Trang chủ</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Danh mục</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Nước sản xuất</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div style="padding:24px; background: #fff; min-height: 70vh">
+  <div class="row mb-2">
+    <div class="col-md-4 col-sm-12">
+      
+    </div>
+    <div class="col-md-8 col-sm-12 text-right">
+      <button class="btn btn-success mr-1" (click)="addNew()">
+        <i class="fa fa-plus"></i> Thêm mới
+      </button>
+    </div>
+  </div>
+
+  <table class="table table-hover table-bordered">
+    <thead>
+      <tr>
+        <th nzWidth="40%">STT</th>
+        <th nzWidth="50%">Tên nước sản xuất</th>
+        <th nzWidth="10%">Thao tác</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let producingCountry of producingCountries; let i = index">
+        <td>{{i}}</td>
+        <td>{{producingCountry.tenNuoc}}</td>
+        <td class="text-center">
+          <button class="btn btn-info btn-sm" nz-tooltip nzTitle="Sửa" (click)="update(producingCountry.maNuoc)">
+            <i class="fa fa-edit"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

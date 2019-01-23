@@ -1,0 +1,13 @@
+/* You can add global styles to this file, and also import other style files */
+@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+@import '../node_modules/font-awesome/css/font-awesome.min.css';
+
+.anticon {
+    vertical-align: 0.1em;
+}
+
+th {
+    text-align: center !important;
+}
+
+:host ::ng-deep .ant-upload.ant-upload-drag { height: 20px !important; }

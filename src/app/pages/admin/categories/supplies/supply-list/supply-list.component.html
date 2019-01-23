@@ -1,0 +1,41 @@
+<nz-breadcrumb style="margin:16px 0;">
+  <nz-breadcrumb-item>Trang chủ</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Danh mục</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Nguồn cung cấp</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div style="padding:24px; background: #fff; min-height: 70vh">
+  <div class="row mb-2">
+    <div class="col-md-4 col-sm-12">
+
+    </div>
+    <div class="col-md-8 col-sm-12 text-right">
+      <button class="btn btn-success mr-1" (click)="addNew()">
+        <i class="fa fa-plus"></i> Thêm mới
+      </button>
+    </div>
+  </div>
+
+  <table class="table table-hover table-bordered">
+    <thead>
+      <tr>
+        <th nzWidth="20%">STT</th>
+        <th nzWidth="30%">Tên nguồn cung cấp</th>
+        <th nzWidth="40%">Ghi chú</th>
+        <th nzWidth="10%">Thao tác</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let supply of supplies; let i = index">
+        <td>{{i + 1}}</td>
+        <td>{{supply.tenNguon}}</td>
+        <td>{{supply.ghiChu}}</td>
+        <td class="text-center">
+          <button class="btn btn-info btn-sm" nz-tooltip nzTitle="Sửa" (click)="update(supply.maNguon)">
+            <i class="fa fa-edit"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

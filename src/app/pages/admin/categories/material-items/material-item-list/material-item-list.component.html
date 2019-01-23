@@ -1,0 +1,42 @@
+<nz-breadcrumb style="margin:16px 0;">
+  <nz-breadcrumb-item>Trang chủ</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Danh mục</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Thông tin vật tư</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Hạng mục vật tư</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div style="padding:24px; background: #fff; min-height: 70vh">
+  <div class="row mb-2">
+    <div class="col-md-4 col-sm-12">
+
+    </div>
+    <div class="col-md-8 col-sm-12 text-right">
+      <button class="btn btn-success mr-1" (click)="addNew()">
+        <i class="fa fa-plus"></i> Thêm mới
+      </button>
+    </div>
+  </div>
+
+  <table class="table table-hover table-bordered">
+    <thead>
+      <tr>
+        <th nzWidth="10%">STT</th>
+        <th nzWidth="40%">Tên hạng mục</th>
+        <th nzWidth="40%">Ghi chú</th>
+        <th nzWidth="10%">Thao tác</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let materialItem of materialItems; let i = index">
+        <td>{{i + 1}}</td>
+        <td>{{materialItem.tenHM}}</td>
+        <td>{{materialItem.ghiChu}}</td>
+        <td class="texmaterialTypet-center">
+          <button class="btn btn-info btn-sm" nz-tooltip nzTitle="Sửa" (click)="update(materialItem.maHM)">
+            <i class="fa fa-edit"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

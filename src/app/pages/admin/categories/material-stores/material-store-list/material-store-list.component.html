@@ -1,0 +1,45 @@
+<nz-breadcrumb style="margin:16px 0;">
+  <nz-breadcrumb-item>Trang chủ</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Danh mục</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Kho vật tư</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div style="padding:24px; background: #fff; min-height: 70vh">
+  <div class="row mb-2">
+    <div class="col-md-4 col-sm-12">
+
+    </div>
+    <div class="col-md-8 col-sm-12 text-right">
+      <button class="btn btn-success mr-1" (click)="addNew()">
+        <i class="fa fa-plus"></i> Thêm mới
+      </button>
+    </div>
+  </div>
+
+  <table class="table table-hover table-bordered">
+    <thead>
+      <tr>
+        <th nzWidth="10%">STT</th>
+        <th nzWidth="20%">Tên kho</th>
+        <th nzWidth="15%">Điện thoại</th>
+        <th nzWidth="20%">Địa chỉ</th>
+        <th nzWidth="35%">Ghi chú</th>
+        <th nzWidth="10%">Thao tác</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let materialStore of materialStores; let i = index">
+        <td>{{i + 1}}</td>
+        <td>{{materialStore.tenKho}}</td>
+        <td>{{materialStore.dienThoai}}</td>
+        <td>{{materialStore.diaChi}}</td>
+        <td>{{materialStore.ghiChu}}</td>
+        <td class="text-center">
+          <button class="btn btn-info btn-sm" nz-tooltip nzTitle="Sửa" (click)="update(materialStore.maKho)">
+            <i class="fa fa-edit"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

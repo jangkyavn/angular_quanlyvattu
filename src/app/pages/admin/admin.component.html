@@ -1,0 +1,120 @@
+<nz-layout>
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzWidth]="width" [nzBreakpoint]="'sm'" [nzTrigger]="triggerTemplate">
+    <div class="logo" [routerLink]="['/admin']" style="cursor: pointer;">
+    </div>
+    <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed" id="sidebarMenu">
+      <!-- menu quản trị -->
+      <li nz-submenu>
+        <span title><i nz-icon type="setting"></i><span class="nav-text">Hệ thống</span></span>
+        <ul>
+          <li nz-menu-item [routerLink]="['/admin/he-thong']" routerLinkActive="ant-menu-item-selected">
+            Danh sách người dùng</li>
+          <li nz-menu-item>Phân quyền</li>
+        </ul>
+      </li>
+      <!-- menu danh mục -->
+      <li nz-submenu>
+        <span title>
+          <i nz-icon type="appstore" theme="outline">
+          </i><span class="nav-text">Danh mục</span>
+        </span>
+        <ul>
+          <li nz-menu-item [routerLink]="['/admin/danh-muc/nguon-cung-cap']">Nguồn cung cấp</li>
+          <li nz-submenu>
+            <span title>Thông tin vật tư</span>
+            <ul>
+              <li nz-menu-item [routerLink]="['/admin/danh-muc/hang-muc-vat-tu']">Hạng mục vật tư</li>
+              <li nz-menu-item [routerLink]="['/admin/danh-muc/loai-vat-tu']">Loại vật tư</li>
+              <li nz-menu-item [routerLink]="['/admin/danh-muc/danh-muc-vat-tu']">Danh mục vật tư</li>
+            </ul>
+          </li>
+          <li nz-menu-item [routerLink]="['/admin/danh-muc/don-vi-tinh']">Đơn vị tính</li>
+          <li nz-menu-item [routerLink]="['/admin/danh-muc/kho-vat-tu']">Kho vật tư</li>
+          <li nz-menu-item [routerLink]="['/admin/danh-muc/hang-san-xuat']">Hãng sản xuất</li>
+          <li nz-menu-item [routerLink]="['/admin/danh-muc/nuoc-san-xuat']">Nước sản xuất</li>
+        </ul>
+      </li>
+      <!-- menu nghiệp vụ -->
+      <li nz-submenu>
+        <span title>
+          <i nz-icon type="project" theme="outline"></i>
+          <span class="nav-text">Nghiệp vụ</span>
+        </span>
+        <ul>
+          <li nz-submenu>
+            <span title>Nhập</span>
+            <ul>
+              <li nz-menu-item>Nhập vật tư</li>
+              <li nz-menu-item>Danh sách phiếu nhập</li>
+            </ul>
+          </li>
+          <li nz-submenu>
+            <span title>Xuất</span>
+            <ul>
+              <li nz-menu-item>Xuất vật tư</li>
+              <li nz-menu-item>Danh sách phiếu xuất</li>
+            </ul>
+          </li>
+          <li nz-submenu>
+            <span title>Kho</span>
+            <ul>
+              <li nz-menu-item>Vật tư tồn kho</li>
+              <li nz-menu-item>Thanh lý vật tư</li>
+              <li nz-menu-item>Phiếu kiểm kê kho</li>
+            </ul>
+          </li>
+          <li nz-menu-item>Tìm kiếm vật tư</li>
+        </ul>
+      </li>
+      <!-- menu thông kê báo cáo -->
+      <li nz-submenu>
+        <span title>
+          <i nz-icon type="table" theme="outline"></i>
+          <span class="nav-text">Thống kê báo cáo</span>
+        </span>
+        <ul>
+          <li nz-menu-item>Thống kê nhập</li>
+          <li nz-menu-item>Thống kê xuất</li>
+          <li nz-menu-item>Thống kê tồn</li>
+          <li nz-menu-item>Thống kê nhập-xuất-tồn</li>
+        </ul>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header style="background: #fff; padding:0;">
+      <div nz-row>
+        <div nz-col nzSpan="8">
+          <i class="trigger" nz-icon [type]="isCollapsed?'menu-unfold':'menu-fold'" (click)="isCollapsed=!isCollapsed"></i>
+        </div>
+        <div nz-col nzSpan="8" nzOffset="8">
+          <ul class="list-inline">
+            <li class="list-inline-item">
+              <nz-dropdown [nzPlacement]="'bottomRight'">
+                <span nz-dropdown>
+                  <nz-avatar nzIcon="user" style="background-color:#87d068;"></nz-avatar>
+                  <span>{{authService.currentUser?.userName}}</span>
+                </span>
+                <ul nz-menu>
+                  <li nz-menu-item>
+                    <i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;
+                    <span>Quản lý tài khoản</span>
+                  </li>
+                  <li nz-menu-divider></li>
+                  <li nz-menu-item (click)="logout()">
+                    <i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp;
+                    <span>Đăng xuất</span>
+                  </li>
+                </ul>
+              </nz-dropdown>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nz-header>
+    <nz-content style="margin:0 16px;">
+      <router-outlet></router-outlet>
+    </nz-content>
+    <nz-footer style="text-align: center;">Ant Design ©2019 Implement By Absoft</nz-footer>
+  </nz-layout>
+</nz-layout>
