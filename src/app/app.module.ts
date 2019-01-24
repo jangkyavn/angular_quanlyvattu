@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
@@ -11,6 +12,7 @@ import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 
 import { AppComponent } from './app.component';
+import { PageErrorComponent } from './pages/page-error/page-error.component';
 
 registerLocaleData(en);
 
@@ -20,7 +22,8 @@ export function tokenGetter() {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PageErrorComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +39,7 @@ export function tokenGetter() {
       }
    }),
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US }],
+  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

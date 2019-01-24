@@ -1,3 +1,27 @@
-<p>
-  producing-country-add-edit-modal works!
-</p>
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="producingCountryForm" id="producingCountryForm" (ngSubmit)="saveChanges()">
+    <input type="hidden" formControlName="maNuoc">
+    <div class="form-group">
+      <label for="txtTenNuoc">Tên nước (*)</label>
+      <input type="text" id="txtTenNuoc" class="form-control" formControlName="tenNuoc" [ngClass]="{
+        'is-valid': !producingCountryForm.controls['tenNuoc'].errors,
+        'is-invalid': producingCountryForm.controls['tenNuoc'].errors && (producingCountryForm.controls['tenNuoc'].dirty || producingCountryForm.controls['tenNuoc'].touched)
+      }">
+      <div class="invalid-feedback">
+        <div *ngIf="producingCountryForm.get('tenNuoc').hasError('required')">
+          Vui lòng nhập tên nước!
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" (click)="hideModal()">Hủy</button>
+  <button type="submit" class="btn btn-primary" form="producingCountryForm" [disabled]="producingCountryForm.invalid">Lưu</button>
+</div>

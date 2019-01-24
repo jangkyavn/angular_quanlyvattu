@@ -1,3 +1,58 @@
-<p>
-  material-store-add-edit-modal works!
-</p>
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="materialStoreForm" id="materialStoreForm" (ngSubmit)="saveChanges()">
+    <input type="hidden" formControlName="maKho">
+    <div class="form-group">
+      <label for="txtTenKho">Tên kho (*)</label>
+      <input type="text" id="txtTenKho" class="form-control" formControlName="tenKho" [ngClass]="{
+        'is-valid': !materialStoreForm.controls['tenKho'].errors,
+        'is-invalid': materialStoreForm.controls['tenKho'].errors && (materialStoreForm.controls['tenKho'].dirty || materialStoreForm.controls['tenKho'].touched)
+      }">
+      <div class="invalid-feedback">
+        <div *ngIf="materialStoreForm.get('tenKho').hasError('required')">
+          Vui lòng nhập tên kho!
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="txtDienThoai">Điện thoại (*)</label>
+      <input type="text" id="txtDienThoai" class="form-control" formControlName="dienThoai" [ngClass]="{
+        'is-valid': !materialStoreForm.controls['dienThoai'].errors,
+        'is-invalid': materialStoreForm.controls['dienThoai'].errors && (materialStoreForm.controls['dienThoai'].dirty || materialStoreForm.controls['dienThoai'].touched)
+      }">
+      <div class="invalid-feedback">
+        <div *ngIf="materialStoreForm.get('dienThoai').hasError('required')">
+          Vui lòng nhập điện thoại!
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="txtDiaChi">Địa chỉ (*)</label>
+      <input type="text" id="txtDiaChi" class="form-control" formControlName="diaChi" [ngClass]="{
+        'is-valid': !materialStoreForm.controls['diaChi'].errors,
+        'is-invalid': materialStoreForm.controls['diaChi'].errors && (materialStoreForm.controls['diaChi'].dirty || materialStoreForm.controls['diaChi'].touched)
+      }">
+      <div class="invalid-feedback">
+        <div *ngIf="materialStoreForm.get('diaChi').hasError('required')">
+          Vui lòng nhập địa chỉ!
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="txtGhiChu">Ghi chú</label>
+      <textarea id="txtGhiChu" class="form-control" formControlName="ghiChu" [ngClass]="{
+        'is-valid': !materialStoreForm.controls['ghiChu'].errors,
+        'is-invalid': materialStoreForm.controls['ghiChu'].errors && (materialStoreForm.controls['ghiChu'].dirty || materialStoreForm.controls['ghiChu'].touched)
+      }"></textarea>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" (click)="hideModal()">Hủy</button>
+  <button type="submit" class="btn btn-primary" form="materialStoreForm" [disabled]="materialStoreForm.invalid">Lưu</button>
+</div>

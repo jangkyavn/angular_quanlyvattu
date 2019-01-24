@@ -37,7 +37,10 @@ export class MaterialListComponent implements OnInit {
       backdrop: 'static',
       initialState: {
         title: 'Thêm danh mục vật tư',
-        material: {},
+        material: {
+          maLoaiVatTu: '',
+          maDVT: ''
+        },
         isAddNew: true
       }
     };

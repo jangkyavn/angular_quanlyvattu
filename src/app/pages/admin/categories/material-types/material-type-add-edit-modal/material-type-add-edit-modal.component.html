@@ -1,3 +1,51 @@
-<p>
-  material-type-add-edit-modal works!
-</p>
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="materialTypeForm" id="materialTypeForm" (ngSubmit)="saveChanges()">
+    <input type="hidden" formControlName="maLoaiVatTu">
+    <div class="form-group">
+      <label for="txtTenLoai">Tên loại vật tư (*)</label>
+      <input type="text" id="txtTenLoai" class="form-control" formControlName="tenLoai" [ngClass]="{
+        'is-valid': !materialTypeForm.controls['tenLoai'].errors,
+        'is-invalid': materialTypeForm.controls['tenLoai'].errors && (materialTypeForm.controls['tenLoai'].dirty || materialTypeForm.controls['tenLoai'].touched)
+      }">
+      <div class="invalid-feedback">
+        <div *ngIf="materialTypeForm.get('tenLoai').hasError('required')">
+          Vui lòng nhập tên loại vật tư!
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="ddlMaHM">Hạng mục vật tư (*)</label>
+      <select id="ddlMaHM" class="form-control" formControlName="maHM" [ngClass]="{
+        'is-valid': !materialTypeForm.controls['maHM'].errors,
+        'is-invalid': materialTypeForm.controls['maHM'].errors && (materialTypeForm.controls['maHM'].dirty || materialTypeForm.controls['maHM'].touched)
+      }">
+        <option value="" selected disabled>--- Chọn hạng mục vật tư ---</option>
+        <option *ngFor="let item of materialItems" [value]="item.maHM">
+          {{item.tenHM}}
+        </option>
+      </select>
+      <div class="invalid-feedback">
+        <div *ngIf="materialTypeForm.get('maHM').hasError('required')">
+          Vui lòng chọn hạng mục vật tư!
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="txtGhiChu">Ghi chú</label>
+      <textarea id="txtGhiChu" class="form-control" formControlName="ghiChu" [ngClass]="{
+        'is-valid': !materialTypeForm.controls['ghiChu'].errors,
+        'is-invalid': materialTypeForm.controls['ghiChu'].errors && (materialTypeForm.controls['ghiChu'].dirty || materialTypeForm.controls['ghiChu'].touched)
+      }"></textarea>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" (click)="hideModal()">Hủy</button>
+  <button type="submit" class="btn btn-primary" form="materialTypeForm" [disabled]="materialTypeForm.invalid">Lưu</button>
+</div>
