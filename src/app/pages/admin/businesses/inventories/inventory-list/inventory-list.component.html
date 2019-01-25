@@ -1,0 +1,38 @@
+<nz-breadcrumb style="margin:16px 0;">
+  <nz-breadcrumb-item>Trang chủ</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Nghiệp vụ</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Kho</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Vật tư tồn kho</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div style="padding:24px; background: #fff; min-height: 70vh">
+  <div class="row mb-2">
+    <div class="col-md-4 col-sm-12">
+
+    </div>
+    <div class="col-md-8 col-sm-12 text-right">
+      
+    </div>
+  </div>
+
+  <table class="table table-hover table-bordered">
+    <thead>
+      <tr>
+        <th nzWidth="15%">STT</th>
+        <th nzWidth="20%">Tên kho</th>
+        <th nzWidth="20%">Mã phiếu nhập</th>
+        <th nzWidth="35%">Tên vật tư</th>
+        <th nzWidth="10%">Số lượng tồn</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let inventory of inventories; let i = index">
+        <td>{{i + 1}}</td>
+        <td>{{inventory.tenKho}}</td>
+        <td>{{inventory.maPhieuNhap}}</td>
+        <td>{{inventory.tenVatTu}}</td>
+        <td>{{inventory.soLuongTon}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

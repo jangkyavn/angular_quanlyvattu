@@ -44,8 +44,8 @@
           <li nz-submenu>
             <span title>Nhập</span>
             <ul>
-              <li nz-menu-item>Nhập vật tư</li>
-              <li nz-menu-item>Danh sách phiếu nhập</li>
+              <li nz-menu-item [routerLink]="['/admin/nghiep-vu/nhap-vat-tu']">Nhập vật tư</li>
+              <li nz-menu-item [routerLink]="['/admin/nghiep-vu/danh-sach-phieu-nhap']">Danh sách phiếu nhập</li>
             </ul>
           </li>
           <li nz-submenu>
@@ -58,7 +58,7 @@
           <li nz-submenu>
             <span title>Kho</span>
             <ul>
-              <li nz-menu-item>Vật tư tồn kho</li>
+              <li nz-menu-item [routerLink]="['/admin/nghiep-vu/vat-tu-ton-kho']">Vật tư tồn kho</li>
               <li nz-menu-item>Thanh lý vật tư</li>
               <li nz-menu-item>Phiếu kiểm kê kho</li>
             </ul>

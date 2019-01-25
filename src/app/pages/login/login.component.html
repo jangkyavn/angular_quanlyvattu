@@ -12,7 +12,7 @@
                       [ngClass]="{
                       'is-valid': !loginForm.controls['userName'].errors,
                       'is-invalid': loginForm.controls['userName'].errors && (loginForm.controls['userName'].dirty || loginForm.controls['userName'].touched)
-                    }" autocomplete>
+                    }" autofocus>
                   <div class="invalid-feedback">
                       <div *ngIf="loginForm.get('userName').hasError('required')">
                           Vui lòng nhập tài khoản!

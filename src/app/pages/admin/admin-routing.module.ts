@@ -14,7 +14,8 @@ const routes: Routes = [
       { path: '', redirectTo: 'trang-chu', pathMatch: 'full' },
       { path: 'trang-chu', component: HomeComponent },
       { path: 'he-thong', loadChildren: './systems/systems.module#SystemsModule' },
-      { path: 'danh-muc', loadChildren: './categories/categories.module#CategoriesModule' }
+      { path: 'danh-muc', loadChildren: './categories/categories.module#CategoriesModule' },
+      { path: 'nghiep-vu', loadChildren: './businesses/businesses.module#BusinessesModule' }
     ]
   }
 ];

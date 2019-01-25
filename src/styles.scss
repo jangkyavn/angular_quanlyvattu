@@ -10,4 +10,7 @@ th {
     text-align: center !important;
 }
 
-:host ::ng-deep .ant-upload.ant-upload-drag { height: 20px !important; }
+.modal-lg {
+    width: 980px !important;
+    max-width: 980px !important;
+}

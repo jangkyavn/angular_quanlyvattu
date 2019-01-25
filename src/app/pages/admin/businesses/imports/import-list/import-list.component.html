@@ -1,0 +1,52 @@
+<nz-breadcrumb style="margin:16px 0;">
+  <nz-breadcrumb-item>Trang chủ</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Nghiệp vụ</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Nhập</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Danh sách phiếu nhập</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div style="padding:24px; background: #fff; min-height: 70vh">
+  <div class="row mb-2">
+    <div class="col-md-4 col-sm-12">
+
+    </div>
+    <div class="col-md-8 col-sm-12 text-right">
+      <button class="btn btn-success mr-1" [routerLink]="['/admin/nghiep-vu/nhap-vat-tu']">
+        <i class="fa fa-plus"></i> Thêm mới
+      </button>
+    </div>
+  </div>
+
+  <table class="table table-hover ">
+    <thead>
+      <tr>
+        <th class="text-left" nzWidth="15%">STT</th>
+        <th class="text-left" nzWidth="20%">Tên kho</th>
+        <th class="text-left" nzWidth="20%">Hạng mục</th>
+        <th class="text-left" nzWidth="15%">Ngày nhập</th>
+        <th class="text-left" nzWidth="10%">Tổng tiền</th>
+        <th class="text-left" nzWidth="10%">Tổng lượng</th>
+        <th class="text-left" nzWidth="10%">Thao tác</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let importMaterial of importMaterials; let i = index">
+        <td>{{i + 1}}</td>
+        <td>{{importMaterial.tenKho}}</td>
+        <td>{{importMaterial.tenHM}}</td>
+        <td>{{importMaterial.ngayNhap}}</td>
+        <td>{{importMaterial.tongSoTien}}</td>
+        <td>{{importMaterial.tongSoLuong}}</td>
+        <td>
+          <button class="btn btn-info btn-sm" nz-tooltip nzTitle="Sửa" (click)="update(importMaterial.maPhieuNhap)">
+            <i class="fa fa-edit"></i>
+          </button>
+          <nz-divider nzType="vertical"></nz-divider>
+          <button class="btn btn-danger btn-sm" nz-tooltip nzTitle="Xóa" (click)="delete(importMaterial.maPhieuNhap)">
+            <i class="fa fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

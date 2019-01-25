@@ -1,0 +1,184 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal(importMaterialForm)">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form #importMaterialForm="ngForm" id="importMaterialForm" (ngSubmit)="saveChanges()" novalidate>
+    <nz-card style="width:100%;" nzTitle="Nhập vật tư">
+      <div class="form-group row">
+        <label for="ddlMaKho" class="col-sm-2 col-form-label">Tên kho (*)</label>
+        <div class="col-sm-10">
+          <select id="ddlMaKho" class="form-control" required name="maKho" [(ngModel)]="nhapVatTuParams.mnhapvattu.maKho"
+            #maKho="ngModel" [ngClass]="{
+            'is-valid': maKho.valid,
+            'is-invalid': maKho.invalid && (maKho.dirty || maKho.touched)
+          }" disabled>
+            <option *ngFor="let item of materialStores" [value]="item.maKho">
+              {{item.tenKho}}
+            </option>
+          </select>
+          <div class="invalid-feedback">
+            <div *ngIf="maKho?.errors?.required">
+              Vui lòng chọn tên kho!
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="ddlMaHM" class="col-sm-2 col-form-label">Hạng mục vật tư (*)</label>
+        <div class="col-sm-10">
+          <select id="ddlMaHM" class="form-control" required name="maHM" [(ngModel)]="nhapVatTuParams.mnhapvattu.maHM"
+            #maHM="ngModel" [ngClass]="{
+          'is-valid': maHM.valid,
+          'is-invalid': maHM.invalid && (maHM.dirty || maHM.touched)
+        }">
+            <option *ngFor="let item of materialItems" [value]="item.maHM">
+              {{item.tenHM}}
+            </option>
+          </select>
+          <div class="invalid-feedback">
+            <div *ngIf="maHM?.errors?.required">
+              Vui lòng chọn hạng mục vật tư!
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="txtNgayNhap" class="col-sm-2 col-form-label">Ngày nhập (*)</label>
+        <div class="col-sm-10">
+          <input id="txtNgayNhap" type="date" class="form-control" required name="ngayNhap" [(ngModel)]="nhapVatTuParams.mnhapvattu.ngayNhap"
+            #ngayNhap="ngModel" [ngClass]="{
+          'is-valid': ngayNhap.valid,
+          'is-invalid': ngayNhap.invalid && (ngayNhap.dirty || ngayNhap.touched)
+        }" />
+          <div class="invalid-feedback">
+            <div *ngIf="ngayNhap?.errors?.required">
+              Vui lòng nhập ngày nhập vật tư!
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="txtChietKhau" class="col-sm-2 col-form-label">Chiết khấu</label>
+        <div class="col-sm-10">
+          <input id="txtChietKhau" type="number" class="form-control" name="chietKhau" [(ngModel)]="nhapVatTuParams.mnhapvattu.chietKhau"
+            #chietKhau="ngModel" [ngClass]="{
+        'is-valid': chietKhau.valid,
+        'is-invalid': chietKhau.invalid && (chietKhau.dirty || chietKhau.touched)
+      }" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="txtGhiChu" class="col-sm-2 col-form-label">Ghi chú</label>
+        <div class="col-sm-10">
+          <textarea id="txtGhiChu" class="form-control" name="ghiChu" [(ngModel)]="nhapVatTuParams.mnhapvattu.ghiChu"
+            #ghiChu="ngModel" [ngClass]="{
+        'is-valid': ghiChu.valid,
+        'is-invalid': ghiChu.invalid && (ghiChu.dirty || ghiChu.touched)
+      }"></textarea>
+        </div>
+      </div>
+    </nz-card>
+    <br />
+    <nz-card style="width:100%;" nzTitle="Nhập chi tiết vật tư">
+      <div style="overflow-x: auto;">
+        <table class="table table-bordered" style="width: 250%;">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Tên vật tư (*)</th>
+              <th>Số lượng (*)</th>
+              <th>Đơn giá (*)</th>
+              <th>Nước sản xuất</th>
+              <th>Hãng sản xuất</th>
+              <th>Model</th>
+              <th>Seri</th>
+              <th>Số khung</th>
+              <th>Số máy</th>
+              <th>Số đăng ký</th>
+              <th>Đợt mua</th>
+              <th>Năm sản xuất</th>
+              <th>Phân cấp</th>
+              <th>Nguồn gốc</th>
+              <th>Ghi chú</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of nhapVatTuParams.listnhapchitiet; let i = index">
+              <td>
+                <button type="button" class="btn btn-danger btn-sm" (click)="deleteRow(i, item.maVatTu)">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </td>
+              <td>
+                <select class="form-control" [(ngModel)]="item.maVatTu" name="maVatTu{{i}}" #maVatTu{{id}}="ngModel" disabled>
+                  <option *ngFor="let material of materials" [value]="material.maVatTu">
+                    {{material.tenVT}}
+                  </option>
+                </select>
+              </td>
+              <td>
+                <input type="number" class="form-control" [(ngModel)]="item.soLuong" name="soLuong{{i}}" #soLuong{{i}}="ngModel" />
+              </td>
+              <td>
+                <input type="text" class="form-control" [(ngModel)]="item.donGia" name="donGia{{i}}" #donGia{{i}}="ngModel" />
+              </td>
+              <td>
+                <select class="form-control" style="width: 150px;" [(ngModel)]="item.maNuoc" name="maNuoc{{i}}"
+                  #maNuoc{{i}}="ngModel">
+                  <option *ngFor="let country of producingCountries" [value]="country.maNuoc">
+                    {{country.tenNuoc}}
+                  </option>
+                </select>
+              </td>
+              <td>
+                <select class="form-control" style="width: 150px;" [(ngModel)]="item.maHang" name="maHang{{i}}"
+                  #maHang{{i}}="ngModel">
+                  <option *ngFor="let manufacturer of manufacturers" [value]="manufacturer.maHang">
+                    {{manufacturer.tenHang}}
+                  </option>
+                </select>
+              </td>
+              <td>
+                <input type="text" class="form-control" [(ngModel)]="item.model" name="model{{i}}" #model{{i}}="ngModel" />
+              </td>
+              <td>
+                <input type="text" class="form-control" [(ngModel)]="item.seri" name="seri{{i}}" #seri{{i}}="ngModel" />
+              </td>
+              <td>
+                <input type="text" class="form-control" name="soKhung{{i}}" [(ngModel)]="item.soKhung" #soKhung{{i}}="ngModel" />
+              </td>
+              <td>
+                <input type="text" class="form-control" name="soMay{{i}}" [(ngModel)]="item.soMay" #soMay{{i}}="ngModel" />
+              </td>
+              <td>
+                <input type="text" class="form-control" name="soDangKy{{i}}" [(ngModel)]="item.soDangKy" #soDangKy{{i}}="ngModel" />
+              </td>
+              <td>
+                <input type="text" class="form-control" name="dotMua{{i}}" [(ngModel)]="item.dotMua" #dotMua{{i}}="ngModel" />
+              </td>
+              <td>
+                <input type="text" class="form-control" name="namSX{{i}}" [(ngModel)]="item.namSX" #namSX{{i}}="ngModel" />
+              </td>
+              <td>
+                <input type="text" class="form-control" name="phanCap{{i}}" [(ngModel)]="item.phanCap" #phanCap{{i}}="ngModel" />
+              </td>
+              <td>
+                <input type="text" class="form-control" name="nguonGoc{{i}}" [(ngModel)]="item.nguonGoc" #nguonGoc{{i}}="ngModel" />
+              </td>
+              <td>
+                <input type="text" class="form-control" name="ghiChu{{i}}" [(ngModel)]="item.ghiChu" #ghiChu{{i}}="ngModel" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </nz-card>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" (click)="hideModal(importMaterialForm)">Hủy</button>
+  <button type="submit" class="btn btn-primary" form="importMaterialForm">Lưu</button>
+</div>
