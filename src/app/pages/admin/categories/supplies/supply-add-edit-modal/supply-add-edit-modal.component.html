@@ -10,8 +10,7 @@
     <div class="form-group">
       <label for="txtTenNguon">Tên nguồn cung cấp (*)</label>
       <input type="text" id="txtTenNguon" class="form-control" formControlName="tenNguon" [ngClass]="{
-        'is-valid': !supplyForm.controls['tenNguon'].errors,
-        'is-invalid': supplyForm.controls['tenNguon'].errors && (supplyForm.controls['tenNguon'].dirty || supplyForm.controls['tenNguon'].touched)
+        'is-invalid': supplyForm.controls['tenNguon'].errors && (submitted || supplyForm.controls['tenNguon'].dirty || supplyForm.controls['tenNguon'].touched)
       }">
       <div class="invalid-feedback">
         <div *ngIf="supplyForm.get('tenNguon').hasError('required')">
@@ -22,13 +21,12 @@
     <div class="form-group">
       <label for="txtGhiChu">Ghi chú</label>
       <textarea id="txtGhiChu" class="form-control" formControlName="ghiChu" [ngClass]="{
-        'is-valid': !supplyForm.controls['ghiChu'].errors,
-        'is-invalid': supplyForm.controls['ghiChu'].errors && (supplyForm.controls['ghiChu'].dirty || supplyForm.controls['ghiChu'].touched)
+        'is-invalid': supplyForm.controls['ghiChu'].errors && (submitted || supplyForm.controls['ghiChu'].dirty || supplyForm.controls['ghiChu'].touched)
       }"></textarea>
     </div>
   </form>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-default" (click)="hideModal()">Hủy</button>
-  <button type="submit" class="btn btn-primary" form="supplyForm" [disabled]="supplyForm.invalid">Lưu</button>
+  <button type="submit" class="btn btn-primary" form="supplyForm">Lưu</button>
 </div>

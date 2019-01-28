@@ -16,7 +16,7 @@ export class MaterialItemAddEditModalComponent implements OnInit, AfterViewInit 
   @Output() saveEntity = new EventEmitter<boolean>();
   title: string;
   materialItem: MaterialItem;
-
+  submitted = false;
   isAddNew: boolean;
 
   materialItemForm: FormGroup;
@@ -46,6 +46,12 @@ export class MaterialItemAddEditModalComponent implements OnInit, AfterViewInit 
   }
 
   saveChanges() {
+    this.submitted = true;
+
+    if (this.materialItemForm.invalid) {
+      return;
+    }
+
     const materialItem = Object.assign({}, this.materialItemForm.value);
     if (this.isAddNew) {
       this.materialItemService.addNew(materialItem).subscribe((res: any) => {

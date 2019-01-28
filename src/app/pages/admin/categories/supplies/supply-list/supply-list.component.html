@@ -16,13 +16,13 @@
     </div>
   </div>
 
-  <table class="table table-hover table-bordered">
+  <table class="table table-hover">
     <thead>
       <tr>
-        <th nzWidth="20%">STT</th>
-        <th nzWidth="30%">Tên nguồn cung cấp</th>
-        <th nzWidth="40%">Ghi chú</th>
-        <th nzWidth="10%">Thao tác</th>
+        <th style="width: 15%">STT</th>
+        <th style="width: 25%">Tên nguồn cung cấp</th>
+        <th style="width: 45%">Ghi chú</th>
+        <th style="width: 15%">Thao tác</th>
       </tr>
     </thead>
     <tbody>
@@ -30,7 +30,7 @@
         <td>{{i + 1}}</td>
         <td>{{supply.tenNguon}}</td>
         <td>{{supply.ghiChu}}</td>
-        <td class="text-center">
+        <td>
           <button class="btn btn-info btn-sm" nz-tooltip nzTitle="Sửa" (click)="update(supply.maNguon)">
             <i class="fa fa-edit"></i>
           </button>

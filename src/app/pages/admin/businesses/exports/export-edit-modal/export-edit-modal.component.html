@@ -1,0 +1,172 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="exportMaterialForm" id="exportMaterialForm" (ngSubmit)="saveChanges()" novalidate>
+    <div class="row mb-2">
+      <div class="col-md-4 col-sm-12">
+      </div>
+      <div class="col-md-8 col-sm-12 text-right">
+      </div>
+    </div>
+    <nz-card style="width:100%;" nzTitle="Xuất vật tư" formGroupName="mxuatvattu">
+      <div class="form-group row">
+        <label for="ddlMaKho" class="col-sm-2 col-form-label">Tên kho (*)</label>
+        <div class="col-sm-10">
+          <select id="ddlMaKho" class="form-control" formControlName="maKho" [ngClass]="{
+              'is-valid': !exportMaterialForm['controls'].mxuatvattu['controls']['maKho'].errors,
+              'is-invalid': exportMaterialForm['controls'].mxuatvattu['controls']['maKho'].errors && (exportMaterialForm['controls'].mxuatvattu['controls']['maKho'].dirty || exportMaterialForm['controls'].mxuatvattu['controls']['maKho'].touched)
+            }">
+            <option *ngFor="let item of materialStores" [value]="item.maKho">
+              {{item.tenKho}}
+            </option>
+          </select>
+          <div class="invalid-feedback">
+            <div *ngIf="exportMaterialForm.get('mxuatvattu.maKho').hasError('required')">
+              Vui lòng chọn tên kho!
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="ddlMaNS" class="col-sm-2 col-form-label">Nhân sự (*)</label>
+        <div class="col-sm-10">
+          <select id="ddlMaNS" class="form-control" formControlName="maNS" [ngClass]="{
+                'is-valid': !exportMaterialForm['controls'].mxuatvattu['controls']['maNS'].errors,
+                'is-invalid': exportMaterialForm['controls'].mxuatvattu['controls']['maNS'].errors && (exportMaterialForm['controls'].mxuatvattu['controls']['maNS'].dirty || exportMaterialForm['controls'].mxuatvattu['controls']['maNS'].touched)
+              }">
+            <option *ngFor="let item of personnels" [value]="item.maNS">
+              {{item.hoTen}}
+            </option>
+          </select>
+          <div class="invalid-feedback">
+            <div *ngIf="exportMaterialForm.get('mxuatvattu.maNS').hasError('required')">
+              Vui lòng chọn nhân sự!
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="txtNgayNhap" class="col-sm-2 col-form-label">Ngày nhập (*)</label>
+        <div class="col-sm-10">
+          <input id="txtNgayNhap" type="date" class="form-control" formControlName="ngayNhap" [ngClass]="{
+              'is-valid': !exportMaterialForm['controls'].mxuatvattu['controls']['ngayNhap'].errors,
+              'is-invalid': exportMaterialForm['controls'].mxuatvattu['controls']['ngayNhap'].errors && (exportMaterialForm['controls'].mxuatvattu['controls']['ngayNhap'].dirty || exportMaterialForm['controls'].mxuatvattu['controls']['ngayNhap'].touched)
+            }" />
+          <div class="invalid-feedback">
+            <div *ngIf="exportMaterialForm.get('mxuatvattu.ngayNhap').hasError('required')">
+              Vui lòng nhập ngày nhập!
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="txtGhiChu" class="col-sm-2 col-form-label">Ghi chú</label>
+        <div class="col-sm-10">
+          <textarea id="txtGhiChu" class="form-control" formControlName="ghiChu" [ngClass]="{
+            'is-valid': !exportMaterialForm['controls'].mxuatvattu['controls']['ghiChu'].errors,
+            'is-invalid': exportMaterialForm['controls'].mxuatvattu['controls']['ghiChu'].errors && (exportMaterialForm['controls'].mxuatvattu['controls']['ghiChu'].dirty || exportMaterialForm['controls'].mxuatvattu['controls']['ghiChu'].touched)
+          }"></textarea>
+        </div>
+      </div>
+    </nz-card>
+    <br />
+    <nz-card style="width:100%;" nzTitle="Xuất chi tiết vật tư" formArrayName="listxuatchitiet">
+      <div style="overflow-x: auto;">
+        <table class="table table-bordered" style="width: 100%;">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Phiếu nhập (*)</th>
+              <th>Tên vật tư (*)</th>
+              <th>Số lượng xuất (*)</th>
+              <th>Đơn giá (*)</th>
+              <th>Ghi chú</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of exportMaterialForm.get('listxuatchitiet')['controls']; let i = index"
+              [formGroupName]="i">
+              <td>
+                <button type="button" class="btn btn-danger btn-sm" (click)="deleteRow(i)" [disabled]="exportMaterialForm.get('listxuatchitiet')['controls'].length <= 1">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </td>
+              <td>
+                <select class="form-control" style="width: 150px;" formControlName="maPhieuNhap" [ngClass]="{
+                  'is-valid': !exportMaterialForm.controls.listxuatchitiet.controls[i].controls['maPhieuNhap'].errors,
+                  'is-invalid': exportMaterialForm.controls.listxuatchitiet.controls[i].controls['maPhieuNhap'].errors && (exportMaterialForm.controls.listxuatchitiet.controls[i].controls['maPhieuNhap'].dirty || exportMaterialForm.controls.listxuatchitiet.controls[i].controls['maPhieuNhap'].touched)
+                }">
+                  <option *ngFor="let id of importMaterials" [value]="id">
+                    {{id}}
+                  </option>
+                </select>
+                <div class="invalid-feedback">
+                  <div *ngIf="item.hasError('required', 'maPhieuNhap')">
+                    Vui lòng chọn mã phiếu nhập!
+                  </div>
+                </div>
+              </td>
+              <td>
+                <select class="form-control" style="width: 200px;" formControlName="maVatTu" [ngClass]="{
+                  'is-valid': !exportMaterialForm.controls.listxuatchitiet.controls[i].controls['maVatTu'].errors,
+                  'is-invalid': exportMaterialForm.controls.listxuatchitiet.controls[i].controls['maVatTu'].errors && (exportMaterialForm.controls.listxuatchitiet.controls[i].controls['maVatTu'].dirty || exportMaterialForm.controls.listxuatchitiet.controls[i].controls['maVatTu'].touched)
+                }">
+                  <option *ngFor="let material of item.get('materials').value" [value]="material.maVatTu">
+                    {{material.tenVT}}
+                  </option>
+                </select>
+                <div class="invalid-feedback">
+                  <div *ngIf="item.hasError('required', 'maVatTu')">
+                    Vui lòng chọn tên vật tư!
+                  </div>
+                </div>
+              </td>
+              <td>
+                <input type="number" class="form-control" formControlName="soLuongXuat" [ngClass]="{
+                  'is-valid': !exportMaterialForm.controls.listxuatchitiet.controls[i].controls['soLuongXuat'].errors,
+                  'is-invalid': exportMaterialForm.controls.listxuatchitiet.controls[i].controls['soLuongXuat'].errors && (exportMaterialForm.controls.listxuatchitiet.controls[i].controls['soLuongXuat'].dirty || exportMaterialForm.controls.listxuatchitiet.controls[i].controls['soLuongXuat'].touched)
+                }" />
+                <div class="invalid-feedback">
+                  <div *ngIf="item.hasError('required', 'soLuongXuat')">
+                    Vui lòng nhập số lượng!
+                  </div>
+                </div>
+              </td>
+              <td>
+                <input type="text" class="form-control" formControlName="donGia" [ngClass]="{
+                  'is-valid': !exportMaterialForm.controls.listxuatchitiet.controls[i].controls['donGia'].errors,
+                  'is-invalid': exportMaterialForm.controls.listxuatchitiet.controls[i].controls['donGia'].errors && (exportMaterialForm.controls.listxuatchitiet.controls[i].controls['donGia'].dirty || exportMaterialForm.controls.listxuatchitiet.controls[i].controls['donGia'].touched)
+                }" />
+                <div class="invalid-feedback">
+                  <div *ngIf="item.hasError('required', 'donGia')">
+                    Vui lòng nhập số lượng!
+                  </div>
+                </div>
+              </td>
+              <td>
+                <input type="text" class="form-control" formControlName="ghiChu" />
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="16">
+                <button type="button" class="btn btn-success btn-sm" (click)="addRowForMaterialDetail()">
+                  <i class="fa fa-plus"></i>
+                </button>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </nz-card>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" (click)="hideModal()">Hủy</button>
+  <button type="submit" class="btn btn-primary" form="exportMaterialForm">Lưu</button>
+</div>

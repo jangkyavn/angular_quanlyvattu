@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router, ActivatedRouteSnapshot } from '@angular/router';
+import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 import { AuthService } from '../services/auth.service';
 import { NotifyService } from '../services/notify.service';
@@ -13,13 +13,13 @@ export class AuthGuard implements CanActivate {
     private authService: AuthService,
     private notify: NotifyService) { }
 
-  canActivate(next: ActivatedRouteSnapshot): boolean {
+  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     if (this.authService.loggedIn()) {
       return true;
     }
 
     this.notify.error('Bạn cần phải đăng nhập');
-    this.router.navigate(['/']);
+    this.router.navigate(['/'], { queryParams: { returnUrl: state.url }});
     return false;
   }
 }

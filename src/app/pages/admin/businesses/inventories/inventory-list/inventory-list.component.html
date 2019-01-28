@@ -15,22 +15,22 @@
     </div>
   </div>
 
-  <table class="table table-hover table-bordered">
+  <table class="table table-hover">
     <thead>
       <tr>
-        <th nzWidth="15%">STT</th>
-        <th nzWidth="20%">Tên kho</th>
-        <th nzWidth="20%">Mã phiếu nhập</th>
-        <th nzWidth="35%">Tên vật tư</th>
-        <th nzWidth="10%">Số lượng tồn</th>
+        <th style="width: 15%;">STT</th>
+        <th style="width: 25%;">Tên kho</th>
+        <th style="width: 25%;">Tên vật tư</th>
+        <th style="width: 20%;">Mã phiếu nhập</th>
+        <th style="width: 15%;">Số lượng tồn</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let inventory of inventories; let i = index">
         <td>{{i + 1}}</td>
         <td>{{inventory.tenKho}}</td>
-        <td>{{inventory.maPhieuNhap}}</td>
         <td>{{inventory.tenVatTu}}</td>
+        <td>{{inventory.maPhieuNhap}}</td>
         <td>{{inventory.soLuongTon}}</td>
       </tr>
     </tbody>

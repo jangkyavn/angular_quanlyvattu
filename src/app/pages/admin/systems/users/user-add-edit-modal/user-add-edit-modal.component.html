@@ -11,8 +11,7 @@
     <div class="form-group">
       <label for="txtUserName">Tài khoản (*)</label>
       <input type="text" id="txtUserName" class="form-control" formControlName="userName" [ngClass]="{
-        'is-valid': !userForm.controls['userName'].errors,
-        'is-invalid': userForm.controls['userName'].errors && (userForm.controls['userName'].dirty || userForm.controls['userName'].touched)
+        'is-invalid': userForm.controls['userName'].errors && (submitted || userForm.controls['userName'].dirty || userForm.controls['userName'].touched)
       }" [readonly]="!isAddNew">
       <div class="invalid-feedback">
         <div *ngIf="userForm.get('userName').hasError('required')">
@@ -23,8 +22,7 @@
     <div class="form-group" *ngIf="isAddNew">
       <label for="txtPassword">Mật khẩu (*)</label>
       <input type="password" class="form-control" id="txtPassword" formControlName="password" [ngClass]="{
-        'is-valid': !userForm.controls['password'].errors,
-        'is-invalid': userForm.controls['password'].errors && (userForm.controls['password'].dirty || userForm.controls['password'].touched)
+        'is-invalid': userForm.controls['password'].errors && (submitted || userForm.controls['password'].dirty || userForm.controls['password'].touched)
       }">
       <div class="invalid-feedback">
         <div *ngIf="userForm.get('password').hasError('required')">
@@ -41,8 +39,7 @@
     <div class="form-group" *ngIf="isAddNew">
       <label for="txtConfirmPassword">Xác nhận mật khẩu (*)</label>
       <input type="password" class="form-control" id="txtConfirmPassword" formControlName="confirmPassword" [ngClass]="{
-        'is-valid': !userForm.controls['confirmPassword'].errors,
-        'is-invalid': userForm.controls['confirmPassword'].errors && (userForm.controls['confirmPassword'].dirty || userForm.controls['confirmPassword'].touched)
+        'is-invalid': userForm.controls['confirmPassword'].errors && (submitted || userForm.controls['confirmPassword'].dirty || userForm.controls['confirmPassword'].touched)
       }">
       <div class="invalid-feedback">
         <div *ngIf="userForm.get('confirmPassword').hasError('required')">
@@ -56,8 +53,7 @@
     <div class="form-group">
       <label for="txtFullName">Họ tên (*)</label>
       <input type="text" class="form-control" id="txtFullName" formControlName="fullName" [ngClass]="{
-        'is-valid': !userForm.controls['fullName'].errors,
-        'is-invalid': userForm.controls['fullName'].errors && (userForm.controls['fullName'].dirty || userForm.controls['fullName'].touched)
+        'is-invalid': userForm.controls['fullName'].errors && (submitted || userForm.controls['fullName'].dirty || userForm.controls['fullName'].touched)
       }">
       <div class="invalid-feedback">
         <div *ngIf="userForm.get('fullName').hasError('required')">
@@ -71,8 +67,7 @@
     <div class="form-group">
       <label for="txtEmail">Email (*)</label>
       <input type="email" class="form-control" id="txtEmail" formControlName="email" [ngClass]="{
-        'is-valid': !userForm.controls['email'].errors,
-        'is-invalid': userForm.controls['email'].errors && (userForm.controls['email'].dirty || userForm.controls['email'].touched)
+        'is-invalid': userForm.controls['email'].errors && (submitted || userForm.controls['email'].dirty || userForm.controls['email'].touched)
       }">
       <div class="invalid-feedback">
         <div *ngIf="userForm.get('email').hasError('required')">
@@ -89,8 +84,7 @@
     <div class="form-group">
       <label for="txtPhoneNumber">Điện thoại</label>
       <input type="text" class="form-control" id="txtPhoneNumber" formControlName="phoneNumber" [ngClass]="{
-        'is-valid': !userForm.controls['phoneNumber'].errors,
-        'is-invalid': userForm.controls['phoneNumber'].errors && (userForm.controls['phoneNumber'].dirty || userForm.controls['phoneNumber'].touched)
+        'is-invalid': userForm.controls['phoneNumber'].errors && (submitted || userForm.controls['phoneNumber'].dirty || userForm.controls['phoneNumber'].touched)
       }">
       <div class="invalid-feedback">
         <div *ngIf="userForm.get('phoneNumber').hasError('maxlength')">
@@ -101,8 +95,7 @@
     <div class="form-group">
       <label for="txtAddress">Địa chỉ</label>
       <textarea class="form-control" id="txtAddress" formControlName="address" [ngClass]="{
-        'is-valid': !userForm.controls['address'].errors,
-        'is-invalid': userForm.controls['address'].errors && (userForm.controls['address'].dirty || userForm.controls['address'].touched)
+        'is-invalid': userForm.controls['address'].errors && (submitted || userForm.controls['address'].dirty || userForm.controls['address'].touched)
       }"></textarea>
       <div class="invalid-feedback">
         <div *ngIf="userForm.get('address').hasError('maxlength')">
@@ -114,5 +107,5 @@
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-default" (click)="hideModal()">Hủy</button>
-  <button type="submit" class="btn btn-primary" form="userForm" [disabled]="userForm.invalid">Lưu</button>
+  <button type="submit" class="btn btn-primary" form="userForm">Lưu</button>
 </div>

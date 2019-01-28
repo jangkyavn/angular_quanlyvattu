@@ -16,7 +16,7 @@ export class ManufacturerAddEditModalComponent implements OnInit, AfterViewInit 
   @Output() saveEntity = new EventEmitter<boolean>();
   title: string;
   manufacturer: Manufacturer;
-
+  submitted = false;
   isAddNew: boolean;
 
   manufacturerForm: FormGroup;
@@ -46,6 +46,12 @@ export class ManufacturerAddEditModalComponent implements OnInit, AfterViewInit 
   }
 
   saveChanges() {
+    this.submitted = true;
+
+    if (this.manufacturerForm.invalid) {
+      return;
+    }
+
     const manufacturer = Object.assign({}, this.manufacturerForm.value);
     if (this.isAddNew) {
       this.manufacturerService.addNew(manufacturer).subscribe((res: any) => {

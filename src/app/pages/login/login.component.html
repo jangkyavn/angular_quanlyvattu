@@ -10,9 +10,8 @@
                   </div>
                   <input type="text" class="form-control" placeholder="Tài khoản" formControlName="userName"
                       [ngClass]="{
-                      'is-valid': !loginForm.controls['userName'].errors,
-                      'is-invalid': loginForm.controls['userName'].errors && (loginForm.controls['userName'].dirty || loginForm.controls['userName'].touched)
-                    }" autofocus>
+                      'is-invalid': loginForm.controls['userName'].errors && (submitted || loginForm.controls['userName'].dirty || loginForm.controls['userName'].touched)
+                    }" autofocus autocomplete="off">
                   <div class="invalid-feedback">
                       <div *ngIf="loginForm.get('userName').hasError('required')">
                           Vui lòng nhập tài khoản!
@@ -29,9 +28,8 @@
                   </div>
                   <input type="password" class="form-control" placeholder="Mật khẩu" formControlName="password"
                       [ngClass]="{
-                          'is-valid': !loginForm.controls['password'].errors,
-                          'is-invalid': loginForm.controls['password'].errors && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)
-                        }">
+                          'is-invalid': loginForm.controls['password'].errors && (submitted || loginForm.controls['password'].dirty || loginForm.controls['password'].touched)
+                        }" autocomplete="off">
                   <div class="invalid-feedback">
                       <div *ngIf="loginForm.get('password').hasError('required')">
                           Vui lòng nhập mật khẩu!
@@ -40,7 +38,7 @@
               </div>
           </div>
           <div class="form-group text-center">
-              <button nz-button nzType="primary" type="submit" [disabled]="!loginForm.valid" nzSize="large" nzBlock [nzLoading]="isLoading">Đăng nhập</button>
+              <button nz-button nzType="primary" type="submit" nzSize="large" nzBlock [nzLoading]="isLoading">Đăng nhập</button>
           </div>
       </form>
   </nz-card>

@@ -16,6 +16,7 @@ export class SupplyAddEditModalComponent implements OnInit, AfterViewInit {
   @Output() saveEntity = new EventEmitter<boolean>();
   title: string;
   supply: Supply;
+  submitted = false;
 
   isAddNew: boolean;
 
@@ -46,6 +47,12 @@ export class SupplyAddEditModalComponent implements OnInit, AfterViewInit {
   }
 
   saveChanges() {
+    this.submitted = true;
+
+    if (this.supplyForm.invalid) {
+      return;
+    }
+
     const supply = Object.assign({}, this.supplyForm.value);
     if (this.isAddNew) {
       this.supplyService.addNew(supply).subscribe((res: any) => {

@@ -16,19 +16,19 @@
     </div>
   </div>
 
-  <table class="table table-hover table-bordered">
+  <table class="table table-hover">
     <thead>
       <tr>
-        <th nzWidth="40%">STT</th>
-        <th nzWidth="50%">Tên đơn vị tính</th>
-        <th nzWidth="10%">Thao tác</th>
+        <th style="width: 15%;">STT</th>
+        <th style="width: 70%;">Tên đơn vị tính</th>
+        <th style="width: 15%;">Thao tác</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let unit of units; let i = index">
-        <td>{{i}}</td>
+        <td>{{i + 1}}</td>
         <td>{{unit.tenDVT}}</td>
-        <td class="text-center">
+        <td>
           <button class="btn btn-info btn-sm" nz-tooltip nzTitle="Sửa" (click)="update(unit.maDVT)">
             <i class="fa fa-edit"></i>
           </button>

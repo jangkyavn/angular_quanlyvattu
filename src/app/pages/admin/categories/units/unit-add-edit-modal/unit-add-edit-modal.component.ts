@@ -16,7 +16,7 @@ export class UnitAddEditModalComponent implements OnInit, AfterViewInit {
   @Output() saveEntity = new EventEmitter<boolean>();
   title: string;
   unit: Unit;
-
+  submitted = false;
   isAddNew: boolean;
 
   unitForm: FormGroup;
@@ -45,6 +45,12 @@ export class UnitAddEditModalComponent implements OnInit, AfterViewInit {
   }
 
   saveChanges() {
+    this.submitted = true;
+
+    if (this.unitForm.invalid) {
+      return;
+    }
+
     const unit = Object.assign({}, this.unitForm.value);
     if (this.isAddNew) {
       this.unitService.addNew(unit).subscribe((res: any) => {

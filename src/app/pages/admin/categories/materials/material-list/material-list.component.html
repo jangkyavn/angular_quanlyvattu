@@ -17,15 +17,15 @@
     </div>
   </div>
 
-  <table class="table table-hover table-bordered">
+  <table class="table table-hover">
     <thead>
       <tr>
-        <th nzWidth="10%">STT</th>
-        <th nzWidth="20%">Tên tên tư</th>
-        <th nzWidth="20%">Tên loại vật tư</th>
-        <th nzWidth="10%">Tên đơn vị tính</th>
-        <th nzWidth="30%">Ghi chú</th>
-        <th nzWidth="10%">Thao tác</th>
+        <th style="width: 10%;">STT</th>
+        <th style="width: 20%;">Tên tên tư</th>
+        <th style="width: 20%;">Tên loại vật tư</th>
+        <th style="width: 15%;">Đơn vị tính</th>
+        <th style="width: 20%;">Ghi chú</th>
+        <th style="width: 10%;">Thao tác</th>
       </tr>
     </thead>
     <tbody>
@@ -35,7 +35,7 @@
         <td>{{material.tenLoaiVatTu}}</td>
         <td>{{material.tenDVT}}</td>
         <td>{{material.ghiChu}}</td>
-        <td class="texmaterialTypet-center">
+        <td>
           <button class="btn btn-info btn-sm" nz-tooltip nzTitle="Sửa" (click)="update(material.maVatTu)">
             <i class="fa fa-edit"></i>
           </button>

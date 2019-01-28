@@ -38,13 +38,17 @@
         <td>{{importMaterial.tongSoTien}}</td>
         <td>{{importMaterial.tongSoLuong}}</td>
         <td>
-          <button class="btn btn-info btn-sm" nz-tooltip nzTitle="Sửa" (click)="update(importMaterial.maPhieuNhap)">
+          <button class="btn btn-info btn-sm" nz-tooltip nzTitle="Sửa" [routerLink]="['/admin/nghiep-vu/sua-phieu-nhap', importMaterial.maPhieuNhap]">
             <i class="fa fa-edit"></i>
           </button>
           <nz-divider nzType="vertical"></nz-divider>
           <button class="btn btn-danger btn-sm" nz-tooltip nzTitle="Xóa" (click)="delete(importMaterial.maPhieuNhap)">
             <i class="fa fa-trash"></i>
           </button>
+          <!-- <nz-divider nzType="vertical"></nz-divider>
+          <button class="btn btn-primary btn-sm" nz-tooltip nzTitle="Xuất" (click)="export(importMaterial.maPhieuNhap)">
+            <i class="fa fa-sign-out"></i>
+          </button> -->
         </td>
       </tr>
     </tbody>

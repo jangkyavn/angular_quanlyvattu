@@ -10,8 +10,7 @@
     <div class="form-group">
       <label for="txtTenNuoc">Tên nước (*)</label>
       <input type="text" id="txtTenNuoc" class="form-control" formControlName="tenNuoc" [ngClass]="{
-        'is-valid': !producingCountryForm.controls['tenNuoc'].errors,
-        'is-invalid': producingCountryForm.controls['tenNuoc'].errors && (producingCountryForm.controls['tenNuoc'].dirty || producingCountryForm.controls['tenNuoc'].touched)
+        'is-invalid': producingCountryForm.controls['tenNuoc'].errors && (submitted || producingCountryForm.controls['tenNuoc'].dirty || producingCountryForm.controls['tenNuoc'].touched)
       }">
       <div class="invalid-feedback">
         <div *ngIf="producingCountryForm.get('tenNuoc').hasError('required')">
@@ -23,5 +22,5 @@
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-default" (click)="hideModal()">Hủy</button>
-  <button type="submit" class="btn btn-primary" form="producingCountryForm" [disabled]="producingCountryForm.invalid">Lưu</button>
+  <button type="submit" class="btn btn-primary" form="producingCountryForm">Lưu</button>
 </div>

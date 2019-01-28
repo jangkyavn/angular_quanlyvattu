@@ -16,7 +16,7 @@ export class ProducingCountryAddEditModalComponent implements OnInit, AfterViewI
   @Output() saveEntity = new EventEmitter<boolean>();
   title: string;
   producingCountry: ProducingCountry;
-
+  submitted = false;
   isAddNew: boolean;
 
   producingCountryForm: FormGroup;
@@ -45,6 +45,12 @@ export class ProducingCountryAddEditModalComponent implements OnInit, AfterViewI
   }
 
   saveChanges() {
+    this.submitted = true;
+
+    if (this.producingCountryForm.invalid) {
+      return;
+    }
+
     const producingCountry = Object.assign({}, this.producingCountryForm.value);
     if (this.isAddNew) {
       this.producingCountryService.addNew(producingCountry).subscribe((res: any) => {

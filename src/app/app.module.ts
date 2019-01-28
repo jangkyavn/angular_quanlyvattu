@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
@@ -33,13 +33,13 @@ export function tokenGetter() {
     NgZorroAntdModule,
     JwtModule.forRoot({
       config: {
-         tokenGetter,
-         whitelistedDomains: ['localhost:44379'],
-         blacklistedRoutes: ['localhost:44379/api/auth']
+        tokenGetter,
+        whitelistedDomains: ['localhost:44379'],
+        blacklistedRoutes: ['localhost:44379/api/auth']
       }
-   }),
+    }),
   ],
-  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

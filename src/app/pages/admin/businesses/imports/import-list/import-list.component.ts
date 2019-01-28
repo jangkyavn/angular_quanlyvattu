@@ -66,4 +66,8 @@ export class ImportListComponent implements OnInit {
       });
     });
   }
+
+  export(id: number) {
+    ////////////////
+  }
 }

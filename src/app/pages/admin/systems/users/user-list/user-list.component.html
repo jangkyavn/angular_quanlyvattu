@@ -17,15 +17,15 @@
     </div>
   </div>
 
-  <table class="table table-hover table-bordered">
+  <table class="table table-hover">
     <thead>
       <tr>
-        <th nzWidth="20%">Tài khoản</th>
-        <th nzWidth="20%">Họ tên</th>
-        <th nzWidth="20%">Email</th>
-        <th nzWidth="20%">Vai trò</th>
-        <th nzWidth="10%">Trạng thái</th>
-        <th nzWidth="10%">Thao tác</th>
+        <th style="width: 15%">Tài khoản</th>
+        <th style="width: 20%">Họ tên</th>
+        <th style="width: 20%">Email</th>
+        <th style="width: 20%">Vai trò</th>
+        <th style="width: 10%">Trạng thái</th>
+        <th style="width: 15%">Thao tác</th>
       </tr>
     </thead>
     <tbody>
@@ -35,13 +35,13 @@
               <td>{{user.fullName}}</td>
               <td>{{user.email}}</td>
               <td>{{user.roles}} </td>
-              <td class="text-center">
+              <td>
                 <nz-switch [ngModel]="user.status" [nzCheckedChildren]="checkedTemplate" [nzUnCheckedChildren]="unCheckedTemplate"
                   (click)="changeStatus(user.id)"></nz-switch>
                 <ng-template #checkedTemplate><i nz-icon type="check" nz-tooltip nzTitle="Kích hoạt"></i></ng-template>
                 <ng-template #unCheckedTemplate><i nz-icon type="close" nz-tooltip nzTitle="Khóa"></i></ng-template>
               </td>
-              <td class="text-center">
+              <td>
                 <button class="btn btn-info btn-sm" nz-tooltip nzTitle="Sửa" (click)="update(user.id)">
                   <i class="fa fa-edit"></i>
                 </button>

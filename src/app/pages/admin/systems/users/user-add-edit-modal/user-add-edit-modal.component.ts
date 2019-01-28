@@ -17,6 +17,7 @@ export class UserAddEditModalComponent implements OnInit, AfterViewInit {
   title: string;
   user: User;
   isAddNew: boolean;
+  submitted = false;
 
   userForm: FormGroup;
 
@@ -89,6 +90,12 @@ export class UserAddEditModalComponent implements OnInit, AfterViewInit {
   }
 
   saveChanges() {
+    this.submitted = true;
+
+    if (this.userForm.invalid) {
+      return;
+    }
+
     const user = Object.assign({}, this.userForm.value);
     if (this.isAddNew) {
       console.log(user);

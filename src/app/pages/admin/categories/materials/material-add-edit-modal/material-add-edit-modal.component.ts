@@ -22,7 +22,7 @@ export class MaterialAddEditModalComponent implements OnInit, AfterViewInit {
   material: Material;
   materialTypes: MaterialType[];
   units: Unit[];
-
+  submitted = false;
   isAddNew: boolean;
 
   materialForm: FormGroup;
@@ -58,6 +58,12 @@ export class MaterialAddEditModalComponent implements OnInit, AfterViewInit {
   }
 
   saveChanges() {
+    this.submitted = true;
+
+    if (this.materialForm.invalid) {
+      return;
+    }
+
     const material = Object.assign({}, this.materialForm.value);
     if (this.isAddNew) {
       this.materialService.addNew(material).subscribe((res: any) => {

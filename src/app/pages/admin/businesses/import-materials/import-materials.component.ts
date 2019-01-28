@@ -1,13 +1,12 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 
 import { MaterialItem } from 'src/app/shared/models/material-item.model';
 import { MaterialStore } from 'src/app/shared/models/material-store.model';
 import { Material } from 'src/app/shared/models/material.model';
 import { ProducingCountry } from 'src/app/shared/models/producing-country.model';
 import { Manufacturer } from 'src/app/shared/models/manufacturer.model';
-import { ImportMaterialDetail } from 'src/app/shared/models/import-material-detail.model';
-import { ImportMaterial } from 'src/app/shared/models/import-material.model';
 
 import { MaterialStoreService } from 'src/app/shared/services/material-store.service';
 import { MaterialItemService } from 'src/app/shared/services/material-item.service';
@@ -23,21 +22,18 @@ import { NotifyService } from 'src/app/shared/services/notify.service';
   styleUrls: ['./import-materials.component.scss']
 })
 export class ImportMaterialsComponent implements OnInit {
-  @Output() saveEntity = new EventEmitter<boolean>();
-  title: string;
   materialStores: MaterialStore[];
   materialItems: MaterialItem[];
   materials: Material[];
   producingCountries: ProducingCountry[];
   manufacturers: Manufacturer[];
-
-  nhapVatTuParams: {
-    mnhapvattu: ImportMaterial,
-    listnhapchitiet: ImportMaterialDetail[]
-  };
+  submitted = false;
+  importMaterialForm: FormGroup;
+  listnhapchitiet: FormArray;
 
   constructor(
     private router: Router,
+    private fb: FormBuilder,
     private importMaterialService: ImportMaterialService,
     private materialStoreService: MaterialStoreService,
     private materialItemService: MaterialItemService,
@@ -54,10 +50,40 @@ export class ImportMaterialsComponent implements OnInit {
     this.loadAllProducingCountries();
     this.loadAllManufacturers();
 
-    this.nhapVatTuParams = {
-      mnhapvattu: {},
-      listnhapchitiet: []
-    };
+    this.createForm();
+  }
+
+  createForm() {
+    this.importMaterialForm = this.fb.group({
+      mnhapvattu: this.fb.group({
+        maKho: [null, [Validators.required]],
+        maHM: [null, [Validators.required]],
+        ngayNhap: [null, [Validators.required]],
+        chietKhau: [0],
+        ghiChu: [null]
+      }),
+      listnhapchitiet: this.fb.array([this.createItem()])
+    });
+  }
+
+  createItem(): FormGroup {
+    return this.fb.group({
+      maVatTu: [null, [Validators.required]],
+      soLuong: [1, [Validators.required]],
+      donGia: [null, [Validators.required]],
+      maNuoc: [null],
+      maHang: [null],
+      model: [null],
+      seri: [null],
+      soKhung: [null],
+      soMay: [null],
+      soDangKy: [null],
+      dotMua: [null],
+      namSX: [null],
+      phanCap: [null],
+      nguonGoc: [null],
+      ghiChu: [null]
+    });
   }
 
   loadAllInventories() {
@@ -91,16 +117,24 @@ export class ImportMaterialsComponent implements OnInit {
   }
 
   addRowForMaterialDetail() {
-    const materialDetail: ImportMaterialDetail = { };
-    this.nhapVatTuParams.listnhapchitiet.push(materialDetail);
+    this.listnhapchitiet = this.importMaterialForm.get('listnhapchitiet') as FormArray;
+    this.listnhapchitiet.push(this.createItem());
   }
 
   deleteRow(idx: number) {
-    this.nhapVatTuParams.listnhapchitiet.splice(idx, 1);
+    this.listnhapchitiet = this.importMaterialForm.get('listnhapchitiet') as FormArray;
+    this.listnhapchitiet.removeAt(idx);
   }
 
   saveChanges() {
-    this.importMaterialService.addNew(this.nhapVatTuParams).subscribe((res: boolean) => {
+    this.submitted = true;
+
+    if (this.importMaterialForm.invalid) {
+      return;
+    }
+
+    const nhapVatTuParams = Object.assign({}, this.importMaterialForm.value);
+    this.importMaterialService.addNew(nhapVatTuParams).subscribe((res: boolean) => {
       if (res) {
         this.notify.success('Thêm mới thành công!');
         this.router.navigate(['/admin/nghiep-vu/danh-sach-phieu-nhap']);

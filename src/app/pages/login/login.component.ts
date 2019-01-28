@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { NotifyService } from '../../shared/services/notify.service';
@@ -13,8 +13,11 @@ import { AuthService } from '../../shared/services/auth.service';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   isLoading = false;
+  returnUrl = '';
+  submitted = false;
 
   constructor(
+    private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
     private authService: AuthService,
@@ -22,6 +25,9 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.route.queryParams
+      .subscribe(params => this.returnUrl = params['returnUrl']);
+
     this.createForm();
   }
 
@@ -33,11 +39,21 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    this.submitted = true;
+
+    if (this.loginForm.invalid) {
+      return;
+    }
+
     this.isLoading = true;
     const user = this.loginForm.value;
     this.authService.login(user).subscribe(res => {
       if (res.status) {
-        this.router.navigate(['/admin']);
+        if (this.returnUrl) {
+          this.router.navigateByUrl(this.returnUrl);
+        } else {
+          this.router.navigate(['/admin']);
+        }
       } else {
         this.notify.warning(res.messsage);
       }

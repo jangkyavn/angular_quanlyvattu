@@ -17,13 +17,13 @@
     </div>
   </div>
 
-  <table class="table table-hover table-bordered">
+  <table class="table table-hover">
     <thead>
       <tr>
-        <th nzWidth="10%">STT</th>
-        <th nzWidth="40%">Tên hạng mục</th>
-        <th nzWidth="40%">Ghi chú</th>
-        <th nzWidth="10%">Thao tác</th>
+        <th style="width: 15%;">STT</th>
+        <th style="width: 35%;">Tên hạng mục</th>
+        <th style="width: 35%;">Ghi chú</th>
+        <th style="width: 15%;">Thao tác</th>
       </tr>
     </thead>
     <tbody>
@@ -31,7 +31,7 @@
         <td>{{i + 1}}</td>
         <td>{{materialItem.tenHM}}</td>
         <td>{{materialItem.ghiChu}}</td>
-        <td class="texmaterialTypet-center">
+        <td>
           <button class="btn btn-info btn-sm" nz-tooltip nzTitle="Sửa" (click)="update(materialItem.maHM)">
             <i class="fa fa-edit"></i>
           </button>
