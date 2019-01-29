@@ -44,9 +44,9 @@ export class ExportMaterialService {
         return this.http.put(this.baseUrl + 'XuatVatTu', exportMaterialParams);
     }
 
-    // delete(importId: any) {
-    //     return this.http.delete(this.baseUrl + 'NhapVatTu/' + importId);
-    // }
+    delete(exportId: any) {
+        return this.http.delete(this.baseUrl + 'XuatVatTu/' + exportId);
+    }
 
     deleteExportDetails(exportId, importId, materialId, inventoryId) {
         return this.http.delete(this.baseUrl + `XuatVatTu/deleteXuatChiTiet/${exportId}/${importId}/${materialId}/${inventoryId}`);

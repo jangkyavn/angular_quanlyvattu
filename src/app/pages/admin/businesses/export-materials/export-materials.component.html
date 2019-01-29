@@ -19,7 +19,9 @@
         <div class="col-sm-10">
           <select id="ddlMaKho" class="form-control" formControlName="maKho" [ngClass]="{
               'is-invalid': exportMaterialForm['controls'].mxuatvattu['controls']['maKho'].errors && (submitted || exportMaterialForm['controls'].mxuatvattu['controls']['maKho'].dirty || exportMaterialForm['controls'].mxuatvattu['controls']['maKho'].touched)
-            }" (change)="changeMaterialStore($event.target.value)">
+            }"
+            (change)="changeMaterialStore($event.target.value)">
+            <option value="" disabled>--- Chọn tên kho ---</option>
             <option *ngFor="let item of materialStores" [value]="item.maKho">
               {{item.tenKho}}
             </option>
@@ -37,6 +39,7 @@
           <select id="ddlMaNS" class="form-control" formControlName="maNS" [ngClass]="{
                 'is-invalid': exportMaterialForm['controls'].mxuatvattu['controls']['maNS'].errors && (submitted || exportMaterialForm['controls'].mxuatvattu['controls']['maNS'].dirty || exportMaterialForm['controls'].mxuatvattu['controls']['maNS'].touched)
               }">
+            <option value="" disabled>--- Chọn nhân sự ---</option>
             <option *ngFor="let item of personnels" [value]="item.maNS">
               {{item.hoTen}}
             </option>
@@ -95,8 +98,10 @@
               <td>
                 <select class="form-control" style="width: 200px;" formControlName="maVatTu" [ngClass]="{
                   'is-invalid': exportMaterialForm.controls.listxuatchitiet.controls[i].controls['maVatTu'].errors && (submitted || exportMaterialForm.controls.listxuatchitiet.controls[i].controls['maVatTu'].dirty || exportMaterialForm.controls.listxuatchitiet.controls[i].controls['maVatTu'].touched)
-                }" (change)="changeMaterials($event.target.value, i)">
-                  <option  *ngFor="let material of materials" [value]="material.maVatTu">
+                }"
+                  (change)="changeMaterials($event.target.value, i)">
+                  <option *ngIf="isShowMaterials" value="" disabled>--- Chọn vật tư ---</option>
+                  <option *ngFor="let material of materials" [value]="material.maVatTu">
                     {{material.tenVT}}
                   </option>
                 </select>
@@ -110,6 +115,7 @@
                 <select class="form-control" style="width: 150px;" formControlName="maPhieuNhap" [ngClass]="{
                   'is-invalid': exportMaterialForm.controls.listxuatchitiet.controls[i].controls['maPhieuNhap'].errors && (submitted || exportMaterialForm.controls.listxuatchitiet.controls[i].controls['maPhieuNhap'].dirty || exportMaterialForm.controls.listxuatchitiet.controls[i].controls['maPhieuNhap'].touched)
                 }">
+                  <option *ngIf="isShowImports" value="" disabled>--- Chọn phiếu nhập ---</option>
                   <option *ngFor="let id of item.get('importIds').value" [value]="id">
                     {{id}}
                   </option>
@@ -123,7 +129,8 @@
               <td>
                 <input type="number" class="form-control" formControlName="soLuongXuat" [ngClass]="{
                   'is-invalid': exportMaterialForm.controls.listxuatchitiet.controls[i].controls['soLuongXuat'].errors && (submitted || exportMaterialForm.controls.listxuatchitiet.controls[i].controls['soLuongXuat'].dirty || exportMaterialForm.controls.listxuatchitiet.controls[i].controls['soLuongXuat'].touched)
-                }" min="1" />
+                }"
+                  min="1" />
                 <div class="invalid-feedback">
                   <div *ngIf="item.hasError('required', 'soLuongXuat')">
                     Vui lòng nhập số lượng!

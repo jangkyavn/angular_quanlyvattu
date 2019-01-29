@@ -55,15 +55,15 @@ export class ExportListComponent implements OnInit {
   }
 
   delete(id: number) {
-    // this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
-    //   this.importMaterialService.delete(id).subscribe((res: boolean) => {
-    //     if (res) {
-    //       this.loadData();
-    //       this.notify.success('Xóa thành công');
-    //     }
-    //   }, error => {
-    //     console.log('error deleteImport');
-    //   });
-    // });
+    this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
+      this.exportMaterialService.delete(id).subscribe((res: boolean) => {
+        if (res) {
+          this.loadData();
+          this.notify.success('Xóa thành công');
+        }
+      }, error => {
+        console.log('error deleteImport');
+      });
+    });
   }
 }

@@ -15,6 +15,10 @@ import { ProducingCountryService } from 'src/app/shared/services/producing-count
 import { ManufacturerService } from 'src/app/shared/services/manufacturer.service';
 import { ImportMaterialService } from 'src/app/shared/services/import-material.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
+import { checkQuantityKhongAmValidator } from 'src/app/shared/vailidators/check-quantity-khong-am.validator';
+import { checkChietKhauNanValidator } from 'src/app/shared/vailidators/check-chiet-khau-nan-validator';
+import { checkChietKhauRangeValidator } from 'src/app/shared/vailidators/check-chiet-khau-range-validator';
+import { checkPriceKhongAmValidator } from 'src/app/shared/vailidators/check-price-khong-am-validator';
 
 @Component({
   selector: 'app-import-materials',
@@ -30,6 +34,8 @@ export class ImportMaterialsComponent implements OnInit {
   submitted = false;
   importMaterialForm: FormGroup;
   listnhapchitiet: FormArray;
+  formatterPercent = value => `${value} %`;
+  parserPercent = value => value.replace(' %', '');
 
   constructor(
     private router: Router,
@@ -54,12 +60,16 @@ export class ImportMaterialsComponent implements OnInit {
   }
 
   createForm() {
+    const date = new Date();
+    const month = (date.getMonth() + 1) >= 10 ? (date.getMonth() + 1) : '0' + (date.getMonth() + 1);
+    const currentDate = `${date.getFullYear()}-${month}-${date.getDate()}`;
+
     this.importMaterialForm = this.fb.group({
       mnhapvattu: this.fb.group({
-        maKho: [null, [Validators.required]],
-        maHM: [null, [Validators.required]],
-        ngayNhap: [null, [Validators.required]],
-        chietKhau: [0],
+        maKho: ['', [Validators.required]],
+        maHM: ['', [Validators.required]],
+        ngayNhap: [currentDate, [Validators.required]],
+        chietKhau: [0, [checkChietKhauNanValidator, checkChietKhauRangeValidator]],
         ghiChu: [null]
       }),
       listnhapchitiet: this.fb.array([this.createItem()])
@@ -68,9 +78,9 @@ export class ImportMaterialsComponent implements OnInit {
 
   createItem(): FormGroup {
     return this.fb.group({
-      maVatTu: [null, [Validators.required]],
-      soLuong: [1, [Validators.required]],
-      donGia: [null, [Validators.required]],
+      maVatTu: ['', [Validators.required]],
+      soLuong: [1, [Validators.required, checkQuantityKhongAmValidator]],
+      donGia: [0, [Validators.required, checkPriceKhongAmValidator]],
       maNuoc: [null],
       maHang: [null],
       model: [null],

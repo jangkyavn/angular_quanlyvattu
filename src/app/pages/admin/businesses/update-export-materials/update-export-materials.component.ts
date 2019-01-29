@@ -44,7 +44,7 @@ export class UpdateExportMaterialsComponent implements OnInit {
     this.loadAllMaterialStores();
     this.loadAllPersonnels();
     this.loadAllMaterials();
-
+    this.materials = [];
     this.createForm();
   }
 
@@ -87,6 +87,7 @@ export class UpdateExportMaterialsComponent implements OnInit {
       maPhieuXuat: [item.maPhieuXuat],
       maPhieuNhap: [{ value: item.maPhieuNhap, disabled: false }, [Validators.required]],
       maVatTu: [{ value: item.maVatTu, disabled: false }, [Validators.required]],
+      tenVT: [item.tenVT],
       soLuongXuat: [item.soLuongXuat, [Validators.required]],
       donGia: [item.donGia, [Validators.required]],
       ghiChu: [item.ghiChu],
@@ -110,6 +111,13 @@ export class UpdateExportMaterialsComponent implements OnInit {
     this.materialService.getAll().subscribe((res: Material[]) => {
       this.materials = res;
     });
+  }
+
+  getStoreName() {
+    if (this.materialStores) {
+      const maKho = this.exportMaterialForm.get('mxuatvattu.maKho').value;
+      return this.materialStores.filter(x => x.maKho === maKho).map(x => x.tenKho);
+    }
   }
 
   loadMaterialsByStoreId(storeId: number) {
@@ -137,6 +145,13 @@ export class UpdateExportMaterialsComponent implements OnInit {
     }
 
     const xuatVatTuParams = Object.assign({}, this.exportMaterialForm.value);
+    this.listDelete.map(item => {
+      this.exportMaterialService.deleteExportDetails(item.maPhieuXuat, item.maPhieuNhap, item.maVatTu, item.maKho)
+        .subscribe((res: boolean) => {
+          console.log(res);
+        });
+    });
+
     this.exportMaterialService.update(xuatVatTuParams).subscribe((res: number) => {
       if (res === 1) {
         this.notify.success('Sửa thành công!');
@@ -149,13 +164,6 @@ export class UpdateExportMaterialsComponent implements OnInit {
     }, error => {
       console.log('error updateExportMaterial');
       console.log(error);
-    }, () => {
-      this.listDelete.map(item => {
-        this.exportMaterialService.deleteExportDetails(item.maPhieuXuat, item.maPhieuNhap, item.maVatTu, item.maKho)
-          .subscribe((res: boolean) => {
-            console.log(res);
-          });
-      });
     });
   }
 

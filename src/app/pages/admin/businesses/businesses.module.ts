@@ -5,6 +5,18 @@ import { BusinessesRoutingModule } from './businesses-routing.module';
 
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { CurrencyMaskModule } from 'ng2-currency-mask';
+import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from 'ng2-currency-mask/src/currency-mask.config';
+
+export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
+    align: 'right',
+    allowNegative: true,
+    decimal: ',',
+    precision: 0,
+    prefix: '',
+    suffix: '',
+    thousands: '.'
+};
 
 import { BusinessesComponent } from './businesses.component';
 import { InventoryListComponent } from './inventories/inventory-list/inventory-list.component';
@@ -41,9 +53,12 @@ import { ExportMaterialDetailResolver } from 'src/app/shared/resolvers/export-ma
     ReactiveFormsModule,
     BusinessesRoutingModule,
     NgZorroAntdModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    CurrencyMaskModule
   ],
-  providers: [InventoryListResolver,
+  providers: [
+    { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig },
+    InventoryListResolver,
     ImportMaterialListResolver,
     ImportMaterialDetailResolver,
     ExportMaterialListResolver,

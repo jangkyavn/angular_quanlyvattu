@@ -60,6 +60,8 @@ export class ImportListComponent implements OnInit {
         if (res) {
           this.loadData();
           this.notify.success('Xóa thành công');
+        } else {
+          this.notify.warning('Phiếu có vật tư xuất, không được xóa!');
         }
       }, error => {
         console.log('error deleteImport');

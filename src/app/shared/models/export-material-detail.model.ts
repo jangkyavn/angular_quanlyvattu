@@ -6,4 +6,5 @@ export interface ExportMaterialDetail {
     donGia?: number;
     ghiChu?: string;
     status?: boolean;
+    tenVT?: string;
 }

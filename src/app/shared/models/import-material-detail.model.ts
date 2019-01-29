@@ -15,4 +15,6 @@ export interface ImportMaterialDetail {
     soLuong?: number;
     donGia?: string;
     ghiChu?: string;
+
+    tenVT?: string;
 }

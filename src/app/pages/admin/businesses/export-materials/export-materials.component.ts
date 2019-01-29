@@ -25,6 +25,8 @@ export class ExportMaterialsComponent implements OnInit {
   submitted = false;
   exportMaterialForm: FormGroup;
   listxuatchitiet: FormArray;
+  isShowMaterials = false;
+  isShowImports = false;
 
   constructor(
     private router: Router,
@@ -44,11 +46,15 @@ export class ExportMaterialsComponent implements OnInit {
   }
 
   createForm() {
+    const date = new Date();
+    const month = (date.getMonth() + 1) >= 10 ? (date.getMonth() + 1) : '0' + (date.getMonth() + 1);
+    const currentDate = `${date.getFullYear()}-${month}-${date.getDate()}`;
+
     this.exportMaterialForm = this.fb.group({
       mxuatvattu: this.fb.group({
-        maKho: [null, [Validators.required]],
-        maNS: [null, [Validators.required]],
-        ngayNhap: [null, [Validators.required]],
+        maKho: ['', [Validators.required]],
+        maNS: ['', [Validators.required]],
+        ngayNhap: [currentDate, [Validators.required]],
         ghiChu: [null]
       }),
       listxuatchitiet: this.fb.array([this.createItem()])
@@ -57,8 +63,8 @@ export class ExportMaterialsComponent implements OnInit {
 
   createItem(): FormGroup {
     return this.fb.group({
-      maPhieuNhap: [null, [Validators.required]],
-      maVatTu: [null, [Validators.required]],
+      maPhieuNhap: ['', [Validators.required]],
+      maVatTu: ['', [Validators.required]],
       soLuongXuat: [1, [Validators.required]],
       donGia: [null, [Validators.required]],
       ghiChu: [null],
@@ -116,6 +122,8 @@ export class ExportMaterialsComponent implements OnInit {
     this.exportMaterialService.getMaterialsByStoreId(storeId).subscribe((res: Material[]) => {
       this.materials = res;
     });
+
+    this.isShowMaterials = true;
   }
 
   changeMaterials(materialId: number, idx: number) {
@@ -127,5 +135,7 @@ export class ExportMaterialsComponent implements OnInit {
       const lstControl = (<FormArray>this.exportMaterialForm.controls['listxuatchitiet']).at(idx);
       lstControl['controls'].importIds.setValue([...importIds]);
     });
+
+    this.isShowImports = true;
   }
 }

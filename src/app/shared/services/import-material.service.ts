@@ -36,4 +36,12 @@ export class ImportMaterialService {
 
         return this.http.delete(this.baseUrl + `NhapVatTu/removeNhapchitiet/${importId}/${materialId}/${inventoryId}`);
     }
+
+    checkStatusDeleteDetail(importId, materialId, inventoryId) {
+        return this.http.get(this.baseUrl + `NhapVatTu/CheckStatus/${importId}/${materialId}/${inventoryId}`);
+    }
+
+    checkQuantity(importId, inventoryId, materialId, quantity) {
+        return this.http.get(this.baseUrl + `NhapVatTu/CheckSoLuongNhapChiTietAsync/${importId}/${inventoryId}/${materialId}/${quantity}`);
+    }
 }
