@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
 import { NotifyService } from '../../shared/services/notify.service';
 import { AuthService } from '../../shared/services/auth.service';
+import { checkUsernameExists } from 'src/app/shared/vailidators/check-username-exists-validator';
+import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +23,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private authService: AuthService,
+    private userSerivce: UserService,
     private notify: NotifyService
   ) { }
 
@@ -33,7 +36,11 @@ export class LoginComponent implements OnInit {
 
   createForm() {
     this.loginForm = this.fb.group({
-      userName: [null, [Validators.required]],
+      userName: new FormControl('', {
+        validators: Validators.required,
+        asyncValidators: checkUsernameExists(this.userSerivce),
+        updateOn: 'blur'
+      }),
       password: [null, [Validators.required]]
     });
   }
@@ -46,7 +53,7 @@ export class LoginComponent implements OnInit {
     }
 
     this.isLoading = true;
-    const user = this.loginForm.value;
+    const user = Object.assign({}, this.loginForm.value);
     this.authService.login(user).subscribe(res => {
       if (res.status) {
         if (this.returnUrl) {

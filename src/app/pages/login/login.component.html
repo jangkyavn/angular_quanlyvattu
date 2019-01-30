@@ -1,45 +1,51 @@
 <div class="container-login">
-  <nz-card style="width:350px;" nzTitle="Đăng nhập">
-      <form nz-form class="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
-          <div class="form-group">
-              <div class="input-group">
-                  <div class="input-group-prepend">
-                      <div class="input-group-text">
-                          <i nz-icon type="user" theme="outline"></i>
-                      </div>
-                  </div>
-                  <input type="text" class="form-control" placeholder="Tài khoản" formControlName="userName"
-                      [ngClass]="{
+    <nz-card style="width:350px;" nzTitle="Đăng nhập">
+        <form nz-form class="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i nz-icon type="user" theme="outline"></i>
+                        </div>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Tài khoản" formControlName="userName"
+                        [ngClass]="{
                       'is-invalid': loginForm.controls['userName'].errors && (submitted || loginForm.controls['userName'].dirty || loginForm.controls['userName'].touched)
-                    }" autofocus autocomplete="off">
-                  <div class="invalid-feedback">
-                      <div *ngIf="loginForm.get('userName').hasError('required')">
-                          Vui lòng nhập tài khoản!
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <div class="form-group">
-              <div class="input-group">
-                  <div class="input-group-prepend">
-                      <div class="input-group-text">
-                          <i nz-icon type="lock" theme="outline"></i>
-                      </div>
-                  </div>
-                  <input type="password" class="form-control" placeholder="Mật khẩu" formControlName="password"
-                      [ngClass]="{
+                    }"
+                        autofocus autocomplete="off">
+                    <div class="invalid-feedback">
+                        <div *ngIf="loginForm.get('userName').hasError('required')">
+                            Vui lòng nhập tài khoản!
+                        </div>
+                        <div *ngIf="loginForm.get('userName').hasError('notExists')">
+                            Tài khoản không tồn tại.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i nz-icon type="lock" theme="outline"></i>
+                        </div>
+                    </div>
+                    <input type="password" class="form-control" placeholder="Mật khẩu" formControlName="password"
+                        [ngClass]="{
                           'is-invalid': loginForm.controls['password'].errors && (submitted || loginForm.controls['password'].dirty || loginForm.controls['password'].touched)
-                        }" autocomplete="off">
-                  <div class="invalid-feedback">
-                      <div *ngIf="loginForm.get('password').hasError('required')">
-                          Vui lòng nhập mật khẩu!
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <div class="form-group text-center">
-              <button nz-button nzType="primary" type="submit" nzSize="large" nzBlock [nzLoading]="isLoading">Đăng nhập</button>
-          </div>
-      </form>
-  </nz-card>
+                        }"
+                        autocomplete="off">
+                    <div class="invalid-feedback">
+                        <div *ngIf="loginForm.get('password').hasError('required')">
+                            Vui lòng nhập mật khẩu!
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group text-center">
+                <button nz-button nzType="primary" type="submit" nzSize="large" nzBlock [nzLoading]="isLoading">Đăng
+                    nhập</button>
+            </div>
+        </form>
+    </nz-card>
 </div>

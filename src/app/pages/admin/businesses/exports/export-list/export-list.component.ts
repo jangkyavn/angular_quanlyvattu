@@ -6,7 +6,6 @@ import { ExportMaterialService } from 'src/app/shared/services/export-material.s
 import { NotifyService } from 'src/app/shared/services/notify.service';
 
 import { ExportMaterial } from 'src/app/shared/models/export-material.model';
-import { ExportEditModalComponent } from '../export-edit-modal/export-edit-modal.component';
 
 @Component({
   selector: 'app-export-list',
@@ -32,25 +31,6 @@ export class ExportListComponent implements OnInit {
   loadData() {
     this.exportMaterialService.getAll().subscribe((res: ExportMaterial[]) => {
       this.exportMaterials = res;
-    });
-  }
-
-  update(id: number) {
-    this.exportMaterialService.getDetail(id).subscribe((xuatVatTuParams: any) => {
-      const modalOption: ModalOptions = {
-        backdrop: 'static',
-        class: 'modal-lg',
-        initialState: {
-          title: 'Sửa xuất vật tư',
-          xuatVatTuParams
-        }
-      };
-      this.bsModalRef = this.modalService.show(ExportEditModalComponent, modalOption);
-      this.bsModalRef.content.saveEntity.subscribe((res: boolean) => {
-        if (res) {
-          this.loadData();
-        }
-      });
     });
   }
 

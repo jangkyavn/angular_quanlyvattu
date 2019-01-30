@@ -59,7 +59,6 @@ export class MaterialTypeAddEditModalComponent implements OnInit, AfterViewInit 
     }
 
     const materialType = Object.assign({}, this.materialTypeForm.value);
-    console.log(this.isAddNew);
     if (this.isAddNew) {
       this.materialTypeService.addNew(materialType).subscribe((res: any) => {
         if (res) {

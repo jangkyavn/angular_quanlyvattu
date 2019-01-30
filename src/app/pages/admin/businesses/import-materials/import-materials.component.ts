@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 
@@ -34,8 +34,12 @@ export class ImportMaterialsComponent implements OnInit {
   submitted = false;
   importMaterialForm: FormGroup;
   listnhapchitiet: FormArray;
-  formatterPercent = value => `${value} %`;
-  parserPercent = value => value.replace(' %', '');
+  @HostListener('window:beforeunload', ['$event'])
+  beforeunloadHandler($event: any) {
+    if (this.importMaterialForm.dirty) {
+      $event.returnValue = false;
+    }
+  }
 
   constructor(
     private router: Router,

@@ -1,16 +1,15 @@
 import { AsyncValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ImportMaterialService } from '../services/import-material.service';
+import { ExportMaterialService } from '../services/export-material.service';
 
-export function checkQuantityValidator(importMaterialService:
-    ImportMaterialService,
+export function checkExportQuantityValidator(
+    exportMaterialService: ExportMaterialService,
     importId: number,
-    inventoryId: number,
     materialId: number,
     quantity: number): AsyncValidatorFn {
     return (c: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
-        return importMaterialService.checkQuantity(importId, inventoryId, materialId, quantity).pipe(
+        return exportMaterialService.checkQuantity(importId, materialId, quantity).pipe(
             map((res: any) => {
                 return res.status ? null : { 'invalid': true, 'quantity': res.soLuong };
             })

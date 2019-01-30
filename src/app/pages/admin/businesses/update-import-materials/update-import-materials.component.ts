@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 
@@ -17,7 +17,7 @@ import { ManufacturerService } from 'src/app/shared/services/manufacturer.servic
 import { ImportMaterialService } from 'src/app/shared/services/import-material.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
 import { ImportMaterialDetail } from 'src/app/shared/models/import-material-detail.model';
-import { checkQuantityValidator } from 'src/app/shared/vailidators/check-quantity-validator';
+import { checkImportQuantityValidator } from 'src/app/shared/vailidators/check-import-quantity-validator';
 import { checkChietKhauNanValidator } from 'src/app/shared/vailidators/check-chiet-khau-nan-validator';
 import { checkChietKhauRangeValidator } from 'src/app/shared/vailidators/check-chiet-khau-range-validator';
 import { checkQuantityKhongAmValidator } from 'src/app/shared/vailidators/check-quantity-khong-am.validator';
@@ -39,6 +39,12 @@ export class UpdateImportMaterialsComponent implements OnInit {
   importMaterialForm: FormGroup;
   listnhapchitiet: FormArray;
   listDelete: any[] = [];
+  @HostListener('window:beforeunload', ['$event'])
+  beforeunloadHandler($event: any) {
+    if (this.importMaterialForm.dirty) {
+      $event.returnValue = false;
+    }
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -147,7 +153,7 @@ export class UpdateImportMaterialsComponent implements OnInit {
 
   getStoreName() {
     const maKho = this.importMaterialForm.get('mnhapvattu.maKho').value;;
-    return this.materialStores.filter(x =>  x.maKho === maKho).map(x => x.tenKho);
+    return this.materialStores.filter(x => x.maKho === maKho).map(x => x.tenKho);
   }
 
   deleteRow(idx: number, maVatTu: any) {
@@ -177,35 +183,57 @@ export class UpdateImportMaterialsComponent implements OnInit {
       return;
     }
 
-    // this.listDelete.map(item => {
-    //   this.importMaterialService.deleteImportDetail(item.maPhieuNhap, item.maVatTu, item.maKho)
-    //     .subscribe((res: boolean) => {
-    //       console.log(res);
-    //     });
-    // });
-
-    const nhapVatTuParams = Object.assign({}, this.importMaterialForm.value);
-    // this.importMaterialService.update(nhapVatTuParams).subscribe((res: number) => {
-    //   if (res === 1) {
-    //     this.notify.success('Sửa phiếu thành công!');
-    //     this.router.navigate(['/admin/nghiep-vu/danh-sach-phieu-nhap']);
-    //   } else if (res === -1) {
-    //     this.notify.error('Số lượng nhập vượt quá');
-    //   } else {
-    //     this.notify.error('Có lỗi xảy ra');
-    //   }
-    // }, error => {
-    //   console.log('error updateImportMaterial');
-    //   console.log(error);
-    // });
-    console.log(nhapVatTuParams);
+    if (this.listDelete.length > 0) {
+      this.listDelete.map((item, idx) => {
+        ++idx;
+        this.importMaterialService.deleteImportDetail(item.maPhieuNhap, item.maVatTu, item.maKho)
+          .subscribe((res: boolean) => {
+            console.log(res);
+          }, error => {
+            console.log('delete ImportDetails');
+            console.log(error);
+          }, () => {
+            if (idx === this.listDelete.length) {
+              const nhapVatTuParams = Object.assign({}, this.importMaterialForm.value);
+              this.importMaterialService.update(nhapVatTuParams).subscribe((res: number) => {
+                if (res === 1) {
+                  this.notify.success('Sửa phiếu thành công!');
+                  this.router.navigate(['/admin/nghiep-vu/danh-sach-phieu-nhap']);
+                } else if (res === -1) {
+                  this.notify.error('Số lượng nhập vượt quá');
+                } else {
+                  this.notify.error('Có lỗi xảy ra');
+                }
+              }, error => {
+                console.log('error updateImportMaterial');
+                console.log(error);
+              });
+            }
+          });
+      });
+    } else {
+      const nhapVatTuParams = Object.assign({}, this.importMaterialForm.value);
+      this.importMaterialService.update(nhapVatTuParams).subscribe((res: number) => {
+        if (res === 1) {
+          this.notify.success('Sửa phiếu thành công!');
+          this.router.navigate(['/admin/nghiep-vu/danh-sach-phieu-nhap']);
+        } else if (res === -1) {
+          this.notify.error('Số lượng nhập vượt quá');
+        } else {
+          this.notify.error('Có lỗi xảy ra');
+        }
+      }, error => {
+        console.log('error updateImportMaterial');
+        console.log(error);
+      });
+    }
   }
 
   checkStatus(idx: any, matVatTu: any, soLuong: number) {
     const maPhieuNhap = this.importMaterialForm.get('mnhapvattu.maPhieuNhap').value;
     const maKho = this.importMaterialForm.get('mnhapvattu.maKho').value;
     const soLuongControl = this.importMaterialForm.get(`listnhapchitiet.${idx}.soLuong`);
-    soLuongControl.setAsyncValidators(checkQuantityValidator(this.importMaterialService,
+    soLuongControl.setAsyncValidators(checkImportQuantityValidator(this.importMaterialService,
       maPhieuNhap, maKho, matVatTu, soLuong));
     soLuongControl.updateValueAndValidity();
   }

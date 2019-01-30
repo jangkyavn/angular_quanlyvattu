@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 
@@ -13,6 +13,8 @@ import { MaterialService } from 'src/app/shared/services/material.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
 import { ExportMaterialService } from 'src/app/shared/services/export-material.service';
 import { ExportMaterialDetail } from 'src/app/shared/models/export-material-detail.model';
+import { checkPriceKhongAmValidator } from 'src/app/shared/vailidators/check-price-khong-am-validator';
+import { checkExportQuantityValidator } from 'src/app/shared/vailidators/check-export-quantity-validator';
 
 @Component({
   selector: 'app-update-export-materials',
@@ -28,6 +30,12 @@ export class UpdateExportMaterialsComponent implements OnInit {
   exportMaterialForm: FormGroup;
   listxuatchitiet: FormArray;
   listDelete: any[] = [];
+  @HostListener('window:beforeunload', ['$event'])
+  beforeunloadHandler($event: any) {
+    if (this.exportMaterialForm.dirty) {
+      $event.returnValue = false;
+    }
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -89,7 +97,7 @@ export class UpdateExportMaterialsComponent implements OnInit {
       maVatTu: [{ value: item.maVatTu, disabled: false }, [Validators.required]],
       tenVT: [item.tenVT],
       soLuongXuat: [item.soLuongXuat, [Validators.required]],
-      donGia: [item.donGia, [Validators.required]],
+      donGia: [item.donGia, [Validators.required, checkPriceKhongAmValidator]],
       ghiChu: [item.ghiChu],
       importIds: [[]]
     });
@@ -145,26 +153,49 @@ export class UpdateExportMaterialsComponent implements OnInit {
     }
 
     const xuatVatTuParams = Object.assign({}, this.exportMaterialForm.value);
-    this.listDelete.map(item => {
-      this.exportMaterialService.deleteExportDetails(item.maPhieuXuat, item.maPhieuNhap, item.maVatTu, item.maKho)
-        .subscribe((res: boolean) => {
-          console.log(res);
-        });
-    });
 
-    this.exportMaterialService.update(xuatVatTuParams).subscribe((res: number) => {
-      if (res === 1) {
-        this.notify.success('Sửa thành công!');
-        this.router.navigate(['/admin/nghiep-vu/danh-sach-phieu-xuat']);
-      } else if (res === -1) {
-        this.notify.error('Số lượng xuất vượt quá');
-      } else {
-        this.notify.error('Có lỗi xảy ra');
-      }
-    }, error => {
-      console.log('error updateExportMaterial');
-      console.log(error);
-    });
+    if (this.listDelete.length > 0) {
+      const requestDelete = this.listDelete.map((item, idx) => {
+        ++idx;
+        this.exportMaterialService.deleteExportDetails(item.maPhieuXuat, item.maPhieuNhap, item.maVatTu, item.maKho)
+          .subscribe((res: boolean) => {
+            console.log(res);
+          }, err => {
+            console.log('error DeleteExportDetails');
+            console.log(err);
+          }, () => {
+            if (idx === this.listDelete.length) {
+              this.exportMaterialService.update(xuatVatTuParams).subscribe((res: number) => {
+                if (res === 1) {
+                  this.notify.success('Sửa thành công!');
+                  this.router.navigate(['/admin/nghiep-vu/danh-sach-phieu-xuat']);
+                } else if (res === -1) {
+                  this.notify.error('Số lượng xuất vượt quá');
+                } else {
+                  this.notify.error('Có lỗi xảy ra');
+                }
+              }, error => {
+                console.log('error updateExportMaterial');
+                console.log(error);
+              });
+            }
+          });
+      });
+    } else {
+      this.exportMaterialService.update(xuatVatTuParams).subscribe((res: number) => {
+        if (res === 1) {
+          this.notify.success('Sửa thành công!');
+          this.router.navigate(['/admin/nghiep-vu/danh-sach-phieu-xuat']);
+        } else if (res === -1) {
+          this.notify.error('Số lượng xuất vượt quá');
+        } else {
+          this.notify.error('Có lỗi xảy ra');
+        }
+      }, error => {
+        console.log('error updateExportMaterial');
+        console.log(error);
+      });
+    }
   }
 
   deleteRow(idx: number, item: any) {
@@ -177,5 +208,12 @@ export class UpdateExportMaterialsComponent implements OnInit {
       maPhieuNhap: item.maPhieuNhap,
       maVatTu: item.maVatTu
     });
+  }
+
+  checkStatus(idx: any, matVatTu: any, maPhieuNhap: any, soLuong: number) {
+    const soLuongControl = this.exportMaterialForm.get(`listxuatchitiet.${idx}.soLuongXuat`);
+    soLuongControl.setAsyncValidators(checkExportQuantityValidator(this.exportMaterialService,
+      maPhieuNhap, matVatTu, soLuong));
+    soLuongControl.updateValueAndValidity();
   }
 }

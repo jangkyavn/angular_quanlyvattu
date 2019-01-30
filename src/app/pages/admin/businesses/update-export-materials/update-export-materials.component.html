@@ -95,20 +95,27 @@
               <td>
                 <input type="number" class="form-control" formControlName="soLuongXuat" [ngClass]="{
                   'is-invalid': exportMaterialForm.controls.listxuatchitiet.controls[i].controls['soLuongXuat'].errors && (submitted || exportMaterialForm.controls.listxuatchitiet.controls[i].controls['soLuongXuat'].dirty || exportMaterialForm.controls.listxuatchitiet.controls[i].controls['soLuongXuat'].touched)
-                }" />
+                }"
+                  (blur)="checkStatus(i, item.value.maVatTu, item.value.maPhieuNhap, $event.target.value)" />
                 <div class="invalid-feedback">
                   <div *ngIf="item.hasError('required', 'soLuongXuat')">
                     Vui lòng nhập số lượng!
                   </div>
+                  <div *ngIf="item.hasError('invalid', 'soLuongXuat') as error">
+                      Nhập SL <= {{ item.controls.soLuongXuat.errors.quantity }} (SL nhập)
+                  </div>
                 </div>
               </td>
               <td>
-                <input type="text" class="form-control" formControlName="donGia" [ngClass]="{
+                <input currencyMask type="text" class="form-control" formControlName="donGia" [ngClass]="{
                   'is-invalid': exportMaterialForm.controls.listxuatchitiet.controls[i].controls['donGia'].errors && (submitted || exportMaterialForm.controls.listxuatchitiet.controls[i].controls['donGia'].dirty || exportMaterialForm.controls.listxuatchitiet.controls[i].controls['donGia'].touched)
                 }" />
                 <div class="invalid-feedback">
                   <div *ngIf="item.hasError('required', 'donGia')">
                     Vui lòng nhập số lượng!
+                  </div>
+                  <div *ngIf="item.hasError('isNegative', 'donGia') && !item.hasError('required', 'donGia')">
+                    Vui lòng nhập không âm!
                   </div>
                 </div>
               </td>

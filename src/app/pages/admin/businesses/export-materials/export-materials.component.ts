@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 
@@ -11,6 +11,8 @@ import { PersonnelService } from 'src/app/shared/services/personnel.service';
 import { MaterialService } from 'src/app/shared/services/material.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
 import { ExportMaterialService } from 'src/app/shared/services/export-material.service';
+import { checkPriceKhongAmValidator } from 'src/app/shared/vailidators/check-price-khong-am-validator';
+import { checkExportQuantityValidator } from 'src/app/shared/vailidators/check-export-quantity-validator';
 
 @Component({
   selector: 'app-export-materials',
@@ -27,13 +29,18 @@ export class ExportMaterialsComponent implements OnInit {
   listxuatchitiet: FormArray;
   isShowMaterials = false;
   isShowImports = false;
+  @HostListener('window:beforeunload', ['$event'])
+  beforeunloadHandler($event: any) {
+    if (this.exportMaterialForm.dirty) {
+      $event.returnValue = false;
+    }
+  }
 
   constructor(
     private router: Router,
     private fb: FormBuilder,
     private materialStoreService: MaterialStoreService,
     private personnelService: PersonnelService,
-    private materialService: MaterialService,
     private exportMaterialService: ExportMaterialService,
     private notify: NotifyService
   ) { }
@@ -66,7 +73,7 @@ export class ExportMaterialsComponent implements OnInit {
       maPhieuNhap: ['', [Validators.required]],
       maVatTu: ['', [Validators.required]],
       soLuongXuat: [1, [Validators.required]],
-      donGia: [null, [Validators.required]],
+      donGia: [0, [Validators.required, checkPriceKhongAmValidator]],
       ghiChu: [null],
       importIds: [[]]
     });
@@ -137,5 +144,12 @@ export class ExportMaterialsComponent implements OnInit {
     });
 
     this.isShowImports = true;
+  }
+
+  checkStatus(idx: any, matVatTu: any, maPhieuNhap: any, soLuong: number) {
+    const soLuongControl = this.exportMaterialForm.get(`listxuatchitiet.${idx}.soLuongXuat`);
+    soLuongControl.setAsyncValidators(checkExportQuantityValidator(this.exportMaterialService,
+      maPhieuNhap, matVatTu, soLuong));
+    soLuongControl.updateValueAndValidity();
   }
 }

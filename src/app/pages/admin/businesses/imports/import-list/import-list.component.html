@@ -35,8 +35,8 @@
         <td>{{importMaterial.tenKho}}</td>
         <td>{{importMaterial.tenHM}}</td>
         <td>{{importMaterial.ngayNhap | date:'dd/MM/yyyy'}}</td>
-        <td>{{importMaterial.tongSoTien}}</td>
-        <td>{{importMaterial.tongSoLuong}}</td>
+        <td>{{importMaterial.tongSoTien | number: '1.0-0'}}</td>
+        <td>{{importMaterial.tongSoLuong | number: '1.0-0'}}</td>
         <td>
           <button class="btn btn-info btn-sm" nz-tooltip nzTitle="Sửa" [routerLink]="['/admin/nghiep-vu/sua-phieu-nhap', importMaterial.maPhieuNhap]">
             <i class="fa fa-edit"></i>

@@ -51,4 +51,8 @@ export class ExportMaterialService {
     deleteExportDetails(exportId, importId, materialId, inventoryId) {
         return this.http.delete(this.baseUrl + `XuatVatTu/deleteXuatChiTiet/${exportId}/${importId}/${materialId}/${inventoryId}`);
     }
+
+    checkQuantity(importId, materialId, quantity) {
+        return this.http.get(this.baseUrl + `XuatVatTu/CheckSoLuongXuatChiTietAsync/${importId}/${materialId}/${quantity}`);
+    }
 }

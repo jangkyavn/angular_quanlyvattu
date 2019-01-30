@@ -59,4 +59,8 @@ export class UserService {
   changeStatus(id: any) {
     return this.http.put(this.baseUrl + 'users/changeStatus/' + id, {});
   }
+
+  checkUserNameExists(userName: string) {
+    return this.http.get(this.baseUrl + 'users/checkUserNameExists/' + userName);
+  }
 }

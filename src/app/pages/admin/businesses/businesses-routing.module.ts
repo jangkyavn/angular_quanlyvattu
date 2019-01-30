@@ -19,7 +19,9 @@ const routes: Routes = [
     path: 'vat-tu-ton-kho', component: InventoryListComponent,
     resolve: { 'inventories': InventoryListResolver }
   },
-  { path: 'nhap-vat-tu', component: ImportMaterialsComponent },
+  {
+    path: 'nhap-vat-tu', component: ImportMaterialsComponent
+  },
   {
     path: 'danh-sach-phieu-nhap', component: ImportListComponent,
     resolve: { 'import-materials': ImportMaterialListResolver }
@@ -28,7 +30,9 @@ const routes: Routes = [
     path: 'sua-phieu-nhap/:id', component: UpdateImportMaterialsComponent,
     resolve: { 'import-material': ImportMaterialDetailResolver }
   },
-  { path: 'xuat-vat-tu', component: ExportMaterialsComponent },
+  {
+    path: 'xuat-vat-tu', component: ExportMaterialsComponent
+  },
   {
     path: 'danh-sach-phieu-xuat', component: ExportListComponent,
     resolve: { 'export-materials': ExportMaterialListResolver }
