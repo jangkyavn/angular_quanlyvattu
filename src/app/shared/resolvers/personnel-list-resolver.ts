@@ -3,25 +3,23 @@ import { Resolve, Router, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { UserService } from '../services/user.service';
+import { PersonnelService } from '../services/personnel.service';
 import { NotifyService } from '../services/notify.service';
 
-import { User } from '../models/user.model';
+import { Personnel } from '../models/personnel.model';
 
 @Injectable()
-export class UserListResolver implements Resolve<User[]> {
-    pageNumber = 1;
-    pageSize = 10;
-
+export class PersonnelListResolver implements Resolve<Personnel[]> {
     constructor(
         private router: Router,
-        private userService: UserService,
+        private personnelService: PersonnelService,
         private notify: NotifyService) { }
 
-    resolve(route: ActivatedRouteSnapshot): Observable<User[]> {
-        return this.userService.getAllPaging(this.pageNumber, this.pageSize).pipe(
+    resolve(route: ActivatedRouteSnapshot): Observable<Personnel[]> {
+        return this.personnelService.getAll().pipe(
             catchError(_ => {
                 this.notify.error('Có lỗi xảy ra');
+                console.log('error getAllPersonnel');
                 this.router.navigate(['/']);
                 return of(null);
             })

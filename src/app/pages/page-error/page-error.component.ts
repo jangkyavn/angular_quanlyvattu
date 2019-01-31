@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-page-error',
@@ -7,9 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PageErrorComponent implements OnInit {
 
-  constructor() { }
+  constructor(public location: Location) { }
 
   ngOnInit() {
   }
-
 }

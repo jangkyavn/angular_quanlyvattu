@@ -2,19 +2,19 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
-import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
+import { NgZorroAntdModule, NZ_I18N, vi_VN } from 'ng-zorro-antd';
 import { JwtModule } from '@auth0/angular-jwt';
 
 import { registerLocaleData } from '@angular/common';
-import en from '@angular/common/locales/en';
+import vi from '@angular/common/locales/vi';
 
 import { AppComponent } from './app.component';
 import { PageErrorComponent } from './pages/page-error/page-error.component';
 
-registerLocaleData(en);
+registerLocaleData(vi);
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -39,7 +39,8 @@ export function tokenGetter() {
       }
     }),
   ],
-  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy },
+  { provide: NZ_I18N, useValue: vi_VN }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

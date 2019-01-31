@@ -1,0 +1,47 @@
+<nz-breadcrumb style="margin:16px 0;">
+  <nz-breadcrumb-item>Trang chủ</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Danh mục</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Nhân sự</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div style="padding:24px; background: #fff; min-height: 70vh">
+  <div class="row mb-2">
+    <div class="col-md-4 col-sm-12">
+
+    </div>
+    <div class="col-md-8 col-sm-12 text-right">
+      <button class="btn btn-success mr-1" (click)="addNew()">
+        <i class="fa fa-plus"></i> Thêm mới
+      </button>
+    </div>
+  </div>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th style="width: 10%;">STT</th>
+        <th style="width: 20%;">Họ tên</th>
+        <th style="width: 15%;">Ngày sinh</th>
+        <th style="width: 20%;">Quê quán</th>
+        <th style="width: 10%;">Dân tộc</th>
+        <th style="width: 10%;">Tôn giáo</th>
+        <th style="width: 15%;">Thao tác</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let personnel of personnels; let i = index">
+        <td>{{i + 1}}</td>
+        <td>{{personnel.hoTen}}</td>
+        <td>{{personnel.ngaySinh | date:'dd/MM/yyyy'}}</td>
+        <td>{{personnel.queQuan}}</td>
+        <td>{{personnel.danToc}}</td>
+        <td>{{personnel.tonGiao}}</td>
+        <td>
+          <button class="btn btn-info btn-sm" nz-tooltip nzTitle="Sửa" (click)="update(personnel.maNS)">
+            <i class="fa fa-edit"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

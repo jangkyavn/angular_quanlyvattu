@@ -10,6 +10,7 @@ import { UserService } from '../../../../../shared/services/user.service';
 import { RoleEditModalComponent } from '../role-edit-modal/role-edit-modal.component';
 import { Role } from 'src/app/shared/models/role.model';
 import { RoleService } from '../../../../../shared/services/role.service';
+import { UserParams } from 'src/app/shared/params/user.param';
 
 @Component({
   selector: 'app-user-list',
@@ -17,11 +18,16 @@ import { RoleService } from '../../../../../shared/services/role.service';
   styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent implements OnInit {
+  dataSet = [];
+  loading = true;
+  sortValue = null;
+  sortKey = null;
+
   bsModalRef: BsModalRef;
   users: User[];
   pagination: Pagination;
-  userParams: any = {
-    keyword: ''
+  userParams: UserParams = {
+    keyword : ''
   };
 
   constructor(
@@ -33,9 +39,16 @@ export class UserListComponent implements OnInit {
 
   ngOnInit() {
     this.route.data.subscribe(data => {
-      this.users = data['users'].result;
+      this.loading = false;
       this.pagination = data['users'].pagination;
+      this.dataSet = data['users'].result;
     });
+  }
+
+  sort(sort: { key: string, value: string }): void {
+    this.userParams.sortKey = sort.key;
+    this.userParams.sortValue = sort.value;
+    this.loadData();
   }
 
   addNew() {
@@ -128,19 +141,19 @@ export class UserListComponent implements OnInit {
     this.loadData();
   }
 
-  loadData() {
+  loadData(reset: boolean = false): void {
+    if (reset) {
+      this.pagination.currentPage = 1;
+    }
+    this.loading = true;
     this.userService.getAllPaging(this.pagination.currentPage, this.pagination.itemsPerPage, this.userParams)
       .subscribe((res: PaginatedResult<User[]>) => {
-        this.users = res.result;
+        this.loading = false;
         this.pagination = res.pagination;
+        this.dataSet = res.result;
       }, error => {
         this.notify.error('Có lỗi xảy ra');
         console.log('loadUsers: ' + error);
       });
-  }
-
-  pageChanged(event: any): void {
-    this.pagination.currentPage = event.page;
-    this.loadData();
   }
 }

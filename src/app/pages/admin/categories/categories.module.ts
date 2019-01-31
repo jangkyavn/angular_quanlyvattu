@@ -34,6 +34,9 @@ import { MaterialListComponent } from './materials/material-list/material-list.c
 import { MaterialAddEditModalComponent } from './materials/material-add-edit-modal/material-add-edit-modal.component';
 import { MaterialItemListResolver } from 'src/app/shared/resolvers/material-item-list.resolver';
 import { MaterialListResolver } from 'src/app/shared/resolvers/material-list.resolver';
+import { PersonnelListComponent } from './personnels/personnel-list/personnel-list.component';
+import { PersonnelAddEditModalComponent } from './personnels/personnel-add-edit-modal/personnel-add-edit-modal.component';
+import { PersonnelListResolver } from 'src/app/shared/resolvers/personnel-list-resolver';
 
 @NgModule({
   declarations: [CategoriesComponent,
@@ -52,7 +55,9 @@ import { MaterialListResolver } from 'src/app/shared/resolvers/material-list.res
     MaterialItemListComponent,
     MaterialItemAddEditModalComponent,
     MaterialListComponent,
-    MaterialAddEditModalComponent
+    MaterialAddEditModalComponent,
+    PersonnelListComponent,
+    PersonnelAddEditModalComponent
   ],
   imports: [
     CommonModule,
@@ -70,7 +75,8 @@ import { MaterialListResolver } from 'src/app/shared/resolvers/material-list.res
     MaterialStoreListResolver,
     MaterialTypeListResolver,
     MaterialItemListResolver,
-    MaterialListResolver
+    MaterialListResolver,
+    PersonnelListResolver
   ],
   entryComponents: [
     UnitAddEditModalComponent,
@@ -80,7 +86,8 @@ import { MaterialListResolver } from 'src/app/shared/resolvers/material-list.res
     MaterialStoreAddEditModalComponent,
     MaterialTypeAddEditModalComponent,
     MaterialItemAddEditModalComponent,
-    MaterialAddEditModalComponent
+    MaterialAddEditModalComponent,
+    PersonnelAddEditModalComponent
   ]
 })
 export class CategoriesModule { }

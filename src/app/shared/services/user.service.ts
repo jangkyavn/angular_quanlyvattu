@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { User } from '../models/user.model';
 import { PaginatedResult } from '../models/pagination.model';
+import { UserParams } from '../params/user.param';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +16,9 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  getAllPaging(page?: any, itemsPerPage?: any, userParams?: any): Observable<PaginatedResult<User[]>> {
+  getAllPaging(page?: any, itemsPerPage?: any, userParams?: UserParams): Observable<PaginatedResult<User[]>> {
     const paginatedResult = new PaginatedResult<User[]>();
-
+    
     let params = new HttpParams();
     if (page != null && itemsPerPage != null) {
       params = params.append('pageNumber', page);
@@ -26,6 +27,8 @@ export class UserService {
 
     if (userParams != null) {
       params = params.append('keyword', userParams.keyword);
+      params = params.append('sortKey', userParams.sortKey);
+      params = params.append('sortValue', userParams.sortValue);
     }
 
     return this.http.get<User[]>(this.baseUrl + 'users', { observe: 'response', params })

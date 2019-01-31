@@ -16,6 +16,8 @@ import { MaterialItemListComponent } from './material-items/material-item-list/m
 import { MaterialItemListResolver } from 'src/app/shared/resolvers/material-item-list.resolver';
 import { MaterialListComponent } from './materials/material-list/material-list.component';
 import { MaterialListResolver } from 'src/app/shared/resolvers/material-list.resolver';
+import { PersonnelListComponent } from './personnels/personnel-list/personnel-list.component';
+import { PersonnelListResolver } from 'src/app/shared/resolvers/personnel-list-resolver';
 
 const routes: Routes = [
   { path: '', redirectTo: 'nguon-cung-cap', pathMatch: 'full' },
@@ -50,6 +52,10 @@ const routes: Routes = [
   {
     path: 'nuoc-san-xuat', component: ProducingCountryListComponent,
     resolve: { 'producing-countries': ProducingCountryListResolver }
+  },
+  {
+    path: 'nhan-su', component: PersonnelListComponent,
+    resolve: { 'personnels': PersonnelListResolver }
   }
 ];
 

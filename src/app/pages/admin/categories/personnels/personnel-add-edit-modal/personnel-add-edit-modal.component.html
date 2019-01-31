@@ -1,0 +1,110 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="personnelForm" id="personnelForm" (ngSubmit)="saveChanges()">
+    <input type="hidden" formControlName="maNS">
+    <div class="form-group">
+      <label for="txtHoTen">Họ tên (*)</label>
+      <input type="text" id="txtHoTen" class="form-control" formControlName="hoTen" [ngClass]="{
+          'is-invalid': personnelForm.controls['hoTen'].errors && (submitted || personnelForm.controls['hoTen'].dirty || personnelForm.controls['hoTen'].touched)
+        }">
+      <div class="invalid-feedback">
+        <div *ngIf="personnelForm.get('hoTen').hasError('required')">
+          Vui lòng nhập họ tên!
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="txtNgaySinh">Ngày sinh (*)</label>
+      <input type="date" id="txtNgaySinh" class="form-control" formControlName="ngaySinh" [ngClass]="{
+            'is-invalid': personnelForm.controls['ngaySinh'].errors && (submitted || personnelForm.controls['ngaySinh'].dirty || personnelForm.controls['ngaySinh'].touched)
+          }">
+      <div class="invalid-feedback">
+        <div *ngIf="personnelForm.get('ngaySinh').hasError('required')">
+          Vui lòng nhập ngày sinh!
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="txtQueQuan">Quê quán (*)</label>
+      <input type="text" id="txtQueQuan" class="form-control" formControlName="queQuan" [ngClass]="{
+            'is-invalid': personnelForm.controls['queQuan'].errors && (submitted || personnelForm.controls['queQuan'].dirty || personnelForm.controls['queQuan'].touched)
+          }">
+      <div class="invalid-feedback">
+        <div *ngIf="personnelForm.get('queQuan').hasError('required')">
+          Vui lòng nhập quê quán!
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="txtDanToc">Dân tộc (*)</label>
+      <input type="text" iD="txtDanToc" class="form-control" formControlName="danToc" [ngClass]="{
+              'is-invalid': personnelForm.controls['danToc'].errors && (submitted || personnelForm.controls['danToc'].dirty || personnelForm.controls['danToc'].touched)
+            }">
+      <div class="invalid-feedback">
+        <div *ngIf="personnelForm.get('danToc').hasError('required')">
+          Vui lòng nhập dân tộc!
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="txtTonGiao">Tôn giáo</label>
+      <input type="text" iD="txtTonGiao" class="form-control" formControlName="tonGiao" [ngClass]="{
+                'is-invalid': personnelForm.controls['tonGiao'].errors && (submitted || personnelForm.controls['tonGiao'].dirty || personnelForm.controls['tonGiao'].touched)
+              }">
+    </div>
+    <div class="form-group">
+      <label for="txtCapBacSHSQ">Cấp bậc SHSQ</label>
+      <input type="text" iD="txtCapBacSHSQ" class="form-control" formControlName="capBacSHSQ" [ngClass]="{
+                  'is-invalid': personnelForm.controls['capBacSHSQ'].errors && (submitted || personnelForm.controls['capBacSHSQ'].dirty || personnelForm.controls['capBacSHSQ'].touched)
+                }">
+    </div>
+    <div class="form-group">
+      <label for="txtChucVu">Chức vụ</label>
+      <input type="text" iD="txtChucVu" class="form-control" formControlName="chucVu" [ngClass]="{
+                    'is-invalid': personnelForm.controls['chucVu'].errors && (submitted || personnelForm.controls['chucVu'].dirty || personnelForm.controls['chucVu'].touched)
+                  }">
+    </div>
+    <div class="form-group">
+      <label for="txtNgayNhapNguTuyenDung">Ngày nhập ngũ/tuyển dụng</label>
+      <input type="date" iD="txtNgayNhapNguTuyenDung" class="form-control" formControlName="ngayNhapNguTuyenDung"
+        [ngClass]="{
+                      'is-invalid': personnelForm.controls['ngayNhapNguTuyenDung'].errors && (submitted || personnelForm.controls['ngayNhapNguTuyenDung'].dirty || personnelForm.controls['ngayNhapNguTuyenDung'].touched)
+                    }">
+    </div>
+    <div class="form-group">
+      <label for="txtXuatThan">Xuất thân</label>
+      <input type="text" iD="txtXuatThan" class="form-control" formControlName="xuatThan" [ngClass]="{
+                        'is-invalid': personnelForm.controls['xuatThan'].errors && (submitted || personnelForm.controls['xuatThan'].dirty || personnelForm.controls['xuatThan'].touched)
+                      }">
+    </div>
+    <div class="form-group">
+      <label for="txtBanThan">Bản thân</label>
+      <input type="text" iD="txtBanThan" class="form-control" formControlName="banThan" [ngClass]="{
+                          'is-invalid': personnelForm.controls['banThan'].errors && (submitted || personnelForm.controls['banThan'].dirty || personnelForm.controls['banThan'].touched)
+                        }">
+    </div>
+    <div class="form-group">
+      <label for="txtQuaTrinhHocTap">Quá trình học tập</label>
+      <input type="text" iD="txtQuaTrinhHocTap" class="form-control" formControlName="quaTrinhHocTap" [ngClass]="{'is-invalid': personnelForm.controls['quaTrinhHocTap'].errors && (submitted || personnelForm.controls['quaTrinhHocTap'].dirty || personnelForm.controls['quaTrinhHocTap'].touched)}">
+    </div>
+    <div class="form-group">
+        <label for="txtThanNhan">Thân nhân</label>
+        <input type="text" iD="txtThanNhan" class="form-control" formControlName="thanNhan" [ngClass]="{'is-invalid': personnelForm.controls['thanNhan'].errors && (submitted || personnelForm.controls['thanNhan'].dirty || personnelForm.controls['thanNhan'].touched)}">
+      </div>
+    <div class="form-group">
+      <label for="txtGhiChu">Ghi chú</label>
+      <textarea id="txtGhiChu" class="form-control" formControlName="ghiChu" [ngClass]="{
+          'is-invalid': personnelForm.controls['ghiChu'].errors && (submitted || personnelForm.controls['ghiChu'].dirty || personnelForm.controls['ghiChu'].touched)
+        }"></textarea>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" (click)="hideModal()">Hủy</button>
+  <button type="submit" class="btn btn-primary" form="personnelForm">Lưu</button>
+</div>

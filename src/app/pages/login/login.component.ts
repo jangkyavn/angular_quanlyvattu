@@ -28,6 +28,10 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    if (this.authService.loggedIn()) {
+      this.router.navigate(['/admin']);
+    }
+
     this.route.queryParams
       .subscribe(params => this.returnUrl = params['returnUrl']);
 
@@ -46,6 +50,12 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    // tslint:disable-next-line:forin
+    for (const i in this.loginForm.controls) {
+      this.loginForm.controls[i].markAsDirty();
+      this.loginForm.controls[i].updateValueAndValidity();
+    }
+
     this.submitted = true;
 
     if (this.loginForm.invalid) {
