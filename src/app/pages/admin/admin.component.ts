@@ -15,6 +15,12 @@ export class AdminComponent implements OnInit {
   triggerTemplate = null;
   width = 256;
   jwtHelper = new JwtHelperService();
+  openMap = {
+    sub1: true,
+    sub2: false,
+    sub3: false,
+    sub4: false
+  };
 
   constructor(
     private router: Router,
@@ -30,6 +36,14 @@ export class AdminComponent implements OnInit {
 
     if (user) {
       this.authService.currentUser = user;
+    }
+  }
+
+  openHandler(value: string): void {
+    for (const key in this.openMap) {
+      if (key !== value) {
+        this.openMap[ key ] = false;
+      }
     }
   }
 

@@ -4,39 +4,55 @@
     </div>
     <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed" id="sidebarMenu">
       <!-- menu quản trị -->
-      <li nz-submenu>
+      <li nz-submenu [(nzOpen)]="openMap.sub1" (nzOpenChange)="openHandler('sub1')">
         <span title><i nz-icon type="setting"></i><span class="nav-text">Hệ thống</span></span>
         <ul>
           <li nz-menu-item [routerLink]="['/admin/he-thong']" routerLinkActive="ant-menu-item-selected">
-            Danh sách người dùng</li>
-          <li nz-menu-item>Phân quyền</li>
+            <i nz-icon type="user" theme="outline"></i> Danh sách người dùng
+          </li>
+          <li nz-menu-item>
+            <i nz-icon type="team" theme="outline"></i> Phân quyền
+          </li>
         </ul>
       </li>
       <!-- menu danh mục -->
-      <li nz-submenu>
+      <li nz-submenu [(nzOpen)]="openMap.sub2" (nzOpenChange)="openHandler('sub2')">
         <span title>
           <i nz-icon type="appstore" theme="outline">
           </i><span class="nav-text">Danh mục</span>
         </span>
         <ul>
-          <li nz-menu-item [routerLink]="['/admin/danh-muc/nguon-cung-cap']">Nguồn cung cấp</li>
+          <li nz-menu-item [routerLink]="['/admin/danh-muc/nguon-cung-cap']">
+            <i nz-icon type="bars" theme="outline"></i> Nguồn cung cấp
+          </li>
           <li nz-submenu>
-            <span title>Thông tin vật tư</span>
+            <span title><i nz-icon type="info-circle" theme="outline"></i> Thông tin vật tư</span>
             <ul>
-              <li nz-menu-item [routerLink]="['/admin/danh-muc/hang-muc-vat-tu']">Hạng mục vật tư</li>
+              <li nz-menu-item [routerLink]="['/admin/danh-muc/hang-muc-vat-tu']">
+                <i nz-icon type="build" theme="outline"></i> Hạng mục vật tư</li>
               <li nz-menu-item [routerLink]="['/admin/danh-muc/loai-vat-tu']">Loại vật tư</li>
               <li nz-menu-item [routerLink]="['/admin/danh-muc/danh-muc-vat-tu']">Danh mục vật tư</li>
             </ul>
           </li>
-          <li nz-menu-item [routerLink]="['/admin/danh-muc/don-vi-tinh']">Đơn vị tính</li>
-          <li nz-menu-item [routerLink]="['/admin/danh-muc/kho-vat-tu']">Kho vật tư</li>
-          <li nz-menu-item [routerLink]="['/admin/danh-muc/hang-san-xuat']">Hãng sản xuất</li>
-          <li nz-menu-item [routerLink]="['/admin/danh-muc/nuoc-san-xuat']">Nước sản xuất</li>
-          <li nz-menu-item [routerLink]="['/admin/danh-muc/nhan-su']">Nhân sự</li>
+          <li nz-menu-item [routerLink]="['/admin/danh-muc/don-vi-tinh']">
+            <i nz-icon type="calculator" theme="outline"></i> Đơn vị tính
+          </li>
+          <li nz-menu-item [routerLink]="['/admin/danh-muc/kho-vat-tu']">
+            <i nz-icon type="database" theme="outline"></i> Kho vật tư
+          </li>
+          <li nz-menu-item [routerLink]="['/admin/danh-muc/hang-san-xuat']">
+            <i nz-icon type="trademark" theme="outline"></i> Hãng sản xuất
+          </li>
+          <li nz-menu-item [routerLink]="['/admin/danh-muc/nuoc-san-xuat']">
+            <i nz-icon type="global" theme="outline"></i> Nước sản xuất
+          </li>
+          <li nz-menu-item [routerLink]="['/admin/danh-muc/nhan-su']">
+            <i nz-icon type="usergroup-add" theme="outline"></i> Nhân sự
+          </li>
         </ul>
       </li>
       <!-- menu nghiệp vụ -->
-      <li nz-submenu>
+      <li nz-submenu [(nzOpen)]="openMap.sub3" (nzOpenChange)="openHandler('sub3')">
         <span title>
           <i nz-icon type="project" theme="outline"></i>
           <span class="nav-text">Nghiệp vụ</span>
@@ -68,7 +84,7 @@
         </ul>
       </li>
       <!-- menu thông kê báo cáo -->
-      <li nz-submenu>
+      <li nz-submenu [(nzOpen)]="openMap.sub4" (nzOpenChange)="openHandler('sub4')">
         <span title>
           <i nz-icon type="table" theme="outline"></i>
           <span class="nav-text">Thống kê báo cáo</span>

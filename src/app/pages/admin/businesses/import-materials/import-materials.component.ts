@@ -19,6 +19,8 @@ import { checkQuantityKhongAmValidator } from 'src/app/shared/vailidators/check-
 import { checkChietKhauNanValidator } from 'src/app/shared/vailidators/check-chiet-khau-nan-validator';
 import { checkChietKhauRangeValidator } from 'src/app/shared/vailidators/check-chiet-khau-range-validator';
 import { checkPriceKhongAmValidator } from 'src/app/shared/vailidators/check-price-khong-am-validator';
+import { MaterialType } from 'src/app/shared/models/material-type.model';
+import { MaterialTypeService } from 'src/app/shared/services/material-type.service';
 
 @Component({
   selector: 'app-import-materials',
@@ -28,6 +30,7 @@ import { checkPriceKhongAmValidator } from 'src/app/shared/vailidators/check-pri
 export class ImportMaterialsComponent implements OnInit {
   materialStores: MaterialStore[];
   materialItems: MaterialItem[];
+  materialTypes: MaterialType[];
   materials: Material[];
   producingCountries: ProducingCountry[];
   manufacturers: Manufacturer[];
@@ -47,6 +50,7 @@ export class ImportMaterialsComponent implements OnInit {
     private importMaterialService: ImportMaterialService,
     private materialStoreService: MaterialStoreService,
     private materialItemService: MaterialItemService,
+    private materialTypeService: MaterialTypeService,
     private materialService: MaterialService,
     private producingCountryService: ProducingCountryService,
     private manufacturerService: ManufacturerService,
@@ -72,6 +76,7 @@ export class ImportMaterialsComponent implements OnInit {
       mnhapvattu: this.fb.group({
         maKho: ['', [Validators.required]],
         maHM: ['', [Validators.required]],
+        maLoaiVatTu: ['', [Validators.required]],
         ngayNhap: [currentDate, [Validators.required]],
         chietKhau: [0, [checkChietKhauNanValidator, checkChietKhauRangeValidator]],
         ghiChu: [null]
@@ -158,6 +163,13 @@ export class ImportMaterialsComponent implements OnInit {
     }, error => {
       console.log('error addImportMaterial');
       console.log(error);
+    });
+  }
+
+  changeMaterialItem(itemId: number) {
+    this.materialTypeService.getAllByItemId(itemId).subscribe((res: MaterialType[]) => {
+      console.log(res);
+      this.materialTypes = res;
     });
   }
 }

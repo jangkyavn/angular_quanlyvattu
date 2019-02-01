@@ -1,4 +1,6 @@
+import { Config } from 'src/assets/config';
+
 export const environment = {
   production: true,
-  apiUrl: 'https://localhost:44379/api/'
+  apiUrl: `${Config.getHttp()}://${Config.getDomain()}/api/`
 };

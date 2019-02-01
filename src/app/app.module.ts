@@ -13,6 +13,7 @@ import vi from '@angular/common/locales/vi';
 
 import { AppComponent } from './app.component';
 import { PageErrorComponent } from './pages/page-error/page-error.component';
+import { Config } from 'src/assets/config';
 
 registerLocaleData(vi);
 
@@ -34,8 +35,8 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config: {
         tokenGetter,
-        whitelistedDomains: ['localhost:44379'],
-        blacklistedRoutes: ['localhost:44379/api/auth']
+        whitelistedDomains: [Config.getDomain()],
+        blacklistedRoutes: [`${Config.getDomain()}/api/auth`]
       }
     }),
   ],

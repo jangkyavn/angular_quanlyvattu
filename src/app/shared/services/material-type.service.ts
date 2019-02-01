@@ -21,6 +21,10 @@ export class MaterialTypeService {
     return this.http.get(this.baseUrl + 'LoaiVatTu/' + id);
   }
 
+  getAllByItemId(itemId: number) {
+    return this.http.get(this.baseUrl + 'LoaiVatTu/getListLoaiByMaHM/' + itemId);
+  }
+
   addNew(materialType: MaterialType) {
     return this.http.post(this.baseUrl + 'LoaiVatTu', materialType);
   }
