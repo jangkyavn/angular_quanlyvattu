@@ -1,0 +1,79 @@
+<nz-card nzType="inner" nzTitle="Cập nhật thông tin tài khoản">
+  <form [formGroup]="accountInformationForm" (ngSubmit)="saveChanges()">
+    <input type="hidden" formControlName="id">
+
+    <div class="form-row">
+      <div class="col-md-8">
+        <div class="form-group row">
+          <label for="txtUserName" class="col-sm-3 col-form-label">Tài khoản *</label>
+          <div class="col-sm-9">
+              <input type="text" readonly class="form-control-plaintext" id="txtUserName" formControlName="userName">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="txtFullName" class="col-sm-3 col-form-label">Họ tên *</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" id="txtFullName" formControlName="fullName">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="txtEmail" class="col-sm-3 col-form-label">Email *</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" id="txtEmail" formControlName="email">
+          </div>
+        </div>
+        <div class="form-group row d-flex flex-row">
+          <label class="col-sm-3 col-form-label">Giới tính *</label>
+          <div class="col-sm-9 pt-1">
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" id="rdoMale" name="gender" class="custom-control-input" [value]="true" formControlName="gender">
+              <label class="custom-control-label" for="rdoMale">Nam</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" id="rdoFemale" name="gender" class="custom-control-input" [value]="false" formControlName="gender">
+              <label class="custom-control-label" for="rdoFemale">Nữ</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="txtDateOfBirth" class="col-sm-3 col-form-label">Ngày sinh *</label>
+          <div class="col-sm-9">
+            <input type="date" class="form-control" id="txtDateOfBirth" formControlName="dateOfBirth">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="txtPhoneNumber" class="col-sm-3 col-form-label">Số điện thoại</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" id="txtPhoneNumber" formControlName="phoneNumber">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="txtAddress" class="col-sm-3 col-form-label">Địa chỉ</label>
+          <div class="col-sm-9">
+            <textarea class="form-control" id="txtAddress" rows="3" formControlName="address"></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-9 offset-sm-3">
+              <button type="submit" nz-button nzType="primary" nzSize="large" [nzLoading]="isLoading" [disabled]="!accountInformationForm.dirty">Cập nhật</button>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="form-group col-md-4">
+        <div class="text-center">
+          <div class="div-upload" (click)="fAvatar.click()" (drop)="drop($event)" (dragover)="allowDrop($event)" *ngIf="!avatarUrl">
+            <i nz-icon type="upload" theme="outline"></i>
+            <p>Tải ảnh lên</p>
+          </div>
+          <img [src]="avatarUrl" alt="..." #avatar class="img-thumbnail float-right avatar" *ngIf="avatarUrl" (click)="fAvatar.click()"
+            (drop)="drop($event)" (dragover)="allowDrop($event)">
+          <input type="file" #fAvatar name="avatar" class="form-control" style="display: none;" (change)="changeFile($event)">
+          <p class="ml-5">Ảnh đại diện (200x200)</p>
+        </div>
+        <button nz-button nzType="default" nzShape="circle" *ngIf="avatarUrl" (click)="resetAvatar()">
+          <i nz-icon type="close"></i>
+        </button>
+      </div> -->
+    </div>
+  </form>
+</nz-card>

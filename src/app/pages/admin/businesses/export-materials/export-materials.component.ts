@@ -55,7 +55,8 @@ export class ExportMaterialsComponent implements OnInit {
   createForm() {
     const date = new Date();
     const month = (date.getMonth() + 1) >= 10 ? (date.getMonth() + 1) : '0' + (date.getMonth() + 1);
-    const currentDate = `${date.getFullYear()}-${month}-${date.getDate()}`;
+    const day = date.getDate() >= 10 ?  date.getDate() : '0' + date.getDate();
+    const currentDate = `${date.getFullYear()}-${month}-${day}`;
 
     this.exportMaterialForm = this.fb.group({
       mxuatvattu: this.fb.group({

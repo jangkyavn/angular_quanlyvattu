@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AdminRoutingModule } from './admin-routing.module';
-import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
+import { NgZorroAntdModule } from 'ng-zorro-antd';
 
 import { AdminComponent } from './admin.component';
 import { HomeComponent } from './home/home.component';
@@ -14,6 +14,6 @@ import { HomeComponent } from './home/home.component';
     AdminRoutingModule,
     NgZorroAntdModule
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US }]
+  providers: []
 })
 export class AdminModule { }

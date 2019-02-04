@@ -18,7 +18,7 @@ export class UserService {
 
   getAllPaging(page?: any, itemsPerPage?: any, userParams?: UserParams): Observable<PaginatedResult<User[]>> {
     const paginatedResult = new PaginatedResult<User[]>();
-    
+
     let params = new HttpParams();
     if (page != null && itemsPerPage != null) {
       params = params.append('pageNumber', page);
@@ -65,5 +65,13 @@ export class UserService {
 
   checkUserNameExists(userName: string) {
     return this.http.get(this.baseUrl + 'users/checkUserNameExists/' + userName);
+  }
+
+  checkCurrentPassword(password: string) {
+    return this.http.get(this.baseUrl + 'users/checkCurrentPassword/' + password);
+  }
+
+  changePassword(newPassword: string) {
+    return this.http.put(this.baseUrl + 'users/changePassword/' + newPassword, {});
   }
 }

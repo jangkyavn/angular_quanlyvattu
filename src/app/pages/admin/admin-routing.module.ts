@@ -15,7 +15,8 @@ const routes: Routes = [
       { path: 'trang-chu', component: HomeComponent },
       { path: 'he-thong', loadChildren: './systems/systems.module#SystemsModule' },
       { path: 'danh-muc', loadChildren: './categories/categories.module#CategoriesModule' },
-      { path: 'nghiep-vu', loadChildren: './businesses/businesses.module#BusinessesModule' }
+      { path: 'nghiep-vu', loadChildren: './businesses/businesses.module#BusinessesModule' },
+      { path: 'quan-ly-tai-khoan', loadChildren: './accounts/accounts.module#AccountsModule' }
     ]
   }
 ];

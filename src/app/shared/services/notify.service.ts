@@ -27,12 +27,12 @@ export class NotifyService {
     this.messageService.create('info', message);
   }
 
-  confirm(message: string, okCallBack: () => any) {
+  confirm(message: string, okCallBack: () => any, okText = null, cancelText = null) {
     this.confirmModal = this.modal.confirm({
       nzTitle: 'Thông báo',
       nzContent: message,
-      nzOkText: 'Đồng ý',
-      nzCancelText: 'Hủy bỏ',
+      nzOkText: okText || 'Đồng ý',
+      nzCancelText: cancelText || 'Hủy bỏ',
       nzOnOk: () => {
         okCallBack();
       }

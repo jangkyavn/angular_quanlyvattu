@@ -11,12 +11,12 @@ import { User } from '../../shared/models/user.model';
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
-  isCollapsed = false;
   triggerTemplate = null;
+  isCollapsed = false;
   width = 256;
   jwtHelper = new JwtHelperService();
   openMap = {
-    sub1: true,
+    sub1: false,
     sub2: false,
     sub3: false,
     sub4: false
