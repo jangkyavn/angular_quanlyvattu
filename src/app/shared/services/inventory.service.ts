@@ -20,4 +20,8 @@ export class InventoryService {
   getDetail(id: number) {
     return this.http.get(this.baseUrl + 'KhoHang/' + id);
   }
+
+  getTotalCount() {
+    return this.http.get(this.baseUrl + 'KhoHang/getTotalCount');
+  }
 }

@@ -22,6 +22,10 @@ export class MaterialService {
     return this.http.get(this.baseUrl + 'VatTu/' + id);
   }
 
+  getTotalCount() {
+    return this.http.get(this.baseUrl + 'VatTu/getTotalCount');
+  }
+
   addNew(material: Material) {
     return this.http.post(this.baseUrl + 'VatTu', material);
   }

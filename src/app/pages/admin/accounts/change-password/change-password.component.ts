@@ -49,31 +49,35 @@ export class ChangePasswordComponent implements OnInit {
 
   saveChanges() {
     this.isLoading = true;
-    this.submitted = true;
 
     if (this.changePasswordForm.invalid) {
+    // tslint:disable-next-line:forin
+      for (const key in this.changePasswordForm.controls) {
+        this.changePasswordForm.controls[key].markAsDirty();
+        this.changePasswordForm.controls[key].updateValueAndValidity();
+      }
       this.isLoading = false;
       return;
-    }
-
-    const { newPassword } = this.changePasswordForm.value;
-    this.userService.changePassword(newPassword).subscribe((res: boolean) => {
-      if (res) {
-        this.notify.success('Thay mật khẩu thành công');
-        this.submitted = false;
+    } else {
+      const { newPassword } = this.changePasswordForm.value;
+      this.userService.changePassword(newPassword).subscribe((res: boolean) => {
+        if (res) {
+          this.notify.success('Thay đổi mật khẩu thành công');
+          this.isLoading = false;
+          this.changePasswordForm.reset();
+          this.notify.confirm('Vui lòng đăng xuất để sử dụng mật khẩu mới!', () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            this.authService.decodedToken = null;
+            this.authService.currentUser = null;
+            this.router.navigate(['/']);
+          }, 'Đăng xuất', 'Để sau');
+        }
+      }, _ => {
+        console.log('error changePassword');
+        this.notify.error('Có lỗi xảy ra');
         this.isLoading = false;
-        this.changePasswordForm.reset();
-        this.notify.confirm('Vui lòng đăng xuất để sử dụng mật khẩu mới!', () => {
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
-          this.authService.decodedToken = null;
-          this.authService.currentUser = null;
-          this.router.navigate(['/']);
-        }, 'Đăng xuất', 'Để sau');
-      }
-    }, _ => {
-      console.log('error changePassword');
-      this.notify.error('Có lỗi xảy ra');
-    });
+      });
+    }
   }
 }

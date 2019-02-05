@@ -16,7 +16,6 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   isLoading = false;
   returnUrl = '';
-  submitted = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,43 +39,41 @@ export class LoginComponent implements OnInit {
 
   createForm() {
     this.loginForm = this.fb.group({
-      userName: new FormControl('', {
-        validators: Validators.required,
-        asyncValidators: checkUsernameExists(this.userSerivce),
-        updateOn: 'blur'
-      }),
+      userName: [null, [Validators.required], [
+        checkUsernameExists(this.userSerivce)
+      ]],
       password: [null, [Validators.required]]
     });
   }
 
   login() {
-    // tslint:disable-next-line:forin
-    for (const i in this.loginForm.controls) {
-      this.loginForm.controls[i].markAsDirty();
-      this.loginForm.controls[i].updateValueAndValidity();
-    }
-
-    this.submitted = true;
-
-    if (this.loginForm.invalid) {
-      return;
-    }
-
     this.isLoading = true;
-    const user = Object.assign({}, this.loginForm.value);
-    this.authService.login(user).subscribe(res => {
-      if (res.status) {
-        if (this.returnUrl) {
-          this.router.navigateByUrl(this.returnUrl);
-        } else {
-          this.router.navigate(['/admin']);
-        }
-      } else {
-        this.notify.warning(res.messsage);
+
+    if (!this.loginForm.valid) {
+      // tslint:disable-next-line:forin
+      for (const key in this.loginForm.controls) {
+        this.loginForm.controls[key].markAsDirty();
+        this.loginForm.controls[key].updateValueAndValidity();
       }
       this.isLoading = false;
-    }, _ => {
-      this.notify.error('Có lỗi xảy ra');
-    });
+      return;
+    } else {
+      const user = Object.assign({}, this.loginForm.value);
+      this.authService.login(user).subscribe(res => {
+        if (res.status) {
+          if (this.returnUrl) {
+            this.router.navigateByUrl(this.returnUrl);
+          } else {
+            this.router.navigate(['/admin']);
+          }
+        } else {
+          this.notify.warning(res.messsage);
+        }
+        this.isLoading = false;
+      }, _ => {
+        this.notify.error('Có lỗi xảy ra');
+        this.isLoading = false;
+      });
+    }
   }
 }

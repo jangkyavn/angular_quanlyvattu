@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import { UserService } from '../../../../shared/services/user.service';
@@ -13,7 +13,6 @@ import { User } from 'src/app/shared/models/user.model';
 })
 export class InformationsComponent implements OnInit {
   accountInformationForm: FormGroup;
-  submitted = false;
   isLoading: boolean;
   avatarUrl: any;
   @ViewChild('avatar') avatar: ElementRef;
@@ -33,9 +32,9 @@ export class InformationsComponent implements OnInit {
   createForm() {
     this.accountInformationForm = this.fb.group({
       id: [null],
-      userName: [null],
+      userName: [{ value: null, disabled: true }, [Validators.required]],
       fullName: [null, [Validators.required]],
-      email: [null, [Validators.required]],
+      email: [null, [Validators.required, Validators.email]],
       gender: [null, [Validators.required]],
       dateOfBirth: [null, [Validators.required]],
       phoneNumber: [null],
@@ -54,27 +53,30 @@ export class InformationsComponent implements OnInit {
 
   saveChanges() {
     this.isLoading = true;
-    this.submitted = true;
-
     if (this.accountInformationForm.invalid) {
+      // tslint:disable-next-line:forin
+      for (const key in this.accountInformationForm.controls) {
+        this.accountInformationForm.controls[key].markAsDirty();
+        this.accountInformationForm.controls[key].updateValueAndValidity();
+      }
       this.isLoading = false;
       return;
-    }
+    } else {
+      const user = Object.assign({}, this.accountInformationForm.getRawValue());
+      this.userService.update(user).subscribe((res) => {
+        if (res) {
+          this.notify.success('Cập nhật thành công');
+          this.isLoading = false;
 
-    const user = Object.assign({}, this.accountInformationForm.value);
-    this.userService.update(user).subscribe((res) => {
-      if (res) {
-        this.notify.success('Cập nhật thành công');
-        this.submitted = false;
+          this.accountInformationForm.markAsPristine();
+          this.accountInformationForm.updateValueAndValidity();
+        }
+      }, _ => {
+        console.log('error updateAccount');
+        this.notify.error('Có lỗi xảy ra');
         this.isLoading = false;
-
-        this.accountInformationForm.markAsPristine();
-        this.accountInformationForm.updateValueAndValidity();
-      }
-    }, _ => {
-      console.log('error updateAccount');
-      this.notify.error('Có lỗi xảy ra');
-    });
+      });
+    }
   }
 
   allowDrop(e) {

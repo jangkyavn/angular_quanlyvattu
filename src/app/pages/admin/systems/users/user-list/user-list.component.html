@@ -50,8 +50,8 @@
         <td>
           <nz-switch [ngModel]="data.status" [nzCheckedChildren]="checkedTemplate" [nzUnCheckedChildren]="unCheckedTemplate"
             (click)="changeStatus(data.id)"></nz-switch>
-          <ng-template #checkedTemplate><i nz-icon type="check" nz-tooltip nzTitle="Kích hoạt"></i></ng-template>
-          <ng-template #unCheckedTemplate><i nz-icon type="close" nz-tooltip nzTitle="Khóa"></i></ng-template>
+          <ng-template #checkedTemplate>Kích hoạt</ng-template>
+          <ng-template #unCheckedTemplate>Khóa</ng-template>
         </td>
         <td>
             <button class="btn btn-info btn-sm" nz-tooltip nzTitle="Sửa" (click)="update(data.id)">
