@@ -1,7 +1,37 @@
 /* You can add global styles to this file, and also import other style files */
-@import '../node_modules/font-awesome/css/font-awesome.min.css';
 
+@import '../node_modules/font-awesome/css/font-awesome.min.css';
 .modal-lg {
     width: 980px !important;
     max-width: 980px !important;
+}
+
+.btn-danger:hover {
+    background-color: #C82333;
+    color: white;
+    border-color: #C82333;
+}
+
+.btn-warning:hover {
+    background-color: #E0A800;
+    color: white;
+    border-color: #E0A800;
+}
+
+.btn-info:hover {
+    background-color: #138496;
+    border-color: #138496;
+    color: white;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
 }

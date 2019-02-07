@@ -1,26 +1,7 @@
-<div class="modal-header">
-    <h4 class="modal-title">Phân vai trò cho: {{user.userName}}</h4>
-    <button type="button" class="close" aria-label="Close" (click)="bsModalRef.hide()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+<form #rolesForm="ngForm" id="rolesForm">
+  <div *ngFor="let role of roles">
+    <label nz-checkbox [(ngModel)]="role.checked" [nzDisabled]="role.name === 'Admin' && user.userName === 'admin'"
+      [ngModelOptions]="{standalone: true}" class='chk-role'>{{role.name}}</label>
+    <br />
   </div>
-  <div class="modal-body">
-    <form #rolesForm="ngForm" id="rolesForm">
-      <div class="invalid-feedback">Vui lòng chọn ít nhất 1 vai trò</div>
-      <div class="custom-control custom-checkbox mb-3" *ngFor="let role of roles">
-        <input type="checkbox" 
-        class="custom-control-input" 
-        id="chk{{role.name}}" 
-        [value]="role.name" 
-        [checked]="role.checked"
-        (change)="(role.checked = !role.checked)"
-        [disabled]="role.name === 'Admin' && user.userName === 'Admin'">
-        <label class="custom-control-label" for="chk{{role.name}}">{{role.name}}</label>
-      </div>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="bsModalRef.hide()">Hủy</button>
-    <button type="button" class="btn btn-success" form="rolesForm" (click)="updateRoles()">Lưu</button>
-  </div>
-  
+</form>

@@ -1,5 +1,4 @@
-import { Component, OnInit, AfterViewInit, Output, EventEmitter } from '@angular/core';
-import { BsModalRef } from 'ngx-bootstrap/modal';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { User } from '../../../../../shared/models/user.model';
 import { Role } from '../../../../../shared/models/role.model';
@@ -10,19 +9,13 @@ import { RoleService } from '../../../../../shared/services/role.service';
   templateUrl: './role-edit-modal.component.html',
   styleUrls: ['./role-edit-modal.component.scss']
 })
-export class RoleEditModalComponent implements OnInit, AfterViewInit {
-  @Output() saveRoles = new EventEmitter<Role[]>();
-  user: User;
+export class RoleEditModalComponent implements OnInit {
+  @Input() user: User;
   roles: Role[] = [];
 
-  constructor(
-    public bsModalRef: BsModalRef,
-    private roleService: RoleService) { }
+  constructor(private roleService: RoleService) { }
 
   ngOnInit() {
-  }
-
-  ngAfterViewInit() {
     this.roleService.getAll().subscribe((res: Role[]) => {
       const userRoles = this.user.roles;
       const availableRoles: any[] = res;
@@ -46,8 +39,7 @@ export class RoleEditModalComponent implements OnInit, AfterViewInit {
     });
   }
 
-  updateRoles() {
-    this.saveRoles.emit(this.roles);
-    this.bsModalRef.hide();
+  updateRoles(callBack: (result: Role[]) => any) {
+    callBack(this.roles);
   }
 }

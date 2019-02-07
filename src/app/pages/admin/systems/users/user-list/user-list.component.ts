@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
+import { NzModalService } from 'ng-zorro-antd';
 
 import { NotifyService } from '../../../../../shared/services/notify.service';
 import { UserAddEditModalComponent } from '../user-add-edit-modal/user-add-edit-modal.component';
@@ -23,16 +23,15 @@ export class UserListComponent implements OnInit {
   sortValue = null;
   sortKey = null;
 
-  bsModalRef: BsModalRef;
   users: User[];
   pagination: Pagination;
   userParams: UserParams = {
-    keyword : ''
+    keyword: ''
   };
 
   constructor(
+    private modalService: NzModalService,
     private route: ActivatedRoute,
-    private modalService: BsModalService,
     private userService: UserService,
     private roleService: RoleService,
     private notify: NotifyService) { }
@@ -52,37 +51,91 @@ export class UserListComponent implements OnInit {
   }
 
   addNew() {
-    const modalOption: ModalOptions = {
-      backdrop: 'static',
-      initialState: {
-        title: 'Thêm mới người dùng',
+    const modal = this.modalService.create({
+      nzTitle: 'Thêm mới người dùng',
+      nzContent: UserAddEditModalComponent,
+      nzMaskClosable: false,
+      nzClosable: false,
+      nzComponentParams: {
         user: {},
         isAddNew: true
-      }
-    };
-    this.bsModalRef = this.modalService.show(UserAddEditModalComponent, modalOption);
-    this.bsModalRef.content.saveEntity.subscribe((res: boolean) => {
-      if (res) {
-        this.loadData();
-      }
+      },
+      nzFooter: [
+        {
+          label: 'Hủy',
+          shape: 'default',
+          onClick: (componentInstance) => {
+            if (componentInstance.userForm.dirty) {
+              const result = confirm('Bạn có chắc chắn muốn tiếp tục không? Mọi sự thay đổi không lưu sẽ bị mất');
+              if (result) {
+                modal.destroy();
+              }
+            } else {
+              modal.destroy();
+            }
+          }
+        },
+        {
+          label: 'Lưu',
+          type: 'primary',
+          loading: false,
+          onClick: (componentInstance) => {
+            componentInstance.saveChanges((res: boolean) => {
+              if (res) {
+                this.loadData();
+                modal.destroy();
+              } else {
+                modal.destroy();
+              }
+            });
+          }
+        }
+      ]
     });
   }
 
   update(id: any) {
     this.userService.getDetail(id).subscribe((user: User) => {
-      const modalOption: ModalOptions = {
-        backdrop: 'static',
-        initialState: {
-          title: 'Sửa thông tin người dùng',
+      const modal = this.modalService.create({
+        nzTitle: 'Sửa thông tin người dùng',
+        nzContent: UserAddEditModalComponent,
+        nzMaskClosable: false,
+        nzClosable: false,
+        nzComponentParams: {
           user,
           isAddNew: false
-        }
-      };
-      this.bsModalRef = this.modalService.show(UserAddEditModalComponent, modalOption);
-      this.bsModalRef.content.saveEntity.subscribe((res: boolean) => {
-        if (res) {
-          this.loadData();
-        }
+        },
+        nzFooter: [
+          {
+            label: 'Hủy',
+            shape: 'default',
+            onClick: (componentInstance) => {
+              if (componentInstance.userForm.dirty) {
+                const result = confirm('Bạn có chắc chắn muốn tiếp tục không? Mọi sự thay đổi không lưu sẽ bị mất');
+                if (result) {
+                  modal.destroy();
+                }
+              } else {
+                modal.destroy();
+              }
+            }
+          },
+          {
+            label: 'Lưu',
+            type: 'primary',
+            loading: false,
+            onClick: (componentInstance) => {
+              componentInstance.saveChanges((res: boolean) => {
+                if (res) {
+                  this.loadData();
+                  modal.destroy();
+                } else {
+                  modal.destroy();
+                }
+              });
+            }
+          }
+        ]
       });
     });
   }
@@ -101,27 +154,43 @@ export class UserListComponent implements OnInit {
   }
 
   editRoles(user: User) {
-    const modalOption: ModalOptions = {
-      backdrop: 'static',
-      initialState: {
+    const modal = this.modalService.create({
+      nzTitle: 'Phân quyền người dùng',
+      nzContent: RoleEditModalComponent,
+      nzMaskClosable: false,
+      nzClosable: false,
+      nzComponentParams: {
         user
-      }
-    };
-    this.bsModalRef = this.modalService.show(RoleEditModalComponent, modalOption);
-    this.bsModalRef.content.saveRoles.subscribe((res: Role[]) => {
-      if (res && res.length > 0) {
-        const roleEditViewModel = {
-          roleNames: [...res.filter(x => x.checked === true).map(x => x.name)]
-        };
+      },
+      nzFooter: [
+        {
+          label: 'Hủy',
+          shape: 'default',
+          onClick: () => modal.destroy()
+        },
+        {
+          label: 'Lưu',
+          type: 'primary',
+          loading: false,
+          onClick: (componentInstance) => {
+            componentInstance.updateRoles((res: Role[]) => {
+              if (res && res.length > 0) {
+                const roleEditViewModel = {
+                  roleNames: [...res.filter(x => x.checked === true).map(x => x.name)]
+                };
 
-        if (roleEditViewModel) {
-          this.roleService.editRolesByUser(user, roleEditViewModel).subscribe(_ => {
-            user.roles = [...roleEditViewModel.roleNames];
-          }, error => {
-            console.log(error);
-          });
+                if (roleEditViewModel) {
+                  this.roleService.editRolesByUser(user, roleEditViewModel).subscribe(_ => {
+                    user.roles = [...roleEditViewModel.roleNames];
+                  }, error => {
+                    console.log(error);
+                  });
+                }
+              }
+            });
+          }
         }
-      }
+      ]
     });
   }
 

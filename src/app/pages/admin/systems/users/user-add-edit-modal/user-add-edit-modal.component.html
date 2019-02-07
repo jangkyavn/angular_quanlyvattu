@@ -1,111 +1,103 @@
-<div class="modal-header">
-  <h4 class="modal-title pull-left">{{title}}</h4>
-  <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-<div class="modal-body">
-  <form [formGroup]="userForm" id="userForm" (ngSubmit)="saveChanges()">
-    <input type="hidden" formControlName="id">
-
-    <div class="form-group">
-      <label for="txtUserName">Tài khoản (*)</label>
-      <input type="text" id="txtUserName" class="form-control" formControlName="userName" [ngClass]="{
-        'is-invalid': userForm.controls['userName'].errors && (submitted || userForm.controls['userName'].dirty || userForm.controls['userName'].touched)
-      }" [readonly]="!isAddNew">
-      <div class="invalid-feedback">
-        <div *ngIf="userForm.get('userName').hasError('required')">
+<form nz-form [formGroup]="userForm" (ngSubmit)="saveChanges()" autocomplete="off">
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="userName">Tài khoản</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <input nz-input formControlName="userName" id="userName" autofocus>
+      <nz-form-explain *ngIf="userForm.get('userName').dirty && userForm.get('userName').errors">
+        <ng-container *ngIf="userForm.get('userName').hasError('required')">
           Vui lòng nhập tài khoản!
-        </div>
-      </div>
-    </div>
-    <div class="form-group" *ngIf="isAddNew">
-      <label for="txtPassword">Mật khẩu (*)</label>
-      <input type="password" class="form-control" id="txtPassword" formControlName="password" [ngClass]="{
-        'is-invalid': userForm.controls['password'].errors && (submitted || userForm.controls['password'].dirty || userForm.controls['password'].touched)
-      }">
-      <div class="invalid-feedback">
-        <div *ngIf="userForm.get('password').hasError('required')">
+        </ng-container>
+        <ng-container *ngIf="userForm.get('userName').hasError('maxlength')">
+          Vui lòng nhập không quá 20 ký tự!
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item *ngIf="isAddNew">
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="password">Mật khẩu</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <input type="password" nz-input formControlName="password" id="password">
+      <nz-form-explain *ngIf="userForm.get('password').dirty && userForm.get('password').errors">
+        <ng-container *ngIf="userForm.get('password').hasError('required')">
           Vui lòng nhập mật khẩu!
-        </div>
-        <div *ngIf="userForm.get('password').hasError('minlength')">
-          Vui lòng nhập mật khẩu ít nhất 6 ký tự!
-        </div>
-        <div *ngIf="userForm.get('password').hasError('maxlength')">
-          Vui lòng nhập mật khẩu không quá 12 ký tự!
-        </div>
-      </div>
-    </div>
-    <div class="form-group" *ngIf="isAddNew">
-      <label for="txtConfirmPassword">Xác nhận mật khẩu (*)</label>
-      <input type="password" class="form-control" id="txtConfirmPassword" formControlName="confirmPassword" [ngClass]="{
-        'is-invalid': userForm.controls['confirmPassword'].errors && (submitted || userForm.controls['confirmPassword'].dirty || userForm.controls['confirmPassword'].touched)
-      }">
-      <div class="invalid-feedback">
-        <div *ngIf="userForm.get('confirmPassword').hasError('required')">
-          Vui lòng nhập xác nhận mật khẩu!
-        </div>
-        <div *ngIf="userForm.get('confirmPassword').hasError('notSame') && !userForm.get('confirmPassword').hasError('required')">
-          Mật khẩu và xác nhận mật khẩu chưa trùng khớp!
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="txtFullName">Họ tên (*)</label>
-      <input type="text" class="form-control" id="txtFullName" formControlName="fullName" [ngClass]="{
-        'is-invalid': userForm.controls['fullName'].errors && (submitted || userForm.controls['fullName'].dirty || userForm.controls['fullName'].touched)
-      }">
-      <div class="invalid-feedback">
-        <div *ngIf="userForm.get('fullName').hasError('required')">
+        </ng-container>
+        <ng-container *ngIf="userForm.get('password').hasError('minlength')">
+          Vui lòng nhập ít nhất 6 ký tự!
+        </ng-container>
+        <ng-container *ngIf="userForm.get('password').hasError('maxlength')">
+          Vui lòng nhập không quá 12 ký tự!
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item *ngIf="isAddNew">
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="confirmPassword">Nhập lại mật khẩu</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <input type="password" nz-input formControlName="confirmPassword" id="confirmPassword">
+      <nz-form-explain *ngIf="userForm.get('confirmPassword').dirty && userForm.get('confirmPassword').errors">
+        <ng-container *ngIf="userForm.get('confirmPassword').hasError('required')">
+          Vui lòng nhập lại mật khẩu!
+        </ng-container>
+        <ng-container *ngIf="userForm.get('confirmPassword').hasError('notSame')">
+          Mật khẩu và nhập lại mật khẩu chưa trùng khớp!
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="fullName">Họ tên</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <input type="text" nz-input formControlName="fullName" id="fullName">
+      <nz-form-explain *ngIf="userForm.get('fullName').dirty && userForm.get('fullName').errors">
+        <ng-container *ngIf="userForm.get('fullName').hasError('required')">
           Vui lòng nhập họ tên!
-        </div>
-        <div *ngIf="userForm.get('fullName').hasError('maxlength')">
-          Vui lòng nhập họ tên không quá 50 ký tự!
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="txtEmail">Email (*)</label>
-      <input type="email" class="form-control" id="txtEmail" formControlName="email" [ngClass]="{
-        'is-invalid': userForm.controls['email'].errors && (submitted || userForm.controls['email'].dirty || userForm.controls['email'].touched)
-      }">
-      <div class="invalid-feedback">
-        <div *ngIf="userForm.get('email').hasError('required')">
+        </ng-container>
+        <ng-container *ngIf="userForm.get('fullName').hasError('maxlength')">
+          Vui lòng nhập không quá 50 ký tự!
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="email">Email</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <input type="email" nz-input formControlName="email" id="email">
+      <nz-form-explain *ngIf="userForm.get('email').dirty && userForm.get('email').errors">
+        <ng-container *ngIf="userForm.get('email').hasError('required')">
           Vui lòng nhập email!
-        </div>
-        <div *ngIf="userForm.get('email').hasError('email')">
+        </ng-container>
+        <ng-container *ngIf="userForm.get('email').hasError('email')">
           Vui lòng nhập email hợp lệ!
-        </div>
-        <div *ngIf="userForm.get('email').hasError('maxlength')">
-          Vui lòng nhập email không quá 50 ký tự!
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="txtPhoneNumber">Điện thoại</label>
-      <input type="text" class="form-control" id="txtPhoneNumber" formControlName="phoneNumber" [ngClass]="{
-        'is-invalid': userForm.controls['phoneNumber'].errors && (submitted || userForm.controls['phoneNumber'].dirty || userForm.controls['phoneNumber'].touched)
-      }">
-      <div class="invalid-feedback">
-        <div *ngIf="userForm.get('phoneNumber').hasError('maxlength')">
-          Vui lòng nhập số điện thoại không quá 20 ký tự!
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="txtAddress">Địa chỉ</label>
-      <textarea class="form-control" id="txtAddress" formControlName="address" [ngClass]="{
-        'is-invalid': userForm.controls['address'].errors && (submitted || userForm.controls['address'].dirty || userForm.controls['address'].touched)
-      }"></textarea>
-      <div class="invalid-feedback">
-        <div *ngIf="userForm.get('address').hasError('maxlength')">
-          Vui lòng nhập địa chỉ không quá 100 ký tự!
-        </div>
-      </div>
-    </div>
-  </form>
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-default" (click)="hideModal()">Hủy</button>
-  <button type="submit" class="btn btn-primary" form="userForm">Lưu</button>
-</div>
+        </ng-container>
+        <ng-container *ngIf="userForm.get('email').hasError('maxlength')">
+            Vui lòng nhập không quá 50 ký tự!
+          </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="gender">Giới tính</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <nz-radio-group formControlName="gender">
+        <label nz-radio [nzValue]="true">Nam</label>
+        <label nz-radio [nzValue]="false">Nữ</label>
+      </nz-radio-group>
+      <nz-form-explain *ngIf="userForm.get('gender').dirty && userForm.get('gender').errors">
+        <ng-container *ngIf="userForm.get('gender').hasError('required')">
+          Vui lòng chọn giới tính!
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="dateOfBirth">Ngày sinh</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-date-picker formControlName="dateOfBirth" [nzPlaceHolder]="'dd/MM/yyyy'" nzFormat="dd/MM/yyyy"></nz-date-picker>
+      <nz-form-explain *ngIf="userForm.get('dateOfBirth').dirty && userForm.get('dateOfBirth').errors">
+        <ng-container *ngIf="userForm.get('dateOfBirth').hasError('required')">
+          Vui lòng chọn ngày sinh!
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+</form>
