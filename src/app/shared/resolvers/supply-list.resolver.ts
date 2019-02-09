@@ -10,16 +10,19 @@ import { Supply } from '../models/supply.model';
 
 @Injectable()
 export class SupplyListResolver implements Resolve<Supply[]> {
+    pageNumber = 1;
+    pageSize = 10;
+
     constructor(
         private router: Router,
         private supplyService: SupplyService,
         private notify: NotifyService) { }
 
     resolve(route: ActivatedRouteSnapshot): Observable<Supply[]> {
-        return this.supplyService.getAll().pipe(
+        return this.supplyService.getAllPaging(this.pageNumber, this.pageSize).pipe(
             catchError(_ => {
                 this.notify.error('Có lỗi xảy ra');
-                console.log('error getAllSupply');
+                console.log('error getAllPagingSupplies');
                 this.router.navigate(['/']);
                 return of(null);
             })

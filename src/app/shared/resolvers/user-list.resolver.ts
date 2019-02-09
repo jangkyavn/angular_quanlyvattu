@@ -22,6 +22,7 @@ export class UserListResolver implements Resolve<User[]> {
         return this.userService.getAllPaging(this.pageNumber, this.pageSize).pipe(
             catchError(_ => {
                 this.notify.error('Có lỗi xảy ra');
+                console.log('error getAllPagingUsers');
                 this.router.navigate(['/']);
                 return of(null);
             })

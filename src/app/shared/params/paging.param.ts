@@ -1,4 +1,4 @@
-export interface UserParams {
+export interface PagingParams {
     pageNumber?: number;
     pageSize?: number;
     keyword?: string;

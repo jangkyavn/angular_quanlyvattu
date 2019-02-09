@@ -1,11 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NzModalRef } from 'ng-zorro-antd';
 
 import { passwordMatchValidator } from '../../../../../shared/vailidators/password-match-validator';
 import { User } from '../../../../../shared/models/user.model';
 import { UserService } from '../../../../../shared/services/user.service';
 import { NotifyService } from '../../../../../shared/services/notify.service';
+import { checkUsernameDuplicateValidator } from 'src/app/shared/vailidators/check-username-duplicate-validator';
+import { checkEmailDuplicateValidator } from 'src/app/shared/vailidators/check-email-duplicate-validator';
 
 @Component({
   selector: 'app-user-add-edit-modal',
@@ -14,12 +15,11 @@ import { NotifyService } from '../../../../../shared/services/notify.service';
 })
 export class UserAddEditModalComponent implements OnInit {
   @Input() user: User;
-  isAddNew = true;
+  @Input() isAddNew: boolean;
 
   userForm: FormGroup;
 
   constructor(
-    private modal: NzModalRef,
     private fb: FormBuilder,
     private userService: UserService,
     private notify: NotifyService) { }
@@ -37,7 +37,7 @@ export class UserAddEditModalComponent implements OnInit {
         userName: [null, [
           Validators.required,
           Validators.maxLength(20)
-        ]],
+        ], [checkUsernameDuplicateValidator(this.userService)]],
         password: [null, [
           Validators.required,
           Validators.minLength(6),
@@ -55,7 +55,7 @@ export class UserAddEditModalComponent implements OnInit {
           Validators.required,
           Validators.email,
           Validators.maxLength(50)
-        ]],
+        ], [checkEmailDuplicateValidator(this.userService, '')]],
         gender: [null, [Validators.required]],
         dateOfBirth: [null, [Validators.required]]
       });
@@ -74,7 +74,7 @@ export class UserAddEditModalComponent implements OnInit {
           Validators.required,
           Validators.email,
           Validators.maxLength(50)
-        ]],
+        ], [checkEmailDuplicateValidator(this.userService, this.user.email)]],
         gender: [null, [Validators.required]],
         dateOfBirth: [null, [Validators.required]]
       });

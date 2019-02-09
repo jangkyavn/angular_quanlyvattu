@@ -5,6 +5,7 @@ import { UserService } from '../../../../shared/services/user.service';
 import { NotifyService } from '../../../../shared/services/notify.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/shared/models/user.model';
+import { checkEmailDuplicateValidator } from 'src/app/shared/vailidators/check-email-duplicate-validator';
 
 @Component({
   selector: 'app-informations',
@@ -48,6 +49,10 @@ export class InformationsComponent implements OnInit {
           ...res,
           dateOfBirth: res.dateOfBirth.substring(0, res.dateOfBirth.indexOf('T'))
         });
+
+        const email = this.accountInformationForm.get(`email`);
+        email.setAsyncValidators(checkEmailDuplicateValidator(this.userService, res.email));
+        email.updateValueAndValidity();
       });
   }
 

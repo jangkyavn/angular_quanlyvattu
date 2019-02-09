@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { User } from '../models/user.model';
 import { PaginatedResult } from '../models/pagination.model';
-import { UserParams } from '../params/user.param';
+import { PagingParams } from '../params/paging.param';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  getAllPaging(page?: any, itemsPerPage?: any, userParams?: UserParams): Observable<PaginatedResult<User[]>> {
+  getAllPaging(page?: any, itemsPerPage?: any, pagingParams?: PagingParams): Observable<PaginatedResult<User[]>> {
     const paginatedResult = new PaginatedResult<User[]>();
 
     let params = new HttpParams();
@@ -25,10 +25,10 @@ export class UserService {
       params = params.append('pageSize', itemsPerPage);
     }
 
-    if (userParams != null) {
-      params = params.append('keyword', userParams.keyword);
-      params = params.append('sortKey', userParams.sortKey);
-      params = params.append('sortValue', userParams.sortValue);
+    if (pagingParams != null) {
+      params = params.append('keyword', pagingParams.keyword);
+      params = params.append('sortKey', pagingParams.sortKey);
+      params = params.append('sortValue', pagingParams.sortValue);
     }
 
     return this.http.get<User[]>(this.baseUrl + 'users', { observe: 'response', params })
@@ -65,6 +65,10 @@ export class UserService {
 
   checkUserNameExists(userName: string) {
     return this.http.get(this.baseUrl + 'users/checkUserNameExists/' + userName);
+  }
+
+  checkEmailExists(email: string) {
+    return this.http.get(this.baseUrl + 'users/checkEmailExists/' + email);
   }
 
   checkCurrentPassword(password: string) {

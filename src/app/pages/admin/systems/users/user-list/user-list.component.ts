@@ -3,14 +3,15 @@ import { ActivatedRoute } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd';
 
 import { NotifyService } from '../../../../../shared/services/notify.service';
+import { UserService } from '../../../../../shared/services/user.service';
+import { RoleService } from '../../../../../shared/services/role.service';
+
 import { UserAddEditModalComponent } from '../user-add-edit-modal/user-add-edit-modal.component';
 import { User } from '../../../../../shared/models/user.model';
 import { Pagination, PaginatedResult } from '../../../../../shared/models/pagination.model';
-import { UserService } from '../../../../../shared/services/user.service';
 import { RoleEditModalComponent } from '../role-edit-modal/role-edit-modal.component';
 import { Role } from 'src/app/shared/models/role.model';
-import { RoleService } from '../../../../../shared/services/role.service';
-import { UserParams } from 'src/app/shared/params/user.param';
+import { PagingParams } from 'src/app/shared/params/paging.param';
 
 @Component({
   selector: 'app-user-list',
@@ -25,13 +26,13 @@ export class UserListComponent implements OnInit {
 
   users: User[];
   pagination: Pagination;
-  userParams: UserParams = {
+  pagingParams: PagingParams = {
     keyword: ''
   };
 
   constructor(
-    private modalService: NzModalService,
     private route: ActivatedRoute,
+    private modalService: NzModalService,
     private userService: UserService,
     private roleService: RoleService,
     private notify: NotifyService) { }
@@ -45,8 +46,8 @@ export class UserListComponent implements OnInit {
   }
 
   sort(sort: { key: string, value: string }): void {
-    this.userParams.sortKey = sort.key;
-    this.userParams.sortValue = sort.value;
+    this.pagingParams.sortKey = sort.key;
+    this.pagingParams.sortValue = sort.value;
     this.loadData();
   }
 
@@ -55,7 +56,6 @@ export class UserListComponent implements OnInit {
       nzTitle: 'Thêm mới người dùng',
       nzContent: UserAddEditModalComponent,
       nzMaskClosable: false,
-      nzClosable: false,
       nzComponentParams: {
         user: {},
         isAddNew: true
@@ -64,16 +64,7 @@ export class UserListComponent implements OnInit {
         {
           label: 'Hủy',
           shape: 'default',
-          onClick: (componentInstance) => {
-            if (componentInstance.userForm.dirty) {
-              const result = confirm('Bạn có chắc chắn muốn tiếp tục không? Mọi sự thay đổi không lưu sẽ bị mất');
-              if (result) {
-                modal.destroy();
-              }
-            } else {
-              modal.destroy();
-            }
-          }
+          onClick: () => modal.destroy()
         },
         {
           label: 'Lưu',
@@ -100,7 +91,6 @@ export class UserListComponent implements OnInit {
         nzTitle: 'Sửa thông tin người dùng',
         nzContent: UserAddEditModalComponent,
         nzMaskClosable: false,
-        nzClosable: false,
         nzComponentParams: {
           user,
           isAddNew: false
@@ -109,16 +99,7 @@ export class UserListComponent implements OnInit {
           {
             label: 'Hủy',
             shape: 'default',
-            onClick: (componentInstance) => {
-              if (componentInstance.userForm.dirty) {
-                const result = confirm('Bạn có chắc chắn muốn tiếp tục không? Mọi sự thay đổi không lưu sẽ bị mất');
-                if (result) {
-                  modal.destroy();
-                }
-              } else {
-                modal.destroy();
-              }
-            }
+            onClick: () =>  modal.destroy()
           },
           {
             label: 'Lưu',
@@ -158,7 +139,6 @@ export class UserListComponent implements OnInit {
       nzTitle: 'Phân quyền người dùng',
       nzContent: RoleEditModalComponent,
       nzMaskClosable: false,
-      nzClosable: false,
       nzComponentParams: {
         user
       },
@@ -187,6 +167,8 @@ export class UserListComponent implements OnInit {
                   });
                 }
               }
+
+              modal.destroy();
             });
           }
         }
@@ -206,8 +188,8 @@ export class UserListComponent implements OnInit {
   }
 
   search(keyword: string) {
-    this.userParams.keyword = keyword;
-    this.loadData();
+    this.pagingParams.keyword = keyword;
+    this.loadData(true);
   }
 
   loadData(reset: boolean = false): void {
@@ -215,7 +197,7 @@ export class UserListComponent implements OnInit {
       this.pagination.currentPage = 1;
     }
     this.loading = true;
-    this.userService.getAllPaging(this.pagination.currentPage, this.pagination.itemsPerPage, this.userParams)
+    this.userService.getAllPaging(this.pagination.currentPage, this.pagination.itemsPerPage, this.pagingParams)
       .subscribe((res: PaginatedResult<User[]>) => {
         this.loading = false;
         this.pagination = res.pagination;

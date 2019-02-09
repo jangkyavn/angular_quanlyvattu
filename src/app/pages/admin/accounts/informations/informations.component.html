@@ -33,6 +33,9 @@
           <ng-container *ngIf="accountInformationForm.get('email').hasError('email')">
             Vui lòng nhập email hợp lệ!
           </ng-container>
+          <ng-container *ngIf="accountInformationForm.get('email').hasError('duplicate')">
+            Email này đã được dùng!
+          </ng-container>
         </nz-form-explain>
       </nz-form-control>
     </nz-form-item>

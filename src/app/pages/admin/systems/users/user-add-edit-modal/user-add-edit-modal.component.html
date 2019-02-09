@@ -10,6 +10,9 @@
         <ng-container *ngIf="userForm.get('userName').hasError('maxlength')">
           Vui lòng nhập không quá 20 ký tự!
         </ng-container>
+        <ng-container *ngIf="userForm.get('userName').hasError('duplicate')">
+          Tên này đã được dùng!
+        </ng-container>
       </nz-form-explain>
     </nz-form-control>
   </nz-form-item>
@@ -38,7 +41,8 @@
         <ng-container *ngIf="userForm.get('confirmPassword').hasError('required')">
           Vui lòng nhập lại mật khẩu!
         </ng-container>
-        <ng-container *ngIf="userForm.get('confirmPassword').hasError('notSame')">
+        <ng-container
+          *ngIf="userForm.get('confirmPassword').hasError('notSame') && !userForm.get('confirmPassword').hasError('required')">
           Mật khẩu và nhập lại mật khẩu chưa trùng khớp!
         </ng-container>
       </nz-form-explain>
@@ -70,8 +74,11 @@
           Vui lòng nhập email hợp lệ!
         </ng-container>
         <ng-container *ngIf="userForm.get('email').hasError('maxlength')">
-            Vui lòng nhập không quá 50 ký tự!
-          </ng-container>
+          Vui lòng nhập không quá 50 ký tự!
+        </ng-container>
+        <ng-container *ngIf="userForm.get('email').hasError('duplicate')">
+          Email này đã được dùng!
+        </ng-container>
       </nz-form-explain>
     </nz-form-control>
   </nz-form-item>
@@ -92,7 +99,8 @@
   <nz-form-item>
     <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="dateOfBirth">Ngày sinh</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
-      <nz-date-picker formControlName="dateOfBirth" [nzPlaceHolder]="'dd/MM/yyyy'" nzFormat="dd/MM/yyyy"></nz-date-picker>
+      <nz-date-picker formControlName="dateOfBirth" [nzPlaceHolder]="'dd/MM/yyyy'" nzFormat="dd/MM/yyyy">
+      </nz-date-picker>
       <nz-form-explain *ngIf="userForm.get('dateOfBirth').dirty && userForm.get('dateOfBirth').errors">
         <ng-container *ngIf="userForm.get('dateOfBirth').hasError('required')">
           Vui lòng chọn ngày sinh!

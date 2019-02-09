@@ -1,32 +1,19 @@
-<div class="modal-header">
-  <h4 class="modal-title pull-left">{{title}}</h4>
-  <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-<div class="modal-body">
-  <form [formGroup]="supplyForm" id="supplyForm" (ngSubmit)="saveChanges()">
-    <input type="hidden" formControlName="maNguon">
-    <div class="form-group">
-      <label for="txtTenNguon">Tên nguồn cung cấp (*)</label>
-      <input type="text" id="txtTenNguon" class="form-control" formControlName="tenNguon" [ngClass]="{
-        'is-invalid': supplyForm.controls['tenNguon'].errors && (submitted || supplyForm.controls['tenNguon'].dirty || supplyForm.controls['tenNguon'].touched)
-      }">
-      <div class="invalid-feedback">
-        <div *ngIf="supplyForm.get('tenNguon').hasError('required')">
-          Vui lòng nhập tên nguồn cung cấp!
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="txtGhiChu">Ghi chú</label>
-      <textarea id="txtGhiChu" class="form-control" formControlName="ghiChu" [ngClass]="{
-        'is-invalid': supplyForm.controls['ghiChu'].errors && (submitted || supplyForm.controls['ghiChu'].dirty || supplyForm.controls['ghiChu'].touched)
-      }"></textarea>
-    </div>
-  </form>
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-default" (click)="hideModal()">Hủy</button>
-  <button type="submit" class="btn btn-primary" form="supplyForm">Lưu</button>
-</div>
+<form nz-form [formGroup]="supplyForm" (ngSubmit)="saveChanges()" autocomplete="off">
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="tenNguon">Tên nguồn</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <input nz-input formControlName="tenNguon" id="tenNguon" autofocus>
+      <nz-form-explain *ngIf="supplyForm.get('tenNguon').dirty && supplyForm.get('tenNguon').errors">
+        <ng-container *ngIf="supplyForm.get('tenNguon').hasError('required')">
+          Vui lòng nhập tên nguồn!
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="ghiChu">Ghi chú</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <input type="text" nz-input formControlName="ghiChu" id="ghiChu">
+    </nz-form-control>
+  </nz-form-item>
+</form>
