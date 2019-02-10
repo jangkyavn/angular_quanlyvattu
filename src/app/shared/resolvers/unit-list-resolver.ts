@@ -10,16 +10,19 @@ import { Unit } from '../models/unit.model';
 
 @Injectable()
 export class UnitListResolver implements Resolve<Unit[]> {
+    pageNumber = 1;
+    pageSize = 10;
+
     constructor(
         private router: Router,
         private unitService: UnitService,
         private notify: NotifyService) { }
 
     resolve(route: ActivatedRouteSnapshot): Observable<Unit[]> {
-        return this.unitService.getAll().pipe(
+        return this.unitService.getAllPaging(this.pageNumber, this.pageSize).pipe(
             catchError(_ => {
                 this.notify.error('Có lỗi xảy ra');
-                console.log('error getAllUnit');
+                console.log('error getAllPagingUnit');
                 this.router.navigate(['/']);
                 return of(null);
             })

@@ -1,110 +1,102 @@
-<div class="modal-header">
-  <h4 class="modal-title pull-left">{{title}}</h4>
-  <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-<div class="modal-body">
-  <form [formGroup]="personnelForm" id="personnelForm" (ngSubmit)="saveChanges()">
-    <input type="hidden" formControlName="maNS">
-    <div class="form-group">
-      <label for="txtHoTen">Họ tên (*)</label>
-      <input type="text" id="txtHoTen" class="form-control" formControlName="hoTen" [ngClass]="{
-          'is-invalid': personnelForm.controls['hoTen'].errors && (submitted || personnelForm.controls['hoTen'].dirty || personnelForm.controls['hoTen'].touched)
-        }">
-      <div class="invalid-feedback">
-        <div *ngIf="personnelForm.get('hoTen').hasError('required')">
+<form nz-form [formGroup]="personnelForm" (ngSubmit)="saveChanges()" autocomplete="off">
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="hoTen">Họ tên</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <input nz-input formControlName="hoTen" id="hoTen" autofocus>
+      <nz-form-explain *ngIf="personnelForm.get('hoTen').dirty && personnelForm.get('hoTen').errors">
+        <ng-container *ngIf="personnelForm.get('hoTen').hasError('required')">
           Vui lòng nhập họ tên!
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="txtNgaySinh">Ngày sinh (*)</label>
-      <input type="date" id="txtNgaySinh" class="form-control" formControlName="ngaySinh" [ngClass]="{
-            'is-invalid': personnelForm.controls['ngaySinh'].errors && (submitted || personnelForm.controls['ngaySinh'].dirty || personnelForm.controls['ngaySinh'].touched)
-          }">
-      <div class="invalid-feedback">
-        <div *ngIf="personnelForm.get('ngaySinh').hasError('required')">
-          Vui lòng nhập ngày sinh!
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="txtQueQuan">Quê quán (*)</label>
-      <input type="text" id="txtQueQuan" class="form-control" formControlName="queQuan" [ngClass]="{
-            'is-invalid': personnelForm.controls['queQuan'].errors && (submitted || personnelForm.controls['queQuan'].dirty || personnelForm.controls['queQuan'].touched)
-          }">
-      <div class="invalid-feedback">
-        <div *ngIf="personnelForm.get('queQuan').hasError('required')">
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="ngaySinh">Ngày sinh</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <nz-date-picker formControlName="ngaySinh" [nzPlaceHolder]="'dd/MM/yyyy'" nzFormat="dd/MM/yyyy">
+      </nz-date-picker>
+      <nz-form-explain *ngIf="personnelForm.get('ngaySinh').dirty && personnelForm.get('ngaySinh').errors">
+        <ng-container *ngIf="personnelForm.get('ngaySinh').hasError('required')">
+          Vui lòng chọn ngày sinh!
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="queQuan">Quê quán</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <textarea nz-input formControlName="queQuan" id="queQuan"></textarea>
+      <nz-form-explain *ngIf="personnelForm.get('queQuan').dirty && personnelForm.get('queQuan').errors">
+        <ng-container *ngIf="personnelForm.get('queQuan').hasError('required')">
           Vui lòng nhập quê quán!
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="txtDanToc">Dân tộc (*)</label>
-      <input type="text" iD="txtDanToc" class="form-control" formControlName="danToc" [ngClass]="{
-              'is-invalid': personnelForm.controls['danToc'].errors && (submitted || personnelForm.controls['danToc'].dirty || personnelForm.controls['danToc'].touched)
-            }">
-      <div class="invalid-feedback">
-        <div *ngIf="personnelForm.get('danToc').hasError('required')">
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="danToc">Dân tộc</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <input nz-input formControlName="danToc" id="danToc">
+      <nz-form-explain *ngIf="personnelForm.get('danToc').dirty && personnelForm.get('danToc').errors">
+        <ng-container *ngIf="personnelForm.get('danToc').hasError('required')">
           Vui lòng nhập dân tộc!
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="txtTonGiao">Tôn giáo</label>
-      <input type="text" iD="txtTonGiao" class="form-control" formControlName="tonGiao" [ngClass]="{
-                'is-invalid': personnelForm.controls['tonGiao'].errors && (submitted || personnelForm.controls['tonGiao'].dirty || personnelForm.controls['tonGiao'].touched)
-              }">
-    </div>
-    <div class="form-group">
-      <label for="txtCapBacSHSQ">Cấp bậc SHSQ</label>
-      <input type="text" iD="txtCapBacSHSQ" class="form-control" formControlName="capBacSHSQ" [ngClass]="{
-                  'is-invalid': personnelForm.controls['capBacSHSQ'].errors && (submitted || personnelForm.controls['capBacSHSQ'].dirty || personnelForm.controls['capBacSHSQ'].touched)
-                }">
-    </div>
-    <div class="form-group">
-      <label for="txtChucVu">Chức vụ</label>
-      <input type="text" iD="txtChucVu" class="form-control" formControlName="chucVu" [ngClass]="{
-                    'is-invalid': personnelForm.controls['chucVu'].errors && (submitted || personnelForm.controls['chucVu'].dirty || personnelForm.controls['chucVu'].touched)
-                  }">
-    </div>
-    <div class="form-group">
-      <label for="txtNgayNhapNguTuyenDung">Ngày nhập ngũ/tuyển dụng</label>
-      <input type="date" iD="txtNgayNhapNguTuyenDung" class="form-control" formControlName="ngayNhapNguTuyenDung"
-        [ngClass]="{
-                      'is-invalid': personnelForm.controls['ngayNhapNguTuyenDung'].errors && (submitted || personnelForm.controls['ngayNhapNguTuyenDung'].dirty || personnelForm.controls['ngayNhapNguTuyenDung'].touched)
-                    }">
-    </div>
-    <div class="form-group">
-      <label for="txtXuatThan">Xuất thân</label>
-      <input type="text" iD="txtXuatThan" class="form-control" formControlName="xuatThan" [ngClass]="{
-                        'is-invalid': personnelForm.controls['xuatThan'].errors && (submitted || personnelForm.controls['xuatThan'].dirty || personnelForm.controls['xuatThan'].touched)
-                      }">
-    </div>
-    <div class="form-group">
-      <label for="txtBanThan">Bản thân</label>
-      <input type="text" iD="txtBanThan" class="form-control" formControlName="banThan" [ngClass]="{
-                          'is-invalid': personnelForm.controls['banThan'].errors && (submitted || personnelForm.controls['banThan'].dirty || personnelForm.controls['banThan'].touched)
-                        }">
-    </div>
-    <div class="form-group">
-      <label for="txtQuaTrinhHocTap">Quá trình học tập</label>
-      <input type="text" iD="txtQuaTrinhHocTap" class="form-control" formControlName="quaTrinhHocTap" [ngClass]="{'is-invalid': personnelForm.controls['quaTrinhHocTap'].errors && (submitted || personnelForm.controls['quaTrinhHocTap'].dirty || personnelForm.controls['quaTrinhHocTap'].touched)}">
-    </div>
-    <div class="form-group">
-        <label for="txtThanNhan">Thân nhân</label>
-        <input type="text" iD="txtThanNhan" class="form-control" formControlName="thanNhan" [ngClass]="{'is-invalid': personnelForm.controls['thanNhan'].errors && (submitted || personnelForm.controls['thanNhan'].dirty || personnelForm.controls['thanNhan'].touched)}">
-      </div>
-    <div class="form-group">
-      <label for="txtGhiChu">Ghi chú</label>
-      <textarea id="txtGhiChu" class="form-control" formControlName="ghiChu" [ngClass]="{
-          'is-invalid': personnelForm.controls['ghiChu'].errors && (submitted || personnelForm.controls['ghiChu'].dirty || personnelForm.controls['ghiChu'].touched)
-        }"></textarea>
-    </div>
-  </form>
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-default" (click)="hideModal()">Hủy</button>
-  <button type="submit" class="btn btn-primary" form="personnelForm">Lưu</button>
-</div>
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="tonGiao">Tôn giáo</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <input nz-input formControlName="tonGiao" id="tonGiao">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="capBacSHSQ">Cấp bậc SHSQ</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <input nz-input formControlName="capBacSHSQ" id="capBacSHSQ">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="chucVu">Chức vụ</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <input nz-input formControlName="chucVu" id="chucVu">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="ngayNhapNguTuyenDung">Ngày NN/TD</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <nz-date-picker formControlName="ngayNhapNguTuyenDung" [nzPlaceHolder]="'dd/MM/yyyy'" nzFormat="dd/MM/yyyy">
+      </nz-date-picker>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="xuatThan">Xuất thân</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <input nz-input formControlName="xuatThan" id="xuatThan">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="banThan">Bản thân</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <input nz-input formControlName="banThan" id="banThan">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="quaTrinhHocTap">Quá trình học tập</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <textarea rows="3" nz-input formControlName="quaTrinhHocTap" id="quaTrinhHocTap"></textarea>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="thanNhan">Thân nhân</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <textarea rows="3" nz-input formControlName="thanNhan" id="thanNhan"></textarea>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="ghiChu">Ghi chú</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <textarea nz-input formControlName="ghiChu" id="ghiChu"></textarea>
+    </nz-form-control>
+  </nz-form-item>
+</form>

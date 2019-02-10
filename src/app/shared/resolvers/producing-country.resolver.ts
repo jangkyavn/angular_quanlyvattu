@@ -10,16 +10,19 @@ import { ProducingCountry } from '../models/producing-country.model';
 
 @Injectable()
 export class ProducingCountryListResolver implements Resolve<ProducingCountry[]> {
+    pageNumber = 1;
+    pageSize = 10;
+
     constructor(
         private router: Router,
         private producingCountryService: ProducingCountryService,
         private notify: NotifyService) { }
 
     resolve(route: ActivatedRouteSnapshot): Observable<ProducingCountry[]> {
-        return this.producingCountryService.getAll().pipe(
+        return this.producingCountryService.getAllPaging(this.pageNumber, this.pageSize).pipe(
             catchError(_ => {
                 this.notify.error('Có lỗi xảy ra');
-                console.log('error getAllProducingCountry');
+                console.log('error getAllPagingProducingCountry');
                 this.router.navigate(['/']);
                 return of(null);
             })

@@ -5,41 +5,62 @@
 </nz-breadcrumb>
 
 <div style="padding:24px; background: #fff; min-height: 70vh">
-  <div class="row mb-2">
-    <div class="col-md-4 col-sm-12">
-
+  <div nz-row style="margin-bottom: 0.5rem">
+    <div nz-col nzSpan="8">
+      <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
+        <input type="text" nz-input placeholder="Tìm kiếm..." #keyword (keyup.enter)="search(keyword.value)">
+      </nz-input-group>
+      <ng-template #suffixIconButton>
+        <button nz-button nzType="primary" nzSearch (click)="search(keyword.value)"><i nz-icon type="search"></i></button>
+      </ng-template>
     </div>
-    <div class="col-md-8 col-sm-12 text-right">
-      <button class="btn btn-success mr-1" (click)="addNew()">
-        <i class="fa fa-plus"></i> Thêm mới
+    <div nz-col nzSpan="8" nzOffset="8" class="text-right">
+      <button nz-button nzType="primary" (click)="addNew()">
+        <i nz-icon type="plus" theme="outline"></i> Thêm
       </button>
     </div>
   </div>
 
-  <table class="table table-hover">
-    <thead>
+  <nz-table #table 
+    nzShowSizeChanger 
+    [nzFrontPagination]="false" 
+    [nzData]="dataSet" 
+    [nzLoading]="loading" 
+    [nzTotal]="pagination.totalItems"
+    [(nzPageIndex)]="pagination.currentPage" 
+    [(nzPageSize)]="pagination.itemsPerPage" 
+    [nzNoResult]="'Không tìm thấy kết quả.'"
+    (nzPageIndexChange)="loadData()" 
+    (nzPageSizeChange)="loadData(true)" 
+    nzShowQuickJumper [nzShowTotal]="rangeTemplate">
+    <ng-template #rangeTemplate let-range="range" let-total>
+      {{range[0]}}-{{range[1]}} của {{total}} bản ghi
+    </ng-template>
+    <thead (nzSortChange)="sort($event)" nzSingleSort>
       <tr>
-        <th style="width: 10%;">STT</th>
-        <th style="width: 15%;">Tên kho</th>
-        <th style="width: 15%;">Điện thoại</th>
-        <th style="width: 25%;">Địa chỉ</th>
-        <th style="width: 20%;">Ghi chú</th>
-        <th style="width: 15%;">Thao tác</th>
+        <th nzWidth="20%" nzShowSort nzSortKey="tenKho">Tên kho</th>
+        <th nzWidth="15%" nzShowSort nzSortKey="dienThoai">Điện thoại</th>
+        <th nzWidth="25%" nzShowSort nzSortKey="diaChi">Địa chỉ</th>
+        <th nzWidth="20%" nzShowSort nzSortKey="ghiChu">Ghi chú</th>
+        <th nzWidth="20%">Thao tác</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let materialStore of materialStores; let i = index">
-        <td>{{i + 1}}</td>
-        <td>{{materialStore.tenKho}}</td>
-        <td>{{materialStore.dienThoai}}</td>
-        <td>{{materialStore.diaChi}}</td>
-        <td>{{materialStore.ghiChu}}</td>
+      <tr *ngFor="let data of table.data">
+        <td>{{data.tenKho}}</td>
+        <td>{{data.dienThoai}}</td>
+        <td>{{data.diaChi}}</td>
+        <td>{{data.ghiChu || 'Không có'}}</td>
         <td>
-          <button class="btn btn-info btn-sm" nz-tooltip nzTitle="Sửa" (click)="update(materialStore.maKho)">
-            <i class="fa fa-edit"></i>
+          <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa" (click)="update(data.maKho)">
+            <i nz-icon type="edit" theme="outline"></i>
+          </button>
+          <nz-divider nzType="vertical"></nz-divider>
+          <button nz-button nzType="default" class="btn-danger" nz-tooltip nzTitle="Xóa" (click)="delete(data.maKho)">
+            <i nz-icon type="delete" theme="outline"></i>
           </button>
         </td>
       </tr>
     </tbody>
-  </table>
+  </nz-table>
 </div>

@@ -24,10 +24,11 @@ export class UserListComponent implements OnInit {
   sortValue = null;
   sortKey = null;
 
-  users: User[];
   pagination: Pagination;
   pagingParams: PagingParams = {
-    keyword: ''
+    keyword: '',
+    sortKey: '',
+    sortValue: ''
   };
 
   constructor(
@@ -69,7 +70,6 @@ export class UserListComponent implements OnInit {
         {
           label: 'Lưu',
           type: 'primary',
-          loading: false,
           onClick: (componentInstance) => {
             componentInstance.saveChanges((res: boolean) => {
               if (res) {
@@ -104,7 +104,6 @@ export class UserListComponent implements OnInit {
           {
             label: 'Lưu',
             type: 'primary',
-            loading: false,
             onClick: (componentInstance) => {
               componentInstance.saveChanges((res: boolean) => {
                 if (res) {
@@ -151,7 +150,6 @@ export class UserListComponent implements OnInit {
         {
           label: 'Lưu',
           type: 'primary',
-          loading: false,
           onClick: (componentInstance) => {
             componentInstance.updateRoles((res: Role[]) => {
               if (res && res.length > 0) {

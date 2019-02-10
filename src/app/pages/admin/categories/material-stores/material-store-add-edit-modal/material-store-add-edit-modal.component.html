@@ -1,54 +1,41 @@
-<div class="modal-header">
-  <h4 class="modal-title pull-left">{{title}}</h4>
-  <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-<div class="modal-body">
-  <form [formGroup]="materialStoreForm" id="materialStoreForm" (ngSubmit)="saveChanges()">
-    <input type="hidden" formControlName="maKho">
-    <div class="form-group">
-      <label for="txtTenKho">Tên kho (*)</label>
-      <input type="text" id="txtTenKho" class="form-control" formControlName="tenKho" [ngClass]="{
-        'is-invalid': materialStoreForm.controls['tenKho'].errors && (submitted || materialStoreForm.controls['tenKho'].dirty || materialStoreForm.controls['tenKho'].touched)
-      }">
-      <div class="invalid-feedback">
-        <div *ngIf="materialStoreForm.get('tenKho').hasError('required')">
+<form nz-form [formGroup]="materialStoreForm" (ngSubmit)="saveChanges()" autocomplete="off">
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="tenKho">Tên nguồn</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <input nz-input formControlName="tenKho" id="tenKho" autofocus>
+      <nz-form-explain *ngIf="materialStoreForm.get('tenKho').dirty && materialStoreForm.get('tenKho').errors">
+        <ng-container *ngIf="materialStoreForm.get('tenKho').hasError('required')">
           Vui lòng nhập tên kho!
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="txtDienThoai">Điện thoại (*)</label>
-      <input type="text" id="txtDienThoai" class="form-control" formControlName="dienThoai" [ngClass]="{
-        'is-invalid': materialStoreForm.controls['dienThoai'].errors && (submitted || materialStoreForm.controls['dienThoai'].dirty || materialStoreForm.controls['dienThoai'].touched)
-      }">
-      <div class="invalid-feedback">
-        <div *ngIf="materialStoreForm.get('dienThoai').hasError('required')">
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="dienThoai">Điện thoại</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <input nz-input formControlName="dienThoai" id="dienThoai">
+      <nz-form-explain *ngIf="materialStoreForm.get('dienThoai').dirty && materialStoreForm.get('dienThoai').errors">
+        <ng-container *ngIf="materialStoreForm.get('dienThoai').hasError('required')">
           Vui lòng nhập điện thoại!
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="txtDiaChi">Địa chỉ (*)</label>
-      <input type="text" id="txtDiaChi" class="form-control" formControlName="diaChi" [ngClass]="{
-        'is-invalid': materialStoreForm.controls['diaChi'].errors && (submitted || materialStoreForm.controls['diaChi'].dirty || materialStoreForm.controls['diaChi'].touched)
-      }">
-      <div class="invalid-feedback">
-        <div *ngIf="materialStoreForm.get('diaChi').hasError('required')">
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="diaChi">Địa chỉ</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <textarea nz-input formControlName="diaChi" id="diaChi"></textarea>
+      <nz-form-explain *ngIf="materialStoreForm.get('diaChi').dirty && materialStoreForm.get('diaChi').errors">
+        <ng-container *ngIf="materialStoreForm.get('diaChi').hasError('required')">
           Vui lòng nhập địa chỉ!
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="txtGhiChu">Ghi chú</label>
-      <textarea id="txtGhiChu" class="form-control" formControlName="ghiChu" [ngClass]="{
-        'is-invalid': materialStoreForm.controls['ghiChu'].errors && (submitted || materialStoreForm.controls['ghiChu'].dirty || materialStoreForm.controls['ghiChu'].touched)
-      }"></textarea>
-    </div>
-  </form>
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-default" (click)="hideModal()">Hủy</button>
-  <button type="submit" class="btn btn-primary" form="materialStoreForm">Lưu</button>
-</div>
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="ghiChu">Ghi chú</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <textarea nz-input formControlName="ghiChu" id="ghiChu"></textarea>
+    </nz-form-control>
+  </nz-form-item>
+</form>

@@ -37,7 +37,7 @@ export class SupplyAddEditModalComponent implements OnInit {
     });
   }
 
-  saveChanges(callBack: (result: boolean) => any) {
+  saveChanges(callBack: (result: boolean) => any = null) {
     if (this.supplyForm.invalid) {
       // tslint:disable-next-line:forin
       for (const i in this.supplyForm.controls) {

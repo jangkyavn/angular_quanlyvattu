@@ -1,26 +1,13 @@
-<div class="modal-header">
-    <h4 class="modal-title pull-left">{{title}}</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <form [formGroup]="unitForm" id="unitForm" (ngSubmit)="saveChanges()">
-      <input type="hidden" formControlName="maDVT">
-      <div class="form-group">
-        <label for="txtTenDVT">Tên đơn vị tính (*)</label>
-        <input type="text" id="txtTenDVT" class="form-control" formControlName="tenDVT" [ngClass]="{
-          'is-invalid': unitForm.controls['tenDVT'].errors && (submitted || unitForm.controls['tenDVT'].dirty || unitForm.controls['tenDVT'].touched)
-        }">
-        <div class="invalid-feedback">
-          <div *ngIf="unitForm.get('tenDVT').hasError('required')">
-            Vui lòng nhập tên đơn vị tính!
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-default" (click)="hideModal()">Hủy</button>
-    <button type="submit" class="btn btn-primary" form="unitForm">Lưu</button>
-  </div>
+<form nz-form [formGroup]="unitForm" (ngSubmit)="saveChanges()" autocomplete="off">
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="tenDVT">Tên đơn vị tính</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <input nz-input formControlName="tenDVT" id="tenDVT" autofocus>
+      <nz-form-explain *ngIf="unitForm.get('tenDVT').dirty && unitForm.get('tenDVT').errors">
+        <ng-container *ngIf="unitForm.get('tenDVT').hasError('required')">
+          Vui lòng nhập tên đơn vị tính!
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+</form>

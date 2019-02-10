@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
+import { NzModalService } from 'ng-zorro-antd';
 
 import { PersonnelService } from 'src/app/shared/services/personnel.service';
+import { NotifyService } from 'src/app/shared/services/notify.service';
+
 import { Personnel } from 'src/app/shared/models/personnel.model';
 import { PersonnelAddEditModalComponent } from '../personnel-add-edit-modal/personnel-add-edit-modal.component';
+import { Pagination, PaginatedResult } from 'src/app/shared/models/pagination.model';
+import { PagingParams } from 'src/app/shared/params/paging.param';
 
 @Component({
   selector: 'app-personnel-list',
@@ -12,59 +16,130 @@ import { PersonnelAddEditModalComponent } from '../personnel-add-edit-modal/pers
   styleUrls: ['./personnel-list.component.scss']
 })
 export class PersonnelListComponent implements OnInit {
-  personnels: Personnel[];
-  bsModalRef: BsModalRef;
+  dataSet = [];
+  loading = true;
+  sortValue = null;
+  sortKey = null;
+
+  pagination: Pagination;
+  pagingParams: PagingParams = {
+    keyword: '',
+    sortKey: '',
+    sortValue: ''
+  };
 
   constructor(
     private route: ActivatedRoute,
+    private modalService: NzModalService,
     private personnelService: PersonnelService,
-    private modalService: BsModalService) { }
+    private notify: NotifyService) { }
 
   ngOnInit() {
     this.route.data.subscribe(data => {
-      this.personnels = data['personnels'];
+      this.loading = false;
+      this.pagination = data['personnels'].pagination;
+      this.dataSet = data['personnels'].result;
     });
   }
 
-  loadData() {
-    this.personnelService.getAll().subscribe((res: Personnel[]) => {
-      this.personnels = res;
-    });
+  sort(sort: { key: string, value: string }): void {
+    this.pagingParams.sortKey = sort.key;
+    this.pagingParams.sortValue = sort.value;
+    this.loadData();
+  }
+
+  loadData(reset: boolean = false): void {
+    if (reset) {
+      this.pagination.currentPage = 1;
+    }
+    this.loading = true;
+    this.personnelService.getAllPaging(this.pagination.currentPage, this.pagination.itemsPerPage, this.pagingParams)
+      .subscribe((res: PaginatedResult<Personnel[]>) => {
+        this.loading = false;
+        this.pagination = res.pagination;
+        this.dataSet = res.result;
+      }, error => {
+        this.notify.error('Có lỗi xảy ra');
+        console.log('error getAllPagingPersonnel');
+      });
   }
 
   addNew() {
-    const modalOption: ModalOptions = {
-      backdrop: 'static',
-      initialState: {
-        title: 'Thêm nhân sự',
+    const modal = this.modalService.create({
+      nzTitle: 'Thêm nhân sự',
+      nzContent: PersonnelAddEditModalComponent,
+      nzMaskClosable: false,
+      nzComponentParams: {
         personnel: {},
         isAddNew: true
-      }
-    };
-    this.bsModalRef = this.modalService.show(PersonnelAddEditModalComponent, modalOption);
-    this.bsModalRef.content.saveEntity.subscribe((res: boolean) => {
-      if (res) {
-        this.loadData();
-      }
+      },
+      nzFooter: [
+        {
+          label: 'Hủy',
+          shape: 'default',
+          onClick: () => modal.destroy(),
+        },
+        {
+          label: 'Lưu',
+          type: 'primary',
+          onClick: (componentInstance) => {
+            componentInstance.saveChanges((res: boolean) => {
+              if (res) {
+                this.loadData();
+                modal.destroy();
+              } else {
+                modal.destroy();
+              }
+            });
+          }
+        }
+      ]
     });
   }
 
   update(id: number) {
     this.personnelService.getDetail(id).subscribe((personnel: Personnel) => {
-      const modalOption: ModalOptions = {
-        backdrop: 'static',
-        initialState: {
-          title: 'Sửa nhân sự',
+      const modal = this.modalService.create({
+        nzTitle: 'Sửa nhân sự',
+        nzContent: PersonnelAddEditModalComponent,
+        nzMaskClosable: false,
+        nzComponentParams: {
           personnel,
           isAddNew: false
-        }
-      };
-      this.bsModalRef = this.modalService.show(PersonnelAddEditModalComponent, modalOption);
-      this.bsModalRef.content.saveEntity.subscribe((res: boolean) => {
-        if (res) {
-          this.loadData();
-        }
+        },
+        nzFooter: [
+          {
+            label: 'Hủy',
+            shape: 'default',
+            onClick: () => modal.destroy()
+          },
+          {
+            label: 'Lưu',
+            type: 'primary',
+            onClick: (componentInstance) => {
+              componentInstance.saveChanges((res: boolean) => {
+                if (res) {
+                  this.loadData();
+                  modal.destroy();
+                } else {
+                  modal.destroy();
+                }
+              });
+            }
+          }
+        ]
       });
     });
+  }
+
+  delete(id: number) {
+    this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
+      /////////////
+    });
+  }
+
+  search(keyword: string) {
+    this.pagingParams.keyword = keyword;
+    this.loadData(true);
   }
 }

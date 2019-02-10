@@ -81,7 +81,7 @@ export class UserAddEditModalComponent implements OnInit {
     }
   }
 
-  saveChanges(callBack: (result: boolean) => any) {
+  saveChanges(callBack: (result: boolean) => any = null) {
     if (this.userForm.invalid) {
       // tslint:disable-next-line:forin
       for (const i in this.userForm.controls) {

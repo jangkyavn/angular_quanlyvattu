@@ -1,7 +1,5 @@
-import { Component, OnInit, Output, EventEmitter, AfterViewInit } from '@angular/core';
-
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { BsModalRef } from 'ngx-bootstrap/modal';
 
 import { MaterialStore } from 'src/app/shared/models/material-store.model';
 import { MaterialStoreService } from 'src/app/shared/services/material-store.service';
@@ -12,27 +10,20 @@ import { NotifyService } from 'src/app/shared/services/notify.service';
   templateUrl: './material-store-add-edit-modal.component.html',
   styleUrls: ['./material-store-add-edit-modal.component.scss']
 })
-export class MaterialStoreAddEditModalComponent implements OnInit, AfterViewInit {
-  @Output() saveEntity = new EventEmitter<boolean>();
-  title: string;
-  materialStore: MaterialStore;
-  submitted = false;
-  isAddNew: boolean;
+export class MaterialStoreAddEditModalComponent implements OnInit {
+  @Input() materialStore: MaterialStore;
+  @Input() isAddNew: boolean;
 
   materialStoreForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
-    public bsModalRef: BsModalRef,
     private materialStoreService: MaterialStoreService,
     private notify: NotifyService
   ) { }
 
   ngOnInit() {
     this.createForm();
-  }
-
-  ngAfterViewInit() {
     this.materialStoreForm.reset();
     this.materialStoreForm.patchValue(this.materialStore);
   }
@@ -47,10 +38,13 @@ export class MaterialStoreAddEditModalComponent implements OnInit, AfterViewInit
     });
   }
 
-  saveChanges() {
-    this.submitted = true;
-
+  saveChanges(callBack: (result: boolean) => any = null) {
     if (this.materialStoreForm.invalid) {
+      // tslint:disable-next-line:forin
+      for (const i in this.materialStoreForm.controls) {
+        this.materialStoreForm.controls[i].markAsDirty();
+        this.materialStoreForm.controls[i].updateValueAndValidity();
+      }
       return;
     }
 
@@ -58,38 +52,25 @@ export class MaterialStoreAddEditModalComponent implements OnInit, AfterViewInit
     if (this.isAddNew) {
       this.materialStoreService.addNew(materialStore).subscribe((res: any) => {
         if (res) {
-          this.saveEntity.emit(true);
           this.notify.success('Thêm thành công!');
-          this.bsModalRef.hide();
+          callBack(true);
         }
       }, error => {
-        this.saveEntity.emit(false);
         this.notify.success('Có lỗi xảy ra!');
         console.log('error addMaterialStore');
+        callBack(false);
       });
     } else {
       this.materialStoreService.update(materialStore).subscribe((res: any) => {
         if (res) {
-          this.saveEntity.emit(true);
           this.notify.success('Sửa thành công!');
-          this.bsModalRef.hide();
+          callBack(true);
         }
       }, error => {
-        this.saveEntity.emit(false);
         this.notify.success('Có lỗi xảy ra!');
         console.log('error updateMaterialStore');
+        callBack(false);
       });
-    }
-  }
-
-  hideModal() {
-    if (this.materialStoreForm.dirty) {
-      const result = confirm('Bạn có chắc chắn muốn tiếp tục không? Mọi sự thay đổi không lưu sẽ bị mất');
-      if (result) {
-        this.bsModalRef.hide();
-      }
-    } else {
-      this.bsModalRef.hide();
     }
   }
 }

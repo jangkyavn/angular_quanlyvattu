@@ -1,7 +1,5 @@
-import { Component, OnInit, Output, EventEmitter, AfterViewInit } from '@angular/core';
-
+import { Component, OnInit, Output, EventEmitter, AfterViewInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { BsModalRef } from 'ngx-bootstrap/modal';
 
 import { Personnel } from 'src/app/shared/models/personnel.model';
 import { PersonnelService } from 'src/app/shared/services/personnel.service';
@@ -12,27 +10,20 @@ import { NotifyService } from 'src/app/shared/services/notify.service';
   templateUrl: './personnel-add-edit-modal.component.html',
   styleUrls: ['./personnel-add-edit-modal.component.scss']
 })
-export class PersonnelAddEditModalComponent implements OnInit, AfterViewInit {
-  @Output() saveEntity = new EventEmitter<boolean>();
-  title: string;
-  personnel: Personnel;
-  submitted = false;
-  isAddNew: boolean;
+export class PersonnelAddEditModalComponent implements OnInit {
+  @Input() personnel: Personnel;
+  @Input() isAddNew: boolean;
 
   personnelForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
-    public bsModalRef: BsModalRef,
     private personnelService: PersonnelService,
     private notify: NotifyService
   ) { }
 
   ngOnInit() {
     this.createForm();
-  }
-
-  ngAfterViewInit() {
     this.personnelForm.reset();
     this.personnelForm.patchValue(this.personnel);
   }
@@ -56,10 +47,13 @@ export class PersonnelAddEditModalComponent implements OnInit, AfterViewInit {
     });
   }
 
-  saveChanges() {
-    this.submitted = true;
-
+  saveChanges(callBack: (result: boolean) => any = null) {
     if (this.personnelForm.invalid) {
+       // tslint:disable-next-line:forin
+       for (const i in this.personnelForm.controls) {
+        this.personnelForm.controls[i].markAsDirty();
+        this.personnelForm.controls[i].updateValueAndValidity();
+      }
       return;
     }
 
@@ -67,38 +61,25 @@ export class PersonnelAddEditModalComponent implements OnInit, AfterViewInit {
     if (this.isAddNew) {
       this.personnelService.addNew(personnel).subscribe((res: any) => {
         if (res) {
-          this.saveEntity.emit(true);
           this.notify.success('Thêm thành công!');
-          this.bsModalRef.hide();
+          callBack(true);
         }
       }, error => {
-        this.saveEntity.emit(false);
         this.notify.success('Có lỗi xảy ra!');
         console.log('error addPersonnel');
+        callBack(false);
       });
     } else {
       this.personnelService.update(personnel).subscribe((res: any) => {
         if (res) {
-          this.saveEntity.emit(true);
           this.notify.success('Sửa thành công!');
-          this.bsModalRef.hide();
+          callBack(true);
         }
       }, error => {
-        this.saveEntity.emit(false);
         this.notify.success('Có lỗi xảy ra!');
         console.log('error updatePersonnel');
+        callBack(false);
       });
-    }
-  }
-
-  hideModal() {
-    if (this.personnelForm.dirty) {
-      const result = confirm('Bạn có chắc chắn muốn tiếp tục không? Mọi sự thay đổi không lưu sẽ bị mất');
-      if (result) {
-        this.bsModalRef.hide();
-      }
-    } else {
-      this.bsModalRef.hide();
     }
   }
 }

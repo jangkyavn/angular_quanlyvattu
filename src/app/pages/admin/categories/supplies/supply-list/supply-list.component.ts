@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd';
-import { NotifyService } from 'src/app/shared/services/notify.service';
 
 import { SupplyService } from 'src/app/shared/services/supply.service';
+import { NotifyService } from 'src/app/shared/services/notify.service';
+
 import { Supply } from 'src/app/shared/models/supply.model';
 import { SupplyAddEditModalComponent } from '../supply-add-edit-modal/supply-add-edit-modal.component';
 import { Pagination, PaginatedResult } from 'src/app/shared/models/pagination.model';
@@ -20,10 +21,11 @@ export class SupplyListComponent implements OnInit {
   sortValue = null;
   sortKey = null;
 
-  supplies: Supply[];
   pagination: Pagination;
   pagingParams: PagingParams = {
-    keyword: ''
+    keyword: '',
+    sortKey: '',
+    sortValue: ''
   };
 
   constructor(
@@ -58,7 +60,7 @@ export class SupplyListComponent implements OnInit {
         this.dataSet = res.result;
       }, error => {
         this.notify.error('Có lỗi xảy ra');
-        console.log('loadUsers: ' + error);
+        console.log('error getAllPagingSupplies');
       });
   }
 
@@ -80,7 +82,6 @@ export class SupplyListComponent implements OnInit {
         {
           label: 'Lưu',
           type: 'primary',
-          loading: false,
           onClick: (componentInstance) => {
             componentInstance.saveChanges((res: boolean) => {
               if (res) {
@@ -97,8 +98,6 @@ export class SupplyListComponent implements OnInit {
   }
 
   update(id: number) {
-    console.log(id);
-
     this.supplyService.getDetail(id).subscribe((supply: Supply) => {
       const modal = this.modalService.create({
         nzTitle: 'Sửa nguồn cung cấp',
@@ -117,7 +116,6 @@ export class SupplyListComponent implements OnInit {
           {
             label: 'Lưu',
             type: 'primary',
-            loading: false,
             onClick: (componentInstance) => {
               componentInstance.saveChanges((res: boolean) => {
                 if (res) {

@@ -5,7 +5,7 @@ export interface Personnel {
     queQuan?: string;
     danToc?: string;
     tonGiao?: string;
-    capBacSHSQ: string;
+    capBacSHSQ?: string;
     chucVu?: string;
     ngayNhapNguTuyenDung?: string;
     xuatThan?: string;
