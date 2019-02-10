@@ -10,16 +10,19 @@ import { MaterialItem } from '../models/material-item.model';
 
 @Injectable()
 export class MaterialItemListResolver implements Resolve<MaterialItem[]> {
+    pageNumber = 1;
+    pageSize = 10;
+
     constructor(
         private router: Router,
         private materialItemService: MaterialItemService,
         private notify: NotifyService) { }
 
     resolve(route: ActivatedRouteSnapshot): Observable<MaterialItem[]> {
-        return this.materialItemService.getAll().pipe(
+        return this.materialItemService.getAllPaging(this.pageNumber, this.pageSize).pipe(
             catchError(_ => {
                 this.notify.error('Có lỗi xảy ra');
-                console.log('error getAllMaterialItem');
+                console.log('error getAllPagingMaterialItem');
                 this.router.navigate(['/']);
                 return of(null);
             })

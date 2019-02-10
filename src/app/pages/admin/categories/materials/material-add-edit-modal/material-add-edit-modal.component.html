@@ -1,64 +1,45 @@
-<div class="modal-header">
-  <h4 class="modal-title pull-left">{{title}}</h4>
-  <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-<div class="modal-body">
-  <form [formGroup]="materialForm" id="materialForm" (ngSubmit)="saveChanges()">
-    <input type="hidden" formControlName="maVatTu">
-    <div class="form-group">
-      <label for="txtTenVT">Tên vật tư (*)</label>
-      <input type="text" id="txtTenVT" class="form-control" formControlName="tenVT" [ngClass]="{
-        'is-invalid': materialForm.controls['tenVT'].errors && (submitted || materialForm.controls['tenVT'].dirty || materialForm.controls['tenVT'].touched)
-      }">
-      <div class="invalid-feedback">
-        <div *ngIf="materialForm.get('tenVT').hasError('required')">
+<form nz-form [formGroup]="materialForm" (ngSubmit)="saveChanges()" autocomplete="off">
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="tenVT">Tên vật tư</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <input nz-input formControlName="tenVT" id="tenVT" autofocus>
+      <nz-form-explain *ngIf="materialForm.get('tenVT').dirty && materialForm.get('tenVT').errors">
+        <ng-container *ngIf="materialForm.get('tenVT').hasError('required')">
           Vui lòng nhập tên vật tư!
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="ddlMaLoaiVatTu">Loại vật tư (*)</label>
-      <select id="ddlMaLoaiVatTu" class="form-control" formControlName="maLoaiVatTu" [ngClass]="{
-        'is-invalid': materialForm.controls['maLoaiVatTu'].errors && (submitted || materialForm.controls['maLoaiVatTu'].dirty || materialForm.controls['maLoaiVatTu'].touched)
-      }">
-        <option value="" selected disabled>--- Chọn loại vật tư ---</option>
-        <option *ngFor="let item of materialTypes" [value]="item.maLoaiVatTu">
-          {{item.tenLoai}}
-        </option>
-      </select>
-      <div class="invalid-feedback">
-        <div *ngIf="materialForm.get('maLoaiVatTu').hasError('required')">
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="maLoaiVatTu">Loại vật tư</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <nz-select id="maLoaiVatTu" formControlName="maLoaiVatTu" nzPlaceHolder="Chọn loại vật tư">
+        <nz-option *ngFor="let item of materialTypes" [nzValue]="item.maLoaiVatTu" [nzLabel]="item.tenLoai"></nz-option>
+      </nz-select>
+      <nz-form-explain *ngIf="materialForm.get('maLoaiVatTu').dirty && materialForm.get('maLoaiVatTu').errors">
+        <ng-container *ngIf="materialForm.get('maLoaiVatTu').hasError('required')">
           Vui lòng chọn loại vật tư!
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="ddlMaDVT">Đơn vị tính (*)</label>
-      <select id="ddlMaDVT" class="form-control" formControlName="maDVT" [ngClass]="{
-        'is-invalid': materialForm.controls['maDVT'].errors && (submitted || materialForm.controls['maDVT'].dirty || materialForm.controls['maDVT'].touched)
-      }">
-        <option value="" selected disabled>--- Chọn đơn vị tính ---</option>
-        <option *ngFor="let item of units" [value]="item.maDVT">
-          {{item.tenDVT}}
-        </option>
-      </select>
-      <div class="invalid-feedback">
-        <div *ngIf="materialForm.get('maDVT').hasError('required')">
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="maDVT">Đơn vị tính</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <nz-select id="maDVT" formControlName="maDVT" nzPlaceHolder="Chọn đơn vị tính">
+        <nz-option *ngFor="let item of units" [nzValue]="item.maDVT" [nzLabel]="item.tenDVT"></nz-option>
+      </nz-select>
+      <nz-form-explain *ngIf="materialForm.get('maDVT').dirty && materialForm.get('maDVT').errors">
+        <ng-container *ngIf="materialForm.get('maDVT').hasError('required')">
           Vui lòng chọn đơn vị tính!
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="txtGhiChu">Ghi chú</label>
-      <textarea id="txtGhiChu" class="form-control" formControlName="ghiChu" [ngClass]="{
-        'is-invalid': materialForm.controls['ghiChu'].errors && (submitted || materialForm.controls['ghiChu'].dirty || materialForm.controls['ghiChu'].touched)
-      }"></textarea>
-    </div>
-  </form>
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-default" (click)="hideModal()">Hủy</button>
-  <button type="submit" class="btn btn-primary" form="materialForm">Lưu</button>
-</div>
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="ghiChu">Ghi chú</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <textarea nz-input formControlName="ghiChu" id="ghiChu"></textarea>
+    </nz-form-control>
+  </nz-form-item>
+</form>

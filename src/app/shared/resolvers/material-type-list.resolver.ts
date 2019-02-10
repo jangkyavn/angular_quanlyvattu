@@ -10,16 +10,19 @@ import { MaterialType } from '../models/material-type.model';
 
 @Injectable()
 export class MaterialTypeListResolver implements Resolve<MaterialType[]> {
+    pageNumber = 1;
+    pageSize = 10;
+
     constructor(
         private router: Router,
         private materialTypeService: MaterialTypeService,
         private notify: NotifyService) { }
 
     resolve(route: ActivatedRouteSnapshot): Observable<MaterialType[]> {
-        return this.materialTypeService.getAll().pipe(
+        return this.materialTypeService.getAllPaging(this.pageNumber, this.pageSize).pipe(
             catchError(_ => {
                 this.notify.error('Có lỗi xảy ra');
-                console.log('error getAllMaterialType');
+                console.log('error getAllPagingMaterialType');
                 this.router.navigate(['/']);
                 return of(null);
             })

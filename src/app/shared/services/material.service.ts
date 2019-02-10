@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Material } from '../models/material.model';
-
+import { PagingParams } from '../params/paging.param';
+import { PaginatedResult } from '../models/pagination.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,33 @@ export class MaterialService {
 
   getAll() {
     return this.http.get(this.baseUrl + 'VatTu');
+  }
+
+  getAllPaging(page?: any, itemsPerPage?: any, pagingParams?: PagingParams): Observable<PaginatedResult<Material[]>> {
+    const paginatedResult = new PaginatedResult<Material[]>();
+
+    let params = new HttpParams();
+    if (page != null && itemsPerPage != null) {
+      params = params.append('pageNumber', page);
+      params = params.append('pageSize', itemsPerPage);
+    }
+
+    if (pagingParams != null) {
+      params = params.append('keyword', pagingParams.keyword);
+      params = params.append('sortKey', pagingParams.sortKey);
+      params = params.append('sortValue', pagingParams.sortValue);
+    }
+
+    return this.http.get<Material[]>(this.baseUrl + 'VatTu/getAllPaging', { observe: 'response', params })
+      .pipe(
+        map(response => {
+          paginatedResult.result = response.body;
+          if (response.headers.get('Pagination') != null) {
+            paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+          }
+          return paginatedResult;
+        })
+      );
   }
 
   getDetail(id: number) {

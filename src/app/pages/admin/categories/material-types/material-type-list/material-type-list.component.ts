@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
+import { NzModalService } from 'ng-zorro-antd';
 
 import { MaterialTypeService } from 'src/app/shared/services/material-type.service';
+import { NotifyService } from 'src/app/shared/services/notify.service';
+
 import { MaterialType } from 'src/app/shared/models/material-type.model';
 import { MaterialTypeAddEditModalComponent } from '../material-type-add-edit-modal/material-type-add-edit-modal.component';
+import { Pagination, PaginatedResult } from 'src/app/shared/models/pagination.model';
+import { PagingParams } from 'src/app/shared/params/paging.param';
 
 @Component({
   selector: 'app-material-type-list',
@@ -12,61 +16,130 @@ import { MaterialTypeAddEditModalComponent } from '../material-type-add-edit-mod
   styleUrls: ['./material-type-list.component.scss']
 })
 export class MaterialTypeListComponent implements OnInit {
-  materialTypes: MaterialType[];
-  bsModalRef: BsModalRef;
+  dataSet = [];
+  loading = true;
+  sortValue = null;
+  sortKey = null;
+
+  pagination: Pagination;
+  pagingParams: PagingParams = {
+    keyword: '',
+    sortKey: '',
+    sortValue: ''
+  };
 
   constructor(
     private route: ActivatedRoute,
+    private modalService: NzModalService,
     private materialTypeService: MaterialTypeService,
-    private modalService: BsModalService) { }
+    private notify: NotifyService) { }
 
   ngOnInit() {
     this.route.data.subscribe(data => {
-      this.materialTypes = data['material-types'];
+      this.loading = false;
+      this.pagination = data['material-types'].pagination;
+      this.dataSet = data['material-types'].result;
     });
   }
 
-  loadData() {
-    this.materialTypeService.getAll().subscribe((res: MaterialType[]) => {
-      this.materialTypes = res;
-    });
+  sort(sort: { key: string, value: string }): void {
+    this.pagingParams.sortKey = sort.key;
+    this.pagingParams.sortValue = sort.value;
+    this.loadData();
+  }
+
+  loadData(reset: boolean = false): void {
+    if (reset) {
+      this.pagination.currentPage = 1;
+    }
+    this.loading = true;
+    this.materialTypeService.getAllPaging(this.pagination.currentPage, this.pagination.itemsPerPage, this.pagingParams)
+      .subscribe((res: PaginatedResult<MaterialType[]>) => {
+        this.loading = false;
+        this.pagination = res.pagination;
+        this.dataSet = res.result;
+      }, error => {
+        this.notify.error('Có lỗi xảy ra');
+        console.log('error getAllPagingMaterialType');
+      });
   }
 
   addNew() {
-    const modalOption: ModalOptions = {
-      backdrop: 'static',
-      initialState: {
-        title: 'Thêm loại vật tư',
-        materialType: {
-          maHM: ''
-        },
+    const modal = this.modalService.create({
+      nzTitle: 'Thêm loại vật tư',
+      nzContent: MaterialTypeAddEditModalComponent,
+      nzMaskClosable: false,
+      nzComponentParams: {
+        materialType: {},
         isAddNew: true
-      }
-    };
-    this.bsModalRef = this.modalService.show(MaterialTypeAddEditModalComponent, modalOption);
-    this.bsModalRef.content.saveEntity.subscribe((res: boolean) => {
-      if (res) {
-        this.loadData();
-      }
+      },
+      nzFooter: [
+        {
+          label: 'Hủy',
+          shape: 'default',
+          onClick: () => modal.destroy(),
+        },
+        {
+          label: 'Lưu',
+          type: 'primary',
+          onClick: (componentInstance) => {
+            componentInstance.saveChanges((res: boolean) => {
+              if (res) {
+                this.loadData();
+                modal.destroy();
+              } else {
+                modal.destroy();
+              }
+            });
+          }
+        }
+      ]
     });
   }
 
   update(id: number) {
     this.materialTypeService.getDetail(id).subscribe((materialType: MaterialType) => {
-      const modalOption: ModalOptions = {
-        backdrop: 'static',
-        initialState: {
-          title: 'Sửa loại vật tư',
+      const modal = this.modalService.create({
+        nzTitle: 'Sửa loại vật tư',
+        nzContent: MaterialTypeAddEditModalComponent,
+        nzMaskClosable: false,
+        nzComponentParams: {
           materialType,
           isAddNew: false
-        }
-      };
-      this.bsModalRef = this.modalService.show(MaterialTypeAddEditModalComponent, modalOption);
-      this.bsModalRef.content.saveEntity.subscribe((res: boolean) => {
-        if (res) {
-          this.loadData();
-        }
+        },
+        nzFooter: [
+          {
+            label: 'Hủy',
+            shape: 'default',
+            onClick: () => modal.destroy()
+          },
+          {
+            label: 'Lưu',
+            type: 'primary',
+            onClick: (componentInstance) => {
+              componentInstance.saveChanges((res: boolean) => {
+                if (res) {
+                  this.loadData();
+                  modal.destroy();
+                } else {
+                  modal.destroy();
+                }
+              });
+            }
+          }
+        ]
       });
     });
+  }
+
+  delete(id: number) {
+    this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
+      /////////////
+    });
+  }
+
+  search(keyword: string) {
+    this.pagingParams.keyword = keyword;
+    this.loadData(true);
   }
 }

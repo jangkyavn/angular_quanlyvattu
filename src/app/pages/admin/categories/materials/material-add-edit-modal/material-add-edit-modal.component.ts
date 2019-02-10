@@ -1,7 +1,5 @@
-import { Component, OnInit, Output, EventEmitter, AfterViewInit } from '@angular/core';
-
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { BsModalRef } from 'ngx-bootstrap/modal';
 
 import { Material } from 'src/app/shared/models/material.model';
 import { MaterialService } from 'src/app/shared/services/material.service';
@@ -16,20 +14,16 @@ import { Unit } from 'src/app/shared/models/unit.model';
   templateUrl: './material-add-edit-modal.component.html',
   styleUrls: ['./material-add-edit-modal.component.scss']
 })
-export class MaterialAddEditModalComponent implements OnInit, AfterViewInit {
-  @Output() saveEntity = new EventEmitter<boolean>();
-  title: string;
-  material: Material;
+export class MaterialAddEditModalComponent implements OnInit {
+  @Input() material: Material;
+  @Input() isAddNew: boolean;
   materialTypes: MaterialType[];
   units: Unit[];
-  submitted = false;
-  isAddNew: boolean;
 
   materialForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
-    public bsModalRef: BsModalRef,
     private materialService: MaterialService,
     private materialTypeService: MaterialTypeService,
     private unitService: UnitService,
@@ -40,9 +34,6 @@ export class MaterialAddEditModalComponent implements OnInit, AfterViewInit {
     this.loadAllMaterialTypes();
     this.loadAllUnits();
     this.createForm();
-  }
-
-  ngAfterViewInit() {
     this.materialForm.reset();
     this.materialForm.patchValue(this.material);
   }
@@ -57,10 +48,13 @@ export class MaterialAddEditModalComponent implements OnInit, AfterViewInit {
     });
   }
 
-  saveChanges() {
-    this.submitted = true;
-
+  saveChanges(callBack: (result: boolean) => any = null) {
     if (this.materialForm.invalid) {
+      // tslint:disable-next-line:forin
+      for (const i in this.materialForm.controls) {
+        this.materialForm.controls[i].markAsDirty();
+        this.materialForm.controls[i].updateValueAndValidity();
+      }
       return;
     }
 
@@ -68,26 +62,24 @@ export class MaterialAddEditModalComponent implements OnInit, AfterViewInit {
     if (this.isAddNew) {
       this.materialService.addNew(material).subscribe((res: any) => {
         if (res) {
-          this.saveEntity.emit(true);
           this.notify.success('Thêm thành công!');
-          this.bsModalRef.hide();
+          callBack(true);
         }
       }, error => {
-        this.saveEntity.emit(false);
         this.notify.success('Có lỗi xảy ra!');
         console.log('error addMaterial');
+        callBack(false);
       });
     } else {
       this.materialService.update(material).subscribe((res: any) => {
         if (res) {
-          this.saveEntity.emit(true);
           this.notify.success('Sửa thành công!');
-          this.bsModalRef.hide();
+          callBack(true);
         }
       }, error => {
-        this.saveEntity.emit(false);
         this.notify.success('Có lỗi xảy ra!');
         console.log('error updateMaterial');
+        callBack(false);
       });
     }
   }
@@ -102,16 +94,5 @@ export class MaterialAddEditModalComponent implements OnInit, AfterViewInit {
     this.unitService.getAll().subscribe((res: Unit[]) => {
       this.units = res;
     });
-  }
-
-  hideModal() {
-    if (this.materialForm.dirty) {
-      const result = confirm('Bạn có chắc chắn muốn tiếp tục không? Mọi sự thay đổi không lưu sẽ bị mất');
-      if (result) {
-        this.bsModalRef.hide();
-      }
-    } else {
-      this.bsModalRef.hide();
-    }
   }
 }
