@@ -6,200 +6,243 @@
 </nz-breadcrumb>
 
 <div style="padding:24px; background: #fff; min-height: 70vh">
-  <form [formGroup]="importMaterialForm" id="importMaterialForm" (ngSubmit)="saveChanges()" novalidate>
-    <div class="row mb-2">
-      <div class="col-md-4 col-sm-12">
-      </div>
-      <div class="col-md-8 col-sm-12 text-right">
-      </div>
-    </div>
-    <nz-card style="width:100%;" nzTitle="Nhập vật tư" formGroupName="mnhapvattu">
-      <div class="form-group row">
-        <label for="ddlMaKho" class="col-sm-2 col-form-label">Tên kho (*)</label>
-        <div class="col-sm-10">
-          <input type="text" readonly class="form-control-plaintext" [value]="getStoreName()">
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="ddlMaHM" class="col-sm-2 col-form-label">Hạng mục vật tư (*)</label>
-        <div class="col-sm-10">
-          <select id="ddlMaHM" class="form-control" formControlName="maHM" [ngClass]="{
-                'is-invalid': importMaterialForm['controls'].mnhapvattu['controls']['maHM'].errors && (submitted || importMaterialForm['controls'].mnhapvattu['controls']['maHM'].dirty || importMaterialForm['controls'].mnhapvattu['controls']['maHM'].touched)
-              }">
-            <option *ngFor="let item of materialItems" [value]="item.maHM">
-              {{item.tenHM}}
-            </option>
-          </select>
-          <div class="invalid-feedback">
-            <div *ngIf="importMaterialForm.get('mnhapvattu.maHM').hasError('required')">
+  <form nz-form [formGroup]="importMaterialForm" (ngSubmit)="saveChanges()" autocomplete="off">
+    <nz-card style="width:100%;" nzTitle="Nhập vật tư">
+      <nz-form-item>
+        <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="maKho">Kho hàng</nz-form-label>
+        <nz-form-control [nzSm]="10" [nzXs]="24">
+          <nz-select [nzDisabled]="importMaterialDetails.length > 0" nzShowSearch nzAllowClear
+            nzPlaceHolder="Chọn kho hàng" formControlName="maKho" id="maKho">
+            <nz-option *ngFor="let item of materialStores" [nzValue]="item.maKho" [nzLabel]="item.tenKho"></nz-option>
+          </nz-select>
+          <nz-form-explain *ngIf="importMaterialForm.get('maKho').dirty && importMaterialForm.get('maKho').errors">
+            <ng-container *ngIf="importMaterialForm.get('maKho').hasError('required')">
+              Vui lòng chọn kho hàng!
+            </ng-container>
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="maHM">Hạng mục vật tư</nz-form-label>
+        <nz-form-control [nzSm]="10" [nzXs]="24">
+          <nz-select [nzDisabled]="importMaterialDetails.length > 0" nzShowSearch nzAllowClear
+            nzPlaceHolder="Chọn hạng mục vật tư" formControlName="maHM" id="maHM">
+            <nz-option *ngFor="let item of materialItems" [nzValue]="item.maHM" [nzLabel]="item.tenHM"></nz-option>
+          </nz-select>
+          <nz-form-explain *ngIf="importMaterialForm.get('maHM').dirty && importMaterialForm.get('maHM').errors">
+            <ng-container *ngIf="importMaterialForm.get('maHM').hasError('required')">
               Vui lòng chọn hạng mục vật tư!
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="txtNgayNhap" class="col-sm-2 col-form-label">Ngày nhập (*)</label>
-        <div class="col-sm-3">
-          <input id="txtNgayNhap" type="date" class="form-control" formControlName="ngayNhap" [ngClass]="{
-              'is-invalid': importMaterialForm['controls'].mnhapvattu['controls']['ngayNhap'].errors && (submitted || importMaterialForm['controls'].mnhapvattu['controls']['ngayNhap'].dirty || importMaterialForm['controls'].mnhapvattu['controls']['ngayNhap'].touched)
-            }" />
-          <div class="invalid-feedback">
-            <div *ngIf="importMaterialForm.get('mnhapvattu.ngayNhap').hasError('required')">
-              Vui lòng nhập ngày nhập!
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="txtChietKhau" class="col-sm-2 col-form-label">Chiết khấu</label>
-        <div class="col-sm-2">
-          <div class="input-group">
-            <input id="txtChietKhau" type="number" class="form-control" formControlName="chietKhau" [ngClass]="{
-                      'is-invalid': importMaterialForm['controls'].mnhapvattu['controls']['chietKhau'].errors && (submitted || importMaterialForm['controls'].mnhapvattu['controls']['chietKhau'].dirty || importMaterialForm['controls'].mnhapvattu['controls']['chietKhau'].touched)
-                    }"
-              min="0" max="100" />
-            <div class="input-group-append">
-              <span class="input-group-text">%</span>
-            </div>
-            <div class="invalid-feedback">
-              <div *ngIf="importMaterialForm.get('mnhapvattu.chietKhau').hasError('invalid')">
-                Vui lòng nhập hợp lệ!
-              </div>
-              <div *ngIf="importMaterialForm.get('mnhapvattu.chietKhau').hasError('notRange')">
-                0 -> 100
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="txtGhiChu" class="col-sm-2 col-form-label">Ghi chú</label>
-        <div class="col-sm-10">
-          <textarea id="txtGhiChu" class="form-control" formControlName="ghiChu" [ngClass]="{
-            'is-invalid': importMaterialForm['controls'].mnhapvattu['controls']['ghiChu'].errors && (submitted || importMaterialForm['controls'].mnhapvattu['controls']['ghiChu'].dirty || importMaterialForm['controls'].mnhapvattu['controls']['ghiChu'].touched)
-          }"></textarea>
-        </div>
-      </div>
+            </ng-container>
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="ngayNhap">Ngày nhập</nz-form-label>
+        <nz-form-control [nzSm]="10" [nzXs]="24">
+          <nz-date-picker formControlName="ngayNhap" [nzPlaceHolder]="'dd/MM/yyyy'" nzFormat="dd/MM/yyyy">
+          </nz-date-picker>
+          <nz-form-explain
+            *ngIf="importMaterialForm.get('ngayNhap').dirty && importMaterialForm.get('ngayNhap').errors">
+            <ng-container *ngIf="importMaterialForm.get('ngayNhap').hasError('required')">
+              Vui lòng chọn ngày nhập!
+            </ng-container>
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="maHM">Chiết khấu</nz-form-label>
+        <nz-form-control [nzSm]="10" [nzXs]="24">
+          <nz-input-number formControlName="chietKhau" [nzMin]="0" [nzMax]="100" [nzStep]="1"
+            [nzFormatter]="formatterPercent" [nzParser]="parserPercent"></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="ghiChu">Ghi chú</nz-form-label>
+        <nz-form-control [nzSm]="10" [nzXs]="24">
+          <textarea nz-input formControlName="ghiChu" id="ghiChu"></textarea>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item style="margin-bottom: 0;">
+        <nz-form-control nzOffset="7" [nzSm]="10" [nzXs]="24">
+          <button type="submit" nz-button nzType="primary" style="margin-right: 1rem;"
+            [disabled]="!importMaterialForm.dirty">
+            <i nz-icon type="save" theme="outline"></i> Lưu
+          </button>
+          <button type="button" nz-button nzType="primary" (click)="addImportDetail()">
+            <i nz-icon type="plus" theme="outline"></i> Nhập chi tiết
+          </button>
+        </nz-form-control>
+      </nz-form-item>
     </nz-card>
-    <br />
-    <nz-card style="width:100%;" nzTitle="Nhập chi tiết vật tư" formArrayName="listnhapchitiet">
-      <div style="overflow-x: auto;">
-        <table class="table table-bordered" style="width: 250%;">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th style="width: 8%;">Tên vật tư (*)</th>
-              <th>Số lượng (*)</th>
-              <th>Đơn giá (*)</th>
-              <th>Nước sản xuất</th>
-              <th>Hãng sản xuất</th>
-              <th>Model</th>
-              <th>Seri</th>
-              <th>Số khung</th>
-              <th>Số máy</th>
-              <th>Số đăng ký</th>
-              <th>Đợt mua</th>
-              <th>Năm sản xuất</th>
-              <th>Phân cấp</th>
-              <th>Nguồn gốc</th>
-              <th>Ghi chú</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of importMaterialForm.get('listnhapchitiet')['controls']; let i = index"
-              [formGroupName]="i">
-              <td>
-                <button type="button" class="btn btn-danger btn-sm" (click)="deleteRow(i, item.value.maVatTu)">
-                  <i class="fa fa-trash"></i>
-                </button>
-              </td>
-              <td>
-                <p>{{item.value.tenVT}}</p>
-              </td>
-              <td>
-                <input type="number" class="form-control" formControlName="soLuong" [ngClass]="{
-                  'is-invalid': importMaterialForm.controls.listnhapchitiet.controls[i].controls['soLuong'].errors && (submitted || importMaterialForm.controls.listnhapchitiet.controls[i].controls['soLuong'].dirty || importMaterialForm.controls.listnhapchitiet.controls[i].controls['soLuong'].touched)
-                }"
-                  min="1" (blur)="checkStatus(i, item.value.maVatTu, $event.target.value)" />
-                <div class="invalid-feedback">
-                  <div *ngIf="item.hasError('required', 'soLuong')">
-                    Vui lòng nhập số lượng!
-                  </div>
-                  <div *ngIf="item.hasError('invalid', 'soLuong') as error">
-                    Nhập SL >= {{ item.controls.soLuong.errors.quantity }} (SL xuất)
-                  </div>
-                  <div *ngIf="item.hasError('isAm', 'soLuong') && !item.hasError('required', 'soLuong')">
-                    Vui lòng không nhập số âm!
-                  </div>
-                </div>
-              </td>
-              <td>
-                <input currencyMask class="form-control" formControlName="donGia" [ngClass]="{
-                  'is-invalid': importMaterialForm.controls.listnhapchitiet.controls[i].controls['donGia'].errors && (submitted || importMaterialForm.controls.listnhapchitiet.controls[i].controls['donGia'].dirty || importMaterialForm.controls.listnhapchitiet.controls[i].controls['donGia'].touched)
-                }"
-                  min="0" />
-                <div class="invalid-feedback">
-                  <div *ngIf="item.hasError('required', 'donGia')">
-                    Vui lòng nhập số lượng!
-                  </div>
-                  <div *ngIf="item.hasError('isNegative', 'donGia') && !item.hasError('required', 'donGia')">
-                    Vui lòng nhập không âm!
-                  </div>
-                </div>
-              </td>
-              <td>
-                <select class="form-control" style="width: 150px;" formControlName="maNuoc">
-                  <option *ngFor="let country of producingCountries" [value]="country.maNuoc">
-                    {{country.tenNuoc}}
-                  </option>
-                </select>
-              </td>
-              <td>
-                <select class="form-control" style="width: 150px;" formControlName="maHang">
-                  <option *ngFor="let manufacturer of manufacturers" [value]="manufacturer.maHang">
-                    {{manufacturer.tenHang}}
-                  </option>
-                </select>
-              </td>
-              <td>
-                <input type="text" class="form-control" formControlName="model" />
-              </td>
-              <td>
-                <input type="text" class="form-control" formControlName="seri" />
-              </td>
-              <td>
-                <input type="text" class="form-control" formControlName="soKhung" />
-              </td>
-              <td>
-                <input type="text" class="form-control" formControlName="soMay" />
-              </td>
-              <td>
-                <input type="text" class="form-control" formControlName="soDangKy" />
-              </td>
-              <td>
-                <input type="text" class="form-control" formControlName="dotMua" />
-              </td>
-              <td>
-                <input type="text" class="form-control" formControlName="namSX" />
-              </td>
-              <td>
-                <input type="text" class="form-control" formControlName="phanCap" />
-              </td>
-              <td>
-                <input type="text" class="form-control" formControlName="nguonGoc" />
-              </td>
-              <td>
-                <input type="text" class="form-control" formControlName="ghiChu" />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </nz-card>
-    <div class="row mt-4 px-3">
-      <button type="submit" class="btn btn-primary btn-block" [disabled]="importMaterialForm.invalid">
-        Lưu
-      </button>
-    </div>
   </form>
+  <br />
+  <nz-card style="width:100%;" nzTitle="Danh sách chi tiết nhập vật tư" *ngIf="importMaterialDetails.length > 0"
+    [ngSwitch]="materialItemId">
+    <!-- Xe và vật tư thay thế -->
+    <nz-table #basicTable [nzData]="importMaterialDetails" [nzLoading]="loading" [nzShowPagination]="false"
+      *ngSwitchCase="10">
+      <thead>
+        <tr>
+          <th>Vật tư</th>
+          <th>Model</th>
+          <th>Nước sản xuất</th>
+          <th>Số lượng</th>
+          <th>Đơn giá</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data">
+          <td nzWidth="20%">{{data.tenVT}}</td>
+          <td nzWidth="20%">{{data.model}}</td>
+          <td nzWidth="20%">{{data.tenNuoc}}</td>
+          <td nzWidth="20%">{{data.soLuong}}</td>
+          <td nzWidth="20%">{{data.donGia}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <!-- Vũ khí trang thiết bị -->
+    <nz-table #basicTable [nzData]="importMaterialDetails" [nzLoading]="loading" [nzShowPagination]="false"
+      *ngSwitchCase="11">
+      <thead>
+        <tr>
+          <th>Vật tư</th>
+          <th>Số khung</th>
+          <th>Số máy</th>
+          <th>Năm sản xuất</th>
+          <th>Phân cấp</th>
+          <th>Nguồn gốc</th>
+          <th>Số lượng</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data">
+          <td nzWidth="15%">{{data.tenVT}}</td>
+          <td nzWidth="15%">{{data.soKhung}}</td>
+          <td nzWidth="15%">{{data.soMay}}</td>
+          <td nzWidth="15%">{{data.namSX | date:'yyyy'}}</td>
+          <td nzWidth="15%">{{data.phanCap}}</td>
+          <td nzWidth="15%">{{data.nguonGoc}}</td>
+          <td nzWidth="10%">{{data.soLuong}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <!-- Hàng viện trợ Mỹ -->
+    <nz-table #basicTable [nzData]="importMaterialDetails" [nzLoading]="loading" [nzShowPagination]="false"
+      *ngSwitchCase="12">
+      <thead>
+        <tr>
+          <th>Vật tư</th>
+          <th>Seri</th>
+          <th>Hãng sản xuất</th>
+          <th>Năm sản xuất</th>
+          <th>Model</th>
+          <th>Số lượng</th>
+          <th>Ghi chú</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data">
+          <td nzWidth="15%">{{data.tenVT}}</td>
+          <td nzWidth="15%">{{data.seri}}</td>
+          <td nzWidth="15%">{{data.maHang}}</td>
+          <td nzWidth="15%">{{data.maNuoc}}</td>
+          <td nzWidth="15%">{{data.model}}</td>
+          <td nzWidth="10%">{{data.soLuong}}</td>
+          <td nzWidth="15%">{{data.ghiChu}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <!-- Trang thiết bị cục quân y cấp -->
+    <nz-table #basicTable [nzData]="importMaterialDetails" [nzLoading]="loading" [nzShowPagination]="false"
+      *ngSwitchCase="13">
+      <thead>
+        <tr>
+          <th>Vật tư</th>
+          <th>Nước sản xuất</th>
+          <th>Model</th>
+          <th>Số lượng</th>
+          <th>Đơn giá</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data">
+          <td nzWidth="20%">{{data.tenVT}}</td>
+          <td nzWidth="20%">{{data.maNuoc}}</td>
+          <td nzWidth="20%">{{data.model}}</td>
+          <td nzWidth="20%">{{data.soLuong}}</td>
+          <td nzWidth="20%">{{data.donGia}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <!-- Hàng tài trợ trong nước -->
+    <nz-table #basicTable [nzData]="importMaterialDetails" [nzLoading]="loading" [nzShowPagination]="false"
+      *ngSwitchCase="14">
+      <thead>
+        <tr>
+          <th>Vật tư</th>
+          <th>Nước sản xuất</th>
+          <th>Model</th>
+          <th>Số lượng</th>
+          <th>Đơn giá</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data">
+          <td nzWidth="20%">{{data.tenVT}}</td>
+          <td nzWidth="20%">{{data.maNuoc}}</td>
+          <td nzWidth="20%">{{data.model}}</td>
+          <td nzWidth="20%">{{data.soLuong}}</td>
+          <td nzWidth="20%">{{data.donGia}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <!-- Danh mục thể thao văn hóa -->
+    <nz-table #basicTable [nzData]="importMaterialDetails" [nzLoading]="loading" [nzShowPagination]="false"
+      *ngSwitchCase="15">
+      <thead>
+        <tr>
+          <th>Vật tư</th>
+          <th>Hãng sản xuất</th>
+          <th>Nước sản xuất</th>
+          <th>Model</th>
+          <th>Số lượng</th>
+          <th>Đơn giá</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data">
+          <td nzWidth="25%">{{data.tenVT}}</td>
+          <td nzWidth="15%">{{data.maHang}}</td>
+          <td nzWidth="15%">{{data.maNuoc}}</td>
+          <td nzWidth="15%">{{data.model}}</td>
+          <td nzWidth="15%">{{data.soLuong}}</td>
+          <td nzWidth="15%">{{data.donGia}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <!-- Danh mục thuốc -->
+    <nz-table #basicTable [nzData]="importMaterialDetails" [nzLoading]="loading" [nzShowPagination]="false"
+      *ngSwitchCase="16">
+      <thead>
+        <tr>
+          <th>Vật tư</th>
+          <th>Nước sản xuất</th>
+          <th>Số đăng ký</th>
+          <th>Đợt mua</th>
+          <th>Số lượng</th>
+          <th>Đơn giá</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data">
+          <td nzWidth="25%">{{data.tenVT}}</td>
+          <td nzWidth="15%">{{data.maNuoc}}</td>
+          <td nzWidth="15%">{{data.soDangKy}}</td>
+          <td nzWidth="15%">{{data.dotMua}}</td>
+          <td nzWidth="15%">{{data.soLuong}}</td>
+          <td nzWidth="15%">{{data.donGia}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
 </div>

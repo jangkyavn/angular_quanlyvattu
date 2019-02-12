@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BusinessesRoutingModule } from './businesses-routing.module';
+import { PageMaintenanceComponent } from 'src/app/pages/page-maintenance/page-maintenance.component';
 
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -31,6 +32,7 @@ import { UpdateImportMaterialsComponent } from './update-import-materials/update
 import { ImportMaterialDetailResolver } from 'src/app/shared/resolvers/import-material-detail.resolver';
 import { UpdateExportMaterialsComponent } from './update-export-materials/update-export-materials.component';
 import { ExportMaterialDetailResolver } from 'src/app/shared/resolvers/export-material-detail.resolver';
+import { ImportMaterialDetailModalComponent } from './import-material-detail-modal/import-material-detail-modal.component';
 
 @NgModule({
   declarations: [BusinessesComponent,
@@ -40,7 +42,10 @@ import { ExportMaterialDetailResolver } from 'src/app/shared/resolvers/export-ma
     ExportMaterialsComponent,
     ExportListComponent,
     UpdateImportMaterialsComponent,
-    UpdateExportMaterialsComponent],
+    UpdateExportMaterialsComponent,
+    ImportMaterialDetailModalComponent,
+    PageMaintenanceComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -58,6 +63,8 @@ import { ExportMaterialDetailResolver } from 'src/app/shared/resolvers/export-ma
     ExportMaterialListResolver,
     ExportMaterialDetailResolver
   ],
-  entryComponents: []
+  entryComponents: [
+    ImportMaterialDetailModalComponent
+  ]
 })
 export class BusinessesModule { }

@@ -3,6 +3,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { ImportMaterial } from '../models/import-material.model';
+import { PagingParams } from '../params/paging.param';
+import { PaginatedResult } from '../models/pagination.model';
 
 @Injectable({
     providedIn: 'root'
@@ -16,16 +19,43 @@ export class ImportMaterialService {
         return this.http.get(this.baseUrl + 'NhapVatTu');
     }
 
+    getAllPaging(page?: any, itemsPerPage?: any, pagingParams?: PagingParams): Observable<PaginatedResult<ImportMaterial[]>> {
+        const paginatedResult = new PaginatedResult<ImportMaterial[]>();
+
+        let params = new HttpParams();
+        if (page != null && itemsPerPage != null) {
+            params = params.append('pageNumber', page);
+            params = params.append('pageSize', itemsPerPage);
+        }
+
+        if (pagingParams != null) {
+            params = params.append('keyword', pagingParams.keyword);
+            params = params.append('sortKey', pagingParams.sortKey);
+            params = params.append('sortValue', pagingParams.sortValue);
+        }
+
+        return this.http.get<ImportMaterial[]>(this.baseUrl + 'NhapVatTu/getAllPaging', { observe: 'response', params })
+            .pipe(
+                map(response => {
+                    paginatedResult.result = response.body;
+                    if (response.headers.get('Pagination') != null) {
+                        paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+                    }
+                    return paginatedResult;
+                })
+            );
+    }
+
     getDetail(id: number) {
         return this.http.get(this.baseUrl + 'NhapVatTu/' + id);
     }
 
-    addNew(importMaterialParams: any) {
-        return this.http.post(this.baseUrl + 'NhapVatTu', importMaterialParams);
+    addNew(importMaterial: ImportMaterial) {
+        return this.http.post(this.baseUrl + 'NhapVatTu/insertNhapVatTu', importMaterial);
     }
 
-    update(importMaterialParams: any) {
-        return this.http.put(this.baseUrl + 'NhapVatTu', importMaterialParams);
+    update(importMaterial: ImportMaterial) {
+        return this.http.put(this.baseUrl + 'NhapVatTu/updateNhapVatTu', importMaterial);
     }
 
     delete(importId: any) {

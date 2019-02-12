@@ -1,26 +1,17 @@
-import { Component, OnInit, Output, EventEmitter, HostListener } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 
-import { MaterialItem } from 'src/app/shared/models/material-item.model';
-import { MaterialStore } from 'src/app/shared/models/material-store.model';
-import { Material } from 'src/app/shared/models/material.model';
-import { ProducingCountry } from 'src/app/shared/models/producing-country.model';
-import { Manufacturer } from 'src/app/shared/models/manufacturer.model';
-
 import { MaterialStoreService } from 'src/app/shared/services/material-store.service';
 import { MaterialItemService } from 'src/app/shared/services/material-item.service';
-import { MaterialService } from 'src/app/shared/services/material.service';
-import { ProducingCountryService } from 'src/app/shared/services/producing-country.service';
-import { ManufacturerService } from 'src/app/shared/services/manufacturer.service';
 import { ImportMaterialService } from 'src/app/shared/services/import-material.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
-import { checkQuantityKhongAmValidator } from 'src/app/shared/vailidators/check-quantity-khong-am.validator';
+
 import { checkChietKhauNanValidator } from 'src/app/shared/vailidators/check-chiet-khau-nan-validator';
 import { checkChietKhauRangeValidator } from 'src/app/shared/vailidators/check-chiet-khau-range-validator';
-import { checkPriceKhongAmValidator } from 'src/app/shared/vailidators/check-price-khong-am-validator';
 import { MaterialType } from 'src/app/shared/models/material-type.model';
-import { MaterialTypeService } from 'src/app/shared/services/material-type.service';
+import { MaterialItem } from 'src/app/shared/models/material-item.model';
+import { MaterialStore } from 'src/app/shared/models/material-store.model';
 
 @Component({
   selector: 'app-import-materials',
@@ -31,18 +22,9 @@ export class ImportMaterialsComponent implements OnInit {
   materialStores: MaterialStore[];
   materialItems: MaterialItem[];
   materialTypes: MaterialType[];
-  materials: Material[];
-  producingCountries: ProducingCountry[];
-  manufacturers: Manufacturer[];
-  submitted = false;
   importMaterialForm: FormGroup;
-  listnhapchitiet: FormArray;
-  @HostListener('window:beforeunload', ['$event'])
-  beforeunloadHandler($event: any) {
-    if (this.importMaterialForm.dirty) {
-      $event.returnValue = false;
-    }
-  }
+  formatterPercent = value => `${value} %`;
+  parserPercent = value => value.replace(' %', '');
 
   constructor(
     private router: Router,
@@ -50,63 +32,31 @@ export class ImportMaterialsComponent implements OnInit {
     private importMaterialService: ImportMaterialService,
     private materialStoreService: MaterialStoreService,
     private materialItemService: MaterialItemService,
-    private materialTypeService: MaterialTypeService,
-    private materialService: MaterialService,
-    private producingCountryService: ProducingCountryService,
-    private manufacturerService: ManufacturerService,
     private notify: NotifyService
   ) { }
 
   ngOnInit() {
-    this.loadAllInventories();
+    this.loadAllMaterialStores();
     this.loadAllMaterialItems();
-    this.loadAllMaterials();
-    this.loadAllProducingCountries();
-    this.loadAllManufacturers();
-
     this.createForm();
   }
 
   createForm() {
     const date = new Date();
     const month = (date.getMonth() + 1) >= 10 ? (date.getMonth() + 1) : '0' + (date.getMonth() + 1);
-    const day = date.getDate() >= 10 ?  date.getDate() : '0' + date.getDate();
+    const day = date.getDate() >= 10 ? date.getDate() : '0' + date.getDate();
     const currentDate = `${date.getFullYear()}-${month}-${day}`;
 
     this.importMaterialForm = this.fb.group({
-      mnhapvattu: this.fb.group({
-        maKho: ['', [Validators.required]],
-        maHM: ['', [Validators.required]],
-        maLoaiVatTu: ['', [Validators.required]],
-        ngayNhap: [currentDate, [Validators.required]],
-        chietKhau: [0, [checkChietKhauNanValidator, checkChietKhauRangeValidator]],
-        ghiChu: [null]
-      }),
-      listnhapchitiet: this.fb.array([this.createItem()])
-    });
-  }
-
-  createItem(): FormGroup {
-    return this.fb.group({
-      maVatTu: ['', [Validators.required]],
-      soLuong: [1, [Validators.required, checkQuantityKhongAmValidator]],
-      donGia: [0, [Validators.required, checkPriceKhongAmValidator]],
-      maNuoc: [null],
-      maHang: [null],
-      model: [null],
-      seri: [null],
-      soKhung: [null],
-      soMay: [null],
-      soDangKy: [null],
-      dotMua: [null],
-      namSX: [null],
-      phanCap: [null],
-      nguonGoc: [null],
+      maKho: [null, [Validators.required]],
+      maHM: [null, [Validators.required]],
+      ngayNhap: [currentDate, [Validators.required]],
+      chietKhau: [0, [checkChietKhauNanValidator, checkChietKhauRangeValidator]],
       ghiChu: [null]
     });
   }
 
-  loadAllInventories() {
+  loadAllMaterialStores() {
     this.materialStoreService.getAll().subscribe((res: MaterialStore[]) => {
       this.materialStores = res;
     });
@@ -118,59 +68,26 @@ export class ImportMaterialsComponent implements OnInit {
     });
   }
 
-  loadAllMaterials() {
-    this.materialService.getAll().subscribe((res: Material[]) => {
-      this.materials = res;
-    });
-  }
-
-  loadAllProducingCountries() {
-    this.producingCountryService.getAll().subscribe((res: ProducingCountry[]) => {
-      this.producingCountries = res;
-    });
-  }
-
-  loadAllManufacturers() {
-    this.manufacturerService.getAll().subscribe((res: Manufacturer[]) => {
-      this.manufacturers = res;
-    });
-  }
-
-  addRowForMaterialDetail() {
-    this.listnhapchitiet = this.importMaterialForm.get('listnhapchitiet') as FormArray;
-    this.listnhapchitiet.push(this.createItem());
-  }
-
-  deleteRow(idx: number) {
-    this.listnhapchitiet = this.importMaterialForm.get('listnhapchitiet') as FormArray;
-    this.listnhapchitiet.removeAt(idx);
-  }
-
   saveChanges() {
-    this.submitted = true;
-
     if (this.importMaterialForm.invalid) {
+      // tslint:disable-next-line:forin
+      for (const i in this.importMaterialForm.controls) {
+        this.importMaterialForm.controls[i].markAsDirty();
+        this.importMaterialForm.controls[i].updateValueAndValidity();
+      }
       return;
     }
 
-    const nhapVatTuParams = Object.assign({}, this.importMaterialForm.value);
-    this.importMaterialService.addNew(nhapVatTuParams).subscribe((res: boolean) => {
+    const importMaterial = Object.assign({}, this.importMaterialForm.value);
+    this.importMaterialService.addNew(importMaterial).subscribe((res: any) => {
       if (res) {
-        this.notify.success('Thêm mới thành công!');
-        this.router.navigate(['/admin/nghiep-vu/danh-sach-phieu-nhap']);
-      } else {
-        this.notify.error('Thêm mới thất bại');
+        this.notify.success('Thêm mới thành công');
+        this.router.navigate(['/admin/nghiep-vu/sua-phieu-nhap', res]);
       }
     }, error => {
+      this.notify.error('Có lỗi xảy ra');
       console.log('error addImportMaterial');
       console.log(error);
-    });
-  }
-
-  changeMaterialItem(itemId: number) {
-    this.materialTypeService.getAllByItemId(itemId).subscribe((res: MaterialType[]) => {
-      console.log(res);
-      this.materialTypes = res;
     });
   }
 }

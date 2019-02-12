@@ -1,0 +1,389 @@
+<form nz-form [formGroup]="importDetailForm" (ngSubmit)="saveChanges()" autocomplete="off" [ngSwitch]="materialItemId">
+  <div *ngSwitchCase="10">
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="maVatTu">Vật tư</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn vật tư" formControlName="maVatTu" id="maVatTu">
+          <nz-option *ngFor="let item of materials" [nzValue]="item.maVatTu" [nzLabel]="item.tenVT"></nz-option>
+        </nz-select>
+        <nz-form-explain *ngIf="importDetailForm.get('maVatTu').dirty && importDetailForm.get('maVatTu').errors">
+          <ng-container *ngIf="importDetailForm.get('maVatTu').hasError('required')">
+            Vui lòng chọn vật tư!
+          </ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="soLuong">Số lượng</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-input-number formControlName="soLuong" [nzMin]="1" [nzStep]="1"></nz-input-number>
+        <nz-form-explain *ngIf="importDetailForm.get('soLuong').dirty && importDetailForm.get('soLuong').errors">
+          <ng-container *ngIf="importDetailForm.get('soLuong').hasError('required')">
+            Vui lòng nhập số lượng!
+          </ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="donGia">Đơn giá</nz-form-label>
+      <nz-form-control [nzSm]="10" [nzXs]="24">
+        <input currencyMask nz-input formControlName="donGia" id="donGia" />
+        <nz-form-explain *ngIf="importDetailForm.get('donGia').dirty && importDetailForm.get('donGia').errors">
+          <ng-container *ngIf="importDetailForm.get('donGia').hasError('required')">
+            Vui lòng nhập đơn giá!
+          </ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="maNuoc">Nước sản xuất</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn nước sản xuất" formControlName="maNuoc" id="maNuoc">
+          <nz-option *ngFor="let item of producingCountries" [nzValue]="item.maNuoc" [nzLabel]="item.tenNuoc">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="model">Model</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input nz-input formControlName="model" id="model" />
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div *ngSwitchCase="11">
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="maVatTu">Vật tư</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn vật tư" formControlName="maVatTu" id="maVatTu">
+          <nz-option *ngFor="let item of materials" [nzValue]="item.maVatTu" [nzLabel]="item.tenVT"></nz-option>
+        </nz-select>
+        <nz-form-explain *ngIf="importDetailForm.get('maVatTu').dirty && importDetailForm.get('maVatTu').errors">
+          <ng-container *ngIf="importDetailForm.get('maVatTu').hasError('required')">
+            Vui lòng chọn vật tư!
+          </ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="soLuong">Số lượng</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-input-number formControlName="soLuong" [nzMin]="1" [nzStep]="1"></nz-input-number>
+        <nz-form-explain *ngIf="importDetailForm.get('soLuong').dirty && importDetailForm.get('soLuong').errors">
+          <ng-container *ngIf="importDetailForm.get('soLuong').hasError('required')">
+            Vui lòng nhập số lượng!
+          </ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="soKhung">Số khung</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input nz-input formControlName="soKhung" id="soKhung" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="soMay">Số máy</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input nz-input formControlName="soMay" id="soMay" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="namSX">Năm sản xuất</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-year-picker id="namSX" formControlName="namSX" nzPlaceHolder="Chọn năm"></nz-year-picker>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="phanCap">Phân cấp</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input nz-input formControlName="phanCap" id="phanCap" />
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div *ngSwitchCase="12">
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="maVatTu">Vật tư</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn vật tư" formControlName="maVatTu" id="maVatTu">
+          <nz-option *ngFor="let item of materials" [nzValue]="item.maVatTu" [nzLabel]="item.tenVT"></nz-option>
+        </nz-select>
+        <nz-form-explain *ngIf="importDetailForm.get('maVatTu').dirty && importDetailForm.get('maVatTu').errors">
+          <ng-container *ngIf="importDetailForm.get('maVatTu').hasError('required')">
+            Vui lòng chọn vật tư!
+          </ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="soLuong">Số lượng</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-input-number formControlName="soLuong" [nzMin]="1" [nzStep]="1"></nz-input-number>
+        <nz-form-explain *ngIf="importDetailForm.get('soLuong').dirty && importDetailForm.get('soLuong').errors">
+          <ng-container *ngIf="importDetailForm.get('soLuong').hasError('required')">
+            Vui lòng nhập số lượng!
+          </ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="maHang">Hãng sản xuất</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn hãng sản xuất" formControlName="maHang" id="maHang">
+          <nz-option *ngFor="let item of manufacturers" [nzValue]="item.maHang" [nzLabel]="item.tenHang">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="maNuoc">Nước sản xuất</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn nước sản xuất" formControlName="maNuoc" id="maNuoc">
+          <nz-option *ngFor="let item of producingCountries" [nzValue]="item.maNuoc" [nzLabel]="item.tenNuoc">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="seri">Seri</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input nz-input formControlName="seri" id="seri" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="model">Model</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input nz-input formControlName="model" id="model" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="ghiChu">Ghi chú</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <textarea nz-input formControlName="ghiChu" id="ghiChu"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div *ngSwitchCase="13">
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="maVatTu">Vật tư</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn vật tư" formControlName="maVatTu" id="maVatTu">
+          <nz-option *ngFor="let item of materials" [nzValue]="item.maVatTu" [nzLabel]="item.tenVT"></nz-option>
+        </nz-select>
+        <nz-form-explain *ngIf="importDetailForm.get('maVatTu').dirty && importDetailForm.get('maVatTu').errors">
+          <ng-container *ngIf="importDetailForm.get('maVatTu').hasError('required')">
+            Vui lòng chọn vật tư!
+          </ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="soLuong">Số lượng</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-input-number formControlName="soLuong" [nzMin]="1" [nzStep]="1"></nz-input-number>
+        <nz-form-explain *ngIf="importDetailForm.get('soLuong').dirty && importDetailForm.get('soLuong').errors">
+          <ng-container *ngIf="importDetailForm.get('soLuong').hasError('required')">
+            Vui lòng nhập số lượng!
+          </ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="donGia">Đơn giá</nz-form-label>
+      <nz-form-control [nzSm]="10" [nzXs]="24">
+        <input currencyMask nz-input formControlName="donGia" id="donGia" />
+        <nz-form-explain *ngIf="importDetailForm.get('donGia').dirty && importDetailForm.get('donGia').errors">
+          <ng-container *ngIf="importDetailForm.get('donGia').hasError('required')">
+            Vui lòng nhập đơn giá!
+          </ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="maNuoc">Nước sản xuất</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn nước sản xuất" formControlName="maNuoc" id="maNuoc">
+          <nz-option *ngFor="let item of producingCountries" [nzValue]="item.maNuoc" [nzLabel]="item.tenNuoc">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="model">Model</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input nz-input formControlName="model" id="model" />
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div *ngSwitchCase="14">
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="maVatTu">Vật tư</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn vật tư" formControlName="maVatTu" id="maVatTu">
+          <nz-option *ngFor="let item of materials" [nzValue]="item.maVatTu" [nzLabel]="item.tenVT"></nz-option>
+        </nz-select>
+        <nz-form-explain *ngIf="importDetailForm.get('maVatTu').dirty && importDetailForm.get('maVatTu').errors">
+          <ng-container *ngIf="importDetailForm.get('maVatTu').hasError('required')">
+            Vui lòng chọn vật tư!
+          </ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="soLuong">Số lượng</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-input-number formControlName="soLuong" [nzMin]="1" [nzStep]="1"></nz-input-number>
+        <nz-form-explain *ngIf="importDetailForm.get('soLuong').dirty && importDetailForm.get('soLuong').errors">
+          <ng-container *ngIf="importDetailForm.get('soLuong').hasError('required')">
+            Vui lòng nhập số lượng!
+          </ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="donGia">Đơn giá</nz-form-label>
+      <nz-form-control [nzSm]="10" [nzXs]="24">
+        <input currencyMask nz-input formControlName="donGia" id="donGia" />
+        <nz-form-explain *ngIf="importDetailForm.get('donGia').dirty && importDetailForm.get('donGia').errors">
+          <ng-container *ngIf="importDetailForm.get('donGia').hasError('required')">
+            Vui lòng nhập đơn giá!
+          </ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="maNuoc">Nước sản xuất</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn nước sản xuất" formControlName="maNuoc" id="maNuoc">
+          <nz-option *ngFor="let item of producingCountries" [nzValue]="item.maNuoc" [nzLabel]="item.tenNuoc">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="model">Model</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input nz-input formControlName="model" id="model" />
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div *ngSwitchCase="15">
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="maVatTu">Vật tư</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn vật tư" formControlName="maVatTu" id="maVatTu">
+          <nz-option *ngFor="let item of materials" [nzValue]="item.maVatTu" [nzLabel]="item.tenVT"></nz-option>
+        </nz-select>
+        <nz-form-explain *ngIf="importDetailForm.get('maVatTu').dirty && importDetailForm.get('maVatTu').errors">
+          <ng-container *ngIf="importDetailForm.get('maVatTu').hasError('required')">
+            Vui lòng chọn vật tư!
+          </ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="soLuong">Số lượng</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-input-number formControlName="soLuong" [nzMin]="1" [nzStep]="1"></nz-input-number>
+        <nz-form-explain *ngIf="importDetailForm.get('soLuong').dirty && importDetailForm.get('soLuong').errors">
+          <ng-container *ngIf="importDetailForm.get('soLuong').hasError('required')">
+            Vui lòng nhập số lượng!
+          </ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="donGia">Đơn giá</nz-form-label>
+      <nz-form-control [nzSm]="10" [nzXs]="24">
+        <input currencyMask nz-input formControlName="donGia" id="donGia" />
+        <nz-form-explain *ngIf="importDetailForm.get('donGia').dirty && importDetailForm.get('donGia').errors">
+          <ng-container *ngIf="importDetailForm.get('donGia').hasError('required')">
+            Vui lòng nhập đơn giá!
+          </ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="maHang">Hãng sản xuất</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn hãng sản xuất" formControlName="maHang" id="maHang">
+          <nz-option *ngFor="let item of manufacturers" [nzValue]="item.maHang" [nzLabel]="item.tenHang">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="maNuoc">Nước sản xuất</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn nước sản xuất" formControlName="maNuoc" id="maNuoc">
+          <nz-option *ngFor="let item of producingCountries" [nzValue]="item.maNuoc" [nzLabel]="item.tenNuoc">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="model">Model</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input nz-input formControlName="model" id="model" />
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div *ngSwitchCase="16">
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="maVatTu">Vật tư</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn vật tư" formControlName="maVatTu" id="maVatTu">
+          <nz-option *ngFor="let item of materials" [nzValue]="item.maVatTu" [nzLabel]="item.tenVT"></nz-option>
+        </nz-select>
+        <nz-form-explain *ngIf="importDetailForm.get('maVatTu').dirty && importDetailForm.get('maVatTu').errors">
+          <ng-container *ngIf="importDetailForm.get('maVatTu').hasError('required')">
+            Vui lòng chọn vật tư!
+          </ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="soLuong">Số lượng</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-input-number formControlName="soLuong" [nzMin]="1" [nzStep]="1"></nz-input-number>
+        <nz-form-explain *ngIf="importDetailForm.get('soLuong').dirty && importDetailForm.get('soLuong').errors">
+          <ng-container *ngIf="importDetailForm.get('soLuong').hasError('required')">
+            Vui lòng nhập số lượng!
+          </ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="donGia">Đơn giá</nz-form-label>
+      <nz-form-control [nzSm]="10" [nzXs]="24">
+        <input currencyMask nz-input formControlName="donGia" id="donGia" />
+        <nz-form-explain *ngIf="importDetailForm.get('donGia').dirty && importDetailForm.get('donGia').errors">
+          <ng-container *ngIf="importDetailForm.get('donGia').hasError('required')">
+            Vui lòng nhập đơn giá!
+          </ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="maNuoc">Nước sản xuất</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn nước sản xuất" formControlName="maNuoc" id="maNuoc">
+          <nz-option *ngFor="let item of producingCountries" [nzValue]="item.maNuoc" [nzLabel]="item.tenNuoc">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="soDangKy">Số đăng ký</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input nz-input formControlName="soDangKy" id="soDangKy" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="dotMua">Đợt mua</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input nz-input formControlName="dotMua" id="dotMua" />
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+</form>

@@ -22,6 +22,10 @@ import { checkChietKhauNanValidator } from 'src/app/shared/vailidators/check-chi
 import { checkChietKhauRangeValidator } from 'src/app/shared/vailidators/check-chiet-khau-range-validator';
 import { checkQuantityKhongAmValidator } from 'src/app/shared/vailidators/check-quantity-khong-am.validator';
 import { checkPriceKhongAmValidator } from 'src/app/shared/vailidators/check-price-khong-am-validator';
+import { MaterialType } from 'src/app/shared/models/material-type.model';
+import { ImportMaterialDetailService } from 'src/app/shared/services/import-material-detail.service';
+import { NzModalService } from 'ng-zorro-antd';
+import { ImportMaterialDetailModalComponent } from '../import-material-detail-modal/import-material-detail-modal.component';
 
 @Component({
   selector: 'app-update-import-materials',
@@ -29,99 +33,62 @@ import { checkPriceKhongAmValidator } from 'src/app/shared/vailidators/check-pri
   styleUrls: ['./update-import-materials.component.scss']
 })
 export class UpdateImportMaterialsComponent implements OnInit {
+  loading: boolean;
   materialStores: MaterialStore[];
   materialItems: MaterialItem[];
-  materials: Material[];
-  producingCountries: ProducingCountry[];
-  manufacturers: Manufacturer[];
-  importMaterial: ImportMaterial;
-  submitted = false;
+  materialTypes: MaterialType[];
   importMaterialForm: FormGroup;
-  listnhapchitiet: FormArray;
-  listDelete: any[] = [];
-  @HostListener('window:beforeunload', ['$event'])
-  beforeunloadHandler($event: any) {
-    if (this.importMaterialForm.dirty) {
-      $event.returnValue = false;
-    }
-  }
+  materialItemId: number;
+  importMaterialDetails: ImportMaterialDetail[];
+  formatterPercent = value => `${value} %`;
+  parserPercent = value => value.replace(' %', '');
+  // @HostListener('window:beforeunload', ['$event'])
+  // beforeunloadHandler($event: any) {
+  //   if (this.importMaterialForm.dirty) {
+  //     $event.returnValue = false;
+  //   }
+  // }
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
+    private modalService: NzModalService,
     private importMaterialService: ImportMaterialService,
     private materialStoreService: MaterialStoreService,
     private materialItemService: MaterialItemService,
-    private materialService: MaterialService,
-    private producingCountryService: ProducingCountryService,
-    private manufacturerService: ManufacturerService,
+    private importMaterialDetailService: ImportMaterialDetailService,
     private notify: NotifyService
   ) { }
 
   ngOnInit() {
-    this.loadAllInventories();
+    this.importMaterialDetails = [];
+
+    this.loadAllMaterialStore();
     this.loadAllMaterialItems();
-    this.loadAllMaterials();
-    this.loadAllProducingCountries();
-    this.loadAllManufacturers();
-    this.materialStores = [];
     this.createForm();
   }
 
   createForm() {
     this.importMaterialForm = this.fb.group({
-      mnhapvattu: this.fb.group({}),
-      listnhapchitiet: this.fb.array([])
+      maPhieuNhap: [null, [Validators.required]],
+      maKho: [null, [Validators.required]],
+      maHM: [null, [Validators.required]],
+      ngayNhap: [null, [Validators.required]],
+      chietKhau: [0, [checkChietKhauNanValidator, checkChietKhauRangeValidator]],
+      ghiChu: [null]
     });
 
     this.route.data.subscribe(data => {
       const { mnhapvattu, listnhapchitiet } = data['import-material'];
-      const formArray = this.importMaterialForm.get('listnhapchitiet') as FormArray;
 
-      listnhapchitiet.map(item => {
-        formArray.push(this.createItem(item));
-      });
-
-      this.importMaterialForm.setControl('mnhapvattu', this.createGroup(mnhapvattu));
-      this.importMaterialForm.setControl('listnhapchitiet', formArray);
+      this.materialItemId = mnhapvattu.maHM;
+      this.importMaterialForm.patchValue(mnhapvattu);
+      this.importMaterialDetails = listnhapchitiet;
     });
   }
 
-  createGroup(item: ImportMaterial): FormGroup {
-    return this.fb.group({
-      maPhieuNhap: [item.maPhieuNhap],
-      maKho: [{ value: item.maKho, disabled: false }, [Validators.required]],
-      maHM: [item.maHM, [Validators.required]],
-      ngayNhap: [item.ngayNhap, [Validators.required]],
-      chietKhau: [item.chietKhau, [checkChietKhauNanValidator, checkChietKhauRangeValidator]],
-      ghiChu: [item.ghiChu]
-    });
-  }
-
-  createItem(item: ImportMaterialDetail): FormGroup {
-    return this.fb.group({
-      maPhieuNhap: [item.maPhieuNhap],
-      maVatTu: [{ value: item.maVatTu, disabled: false }, [Validators.required]],
-      tenVT: [item.tenVT],
-      soLuong: [item.soLuong, [Validators.required, checkQuantityKhongAmValidator]],
-      donGia: [item.donGia, [Validators.required, checkPriceKhongAmValidator]],
-      maNuoc: [item.maNuoc],
-      maHang: [item.maHang],
-      model: [item.model],
-      seri: [item.seri],
-      soKhung: [item.soKhung],
-      soMay: [item.soMay],
-      soDangKy: [item.soDangKy],
-      dotMua: [item.dotMua],
-      namSX: [item.namSX],
-      phanCap: [item.phanCap],
-      nguonGoc: [item.nguonGoc],
-      ghiChu: [item.ghiChu]
-    });
-  }
-
-  loadAllInventories() {
+  loadAllMaterialStore() {
     this.materialStoreService.getAll().subscribe((res: MaterialStore[]) => {
       this.materialStores = res;
     });
@@ -133,100 +100,99 @@ export class UpdateImportMaterialsComponent implements OnInit {
     });
   }
 
-  loadAllMaterials() {
-    this.materialService.getAll().subscribe((res: Material[]) => {
-      this.materials = res;
-    });
-  }
-
-  loadAllProducingCountries() {
-    this.producingCountryService.getAll().subscribe((res: ProducingCountry[]) => {
-      this.producingCountries = res;
-    });
-  }
-
-  loadAllManufacturers() {
-    this.manufacturerService.getAll().subscribe((res: Manufacturer[]) => {
-      this.manufacturers = res;
-    });
-  }
-
   getStoreName() {
-    const maKho = this.importMaterialForm.get('mnhapvattu.maKho').value;;
+    const maKho = this.importMaterialForm.get('mnhapvattu.maKho').value;
     return this.materialStores.filter(x => x.maKho === maKho).map(x => x.tenKho);
   }
 
   deleteRow(idx: number, maVatTu: any) {
-    const maPhieuNhap = this.importMaterialForm.get('mnhapvattu.maPhieuNhap').value;
-    const maKho = this.importMaterialForm.get('mnhapvattu.maKho').value;
-    this.importMaterialService.checkStatusDeleteDetail(maPhieuNhap, maVatTu, maKho)
-      .subscribe(res => {
-        if (res) {
-          this.listnhapchitiet = this.importMaterialForm.get('listnhapchitiet') as FormArray;
-          this.listnhapchitiet.removeAt(idx);
+    // const maPhieuNhap = this.importMaterialForm.get('mnhapvattu.maPhieuNhap').value;
+    // const maKho = this.importMaterialForm.get('mnhapvattu.maKho').value;
+    // this.importMaterialService.checkStatusDeleteDetail(maPhieuNhap, maVatTu, maKho)
+    //   .subscribe(res => {
+    //     if (res) {
+    //       this.listnhapchitiet = this.importMaterialForm.get('listnhapchitiet') as FormArray;
+    //       this.listnhapchitiet.removeAt(idx);
 
-          this.listDelete.push({
-            maPhieuNhap: this.importMaterialForm.get('mnhapvattu.maPhieuNhap').value,
-            maKho: this.importMaterialForm.get('mnhapvattu.maKho').value,
-            maVatTu
-          });
-        } else {
-          this.notify.error('Vật tư đã xuất, không được xóa');
-        }
-      });
+    //       this.listDelete.push({
+    //         maPhieuNhap: this.importMaterialForm.get('mnhapvattu.maPhieuNhap').value,
+    //         maKho: this.importMaterialForm.get('mnhapvattu.maKho').value,
+    //         maVatTu
+    //       });
+    //     } else {
+    //       this.notify.error('Vật tư đã xuất, không được xóa');
+    //     }
+    //   });
   }
 
   saveChanges() {
-    this.submitted = true;
-
     if (this.importMaterialForm.invalid) {
+      // tslint:disable-next-line:forin
+      for (const i in this.importMaterialForm.controls) {
+        this.importMaterialForm.controls[i].markAsDirty();
+        this.importMaterialForm.controls[i].updateValueAndValidity();
+      }
       return;
     }
 
-    if (this.listDelete.length > 0) {
-      this.listDelete.map((item, idx) => {
-        ++idx;
-        this.importMaterialService.deleteImportDetail(item.maPhieuNhap, item.maVatTu, item.maKho)
-          .subscribe((res: boolean) => {
-            console.log(res);
-          }, error => {
-            console.log('delete ImportDetails');
-            console.log(error);
-          }, () => {
-            if (idx === this.listDelete.length) {
-              const nhapVatTuParams = Object.assign({}, this.importMaterialForm.value);
-              this.importMaterialService.update(nhapVatTuParams).subscribe((res: number) => {
-                if (res === 1) {
-                  this.notify.success('Sửa phiếu thành công!');
-                  this.router.navigate(['/admin/nghiep-vu/danh-sach-phieu-nhap']);
-                } else if (res === -1) {
-                  this.notify.error('Số lượng nhập vượt quá');
-                } else {
-                  this.notify.error('Có lỗi xảy ra');
-                }
-              }, error => {
-                console.log('error updateImportMaterial');
-                console.log(error);
-              });
-            }
-          });
-      });
-    } else {
-      const nhapVatTuParams = Object.assign({}, this.importMaterialForm.value);
-      this.importMaterialService.update(nhapVatTuParams).subscribe((res: number) => {
-        if (res === 1) {
-          this.notify.success('Sửa phiếu thành công!');
-          this.router.navigate(['/admin/nghiep-vu/danh-sach-phieu-nhap']);
-        } else if (res === -1) {
-          this.notify.error('Số lượng nhập vượt quá');
-        } else {
-          this.notify.error('Có lỗi xảy ra');
+    const importMaterial = Object.assign({}, this.importMaterialForm.value);
+    this.importMaterialService.update(importMaterial).subscribe((res: any) => {
+      if (res) {
+        this.notify.success('Sửa thành công');
+        this.importMaterialForm.markAsPristine();
+        this.importMaterialForm.updateValueAndValidity();
+      }
+    }, error => {
+      this.notify.error('Có lỗi xảy ra');
+      console.log('error updateImportMaterial');
+      console.log(error);
+    });
+  }
+
+  addImportDetail() {
+    const { maPhieuNhap, maHM } = this.importMaterialForm.value;
+
+    const modal = this.modalService.create({
+      nzTitle: 'Thêm chi tiết nhập vật tư',
+      nzContent: ImportMaterialDetailModalComponent,
+      nzMaskClosable: false,
+      nzComponentParams: {
+        importMaterialId: maPhieuNhap,
+        materialItemId: maHM
+      },
+      nzFooter: [
+        {
+          label: 'Hủy',
+          shape: 'default',
+          onClick: () => modal.destroy(),
+        },
+        {
+          label: 'Lưu',
+          type: 'primary',
+          onClick: (componentInstance) => {
+            componentInstance.saveChanges((res: boolean) => {
+              if (res) {
+                this.loading = true;
+                modal.destroy();
+                this.materialItemId = maHM;
+                console.log(this.materialItemId);
+                this.loadImportDetails(maPhieuNhap);
+              } else {
+                modal.destroy();
+              }
+            });
+          }
         }
-      }, error => {
-        console.log('error updateImportMaterial');
-        console.log(error);
+      ]
+    });
+  }
+
+  loadImportDetails(importId: number) {
+    this.importMaterialDetailService.getAllByImportId(importId)
+      .subscribe((res: ImportMaterialDetail[]) => {
+        this.importMaterialDetails = res;
+        this.loading = false;
       });
-    }
   }
 
   checkStatus(idx: any, matVatTu: any, soLuong: number) {
