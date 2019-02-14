@@ -38,7 +38,7 @@
       <nz-form-item>
         <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="ngayNhap">Ngày xuất</nz-form-label>
         <nz-form-control [nzSm]="10" [nzXs]="24">
-          <nz-date-picker formControlName="ngayNhap" [nzPlaceHolder]="'dd/MM/yyyy'" nzFormat="dd/MM/yyyy">
+          <nz-date-picker formControlName="ngayNhap" nzPlaceHolder="Chọn ngày xuất" nzFormat="dd/MM/yyyy">
           </nz-date-picker>
           <nz-form-explain
             *ngIf="exportMaterialForm.get('ngayNhap').dirty && exportMaterialForm.get('ngayNhap').errors">

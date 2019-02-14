@@ -13,7 +13,7 @@
   <nz-form-item>
     <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="ngaySinh">Ngày sinh</nz-form-label>
     <nz-form-control [nzSm]="16" [nzXs]="24">
-      <nz-date-picker formControlName="ngaySinh" [nzPlaceHolder]="'dd/MM/yyyy'" nzFormat="dd/MM/yyyy">
+      <nz-date-picker formControlName="ngaySinh" nzPlaceHolder="Chọn ngày sinh" nzFormat="dd/MM/yyyy">
       </nz-date-picker>
       <nz-form-explain *ngIf="personnelForm.get('ngaySinh').dirty && personnelForm.get('ngaySinh').errors">
         <ng-container *ngIf="personnelForm.get('ngaySinh').hasError('required')">
@@ -65,8 +65,7 @@
   <nz-form-item>
     <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="ngayNhapNguTuyenDung">Ngày NN/TD</nz-form-label>
     <nz-form-control [nzSm]="16" [nzXs]="24">
-      <nz-date-picker formControlName="ngayNhapNguTuyenDung" [nzPlaceHolder]="'dd/MM/yyyy'" nzFormat="dd/MM/yyyy">
-      </nz-date-picker>
+      <nz-month-picker formControlName="ngayNhapNguTuyenDung" nzFormat="MM/yyyy" nzPlaceHolder="Chọn ngày"></nz-month-picker>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
