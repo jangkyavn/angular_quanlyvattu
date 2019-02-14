@@ -118,7 +118,9 @@ export class UpdateExportMaterialsComponent implements OnInit {
       nzMaskClosable: false,
       nzComponentParams: {
         inventory,
-        exportMaterialId: maPhieuXuat
+        materialStoreId: maKho,
+        exportMaterialId: maPhieuXuat,
+        isAddNew: true
       },
       nzFooter: [
         {
@@ -175,6 +177,44 @@ export class UpdateExportMaterialsComponent implements OnInit {
         this.exportMaterialDetails = res;
         this.loadingExportDetails = false;
       });
+  }
+
+  updateExportDetail(exportDetail: ExportMaterialDetail) {
+    const { maPhieuXuat, maKho } = this.exportMaterialForm.value;
+
+    const modal = this.modalService.create({
+      nzTitle: 'Sửa Xuất chi tiết vật tư',
+      nzContent: ExportMaterialDetailModalComponent,
+      nzMaskClosable: false,
+      nzComponentParams: {
+        materialStoreId: maKho,
+        exportDetail,
+        exportMaterialId: maPhieuXuat,
+        isAddNew: false
+      },
+      nzFooter: [
+        {
+          label: 'Hủy',
+          shape: 'default',
+          onClick: () => modal.destroy(),
+        },
+        {
+          label: 'Lưu',
+          type: 'primary',
+          onClick: (componentInstance) => {
+            componentInstance.saveChanges((res: boolean) => {
+              if (res) {
+                modal.destroy();
+                this.loadExportDetails(maPhieuXuat);
+                this.loadInventoriesByStoreId(maKho);
+              } else {
+                modal.destroy();
+              }
+            });
+          }
+        }
+      ]
+    });
   }
 
   deleteExportDetail(exportDetail: ExportMaterialDetail) {

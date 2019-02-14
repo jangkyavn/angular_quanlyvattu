@@ -57,4 +57,8 @@ export class ProducingCountryService {
   update(producingCountry: ProducingCountry) {
     return this.http.put(this.baseUrl + 'NuocSanXuat', producingCountry);
   }
+
+  delete(id: number) {
+    return this.http.delete(this.baseUrl + 'NuocSanXuat/' + id);
+  }
 }

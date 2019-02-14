@@ -137,6 +137,11 @@
           <td>{{data.donGia | number: '1.0-0'}}</td>
           <td>{{data.ghiChu}}</td>
           <td>
+            <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
+              (click)="updateExportDetail(data)">
+              <i nz-icon type="edit" theme="outline"></i>
+            </button>
+            <nz-divider nzType="vertical"></nz-divider>
             <button nz-button nzType="danger" nz-tooltip nzTitle="Xóa" (click)="deleteExportDetail(data)">
               <i nz-icon type="delete" theme="outline"></i>
             </button>

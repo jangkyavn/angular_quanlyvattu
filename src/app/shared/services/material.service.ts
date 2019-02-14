@@ -65,4 +65,8 @@ export class MaterialService {
   update(material: Material) {
     return this.http.put(this.baseUrl + 'VatTu', material);
   }
+
+  delete(id: number) {
+    return this.http.delete(this.baseUrl + 'VatTu/' + id);
+  }
 }

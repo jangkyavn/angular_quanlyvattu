@@ -49,9 +49,15 @@ export class ManufacturerAddEditModalComponent implements OnInit {
     const manufacturer = Object.assign({}, this.manufacturerForm.value);
     if (this.isAddNew) {
       this.manufacturerService.addNew(manufacturer).subscribe((res: any) => {
-        if (res) {
-          this.notify.success('Thêm thành công!');
-          callBack(true);
+        if (typeof res === 'boolean') {
+          if (res) {
+            this.notify.success('Thêm thành công!');
+            callBack(true);
+          }
+        } else {
+          if (res === -1) {
+            this.notify.warning('Tên hãng sản xuất đã tồn tại');
+          }
         }
       }, error => {
         this.notify.success('Có lỗi xảy ra!');

@@ -61,4 +61,8 @@ export class MaterialTypeService {
   update(materialType: MaterialType) {
     return this.http.put(this.baseUrl + 'LoaiVatTu', materialType);
   }
+
+  delete(id: number) {
+    return this.http.delete(this.baseUrl + 'LoaiVatTu/' + id);
+  }
 }

@@ -57,4 +57,8 @@ export class SupplyService {
   update(supply: Supply) {
     return this.http.put(this.baseUrl + 'NguonCungCap', supply);
   }
+
+  delete(id: number) {
+    return this.http.delete(this.baseUrl + 'NguonCungCap/' + id);
+  }
 }

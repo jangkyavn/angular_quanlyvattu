@@ -60,9 +60,15 @@ export class PersonnelAddEditModalComponent implements OnInit {
     const personnel = Object.assign({}, this.personnelForm.value);
     if (this.isAddNew) {
       this.personnelService.addNew(personnel).subscribe((res: any) => {
-        if (res) {
-          this.notify.success('Thêm thành công!');
-          callBack(true);
+        if (typeof res === 'boolean') {
+          if (res) {
+            this.notify.success('Thêm thành công!');
+            callBack(true);
+          }
+        } else {
+          if (res === -1) {
+            this.notify.warning('Tên nhân sự đã tồn tại');
+          }
         }
       }, error => {
         this.notify.success('Có lỗi xảy ra!');

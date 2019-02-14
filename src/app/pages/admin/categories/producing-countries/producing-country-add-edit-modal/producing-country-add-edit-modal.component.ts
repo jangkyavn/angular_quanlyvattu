@@ -48,9 +48,15 @@ export class ProducingCountryAddEditModalComponent implements OnInit {
     const producingCountry = Object.assign({}, this.producingCountryForm.value);
     if (this.isAddNew) {
       this.producingCountryService.addNew(producingCountry).subscribe((res: any) => {
-        if (res) {
-          this.notify.success('Thêm thành công!');
-          callBack(true);
+        if (typeof res === 'boolean') {
+          if (res) {
+            this.notify.success('Thêm thành công!');
+            callBack(true);
+          }
+        } else {
+          if (res === -1) {
+            this.notify.warning('Tên nước sản xuất đã tồn tại');
+          }
         }
       }, error => {
         this.notify.success('Có lỗi xảy ra!');

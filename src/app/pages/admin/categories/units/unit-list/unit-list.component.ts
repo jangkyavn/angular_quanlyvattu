@@ -61,6 +61,11 @@ export class UnitListComponent implements OnInit {
       }, error => {
         this.notify.error('Có lỗi xảy ra');
         console.log('error getAllPagingUnits');
+      }, () => {
+        if (this.dataSet.length === 0 && this.pagination.currentPage !== 1) {
+          this.pagination.currentPage -= 1;
+          this.loadData();
+        }
       });
   }
 
@@ -134,7 +139,13 @@ export class UnitListComponent implements OnInit {
 
   delete(id: number) {
     this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
-      /////////////
+      this.unitService.delete(id).subscribe((res: boolean) => {
+        this.notify.success('Xóa thành công!');
+        this.loadData();
+      }, _ => {
+        this.notify.error('Có lỗi xảy ra');
+        console.log('error deleteUnit');
+      });
     });
   }
 

@@ -57,4 +57,8 @@ export class MaterialItemService {
   update(materialItem: MaterialItem) {
     return this.http.put(this.baseUrl + 'HangMucVatTu', materialItem);
   }
+
+  delete(id: number) {
+    return this.http.delete(this.baseUrl + 'HangMucVatTu/' + id);
+  }
 }

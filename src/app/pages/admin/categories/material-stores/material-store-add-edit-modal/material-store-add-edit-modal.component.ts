@@ -51,9 +51,15 @@ export class MaterialStoreAddEditModalComponent implements OnInit {
     const materialStore = Object.assign({}, this.materialStoreForm.value);
     if (this.isAddNew) {
       this.materialStoreService.addNew(materialStore).subscribe((res: any) => {
-        if (res) {
-          this.notify.success('Thêm thành công!');
-          callBack(true);
+        if (typeof res === 'boolean') {
+          if (res) {
+            this.notify.success('Thêm thành công!');
+            callBack(true);
+          }
+        } else {
+          if (res === -1) {
+            this.notify.warning('Tên kho vật tư đã tồn tại');
+          }
         }
       }, error => {
         this.notify.success('Có lỗi xảy ra!');

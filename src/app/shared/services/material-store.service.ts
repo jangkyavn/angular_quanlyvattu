@@ -57,4 +57,8 @@ export class MaterialStoreService {
   update(materialStore: MaterialStore) {
     return this.http.put(this.baseUrl + 'KhoVatTu', materialStore);
   }
+
+  delete(id: number) {
+    return this.http.delete(this.baseUrl + 'KhoVatTu/' + id);
+  }
 }

@@ -57,4 +57,8 @@ export class UnitService {
   update(unit: Unit) {
     return this.http.put(this.baseUrl + 'DonViTinh', unit);
   }
+
+  delete(id: number) {
+    return this.http.delete(this.baseUrl + 'DonViTinh/' + id);
+  }
 }

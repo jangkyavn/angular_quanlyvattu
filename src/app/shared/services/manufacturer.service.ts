@@ -57,4 +57,8 @@ export class ManufacturerService {
   update(manufacturer: Manufacturer) {
     return this.http.put(this.baseUrl + 'HangSanXuat', manufacturer);
   }
+
+  delete(id: number) {
+    return this.http.delete(this.baseUrl + 'HangSanXuat/' + id);
+  }
 }

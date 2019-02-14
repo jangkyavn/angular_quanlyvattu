@@ -17,4 +17,7 @@ export interface ImportMaterialDetail {
     ghiChu?: string;
 
     tenVT?: string;
+    tenHang?: string;
+    tenNuoc?: string;
+    tenNguon?: string;
 }

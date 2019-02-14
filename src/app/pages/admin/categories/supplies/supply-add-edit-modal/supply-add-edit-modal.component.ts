@@ -50,9 +50,15 @@ export class SupplyAddEditModalComponent implements OnInit {
     const supply = Object.assign({}, this.supplyForm.value);
     if (this.isAddNew) {
       this.supplyService.addNew(supply).subscribe((res: any) => {
-        if (res) {
-          this.notify.success('Thêm thành công!');
-          callBack(true);
+        if (typeof res === 'boolean') {
+          if (res) {
+            this.notify.success('Thêm thành công!');
+            callBack(true);
+          }
+        } else {
+          if (res === -1) {
+            this.notify.warning('Tên nguồn cung cấp đã tồn tại');
+          }
         }
       }, error => {
         callBack(false);

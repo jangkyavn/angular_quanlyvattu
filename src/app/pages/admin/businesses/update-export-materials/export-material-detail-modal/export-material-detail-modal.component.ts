@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Inventory } from 'src/app/shared/models/inventory.model';
 import { ExportMaterialDetailService } from 'src/app/shared/services/export-material-detail.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
+import { ExportMaterialDetail } from 'src/app/shared/models/export-material-detail.model';
 
 @Component({
   selector: 'app-export-material-detail-modal',
@@ -12,7 +13,10 @@ import { NotifyService } from 'src/app/shared/services/notify.service';
 })
 export class ExportMaterialDetailModalComponent implements OnInit {
   @Input() inventory: Inventory;
+  @Input() materialStoreId: number;
   @Input() exportMaterialId: number;
+  @Input() isAddNew: boolean;
+  @Input() exportDetail: ExportMaterialDetail;
   exportDetailForm: FormGroup;
 
   constructor(
@@ -36,13 +40,20 @@ export class ExportMaterialDetailModalComponent implements OnInit {
       ghiChu: [null]
     });
 
-    this.exportDetailForm.patchValue({
-      maPhieuXuat: this.exportMaterialId,
-      maPhieuNhap: this.inventory.maPhieuNhap,
-      tenVatTu: this.inventory.tenVatTu,
-      maVatTu: this.inventory.maVatTu,
-      soLuongXuat: this.inventory.soLuongTon
-    });
+    if (this.isAddNew) {
+      this.exportDetailForm.patchValue({
+        maPhieuXuat: this.exportMaterialId,
+        maPhieuNhap: this.inventory.maPhieuNhap,
+        tenVatTu: this.inventory.tenVatTu,
+        maVatTu: this.inventory.maVatTu,
+        soLuongXuat: this.inventory.soLuongTon
+      });
+    } else {
+      this.exportDetailForm.patchValue({
+        ...this.exportDetail,
+        tenVatTu: this.exportDetail.tenVT,
+      })
+    }
   }
 
   saveChanges(callBack: (result: boolean) => any = null) {
@@ -55,23 +66,55 @@ export class ExportMaterialDetailModalComponent implements OnInit {
       return;
     }
 
-    callBack(true);
-
-    const exportDetail = Object.assign({}, this.exportDetailForm.getRawValue());
+    const exportDetail: ExportMaterialDetail = Object.assign({}, this.exportDetailForm.getRawValue());
     const exportDetailParams = {
       exportDetail,
-      exportId: this.exportMaterialId
+      exportId: this.exportMaterialId,
+      storeId: this.materialStoreId
     };
 
-    this.exportDetailService.addNew(exportDetailParams).subscribe((res: any) => {
-      if (res) {
-        this.notify.success('Thêm thành công!');
-        callBack(true);
-      }
-    }, error => {
-      this.notify.success('Có lỗi xảy ra!');
-      console.log('error addExportDetail');
-      callBack(false);
-    });
+    if (this.isAddNew) {
+      this.exportDetailService.checkDuplicate(exportDetail.maPhieuXuat, exportDetail.maPhieuNhap, exportDetail.maVatTu)
+        .subscribe((check: number) => {
+          if (check !== -1) {
+            exportDetailParams.exportDetail.soLuongXuat += check;
+            this.exportDetailService.update(exportDetailParams)
+              .subscribe((res: any) => {
+                if (res >= 0) {
+                  this.notify.success('Sửa thành công!');
+                  callBack(true);
+                }
+              }, error => {
+                this.notify.error('Có lỗi xảy ra!');
+                console.log('error updateExportDetail');
+                callBack(false);
+              });
+          } else {
+            this.exportDetailService.addNew(exportDetailParams)
+              .subscribe((res: any) => {
+                if (res) {
+                  this.notify.success('Thêm thành công!');
+                  callBack(true);
+                }
+              }, error => {
+                this.notify.error('Có lỗi xảy ra!');
+                console.log('error addExportDetail');
+                callBack(false);
+              });
+          }
+        });
+    } else {
+      this.exportDetailService.update(exportDetailParams)
+        .subscribe((res: any) => {
+          if (res >= 0) {
+            this.notify.success('Sửa thành công!');
+            callBack(true);
+          }
+        }, error => {
+          this.notify.error('Có lỗi xảy ra!');
+          console.log('error updateExportDetail');
+          callBack(false);
+        });
+    }
   }
 }

@@ -61,9 +61,15 @@ export class MaterialAddEditModalComponent implements OnInit {
     const material = Object.assign({}, this.materialForm.value);
     if (this.isAddNew) {
       this.materialService.addNew(material).subscribe((res: any) => {
-        if (res) {
-          this.notify.success('Thêm thành công!');
-          callBack(true);
+        if (typeof res === 'boolean') {
+          if (res) {
+            this.notify.success('Thêm thành công!');
+            callBack(true);
+          }
+        } else {
+          if (res === -1) {
+            this.notify.warning('Tên vật tư đã tồn tại');
+          }
         }
       }, error => {
         this.notify.success('Có lỗi xảy ra!');

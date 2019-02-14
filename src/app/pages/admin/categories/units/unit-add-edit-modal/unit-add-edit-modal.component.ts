@@ -49,9 +49,15 @@ export class UnitAddEditModalComponent implements OnInit {
     const unit = Object.assign({}, this.unitForm.value);
     if (this.isAddNew) {
       this.unitService.addNew(unit).subscribe((res: any) => {
-        if (res) {
-          this.notify.success('Thêm thành công!');
-          callBack(true);
+        if (typeof res === 'boolean') {
+          if (res) {
+            this.notify.success('Thêm thành công!');
+            callBack(true);
+          }
+        } else {
+          if (res === -1) {
+            this.notify.warning('Tên đơn vị tính đã tồn tại');
+          }
         }
       }, error => {
         this.notify.success('Có lỗi xảy ra!');

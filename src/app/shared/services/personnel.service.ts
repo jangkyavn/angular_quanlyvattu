@@ -57,4 +57,8 @@ export class PersonnelService {
   update(personnel: Personnel) {
     return this.http.put(this.baseUrl + 'NhanSu', personnel);
   }
+
+  delete(id: number) {
+    return this.http.delete(this.baseUrl + 'NhanSu/' + id);
+  }
 }

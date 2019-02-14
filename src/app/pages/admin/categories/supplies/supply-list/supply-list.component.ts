@@ -134,7 +134,13 @@ export class SupplyListComponent implements OnInit {
 
   delete(id: number) {
     this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
-      /////////////
+      this.supplyService.delete(id).subscribe((res: boolean) => {
+        this.notify.success('Xóa thành công!');
+        this.loadData();
+      }, _ => {
+        this.notify.error('Có lỗi xảy ra');
+        console.log('error deleteSupply');
+      });
     });
   }
 

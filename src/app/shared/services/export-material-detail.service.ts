@@ -17,12 +17,24 @@ export class ExportMaterialDetailService {
         return this.http.post(this.baseUrl + 'XuatVatTu/insertXuatChiTiet', exportDetailParams);
     }
 
+    update(exportDetailParams: any) {
+        return this.http.put(this.baseUrl + 'XuatVatTu/updateXuatChiTietAsync', exportDetailParams);
+    }
+
     getAllByImportId(exportId: number) {
         return this.http.get(this.baseUrl + 'XuatVatTu/GetDetail/' + exportId).pipe(
             map((res: any) => {
                 return res.listxuatchitiet;
             })
         );
+    }
+
+    getDetail(exportId: any, importId: any, materialId: any) {
+        return this.http.get(this.baseUrl + `XuatVatTu/GetXuatChiTiet/${exportId}/${importId}/${materialId}`);
+    }
+
+    checkDuplicate(exportId: any, importId: any, materialId: any) {
+        return this.http.get(this.baseUrl + `XuatVatTu/CheckTonTaiVTChitiet/${exportId}/${importId}/${materialId}`);
     }
 
     delete(exportId, importId, materialId, storeId) {
