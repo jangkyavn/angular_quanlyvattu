@@ -1,0 +1,48 @@
+<form nz-form [formGroup]="exportDetailForm" (ngSubmit)="saveChanges()" autocomplete="off">
+  <div>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="tenVatTu">Vật tư</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input nz-input formControlName="tenVatTu" id="tenVatTu" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="maPhieuNhap">Mã phiếu nhập</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input nz-input formControlName="maPhieuNhap" id="maPhieuNhap" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="soLuongXuat">Số lượng xuất</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <div>
+          <nz-input-number formControlName="soLuongXuat" [nzMin]="1" [nzMax]="inventory.soLuongTon" [nzStep]="1">
+          </nz-input-number> / {{inventory.soLuongTon}}
+        </div>
+        <nz-form-explain
+          *ngIf="exportDetailForm.get('soLuongXuat').dirty && exportDetailForm.get('soLuongXuat').errors">
+          <ng-container *ngIf="exportDetailForm.get('soLuongXuat').hasError('required')">
+            Vui lòng nhập số lượng xuất!
+          </ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="donGia">Đơn giá</nz-form-label>
+      <nz-form-control [nzSm]="10" [nzXs]="24">
+        <input currencyMask nz-input formControlName="donGia" id="donGia" />
+        <nz-form-explain *ngIf="exportDetailForm.get('donGia').dirty && exportDetailForm.get('donGia').errors">
+          <ng-container *ngIf="exportDetailForm.get('donGia').hasError('required')">
+            Vui lòng nhập đơn giá!
+          </ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="ghiChu">Ghi chú</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <textarea nz-input formControlName="ghiChu" id="ghiChu"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+</form>

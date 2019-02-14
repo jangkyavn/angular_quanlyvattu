@@ -16,6 +16,7 @@ import { checkEmailDuplicateValidator } from 'src/app/shared/vailidators/check-e
 export class UserAddEditModalComponent implements OnInit {
   @Input() user: User;
   @Input() isAddNew: boolean;
+  dateFormat = 'dd/MM/yyyy';
 
   userForm: FormGroup;
 

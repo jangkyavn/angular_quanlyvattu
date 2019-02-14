@@ -7,7 +7,7 @@ export interface ExportMaterial {
     tongSoLuong?: number;
     ghiChu?: string;
     status?: boolean;
-
+    chietKhau?: number;
     tenKho?: string;
     tenNS?: string;
 }

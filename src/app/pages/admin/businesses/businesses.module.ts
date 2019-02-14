@@ -10,13 +10,13 @@ import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from 'ng2-currency-mask/src/currency-mask.config';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
-    align: 'right',
-    allowNegative: true,
-    decimal: '.',
-    precision: 0,
-    prefix: '',
-    suffix: '',
-    thousands: ','
+  align: 'right',
+  allowNegative: true,
+  decimal: '.',
+  precision: 0,
+  prefix: '',
+  suffix: '',
+  thousands: ','
 };
 
 import { BusinessesComponent } from './businesses.component';
@@ -32,7 +32,12 @@ import { UpdateImportMaterialsComponent } from './update-import-materials/update
 import { ImportMaterialDetailResolver } from 'src/app/shared/resolvers/import-material-detail.resolver';
 import { UpdateExportMaterialsComponent } from './update-export-materials/update-export-materials.component';
 import { ExportMaterialDetailResolver } from 'src/app/shared/resolvers/export-material-detail.resolver';
-import { ImportMaterialDetailModalComponent } from './import-material-detail-modal/import-material-detail-modal.component';
+import {
+  ImportMaterialDetailModalComponent
+} from './update-import-materials/import-material-detail-modal/import-material-detail-modal.component';
+import {
+  ExportMaterialDetailModalComponent
+} from './update-export-materials/export-material-detail-modal/export-material-detail-modal.component';
 
 @NgModule({
   declarations: [BusinessesComponent,
@@ -44,7 +49,8 @@ import { ImportMaterialDetailModalComponent } from './import-material-detail-mod
     UpdateImportMaterialsComponent,
     UpdateExportMaterialsComponent,
     ImportMaterialDetailModalComponent,
-    PageMaintenanceComponent
+    PageMaintenanceComponent,
+    ExportMaterialDetailModalComponent
   ],
   imports: [
     CommonModule,
@@ -64,7 +70,8 @@ import { ImportMaterialDetailModalComponent } from './import-material-detail-mod
     ExportMaterialDetailResolver
   ],
   entryComponents: [
-    ImportMaterialDetailModalComponent
+    ImportMaterialDetailModalComponent,
+    ExportMaterialDetailModalComponent
   ]
 })
 export class BusinessesModule { }

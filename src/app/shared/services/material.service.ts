@@ -54,6 +54,10 @@ export class MaterialService {
     return this.http.get(this.baseUrl + 'VatTu/getTotalCount');
   }
 
+  getAllByItemId(materialItemId: number) {
+    return this.http.get(this.baseUrl + 'VatTu/GetByMaHM/' + materialItemId);
+  }
+
   addNew(material: Material) {
     return this.http.post(this.baseUrl + 'VatTu', material);
   }

@@ -10,16 +10,19 @@ import { ExportMaterial } from '../models/export-material.model';
 
 @Injectable()
 export class ExportMaterialListResolver implements Resolve<ExportMaterial[]> {
+    pageNumber = 1;
+    pageSize = 10;
+
     constructor(
         private router: Router,
         private exportMaterialService: ExportMaterialService,
         private notify: NotifyService) { }
 
     resolve(route: ActivatedRouteSnapshot): Observable<ExportMaterial[]> {
-        return this.exportMaterialService.getAll().pipe(
+        return this.exportMaterialService.getAllPaging(this.pageNumber, this.pageSize).pipe(
             catchError(_ => {
                 this.notify.error('Có lỗi xảy ra');
-                console.log('error getAllExportMaterial');
+                console.log('error getAllPagingExportMaterial');
                 this.router.navigate(['/']);
                 return of(null);
             })

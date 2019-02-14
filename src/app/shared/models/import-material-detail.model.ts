@@ -3,6 +3,7 @@ export interface ImportMaterialDetail {
     maVatTu?: number;
     maNuoc?: number;
     maHang?: number;
+    maNguon?: number;
     model?: string;
     seri?: string;
     soKhung?: string;
@@ -11,7 +12,6 @@ export interface ImportMaterialDetail {
     dotMua?: string;
     namSX?: string;
     phanCap?: string;
-    nguonGoc?: string;
     soLuong?: number;
     donGia?: string;
     ghiChu?: string;

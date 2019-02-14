@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { NzModalService } from 'ng-zorro-antd';
 
 import { MaterialStore } from 'src/app/shared/models/material-store.model';
 import { Personnel } from 'src/app/shared/models/personnel.model';
@@ -15,6 +16,9 @@ import { ExportMaterialService } from 'src/app/shared/services/export-material.s
 import { ExportMaterialDetail } from 'src/app/shared/models/export-material-detail.model';
 import { checkPriceKhongAmValidator } from 'src/app/shared/vailidators/check-price-khong-am-validator';
 import { checkExportQuantityValidator } from 'src/app/shared/vailidators/check-export-quantity-validator';
+import { Inventory } from 'src/app/shared/models/inventory.model';
+import { ExportMaterialDetailModalComponent } from './export-material-detail-modal/export-material-detail-modal.component';
+import { ExportMaterialDetailService } from 'src/app/shared/services/export-material-detail.service';
 
 @Component({
   selector: 'app-update-export-materials',
@@ -22,14 +26,17 @@ import { checkExportQuantityValidator } from 'src/app/shared/vailidators/check-e
   styleUrls: ['./update-export-materials.component.scss']
 })
 export class UpdateExportMaterialsComponent implements OnInit {
+  loadingInventories: boolean;
+  loadingExportDetails: boolean;
   materialStores: MaterialStore[];
   personnels: Personnel[];
+  inventories: Inventory[];
   materials: Material[];
   importMaterials: number[];
-  submitted = false;
+  exportMaterialDetails: ExportMaterialDetail[];
   exportMaterialForm: FormGroup;
-  listxuatchitiet: FormArray;
-  listDelete: any[] = [];
+  formatterPercent = value => `${value} %`;
+  parserPercent = value => value.replace(' %', '');
   @HostListener('window:beforeunload', ['$event'])
   beforeunloadHandler($event: any) {
     if (this.exportMaterialForm.dirty) {
@@ -41,65 +48,39 @@ export class UpdateExportMaterialsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
+    private modalService: NzModalService,
     private materialStoreService: MaterialStoreService,
     private personnelService: PersonnelService,
-    private materialService: MaterialService,
+    private exportDetailService: ExportMaterialDetailService,
     private exportMaterialService: ExportMaterialService,
     private notify: NotifyService
   ) { }
 
   ngOnInit() {
+    this.inventories = [];
+
     this.loadAllMaterialStores();
     this.loadAllPersonnels();
-    this.loadAllMaterials();
-    this.materials = [];
     this.createForm();
   }
 
   createForm() {
     this.exportMaterialForm = this.fb.group({
-      mxuatvattu: this.fb.group({}),
-      listxuatchitiet: this.fb.array([])
+      maPhieuXuat: [null, [Validators.required]],
+      maKho: [null, [Validators.required]],
+      maNS: [null, [Validators.required]],
+      ngayNhap: [null, [Validators.required]],
+      chietKhau: [0],
+      ghiChu: [null],
+      tongSoTien: [null],
+      tongSoLuong: [null]
     });
 
     this.route.data.subscribe(data => {
       const { mxuatvattu, listxuatchitiet } = data['export-material'];
-      const formArray = this.exportMaterialForm.get('listxuatchitiet') as FormArray;
-
-      listxuatchitiet.map(item => {
-        formArray.push(this.createItem(item));
-      });
-
-      this.exportMaterialForm.setControl('mxuatvattu', this.createGroup(mxuatvattu));
-      this.exportMaterialForm.setControl('listxuatchitiet', formArray);
-
-      this.loadMaterialsByStoreId(mxuatvattu.maKho);
-      for (let i = 0; i < listxuatchitiet.length; i++) {
-        this.loadImportsByMaterialId(listxuatchitiet[i].maVatTu, i);
-      }
-    });
-  }
-
-  createGroup(item: ExportMaterial): FormGroup {
-    return this.fb.group({
-      maPhieuXuat: [item.maPhieuXuat],
-      maKho: [{ value: item.maKho, disabled: false }, [Validators.required]],
-      maNS: [item.maNS, [Validators.required]],
-      ngayNhap: [item.ngayNhap, [Validators.required]],
-      ghiChu: [item.ghiChu]
-    });
-  }
-
-  createItem(item: ExportMaterialDetail): FormGroup {
-    return this.fb.group({
-      maPhieuXuat: [item.maPhieuXuat],
-      maPhieuNhap: [{ value: item.maPhieuNhap, disabled: false }, [Validators.required]],
-      maVatTu: [{ value: item.maVatTu, disabled: false }, [Validators.required]],
-      tenVT: [item.tenVT],
-      soLuongXuat: [item.soLuongXuat, [Validators.required]],
-      donGia: [item.donGia, [Validators.required, checkPriceKhongAmValidator]],
-      ghiChu: [item.ghiChu],
-      importIds: [[]]
+      this.exportMaterialForm.patchValue(mxuatvattu);
+      this.loadInventoriesByStoreId(mxuatvattu.maKho);
+      this.exportMaterialDetails = listxuatchitiet;
     });
   }
 
@@ -115,105 +96,104 @@ export class UpdateExportMaterialsComponent implements OnInit {
     });
   }
 
-  loadAllMaterials() {
-    this.materialService.getAll().subscribe((res: Material[]) => {
-      this.materials = res;
-    });
-  }
-
-  getStoreName() {
-    if (this.materialStores) {
-      const maKho = this.exportMaterialForm.get('mxuatvattu.maKho').value;
-      return this.materialStores.filter(x => x.maKho === maKho).map(x => x.tenKho);
-    }
-  }
-
-  loadMaterialsByStoreId(storeId: number) {
-    this.exportMaterialService.getMaterialsByImportId(storeId).subscribe((res: Material[]) => {
-      this.materials = res;
-    });
-  }
-
-  loadImportsByMaterialId(materialId: number, idx: number) {
-    this.exportMaterialService.getImportsByMaterialId(materialId).subscribe((res: any[]) => {
-      const importIds = res.map((item) => {
-        return item.maPhieuNhap;
+  loadInventoriesByStoreId(storeId: number, keyword: string = null) {
+    this.loadingInventories = true;
+    this.exportMaterialService.getInventoriesById(storeId, keyword)
+      .subscribe((res: Inventory[]) => {
+        this.inventories = res;
+        this.loadingInventories = false;
       });
+  }
 
-      const lstControl = (<FormArray>this.exportMaterialForm.controls['listxuatchitiet']).at(idx);
-      lstControl['controls'].importIds.setValue([...importIds]);
+  changeMaterialStore(storeId: number) {
+    this.loadInventoriesByStoreId(storeId);
+  }
+
+  exportMaterial(inventory: Inventory) {
+    const { maPhieuXuat, maKho } = this.exportMaterialForm.value;
+
+    const modal = this.modalService.create({
+      nzTitle: 'Xuất chi tiết vật tư',
+      nzContent: ExportMaterialDetailModalComponent,
+      nzMaskClosable: false,
+      nzComponentParams: {
+        inventory,
+        exportMaterialId: maPhieuXuat
+      },
+      nzFooter: [
+        {
+          label: 'Hủy',
+          shape: 'default',
+          onClick: () => modal.destroy(),
+        },
+        {
+          label: 'Lưu',
+          type: 'primary',
+          onClick: (componentInstance) => {
+            componentInstance.saveChanges((res: boolean) => {
+              if (res) {
+                modal.destroy();
+                this.loadExportDetails(maPhieuXuat);
+                this.loadInventoriesByStoreId(maKho);
+              } else {
+                modal.destroy();
+              }
+            });
+          }
+        }
+      ]
     });
   }
 
   saveChanges() {
-    this.submitted = true;
-
     if (this.exportMaterialForm.invalid) {
+      // tslint:disable-next-line:forin
+      for (const i in this.exportMaterialForm.controls) {
+        this.exportMaterialForm.controls[i].markAsDirty();
+        this.exportMaterialForm.controls[i].updateValueAndValidity();
+      }
       return;
     }
 
-    const xuatVatTuParams = Object.assign({}, this.exportMaterialForm.value);
-
-    if (this.listDelete.length > 0) {
-      const requestDelete = this.listDelete.map((item, idx) => {
-        ++idx;
-        this.exportMaterialService.deleteExportDetails(item.maPhieuXuat, item.maPhieuNhap, item.maVatTu, item.maKho)
-          .subscribe((res: boolean) => {
-            console.log(res);
-          }, err => {
-            console.log('error DeleteExportDetails');
-            console.log(err);
-          }, () => {
-            if (idx === this.listDelete.length) {
-              this.exportMaterialService.update(xuatVatTuParams).subscribe((res: number) => {
-                if (res === 1) {
-                  this.notify.success('Sửa thành công!');
-                  this.router.navigate(['/admin/nghiep-vu/danh-sach-phieu-xuat']);
-                } else if (res === -1) {
-                  this.notify.error('Số lượng xuất vượt quá');
-                } else {
-                  this.notify.error('Có lỗi xảy ra');
-                }
-              }, error => {
-                console.log('error updateExportMaterial');
-                console.log(error);
-              });
-            }
-          });
-      });
-    } else {
-      this.exportMaterialService.update(xuatVatTuParams).subscribe((res: number) => {
-        if (res === 1) {
-          this.notify.success('Sửa thành công!');
-          this.router.navigate(['/admin/nghiep-vu/danh-sach-phieu-xuat']);
-        } else if (res === -1) {
-          this.notify.error('Số lượng xuất vượt quá');
-        } else {
-          this.notify.error('Có lỗi xảy ra');
-        }
-      }, error => {
-        console.log('error updateExportMaterial');
-        console.log(error);
-      });
-    }
-  }
-
-  deleteRow(idx: number, item: any) {
-    this.listxuatchitiet = this.exportMaterialForm.get('listxuatchitiet') as FormArray;
-    this.listxuatchitiet.removeAt(idx);
-
-    this.listDelete.push({
-      maPhieuXuat: this.exportMaterialForm.get('mxuatvattu.maPhieuXuat').value,
-      maKho: this.exportMaterialForm.get('mxuatvattu.maKho').value,
-      maPhieuNhap: item.maPhieuNhap,
-      maVatTu: item.maVatTu
+    const exportMaterial = Object.assign({}, this.exportMaterialForm.value);
+    this.exportMaterialService.update(exportMaterial).subscribe((res: any) => {
+      if (res) {
+        this.notify.success('Sửa thành công');
+        this.exportMaterialForm.markAsPristine();
+        this.exportMaterialForm.updateValueAndValidity();
+      }
+    }, error => {
+      this.notify.error('Có lỗi xảy ra');
+      console.log('error updateExportMaterial');
     });
   }
 
-  checkStatus(idx: any, matVatTu: any, maPhieuNhap: any, soLuong: number) {
-    const soLuongControl = this.exportMaterialForm.get(`listxuatchitiet.${idx}.soLuongXuat`);
-    soLuongControl.setAsyncValidators(checkExportQuantityValidator(this.exportMaterialService,
-      maPhieuNhap, matVatTu, soLuong));
-    soLuongControl.updateValueAndValidity();
+  loadExportDetails(exportId: number) {
+    this.loadingExportDetails = true;
+    this.exportDetailService.getAllByImportId(exportId)
+      .subscribe((res: ExportMaterialDetail[]) => {
+        this.exportMaterialDetails = res;
+        this.loadingExportDetails = false;
+      });
+  }
+
+  deleteExportDetail(exportDetail: ExportMaterialDetail) {
+    this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
+      const { maPhieuXuat, maPhieuNhap, maVatTu } = exportDetail;
+      const { maKho } = this.exportMaterialForm.value;
+      this.exportDetailService.delete(maPhieuXuat, maPhieuNhap, maVatTu, maKho)
+        .subscribe((res: boolean) => {
+          if (res) {
+            this.loadExportDetails(maPhieuXuat);
+            this.loadInventoriesByStoreId(maKho);
+          }
+        });
+    });
+  }
+
+  searchInventory(keyword: any) {
+    const { maKho } = this.exportMaterialForm.value;
+    keyword = keyword || null;
+    this.loadInventoriesByStoreId(maKho, keyword);
   }
 }

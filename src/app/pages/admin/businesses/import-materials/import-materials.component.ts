@@ -9,7 +9,6 @@ import { NotifyService } from 'src/app/shared/services/notify.service';
 
 import { checkChietKhauNanValidator } from 'src/app/shared/vailidators/check-chiet-khau-nan-validator';
 import { checkChietKhauRangeValidator } from 'src/app/shared/vailidators/check-chiet-khau-range-validator';
-import { MaterialType } from 'src/app/shared/models/material-type.model';
 import { MaterialItem } from 'src/app/shared/models/material-item.model';
 import { MaterialStore } from 'src/app/shared/models/material-store.model';
 
@@ -21,7 +20,6 @@ import { MaterialStore } from 'src/app/shared/models/material-store.model';
 export class ImportMaterialsComponent implements OnInit {
   materialStores: MaterialStore[];
   materialItems: MaterialItem[];
-  materialTypes: MaterialType[];
   importMaterialForm: FormGroup;
   formatterPercent = value => `${value} %`;
   parserPercent = value => value.replace(' %', '');

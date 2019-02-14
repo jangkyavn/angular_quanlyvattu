@@ -46,13 +46,11 @@
         <td>{{data.tenDVT}}</td>
         <td>{{data.ghiChu || 'Không có'}}</td>
         <td>
-          <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
-            (click)="update(data.maVatTu)">
+          <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa" (click)="update(data.maVatTu)">
             <i nz-icon type="edit" theme="outline"></i>
           </button>
           <nz-divider nzType="vertical"></nz-divider>
-          <button nz-button nzType="default" class="btn-danger" nz-tooltip nzTitle="Xóa"
-            (click)="delete(data.maVatTu)">
+          <button nz-button nzType="default" class="btn-danger" nz-tooltip nzTitle="Xóa" (click)="delete(data.maVatTu)">
             <i nz-icon type="delete" theme="outline"></i>
           </button>
         </td>

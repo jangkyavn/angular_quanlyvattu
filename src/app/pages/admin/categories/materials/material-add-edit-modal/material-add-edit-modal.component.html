@@ -13,7 +13,7 @@
   <nz-form-item>
     <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="maLoaiVatTu">Loại vật tư</nz-form-label>
     <nz-form-control [nzSm]="16" [nzXs]="24">
-      <nz-select id="maLoaiVatTu" formControlName="maLoaiVatTu" nzPlaceHolder="Chọn loại vật tư">
+      <nz-select nzShowSearch nzAllowClear id="maLoaiVatTu" formControlName="maLoaiVatTu" nzPlaceHolder="Chọn loại vật tư">
         <nz-option *ngFor="let item of materialTypes" [nzValue]="item.maLoaiVatTu" [nzLabel]="item.tenLoai"></nz-option>
       </nz-select>
       <nz-form-explain *ngIf="materialForm.get('maLoaiVatTu').dirty && materialForm.get('maLoaiVatTu').errors">
@@ -26,7 +26,7 @@
   <nz-form-item>
     <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="maDVT">Đơn vị tính</nz-form-label>
     <nz-form-control [nzSm]="16" [nzXs]="24">
-      <nz-select id="maDVT" formControlName="maDVT" nzPlaceHolder="Chọn đơn vị tính">
+      <nz-select nzShowSearch nzAllowClear id="maDVT" formControlName="maDVT" nzPlaceHolder="Chọn đơn vị tính">
         <nz-option *ngFor="let item of units" [nzValue]="item.maDVT" [nzLabel]="item.tenDVT"></nz-option>
       </nz-select>
       <nz-form-explain *ngIf="materialForm.get('maDVT').dirty && materialForm.get('maDVT').errors">

@@ -1,5 +1,6 @@
 <nz-layout>
-  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzWidth]="width" [nzBreakpoint]="'sm'" [nzTrigger]="triggerTemplate">
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzWidth]="width" [nzBreakpoint]="'sm'"
+    [nzTrigger]="triggerTemplate">
     <div class="logo" [routerLink]="['/admin']" style="cursor: pointer;">
     </div>
     <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed" id="sidebarMenu">
@@ -86,45 +87,50 @@
         </span>
         <ul>
           <li nz-submenu>
-            <span title>Nhập</span>
+            <span title><i nz-icon type="login" theme="outline"></i> Nhập</span>
             <ul>
               <li nz-menu-item>
                 <a [routerLink]="['/admin/nghiep-vu/nhap-vat-tu']">
+                  <i nz-icon type="form" theme="outline"></i>
                   Nhập vật tư
                 </a>
               </li>
               <li nz-menu-item>
                 <a [routerLink]="['/admin/nghiep-vu/danh-sach-phieu-nhap']">
+                  <i nz-icon type="table" theme="outline"></i>
                   Danh sách phiếu nhập
                 </a>
               </li>
             </ul>
           </li>
           <li nz-submenu>
-            <span title>Xuất</span>
+            <span title><i nz-icon type="logout" theme="outline"></i> Xuất</span>
             <ul>
               <li nz-menu-item>
                 <a [routerLink]="['/admin/nghiep-vu/xuat-vat-tu']">
+                  <i nz-icon type="form" theme="outline"></i>
                   Xuất vật tư
                 </a>
               </li>
               <li nz-menu-item>
                 <a [routerLink]="['/admin/nghiep-vu/danh-sach-phieu-xuat']">
+                  <i nz-icon type="table" theme="outline"></i>
                   Danh sách phiếu xuất
                 </a>
               </li>
             </ul>
           </li>
           <li nz-submenu>
-            <span title>Kho</span>
+            <span title><i nz-icon type="appstore" theme="outline"></i> Kho</span>
             <ul>
               <li nz-menu-item>
                 <a [routerLink]="['/admin/nghiep-vu/vat-tu-ton-kho']">
+                  <i nz-icon type="border" theme="outline"></i>
                   Vật tư tồn kho
                 </a>
               </li>
-              <li nz-menu-item>Thanh lý vật tư</li>
-              <li nz-menu-item>Phiếu kiểm kê kho</li>
+              <li nz-menu-item><i nz-icon type="pay-circle" theme="outline"></i>Thanh lý vật tư</li>
+              <li nz-menu-item><i nz-icon type="book" theme="outline"></i>Phiếu kiểm kê kho</li>
             </ul>
           </li>
           <li nz-menu-item>
@@ -139,10 +145,10 @@
           <span class="nav-text">Thống kê báo cáo</span>
         </span>
         <ul>
-          <li nz-menu-item>Thống kê nhập</li>
-          <li nz-menu-item>Thống kê xuất</li>
-          <li nz-menu-item>Thống kê tồn</li>
-          <li nz-menu-item>Thống kê nhập-xuất-tồn</li>
+          <li nz-menu-item><i nz-icon type="file-add" theme="outline"></i>Thống kê nhập</li>
+          <li nz-menu-item><i nz-icon type="file-done" theme="outline"></i>Thống kê xuất</li>
+          <li nz-menu-item><i nz-icon type="file-exclamation" theme="outline"></i>Thống kê tồn</li>
+          <li nz-menu-item><i nz-icon type="file-sync" theme="outline"></i>Thống kê nhập-xuất-tồn</li>
         </ul>
       </li>
     </ul>
@@ -151,7 +157,8 @@
     <nz-header style="background: #fff; padding:0;">
       <div nz-row>
         <div nz-col nzSpan="8">
-          <i class="trigger" nz-icon [type]="isCollapsed?'menu-unfold':'menu-fold'" (click)="isCollapsed=!isCollapsed"></i>
+          <i class="trigger" nz-icon [type]="isCollapsed?'menu-unfold':'menu-fold'"
+            (click)="isCollapsed=!isCollapsed"></i>
         </div>
         <div nz-col nzSpan="8" nzOffset="8">
           <ul class="list-inline">
@@ -180,6 +187,7 @@
     </nz-header>
     <nz-content style="margin:0 16px;">
       <router-outlet></router-outlet>
+      <nz-back-top></nz-back-top>
     </nz-content>
     <nz-footer style="text-align: center;">Ant Design ©2019 Implement By Absoft</nz-footer>
   </nz-layout>

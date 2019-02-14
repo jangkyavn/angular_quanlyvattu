@@ -13,6 +13,8 @@ import { NotifyService } from 'src/app/shared/services/notify.service';
 import { ExportMaterialService } from 'src/app/shared/services/export-material.service';
 import { checkPriceKhongAmValidator } from 'src/app/shared/vailidators/check-price-khong-am-validator';
 import { checkExportQuantityValidator } from 'src/app/shared/vailidators/check-export-quantity-validator';
+import { checkChietKhauNanValidator } from 'src/app/shared/vailidators/check-chiet-khau-nan-validator';
+import { checkChietKhauRangeValidator } from 'src/app/shared/vailidators/check-chiet-khau-range-validator';
 
 @Component({
   selector: 'app-export-materials',
@@ -22,19 +24,9 @@ import { checkExportQuantityValidator } from 'src/app/shared/vailidators/check-e
 export class ExportMaterialsComponent implements OnInit {
   materialStores: MaterialStore[];
   personnels: Personnel[];
-  materials: Material[];
-  importMaterials: number[];
-  submitted = false;
   exportMaterialForm: FormGroup;
-  listxuatchitiet: FormArray;
-  isShowMaterials = false;
-  isShowImports = false;
-  @HostListener('window:beforeunload', ['$event'])
-  beforeunloadHandler($event: any) {
-    if (this.exportMaterialForm.dirty) {
-      $event.returnValue = false;
-    }
-  }
+  formatterPercent = value => `${value} %`;
+  parserPercent = value => value.replace(' %', '');
 
   constructor(
     private router: Router,
@@ -48,7 +40,6 @@ export class ExportMaterialsComponent implements OnInit {
   ngOnInit() {
     this.loadAllMaterialStores();
     this.loadAllPersonnels();
-
     this.createForm();
   }
 
@@ -59,24 +50,11 @@ export class ExportMaterialsComponent implements OnInit {
     const currentDate = `${date.getFullYear()}-${month}-${day}`;
 
     this.exportMaterialForm = this.fb.group({
-      mxuatvattu: this.fb.group({
-        maKho: ['', [Validators.required]],
-        maNS: ['', [Validators.required]],
-        ngayNhap: [currentDate, [Validators.required]],
-        ghiChu: [null]
-      }),
-      listxuatchitiet: this.fb.array([this.createItem()])
-    });
-  }
-
-  createItem(): FormGroup {
-    return this.fb.group({
-      maPhieuNhap: ['', [Validators.required]],
-      maVatTu: ['', [Validators.required]],
-      soLuongXuat: [1, [Validators.required]],
-      donGia: [0, [Validators.required, checkPriceKhongAmValidator]],
-      ghiChu: [null],
-      importIds: [[]]
+      maKho: [null, [Validators.required]],
+      maNS: [null, [Validators.required]],
+      ngayNhap: [currentDate, [Validators.required]],
+      chietKhau: [0],
+      ghiChu: [null]
     });
   }
 
@@ -93,58 +71,25 @@ export class ExportMaterialsComponent implements OnInit {
   }
 
   saveChanges() {
-    this.submitted = true;
-
     if (this.exportMaterialForm.invalid) {
+      // tslint:disable-next-line:forin
+      for (const i in this.exportMaterialForm.controls) {
+        this.exportMaterialForm.controls[i].markAsDirty();
+        this.exportMaterialForm.controls[i].updateValueAndValidity();
+      }
       return;
     }
 
-    const xuatVatTuParams = Object.assign({}, this.exportMaterialForm.value);
-    this.exportMaterialService.addNew(xuatVatTuParams).subscribe((res: number) => {
-      console.log(res);
-      if (res === 1) {
+    const exportMaterial = Object.assign({}, this.exportMaterialForm.value);
+    this.exportMaterialService.addNew(exportMaterial).subscribe((res: number) => {
+      if (res) {
         this.notify.success('Thêm mới thành công!');
-        this.router.navigate(['/admin/nghiep-vu/danh-sach-phieu-xuat']);
-      } else if (res === -1) {
-        this.notify.error('Số lượng xuất vượt quá');
-      } else {
-        this.notify.error('Có lỗi xảy ra');
+        this.router.navigate(['/admin/nghiep-vu/sua-phieu-xuat', res]);
       }
     }, error => {
       console.log('error addExportMaterial');
       console.log(error);
     });
-  }
-
-  addRowForMaterialDetail() {
-    this.listxuatchitiet = this.exportMaterialForm.get('listxuatchitiet') as FormArray;
-    this.listxuatchitiet.push(this.createItem());
-  }
-
-  deleteRow(idx: number) {
-    this.listxuatchitiet = this.exportMaterialForm.get('listxuatchitiet') as FormArray;
-    this.listxuatchitiet.removeAt(idx);
-  }
-
-  changeMaterialStore(storeId: number) {
-    this.exportMaterialService.getMaterialsByStoreId(storeId).subscribe((res: Material[]) => {
-      this.materials = res;
-    });
-
-    this.isShowMaterials = true;
-  }
-
-  changeMaterials(materialId: number, idx: number) {
-    this.exportMaterialService.getImportsByMaterialId(materialId).subscribe((res: any[]) => {
-      const importIds = res.map((item) => {
-        return item.maPhieuNhap;
-      });
-
-      const lstControl = (<FormArray>this.exportMaterialForm.controls['listxuatchitiet']).at(idx);
-      lstControl['controls'].importIds.setValue([...importIds]);
-    });
-
-    this.isShowImports = true;
   }
 
   checkStatus(idx: any, matVatTu: any, maPhieuNhap: any, soLuong: number) {

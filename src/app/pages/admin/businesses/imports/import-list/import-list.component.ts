@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NzModalService } from 'ng-zorro-antd';
 
 import { ImportMaterialService } from 'src/app/shared/services/import-material.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
@@ -29,7 +28,6 @@ export class ImportListComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private modalService: NzModalService,
     private importMaterialService: ImportMaterialService,
     private notify: NotifyService) { }
 
@@ -64,18 +62,18 @@ export class ImportListComponent implements OnInit {
   }
 
   delete(id: number) {
-    // this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
-    //   this.importMaterialService.delete(id).subscribe((res: boolean) => {
-    //     if (res) {
-    //       this.loadData();
-    //       this.notify.success('Xóa thành công');
-    //     } else {
-    //       this.notify.warning('Phiếu có vật tư xuất, không được xóa!');
-    //     }
-    //   }, error => {
-    //     console.log('error deleteImport');
-    //   });
-    // });
+    this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
+      this.importMaterialService.delete(id).subscribe((res: boolean) => {
+        if (res) {
+          this.loadData();
+          this.notify.success('Xóa thành công');
+        } else {
+          this.notify.warning('Phiếu có vật tư xuất, không được xóa!');
+        }
+      }, error => {
+        console.log('error deleteImport');
+      });
+    });
   }
 
   search(keyword: string) {

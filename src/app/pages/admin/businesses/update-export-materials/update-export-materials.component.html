@@ -6,131 +6,143 @@
 </nz-breadcrumb>
 
 <div style="padding:24px; background: #fff; min-height: 70vh">
-  <form [formGroup]="exportMaterialForm" id="exportMaterialForm" (ngSubmit)="saveChanges()" novalidate>
-    <div class="row mb-2">
-      <div class="col-md-4 col-sm-12">
-      </div>
-      <div class="col-md-8 col-sm-12 text-right">
-      </div>
-    </div>
-    <nz-card style="width:100%;" nzTitle="Xuất vật tư" formGroupName="mxuatvattu">
-      <div class="form-group row">
-        <label for="ddlMaKho" class="col-sm-2 col-form-label">Tên kho (*)</label>
-        <div class="col-sm-10">
-          <input type="text" readonly class="form-control-plaintext" [value]="getStoreName()">
-          <div class="invalid-feedback">
-            <div *ngIf="exportMaterialForm.get('mxuatvattu.maKho').hasError('required')">
-              Vui lòng chọn tên kho!
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="ddlMaNS" class="col-sm-2 col-form-label">Nhân sự (*)</label>
-        <div class="col-sm-10">
-          <select id="ddlMaNS" class="form-control" formControlName="maNS" [ngClass]="{
-                'is-invalid': exportMaterialForm['controls'].mxuatvattu['controls']['maNS'].errors && (submitted || exportMaterialForm['controls'].mxuatvattu['controls']['maNS'].dirty || exportMaterialForm['controls'].mxuatvattu['controls']['maNS'].touched)
-              }">
-            <option *ngFor="let item of personnels" [value]="item.maNS">
-              {{item.hoTen}}
-            </option>
-          </select>
-          <div class="invalid-feedback">
-            <div *ngIf="exportMaterialForm.get('mxuatvattu.maNS').hasError('required')">
+  <form nz-form [formGroup]="exportMaterialForm" (ngSubmit)="saveChanges()" autocomplete="off">
+    <nz-card style="width:100%;" nzTitle="Xuất vật tư">
+      <nz-form-item>
+        <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="maKho">Kho hàng</nz-form-label>
+        <nz-form-control [nzSm]="10" [nzXs]="24">
+          <nz-select nzDisabled nzShowSearch nzAllowClear nzPlaceHolder="Chọn kho hàng" formControlName="maKho"
+            id="maKho" (ngModelChange)="changeMaterialStore($event)">
+            <nz-option *ngFor="let item of materialStores" [nzValue]="item.maKho" [nzLabel]="item.tenKho"></nz-option>
+          </nz-select>
+          <nz-form-explain *ngIf="exportMaterialForm.get('maKho').dirty && exportMaterialForm.get('maKho').errors">
+            <ng-container *ngIf="exportMaterialForm.get('maKho').hasError('required')">
+              Vui lòng chọn kho hàng!
+            </ng-container>
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="maNS">Nhân sự</nz-form-label>
+        <nz-form-control [nzSm]="10" [nzXs]="24">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn nhân sự" formControlName="maNS" id="maNS">
+            <nz-option *ngFor="let item of personnels" [nzValue]="item.maNS" [nzLabel]="item.hoTen"></nz-option>
+          </nz-select>
+          <nz-form-explain *ngIf="exportMaterialForm.get('maNS').dirty && exportMaterialForm.get('maNS').errors">
+            <ng-container *ngIf="exportMaterialForm.get('maNS').hasError('required')">
               Vui lòng chọn nhân sự!
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="txtNgayNhap" class="col-sm-2 col-form-label">Ngày nhập (*)</label>
-        <div class="col-sm-10">
-          <input id="txtNgayNhap" type="date" class="form-control" formControlName="ngayNhap" [ngClass]="{
-              'is-invalid': exportMaterialForm['controls'].mxuatvattu['controls']['ngayNhap'].errors && (submitted || exportMaterialForm['controls'].mxuatvattu['controls']['ngayNhap'].dirty || exportMaterialForm['controls'].mxuatvattu['controls']['ngayNhap'].touched)
-            }" />
-          <div class="invalid-feedback">
-            <div *ngIf="exportMaterialForm.get('mxuatvattu.ngayNhap').hasError('required')">
-              Vui lòng nhập ngày nhập!
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="txtGhiChu" class="col-sm-2 col-form-label">Ghi chú</label>
-        <div class="col-sm-10">
-          <textarea id="txtGhiChu" class="form-control" formControlName="ghiChu" [ngClass]="{
-            'is-invalid': exportMaterialForm['controls'].mxuatvattu['controls']['ghiChu'].errors && (submitted || exportMaterialForm['controls'].mxuatvattu['controls']['ghiChu'].dirty || exportMaterialForm['controls'].mxuatvattu['controls']['ghiChu'].touched)
-          }"></textarea>
-        </div>
-      </div>
+            </ng-container>
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="ngayNhap">Ngày xuất</nz-form-label>
+        <nz-form-control [nzSm]="10" [nzXs]="24">
+          <nz-date-picker formControlName="ngayNhap" [nzPlaceHolder]="'dd/MM/yyyy'" nzFormat="dd/MM/yyyy">
+          </nz-date-picker>
+          <nz-form-explain
+            *ngIf="exportMaterialForm.get('ngayNhap').dirty && exportMaterialForm.get('ngayNhap').errors">
+            <ng-container *ngIf="exportMaterialForm.get('ngayNhap').hasError('required')">
+              Vui lòng chọn ngày xuất!
+            </ng-container>
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="maHM">Chiết khấu</nz-form-label>
+        <nz-form-control [nzSm]="10" [nzXs]="24">
+          <nz-input-number formControlName="chietKhau" [nzMin]="0" [nzMax]="100" [nzStep]="1"
+            [nzFormatter]="formatterPercent" [nzParser]="parserPercent"></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="ghiChu">Ghi chú</nz-form-label>
+        <nz-form-control [nzSm]="10" [nzXs]="24">
+          <textarea nz-input formControlName="ghiChu" id="ghiChu"></textarea>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item style="margin-bottom: 0;">
+        <nz-form-control nzOffset="7" [nzSm]="10" [nzXs]="24">
+          <button [disabled]="!exportMaterialForm.dirty" type="submit" nz-button nzType="primary"
+            style="margin-right: 1rem;">
+            <i nz-icon type="save" theme="outline"></i> Lưu
+          </button>
+          <button type="button" nz-button nzType="default" [routerLink]="['/admin/nghiep-vu/danh-sach-phieu-xuat']">
+            <i nz-icon type="arrow-left" theme="outline"></i> Quay lại
+          </button>
+        </nz-form-control>
+      </nz-form-item>
     </nz-card>
-    <br />
-    <nz-card style="width:100%;" nzTitle="Xuất chi tiết vật tư" formArrayName="listxuatchitiet">
-      <div style="overflow-x: auto;">
-        <table class="table table-bordered" style="width: 100%;">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Tên vật tư (*)</th>
-              <th>Phiếu nhập (*)</th>
-              <th>Số lượng xuất (*)</th>
-              <th>Đơn giá (*)</th>
-              <th>Ghi chú</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of exportMaterialForm.get('listxuatchitiet')['controls']; let i = index"
-              [formGroupName]="i">
-              <td>
-                <button type="button" class="btn btn-danger btn-sm" (click)="deleteRow(i, item.value)">
-                  <i class="fa fa-trash"></i>
-                </button>
-              </td>
-              <td>
-                <p>{{item.value.tenVT}}</p>
-              </td>
-              <td>
-                <p>{{item.value.maPhieuNhap}}</p>
-              </td>
-              <td>
-                <input type="number" class="form-control" formControlName="soLuongXuat" [ngClass]="{
-                  'is-invalid': exportMaterialForm.controls.listxuatchitiet.controls[i].controls['soLuongXuat'].errors && (submitted || exportMaterialForm.controls.listxuatchitiet.controls[i].controls['soLuongXuat'].dirty || exportMaterialForm.controls.listxuatchitiet.controls[i].controls['soLuongXuat'].touched)
-                }"
-                  (blur)="checkStatus(i, item.value.maVatTu, item.value.maPhieuNhap, $event.target.value)" />
-                <div class="invalid-feedback">
-                  <div *ngIf="item.hasError('required', 'soLuongXuat')">
-                    Vui lòng nhập số lượng!
-                  </div>
-                  <div *ngIf="item.hasError('invalid', 'soLuongXuat') as error">
-                      Nhập SL <= {{ item.controls.soLuongXuat.errors.quantity }} (SL nhập)
-                  </div>
-                </div>
-              </td>
-              <td>
-                <input currencyMask type="text" class="form-control" formControlName="donGia" [ngClass]="{
-                  'is-invalid': exportMaterialForm.controls.listxuatchitiet.controls[i].controls['donGia'].errors && (submitted || exportMaterialForm.controls.listxuatchitiet.controls[i].controls['donGia'].dirty || exportMaterialForm.controls.listxuatchitiet.controls[i].controls['donGia'].touched)
-                }" />
-                <div class="invalid-feedback">
-                  <div *ngIf="item.hasError('required', 'donGia')">
-                    Vui lòng nhập số lượng!
-                  </div>
-                  <div *ngIf="item.hasError('isNegative', 'donGia') && !item.hasError('required', 'donGia')">
-                    Vui lòng nhập không âm!
-                  </div>
-                </div>
-              </td>
-              <td>
-                <input type="text" class="form-control" formControlName="ghiChu" />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </nz-card>
-    <div class="row mt-4 px-3">
-      <button type="submit" class="btn btn-primary btn-block">
-        Lưu
-      </button>
-    </div>
   </form>
+  <br />
+  <nz-card style="width:100%;" nzTitle="Danh sách tồn kho">
+    <div nz-row style="margin-bottom: 0.5rem">
+      <div nz-col nzSpan="8">
+        <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
+          <input type="text" nz-input placeholder="Tìm kiếm..." #keywordInventory
+            (keyup.enter)="searchInventory(keywordInventory.value)">
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+          <button nz-button nzType="primary" nzSearch (click)="searchInventory(keywordInventory.value)"><i nz-icon
+              type="search"></i></button>
+        </ng-template>
+      </div>
+      <div nz-col nzSpan="8" nzOffset="8" class="text-right">
+
+      </div>
+    </div>
+
+    <nz-table #inventoryTable [nzData]="inventories" [nzLoading]="loadingInventories" [nzShowPagination]="false">
+      <thead>
+        <tr>
+          <th nzWidth="40%">Vật tư</th>
+          <th nzWidth="20%">Mã phiếu nhập</th>
+          <th nzWidth="20%">Số lượng tồn</th>
+          <th nzWidth="20%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of inventoryTable.data">
+          <td>{{data.tenVatTu}}</td>
+          <td>{{data.maPhieuNhap}}</td>
+          <td>{{data.soLuongTon}}</td>
+          <td>
+            <button nz-button nzType="primary" nz-tooltip nzTitle="Xuất" (click)="exportMaterial(data)">
+              <i nz-icon type="caret-down" theme="outline"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
+  <br />
+  <nz-card style="width:100%;" nzTitle="Danh sách xuất vật tư">
+    <nz-table #exportDetailTable [nzData]="exportMaterialDetails" [nzLoading]="loadingExportDetails"
+      [nzShowPagination]="false">
+      <thead>
+        <tr>
+          <th nzWidth="20%">Vật tư</th>
+          <th nzWidth="15%">Mã phiếu nhập</th>
+          <th nzWidth="15%">Số lượng xuất</th>
+          <th nzWidth="15%">Đơn giá</th>
+          <th nzWidth="20%">Ghi chú</th>
+          <th nzWidth="15%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of exportDetailTable.data">
+          <td>{{data.tenVT}}</td>
+          <td>{{data.maPhieuNhap}}</td>
+          <td>{{data.soLuongXuat}}</td>
+          <td>{{data.donGia | number: '1.0-0'}}</td>
+          <td>{{data.ghiChu}}</td>
+          <td>
+            <button nz-button nzType="danger" nz-tooltip nzTitle="Xóa" (click)="deleteExportDetail(data)">
+              <i nz-icon type="delete" theme="outline"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
 </div>

@@ -11,8 +11,8 @@
       <nz-form-item>
         <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="maKho">Kho hàng</nz-form-label>
         <nz-form-control [nzSm]="10" [nzXs]="24">
-          <nz-select [nzDisabled]="importMaterialDetails.length > 0" nzShowSearch nzAllowClear
-            nzPlaceHolder="Chọn kho hàng" formControlName="maKho" id="maKho">
+          <nz-select nzDisabled nzShowSearch nzAllowClear nzPlaceHolder="Chọn kho hàng" formControlName="maKho"
+            id="maKho">
             <nz-option *ngFor="let item of materialStores" [nzValue]="item.maKho" [nzLabel]="item.tenKho"></nz-option>
           </nz-select>
           <nz-form-explain *ngIf="importMaterialForm.get('maKho').dirty && importMaterialForm.get('maKho').errors">
@@ -25,8 +25,8 @@
       <nz-form-item>
         <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="maHM">Hạng mục vật tư</nz-form-label>
         <nz-form-control [nzSm]="10" [nzXs]="24">
-          <nz-select [nzDisabled]="importMaterialDetails.length > 0" nzShowSearch nzAllowClear
-            nzPlaceHolder="Chọn hạng mục vật tư" formControlName="maHM" id="maHM">
+          <nz-select nzDisabled nzShowSearch nzAllowClear nzPlaceHolder="Chọn hạng mục vật tư" formControlName="maHM"
+            id="maHM">
             <nz-option *ngFor="let item of materialItems" [nzValue]="item.maHM" [nzLabel]="item.tenHM"></nz-option>
           </nz-select>
           <nz-form-explain *ngIf="importMaterialForm.get('maHM').dirty && importMaterialForm.get('maHM').errors">
@@ -68,8 +68,11 @@
             [disabled]="!importMaterialForm.dirty">
             <i nz-icon type="save" theme="outline"></i> Lưu
           </button>
-          <button type="button" nz-button nzType="primary" (click)="addImportDetail()">
+          <button type="button" nz-button nzType="primary" (click)="addImportDetail()" style="margin-right: 1rem;">
             <i nz-icon type="plus" theme="outline"></i> Nhập chi tiết
+          </button>
+          <button type="button" nz-button nzType="default" [routerLink]="['/admin/nghiep-vu/danh-sach-phieu-nhap']">
+            <i nz-icon type="arrow-left" theme="outline"></i> Quay lại
           </button>
         </nz-form-control>
       </nz-form-item>
@@ -83,20 +86,31 @@
       *ngSwitchCase="10">
       <thead>
         <tr>
-          <th>Vật tư</th>
-          <th>Model</th>
-          <th>Nước sản xuất</th>
-          <th>Số lượng</th>
-          <th>Đơn giá</th>
+          <th nzWidth="25%">Vật tư</th>
+          <th nzWidth="15%">Model</th>
+          <th nzWidth="15%">Nước sản xuất</th>
+          <th nzWidth="15%">Số lượng</th>
+          <th nzWidth="15%">Đơn giá</th>
+          <th nzWidth="15%"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of basicTable.data">
-          <td nzWidth="20%">{{data.tenVT}}</td>
-          <td nzWidth="20%">{{data.model}}</td>
-          <td nzWidth="20%">{{data.tenNuoc}}</td>
-          <td nzWidth="20%">{{data.soLuong}}</td>
-          <td nzWidth="20%">{{data.donGia}}</td>
+          <td>{{data.tenVT}}</td>
+          <td>{{data.model}}</td>
+          <td>{{data.maNuoc}}</td>
+          <td>{{data.soLuong}}</td>
+          <td>{{data.donGia | number: '1.0-0'}}</td>
+          <td>
+            <button type="button" nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
+              (click)="updateImportDetail(data)">
+              <i nz-icon type="edit" theme="outline"></i>
+            </button>
+            <nz-divider nzType="vertical"></nz-divider>
+            <button type="button" nz-button nzType="danger" nz-tooltip nzTitle="Xóa" (click)="deleteImportDetail(data)">
+              <i nz-icon type="delete" theme="outline"></i>
+            </button>
+          </td>
         </tr>
       </tbody>
     </nz-table>
@@ -105,24 +119,34 @@
       *ngSwitchCase="11">
       <thead>
         <tr>
-          <th>Vật tư</th>
-          <th>Số khung</th>
-          <th>Số máy</th>
-          <th>Năm sản xuất</th>
-          <th>Phân cấp</th>
-          <th>Nguồn gốc</th>
-          <th>Số lượng</th>
+          <th nzWidth="15%">Vật tư</th>
+          <th nzWidth="15%">Số khung</th>
+          <th nzWidth="15%">Số máy</th>
+          <th nzWidth="10%">Năm sản xuất</th>
+          <th nzWidth="10%">Phân cấp</th>
+          <th nzWidth="15%">Nguồn gốc</th>
+          <th nzWidth="10%">Số lượng</th>
+          <th nzWidth="10%"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of basicTable.data">
-          <td nzWidth="15%">{{data.tenVT}}</td>
-          <td nzWidth="15%">{{data.soKhung}}</td>
-          <td nzWidth="15%">{{data.soMay}}</td>
-          <td nzWidth="15%">{{data.namSX | date:'yyyy'}}</td>
-          <td nzWidth="15%">{{data.phanCap}}</td>
-          <td nzWidth="15%">{{data.nguonGoc}}</td>
-          <td nzWidth="10%">{{data.soLuong}}</td>
+          <td>{{data.tenVT}}</td>
+          <td>{{data.soKhung}}</td>
+          <td>{{data.soMay}}</td>
+          <td>{{data.namSX | date:'yyyy'}}</td>
+          <td>{{data.phanCap}}</td>
+          <td>{{data.maNguon}}</td>
+          <td>{{data.soLuong}}</td>
+          <td>
+            <button type="button" nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
+              (click)="updateImportDetail(data)">
+              <i nz-icon type="edit" theme="outline"></i>
+            </button>
+            <button nz-button nzType="danger" nz-tooltip nzTitle="Xóa" (click)="deleteImportDetail(data)">
+              <i nz-icon type="delete" theme="outline"></i>
+            </button>
+          </td>
         </tr>
       </tbody>
     </nz-table>
@@ -131,24 +155,34 @@
       *ngSwitchCase="12">
       <thead>
         <tr>
-          <th>Vật tư</th>
-          <th>Seri</th>
-          <th>Hãng sản xuất</th>
-          <th>Năm sản xuất</th>
-          <th>Model</th>
-          <th>Số lượng</th>
-          <th>Ghi chú</th>
+          <th nzWidth="15%">Vật tư</th>
+          <th nzWidth="10%">Seri</th>
+          <th nzWidth="15%">Hãng sản xuất</th>
+          <th nzWidth="15%">Năm sản xuất</th>
+          <th nzWidth="15%">Model</th>
+          <th nzWidth="10%">Số lượng</th>
+          <th nzWidth="10%">Ghi chú</th>
+          <th nzWidth="10%"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of basicTable.data">
-          <td nzWidth="15%">{{data.tenVT}}</td>
-          <td nzWidth="15%">{{data.seri}}</td>
-          <td nzWidth="15%">{{data.maHang}}</td>
-          <td nzWidth="15%">{{data.maNuoc}}</td>
-          <td nzWidth="15%">{{data.model}}</td>
-          <td nzWidth="10%">{{data.soLuong}}</td>
-          <td nzWidth="15%">{{data.ghiChu}}</td>
+          <td>{{data.tenVT}}</td>
+          <td>{{data.seri}}</td>
+          <td>{{data.maHang}}</td>
+          <td>{{data.maNuoc}}</td>
+          <td>{{data.model}}</td>
+          <td>{{data.soLuong}}</td>
+          <td>{{data.ghiChu}}</td>
+          <td>
+            <button type="button" nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
+              (click)="updateImportDetail(data)">
+              <i nz-icon type="edit" theme="outline"></i>
+            </button>
+            <button nz-button nzType="danger" nz-tooltip nzTitle="Xóa" (click)="deleteImportDetail(data)">
+              <i nz-icon type="delete" theme="outline"></i>
+            </button>
+          </td>
         </tr>
       </tbody>
     </nz-table>
@@ -157,20 +191,30 @@
       *ngSwitchCase="13">
       <thead>
         <tr>
-          <th>Vật tư</th>
-          <th>Nước sản xuất</th>
-          <th>Model</th>
-          <th>Số lượng</th>
-          <th>Đơn giá</th>
+          <th nzWidth="25%">Vật tư</th>
+          <th nzWidth="15%">Nước sản xuất</th>
+          <th nzWidth="15%">Model</th>
+          <th nzWidth="15%">Số lượng</th>
+          <th nzWidth="15%">Đơn giá</th>
+          <th nzWidth="15%"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of basicTable.data">
-          <td nzWidth="20%">{{data.tenVT}}</td>
-          <td nzWidth="20%">{{data.maNuoc}}</td>
-          <td nzWidth="20%">{{data.model}}</td>
-          <td nzWidth="20%">{{data.soLuong}}</td>
-          <td nzWidth="20%">{{data.donGia}}</td>
+          <td>{{data.tenVT}}</td>
+          <td>{{data.maNuoc}}</td>
+          <td>{{data.model}}</td>
+          <td>{{data.soLuong}}</td>
+          <td>{{data.donGia | number: '1.0-0'}}</td>
+          <td>
+            <button type="button" nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
+              (click)="updateImportDetail(data)">
+              <i nz-icon type="edit" theme="outline"></i>
+            </button>
+            <button nz-button nzType="danger" nz-tooltip nzTitle="Xóa" (click)="deleteImportDetail(data)">
+              <i nz-icon type="delete" theme="outline"></i>
+            </button>
+          </td>
         </tr>
       </tbody>
     </nz-table>
@@ -179,20 +223,30 @@
       *ngSwitchCase="14">
       <thead>
         <tr>
-          <th>Vật tư</th>
-          <th>Nước sản xuất</th>
-          <th>Model</th>
-          <th>Số lượng</th>
-          <th>Đơn giá</th>
+          <th nzWidth="25%">Vật tư</th>
+          <th nzWidth="15%">Nước sản xuất</th>
+          <th nzWidth="15%">Model</th>
+          <th nzWidth="15%">Số lượng</th>
+          <th nzWidth="15%">Đơn giá</th>
+          <th nzWidth="15%"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of basicTable.data">
-          <td nzWidth="20%">{{data.tenVT}}</td>
-          <td nzWidth="20%">{{data.maNuoc}}</td>
-          <td nzWidth="20%">{{data.model}}</td>
-          <td nzWidth="20%">{{data.soLuong}}</td>
-          <td nzWidth="20%">{{data.donGia}}</td>
+          <td>{{data.tenVT}}</td>
+          <td>{{data.maNuoc}}</td>
+          <td>{{data.model}}</td>
+          <td>{{data.soLuong}}</td>
+          <td>{{data.donGia | number: '1.0-0'}}</td>
+          <td>
+            <button type="button" nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
+              (click)="updateImportDetail(data)">
+              <i nz-icon type="edit" theme="outline"></i>
+            </button>
+            <button nz-button nzType="danger" nz-tooltip nzTitle="Xóa" (click)="deleteImportDetail(data)">
+              <i nz-icon type="delete" theme="outline"></i>
+            </button>
+          </td>
         </tr>
       </tbody>
     </nz-table>
@@ -201,22 +255,32 @@
       *ngSwitchCase="15">
       <thead>
         <tr>
-          <th>Vật tư</th>
-          <th>Hãng sản xuất</th>
-          <th>Nước sản xuất</th>
-          <th>Model</th>
-          <th>Số lượng</th>
-          <th>Đơn giá</th>
+          <th nzWidth="20%">Vật tư</th>
+          <th nzWidth="15%">Hãng sản xuất</th>
+          <th nzWidth="15%">Nước sản xuất</th>
+          <th nzWidth="15%">Model</th>
+          <th nzWidth="10%">Số lượng</th>
+          <th nzWidth="15%">Đơn giá</th>
+          <th nzWidth="10%"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of basicTable.data">
-          <td nzWidth="25%">{{data.tenVT}}</td>
-          <td nzWidth="15%">{{data.maHang}}</td>
-          <td nzWidth="15%">{{data.maNuoc}}</td>
-          <td nzWidth="15%">{{data.model}}</td>
-          <td nzWidth="15%">{{data.soLuong}}</td>
-          <td nzWidth="15%">{{data.donGia}}</td>
+          <td>{{data.tenVT}}</td>
+          <td>{{data.maHang}}</td>
+          <td>{{data.maNuoc}}</td>
+          <td>{{data.model}}</td>
+          <td>{{data.soLuong}}</td>
+          <td>{{data.donGia | number: '1.0-0'}}</td>
+          <td>
+            <button type="button" nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
+              (click)="updateImportDetail(data)">
+              <i nz-icon type="edit" theme="outline"></i>
+            </button>
+            <button nz-button nzType="danger" nz-tooltip nzTitle="Xóa" (click)="deleteImportDetail(data)">
+              <i nz-icon type="delete" theme="outline"></i>
+            </button>
+          </td>
         </tr>
       </tbody>
     </nz-table>
@@ -225,22 +289,32 @@
       *ngSwitchCase="16">
       <thead>
         <tr>
-          <th>Vật tư</th>
-          <th>Nước sản xuất</th>
-          <th>Số đăng ký</th>
-          <th>Đợt mua</th>
-          <th>Số lượng</th>
-          <th>Đơn giá</th>
+          <th nzWidth="20%">Vật tư</th>
+          <th nzWidth="15%">Nước sản xuất</th>
+          <th nzWidth="15%">Số đăng ký</th>
+          <th nzWidth="15%">Đợt mua</th>
+          <th nzWidth="10%">Số lượng</th>
+          <th nzWidth="15%">Đơn giá</th>
+          <th nzWidth="10%"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of basicTable.data">
-          <td nzWidth="25%">{{data.tenVT}}</td>
-          <td nzWidth="15%">{{data.maNuoc}}</td>
-          <td nzWidth="15%">{{data.soDangKy}}</td>
-          <td nzWidth="15%">{{data.dotMua}}</td>
-          <td nzWidth="15%">{{data.soLuong}}</td>
-          <td nzWidth="15%">{{data.donGia}}</td>
+          <td>{{data.tenVT}}</td>
+          <td>{{data.maNuoc}}</td>
+          <td>{{data.soDangKy}}</td>
+          <td>{{data.dotMua}}</td>
+          <td>{{data.soLuong}}</td>
+          <td>{{data.donGia | number: '1.0-0'}}</td>
+          <td>
+            <button type="button" nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
+              (click)="updateImportDetail(data)">
+              <i nz-icon type="edit" theme="outline"></i>
+            </button>
+            <button nz-button nzType="danger" nz-tooltip nzTitle="Xóa" (click)="deleteImportDetail(data)">
+              <i nz-icon type="delete" theme="outline"></i>
+            </button>
+          </td>
         </tr>
       </tbody>
     </nz-table>

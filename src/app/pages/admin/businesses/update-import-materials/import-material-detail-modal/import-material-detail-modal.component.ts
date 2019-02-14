@@ -4,12 +4,17 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ImportMaterialDetailService } from 'src/app/shared/services/import-material-detail.service';
 import { MaterialService } from 'src/app/shared/services/material.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
+import { ManufacturerService } from 'src/app/shared/services/manufacturer.service';
+import { ProducingCountryService } from 'src/app/shared/services/producing-country.service';
 
 import { Material } from 'src/app/shared/models/material.model';
 import { ProducingCountry } from 'src/app/shared/models/producing-country.model';
-import { ProducingCountryService } from 'src/app/shared/services/producing-country.service';
 import { Manufacturer } from 'src/app/shared/models/manufacturer.model';
-import { ManufacturerService } from 'src/app/shared/services/manufacturer.service';
+import { Supply } from 'src/app/shared/models/supply.model';
+import { SupplyService } from 'src/app/shared/services/supply.service';
+import { ImportMaterialDetail } from 'src/app/shared/models/import-material-detail.model';
+import { checkImportQuantityValidator } from 'src/app/shared/vailidators/check-import-quantity-validator';
+import { ImportMaterialService } from 'src/app/shared/services/import-material.service';
 
 @Component({
   selector: 'app-import-material-detail-modal',
@@ -19,9 +24,13 @@ import { ManufacturerService } from 'src/app/shared/services/manufacturer.servic
 export class ImportMaterialDetailModalComponent implements OnInit {
   @Input() importMaterialId: number;
   @Input() materialItemId: number;
+  @Input() materialStoreId: number;
+  @Input() importDetail: ImportMaterialDetail;
+  @Input() isAddNew: boolean;
   materials: Material[];
   producingCountries: ProducingCountry[];
   manufacturers: Manufacturer[];
+  supplies: Supply[];
   importDetailForm: FormGroup;
 
   formatterPercent = value => `${value} %`;
@@ -29,17 +38,20 @@ export class ImportMaterialDetailModalComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private importMaterialService: ImportMaterialService,
     private importMaterialDetailService: ImportMaterialDetailService,
     private materialService: MaterialService,
     private producingCountryService: ProducingCountryService,
     private manufacturerService: ManufacturerService,
+    private supplyService: SupplyService,
     private notify: NotifyService
   ) { }
 
   ngOnInit() {
-    this.loadAllMaterials();
+    this.loadAllMaterialByItemId(this.materialItemId);
     this.loadAllProducingCountries();
     this.loadAllManufacturers();
+    this.loadAllSupply();
 
     this.createForm();
   }
@@ -48,6 +60,7 @@ export class ImportMaterialDetailModalComponent implements OnInit {
     switch (this.materialItemId) {
       case 10: // Xe và vật tư thay thế
         this.importDetailForm = this.fb.group({
+          maPhieuNhap: [null],
           maVatTu: [null, [Validators.required]],
           soLuong: [1, [Validators.required]],
           donGia: [0, [Validators.required]],
@@ -57,17 +70,19 @@ export class ImportMaterialDetailModalComponent implements OnInit {
         break;
       case 11: // Vũ khí trang thiết bị
         this.importDetailForm = this.fb.group({
+          maPhieuNhap: [null],
           maVatTu: [null, [Validators.required]],
           soLuong: [1, [Validators.required]],
           soKhung: [null],
           soMay: [null],
           namSX: [null],
           phanCap: [null],
-          nguonGoc: [null]
+          maNguon: [null]
         });
         break;
       case 12: // Hàng viện trợ Mỹ
         this.importDetailForm = this.fb.group({
+          maPhieuNhap: [null],
           maVatTu: [null, [Validators.required]],
           soLuong: [1, [Validators.required]],
           seri: [null],
@@ -79,6 +94,7 @@ export class ImportMaterialDetailModalComponent implements OnInit {
         break;
       case 13: // Trang thiết bị cục quân y cấp
         this.importDetailForm = this.fb.group({
+          maPhieuNhap: [null],
           maVatTu: [null, [Validators.required]],
           soLuong: [1, [Validators.required]],
           donGia: [0, [Validators.required]],
@@ -88,6 +104,7 @@ export class ImportMaterialDetailModalComponent implements OnInit {
         break;
       case 14: // Hàng tài trợ trong nước
         this.importDetailForm = this.fb.group({
+          maPhieuNhap: [null],
           maVatTu: [null, [Validators.required]],
           soLuong: [1, [Validators.required]],
           donGia: [0, [Validators.required]],
@@ -97,6 +114,7 @@ export class ImportMaterialDetailModalComponent implements OnInit {
         break;
       case 15: // Danh mục thể thao văn hóa
         this.importDetailForm = this.fb.group({
+          maPhieuNhap: [null],
           maVatTu: [null, [Validators.required]],
           soLuong: [1, [Validators.required]],
           donGia: [0, [Validators.required]],
@@ -107,6 +125,7 @@ export class ImportMaterialDetailModalComponent implements OnInit {
         break;
       case 16: // Danh mục thuốc
         this.importDetailForm = this.fb.group({
+          maPhieuNhap: [null],
           maVatTu: [null, [Validators.required]],
           soLuong: [1, [Validators.required]],
           donGia: [0, [Validators.required]],
@@ -118,12 +137,15 @@ export class ImportMaterialDetailModalComponent implements OnInit {
       default:
         break;
     }
+
+    this.importDetailForm.patchValue(this.importDetail);
   }
 
-  loadAllMaterials() {
-    this.materialService.getAll().subscribe((res: Material[]) => {
-      this.materials = res;
-    });
+  loadAllMaterialByItemId(materialItemId: number) {
+    this.materialService.getAllByItemId(materialItemId)
+      .subscribe((res: Material[]) => {
+        this.materials = res;
+      });
   }
 
   loadAllProducingCountries() {
@@ -138,6 +160,12 @@ export class ImportMaterialDetailModalComponent implements OnInit {
     });
   }
 
+  loadAllSupply() {
+    this.supplyService.getAll().subscribe((res: Supply[]) => {
+      this.supplies = res;
+    });
+  }
+
   saveChanges(callBack: (result: boolean) => any = null) {
     if (this.importDetailForm.invalid) {
       // tslint:disable-next-line:forin
@@ -148,20 +176,66 @@ export class ImportMaterialDetailModalComponent implements OnInit {
       return;
     }
 
-    const importDetail = Object.assign({}, this.importDetailForm.value);
+    const importDetail: ImportMaterialDetail = Object.assign({}, this.importDetailForm.value);
     const importDetailParams = {
       importDetail,
-      importId: this.importMaterialId
+      importId: this.importMaterialId,
+      storeId: this.materialStoreId
     };
-    this.importMaterialDetailService.addNew(importDetailParams).subscribe((res: any) => {
-      if (res) {
-        this.notify.success('Thêm thành công!');
-        callBack(true);
-      }
-    }, error => {
-      this.notify.success('Có lỗi xảy ra!');
-      console.log('error addImportDetail');
-      callBack(false);
-    });
+
+    if (this.isAddNew) {
+      this.importMaterialDetailService.checkDuplicate(importDetail.maPhieuNhap, importDetail.maVatTu)
+        .subscribe((check: number) => {
+          if (check !== -1) {
+            importDetailParams.importDetail.soLuong += check;
+            this.importMaterialDetailService.update(importDetailParams)
+              .subscribe((res: any) => {
+                if (res >= 0) {
+                  this.notify.success('Sửa thành công!');
+                  callBack(true);
+                }
+              }, error => {
+                this.notify.error('Có lỗi xảy ra!');
+                console.log('error updateImportDetail');
+                callBack(false);
+              });
+          } else {
+            this.importMaterialDetailService.addNew(importDetailParams)
+              .subscribe((res: any) => {
+                if (res) {
+                  this.notify.success('Thêm thành công!');
+                  callBack(true);
+                }
+              }, error => {
+                this.notify.error('Có lỗi xảy ra!');
+                console.log('error addImportDetail');
+                callBack(false);
+              });
+          }
+        });
+    } else {
+      this.importMaterialDetailService.update(importDetailParams)
+        .subscribe((res: any) => {
+          if (res >= 0) {
+            this.notify.success('Sửa thành công!');
+            callBack(true);
+          }
+        }, error => {
+          this.notify.error('Có lỗi xảy ra!');
+          console.log('error updateImportDetail');
+          callBack(false);
+        });
+    }
+  }
+
+  checkQuantity(value) {
+    if (!this.isAddNew) {
+      const { maPhieuNhap, maVatTu } = this.importDetailForm.value;
+      const maKho = this.materialStoreId;
+      const soLuongControl = this.importDetailForm.get(`soLuong`);
+      soLuongControl.setAsyncValidators(checkImportQuantityValidator(this.importMaterialService,
+        maPhieuNhap, maKho, maVatTu, value));
+      soLuongControl.updateValueAndValidity();
+    }
   }
 }

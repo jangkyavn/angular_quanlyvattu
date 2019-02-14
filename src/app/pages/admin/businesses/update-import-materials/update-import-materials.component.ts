@@ -1,31 +1,25 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NzModalService } from 'ng-zorro-antd';
 
 import { MaterialItem } from 'src/app/shared/models/material-item.model';
 import { MaterialStore } from 'src/app/shared/models/material-store.model';
-import { Material } from 'src/app/shared/models/material.model';
-import { ProducingCountry } from 'src/app/shared/models/producing-country.model';
-import { Manufacturer } from 'src/app/shared/models/manufacturer.model';
-import { ImportMaterial } from 'src/app/shared/models/import-material.model';
 
 import { MaterialStoreService } from 'src/app/shared/services/material-store.service';
 import { MaterialItemService } from 'src/app/shared/services/material-item.service';
-import { MaterialService } from 'src/app/shared/services/material.service';
-import { ProducingCountryService } from 'src/app/shared/services/producing-country.service';
-import { ManufacturerService } from 'src/app/shared/services/manufacturer.service';
 import { ImportMaterialService } from 'src/app/shared/services/import-material.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
+import { ImportMaterialDetailService } from 'src/app/shared/services/import-material-detail.service';
+
 import { ImportMaterialDetail } from 'src/app/shared/models/import-material-detail.model';
 import { checkImportQuantityValidator } from 'src/app/shared/vailidators/check-import-quantity-validator';
 import { checkChietKhauNanValidator } from 'src/app/shared/vailidators/check-chiet-khau-nan-validator';
 import { checkChietKhauRangeValidator } from 'src/app/shared/vailidators/check-chiet-khau-range-validator';
 import { checkQuantityKhongAmValidator } from 'src/app/shared/vailidators/check-quantity-khong-am.validator';
 import { checkPriceKhongAmValidator } from 'src/app/shared/vailidators/check-price-khong-am-validator';
-import { MaterialType } from 'src/app/shared/models/material-type.model';
-import { ImportMaterialDetailService } from 'src/app/shared/services/import-material-detail.service';
-import { NzModalService } from 'ng-zorro-antd';
-import { ImportMaterialDetailModalComponent } from '../import-material-detail-modal/import-material-detail-modal.component';
+import { ImportMaterialDetailModalComponent } from './import-material-detail-modal/import-material-detail-modal.component';
+import { ImportMaterial } from 'src/app/shared/models/import-material.model';
 
 @Component({
   selector: 'app-update-import-materials',
@@ -36,22 +30,20 @@ export class UpdateImportMaterialsComponent implements OnInit {
   loading: boolean;
   materialStores: MaterialStore[];
   materialItems: MaterialItem[];
-  materialTypes: MaterialType[];
   importMaterialForm: FormGroup;
   materialItemId: number;
   importMaterialDetails: ImportMaterialDetail[];
   formatterPercent = value => `${value} %`;
   parserPercent = value => value.replace(' %', '');
-  // @HostListener('window:beforeunload', ['$event'])
-  // beforeunloadHandler($event: any) {
-  //   if (this.importMaterialForm.dirty) {
-  //     $event.returnValue = false;
-  //   }
-  // }
+  @HostListener('window:beforeunload', ['$event'])
+  beforeunloadHandler($event: any) {
+    if (this.importMaterialForm.dirty) {
+      $event.returnValue = false;
+    }
+  }
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private fb: FormBuilder,
     private modalService: NzModalService,
     private importMaterialService: ImportMaterialService,
@@ -76,7 +68,9 @@ export class UpdateImportMaterialsComponent implements OnInit {
       maHM: [null, [Validators.required]],
       ngayNhap: [null, [Validators.required]],
       chietKhau: [0, [checkChietKhauNanValidator, checkChietKhauRangeValidator]],
-      ghiChu: [null]
+      ghiChu: [null],
+      tongSoLuong: [null],
+      tongSoTien: [null]
     });
 
     this.route.data.subscribe(data => {
@@ -98,31 +92,6 @@ export class UpdateImportMaterialsComponent implements OnInit {
     this.materialItemService.getAll().subscribe((res: MaterialItem[]) => {
       this.materialItems = res;
     });
-  }
-
-  getStoreName() {
-    const maKho = this.importMaterialForm.get('mnhapvattu.maKho').value;
-    return this.materialStores.filter(x => x.maKho === maKho).map(x => x.tenKho);
-  }
-
-  deleteRow(idx: number, maVatTu: any) {
-    // const maPhieuNhap = this.importMaterialForm.get('mnhapvattu.maPhieuNhap').value;
-    // const maKho = this.importMaterialForm.get('mnhapvattu.maKho').value;
-    // this.importMaterialService.checkStatusDeleteDetail(maPhieuNhap, maVatTu, maKho)
-    //   .subscribe(res => {
-    //     if (res) {
-    //       this.listnhapchitiet = this.importMaterialForm.get('listnhapchitiet') as FormArray;
-    //       this.listnhapchitiet.removeAt(idx);
-
-    //       this.listDelete.push({
-    //         maPhieuNhap: this.importMaterialForm.get('mnhapvattu.maPhieuNhap').value,
-    //         maKho: this.importMaterialForm.get('mnhapvattu.maKho').value,
-    //         maVatTu
-    //       });
-    //     } else {
-    //       this.notify.error('Vật tư đã xuất, không được xóa');
-    //     }
-    //   });
   }
 
   saveChanges() {
@@ -150,7 +119,7 @@ export class UpdateImportMaterialsComponent implements OnInit {
   }
 
   addImportDetail() {
-    const { maPhieuNhap, maHM } = this.importMaterialForm.value;
+    const { maPhieuNhap, maHM, maKho } = this.importMaterialForm.value;
 
     const modal = this.modalService.create({
       nzTitle: 'Thêm chi tiết nhập vật tư',
@@ -158,7 +127,12 @@ export class UpdateImportMaterialsComponent implements OnInit {
       nzMaskClosable: false,
       nzComponentParams: {
         importMaterialId: maPhieuNhap,
-        materialItemId: maHM
+        materialItemId: maHM,
+        materialStoreId: maKho,
+        isAddNew: true,
+        importDetail: {
+          maPhieuNhap
+        }
       },
       nzFooter: [
         {
@@ -172,10 +146,8 @@ export class UpdateImportMaterialsComponent implements OnInit {
           onClick: (componentInstance) => {
             componentInstance.saveChanges((res: boolean) => {
               if (res) {
-                this.loading = true;
                 modal.destroy();
                 this.materialItemId = maHM;
-                console.log(this.materialItemId);
                 this.loadImportDetails(maPhieuNhap);
               } else {
                 modal.destroy();
@@ -188,11 +160,70 @@ export class UpdateImportMaterialsComponent implements OnInit {
   }
 
   loadImportDetails(importId: number) {
+    this.loading = true;
     this.importMaterialDetailService.getAllByImportId(importId)
       .subscribe((res: ImportMaterialDetail[]) => {
         this.importMaterialDetails = res;
         this.loading = false;
       });
+  }
+
+  updateImportDetail(importDetail: ImportMaterialDetail) {
+    const { maPhieuNhap, maHM, maKho } = this.importMaterialForm.value;
+
+    const modal = this.modalService.create({
+      nzTitle: 'Sửa chi tiết nhập vật tư',
+      nzContent: ImportMaterialDetailModalComponent,
+      nzMaskClosable: false,
+      nzComponentParams: {
+        importMaterialId: maPhieuNhap,
+        materialItemId: maHM,
+        materialStoreId: maKho,
+        importDetail,
+        isAddNew: false
+      },
+      nzFooter: [
+        {
+          label: 'Hủy',
+          shape: 'default',
+          onClick: () => modal.destroy(),
+        },
+        {
+          label: 'Lưu',
+          type: 'primary',
+          onClick: (componentInstance) => {
+            componentInstance.saveChanges((res: boolean) => {
+              if (res) {
+                modal.destroy();
+                this.materialItemId = maHM;
+                this.loadImportDetails(maPhieuNhap);
+              } else {
+                modal.destroy();
+              }
+            });
+          }
+        }
+      ]
+    });
+  }
+
+  deleteImportDetail(importDetail: ImportMaterialDetail) {
+    this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
+      const { maPhieuNhap, maVatTu } = importDetail;
+      const { maKho } = this.importMaterialForm.value;
+      this.importMaterialDetailService.delete(maPhieuNhap, maVatTu, maKho)
+        .subscribe((res: boolean) => {
+          if (res) {
+            this.loadImportDetails(maPhieuNhap);
+            this.notify.success('Xóa thành công!');
+          } else {
+            this.notify.warning('Hàng đã xuất, không được xóa!');
+          }
+        }, error => {
+          this.notify.error('Có lỗi xảy ra');
+          console.log('error deleteImportDetail');
+        });
+    });
   }
 
   checkStatus(idx: any, matVatTu: any, soLuong: number) {
