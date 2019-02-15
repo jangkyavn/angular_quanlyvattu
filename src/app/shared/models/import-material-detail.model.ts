@@ -13,7 +13,7 @@ export interface ImportMaterialDetail {
     namSX?: string;
     phanCap?: string;
     soLuong?: number;
-    donGia?: string;
+    donGia?: number;
     ghiChu?: string;
 
     tenVT?: string;

@@ -11,4 +11,6 @@ export interface ImportMaterial {
     chietKhau?: number;
     ghiChu?: string;
     status?: boolean;
+
+    thanhTien?: number;
 }

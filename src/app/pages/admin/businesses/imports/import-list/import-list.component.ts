@@ -58,6 +58,11 @@ export class ImportListComponent implements OnInit {
       }, error => {
         this.notify.error('Có lỗi xảy ra');
         console.log('error getAllPagingImportMaterial');
+      }, () => {
+        if (this.dataSet.length === 0 && this.pagination.currentPage !== 1) {
+          this.pagination.currentPage -= 1;
+          this.loadData();
+        }
       });
   }
 

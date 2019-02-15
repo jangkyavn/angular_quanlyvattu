@@ -31,8 +31,8 @@
     </nz-form-item>
     <nz-form-item>
       <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="donGia">Đơn giá</nz-form-label>
-      <nz-form-control [nzSm]="10" [nzXs]="24">
-        <input currencyMask nz-input formControlName="donGia" id="donGia" />
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input currencyMask nz-input formControlName="donGia" id="donGia" (blur)="blurPrice($event)" />
         <nz-form-explain *ngIf="importDetailForm.get('donGia').dirty && importDetailForm.get('donGia').errors">
           <ng-container *ngIf="importDetailForm.get('donGia').hasError('required')">
             Vui lòng nhập đơn giá!
@@ -77,6 +77,17 @@
         <nz-form-explain *ngIf="importDetailForm.get('soLuong').dirty && importDetailForm.get('soLuong').errors">
           <ng-container *ngIf="importDetailForm.get('soLuong').hasError('required')">
             Vui lòng nhập số lượng!
+          </ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="donGia">Đơn giá</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input currencyMask nz-input formControlName="donGia" id="donGia" (blur)="blurPrice($event)" />
+        <nz-form-explain *ngIf="importDetailForm.get('donGia').dirty && importDetailForm.get('donGia').errors">
+          <ng-container *ngIf="importDetailForm.get('donGia').hasError('required')">
+            Vui lòng nhập đơn giá!
           </ng-container>
         </nz-form-explain>
       </nz-form-control>
@@ -136,6 +147,17 @@
         <nz-form-explain *ngIf="importDetailForm.get('soLuong').dirty && importDetailForm.get('soLuong').errors">
           <ng-container *ngIf="importDetailForm.get('soLuong').hasError('required')">
             Vui lòng nhập số lượng!
+          </ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="donGia">Đơn giá</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input currencyMask nz-input formControlName="donGia" id="donGia" (blur)="blurPrice($event)" />
+        <nz-form-explain *ngIf="importDetailForm.get('donGia').dirty && importDetailForm.get('donGia').errors">
+          <ng-container *ngIf="importDetailForm.get('donGia').hasError('required')">
+            Vui lòng nhập đơn giá!
           </ng-container>
         </nz-form-explain>
       </nz-form-control>
@@ -204,8 +226,8 @@
     </nz-form-item>
     <nz-form-item>
       <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="donGia">Đơn giá</nz-form-label>
-      <nz-form-control [nzSm]="10" [nzXs]="24">
-        <input currencyMask nz-input formControlName="donGia" id="donGia" />
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input currencyMask nz-input formControlName="donGia" id="donGia" (blur)="blurPrice($event)" />
         <nz-form-explain *ngIf="importDetailForm.get('donGia').dirty && importDetailForm.get('donGia').errors">
           <ng-container *ngIf="importDetailForm.get('donGia').hasError('required')">
             Vui lòng nhập đơn giá!
@@ -256,8 +278,8 @@
     </nz-form-item>
     <nz-form-item>
       <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="donGia">Đơn giá</nz-form-label>
-      <nz-form-control [nzSm]="10" [nzXs]="24">
-        <input currencyMask nz-input formControlName="donGia" id="donGia" />
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input currencyMask nz-input formControlName="donGia" id="donGia" (blur)="blurPrice($event)" />
         <nz-form-explain *ngIf="importDetailForm.get('donGia').dirty && importDetailForm.get('donGia').errors">
           <ng-container *ngIf="importDetailForm.get('donGia').hasError('required')">
             Vui lòng nhập đơn giá!
@@ -308,8 +330,8 @@
     </nz-form-item>
     <nz-form-item>
       <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="donGia">Đơn giá</nz-form-label>
-      <nz-form-control [nzSm]="10" [nzXs]="24">
-        <input currencyMask nz-input formControlName="donGia" id="donGia" />
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input currencyMask nz-input formControlName="donGia" id="donGia" (blur)="blurPrice($event)" />
         <nz-form-explain *ngIf="importDetailForm.get('donGia').dirty && importDetailForm.get('donGia').errors">
           <ng-container *ngIf="importDetailForm.get('donGia').hasError('required')">
             Vui lòng nhập đơn giá!
@@ -369,7 +391,7 @@
     </nz-form-item>
     <nz-form-item>
       <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="donGia">Đơn giá</nz-form-label>
-      <nz-form-control [nzSm]="10" [nzXs]="24">
+      <nz-form-control [nzSm]="16" [nzXs]="24">
         <input currencyMask nz-input formControlName="donGia" id="donGia" />
         <nz-form-explain *ngIf="importDetailForm.get('donGia').dirty && importDetailForm.get('donGia').errors">
           <ng-container *ngIf="importDetailForm.get('donGia').hasError('required')">

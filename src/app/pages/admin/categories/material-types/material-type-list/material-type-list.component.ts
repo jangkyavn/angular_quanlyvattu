@@ -61,6 +61,11 @@ export class MaterialTypeListComponent implements OnInit {
       }, error => {
         this.notify.error('Có lỗi xảy ra');
         console.log('error getAllPagingMaterialType');
+      }, () => {
+        if (this.dataSet.length === 0 && this.pagination.currentPage !== 1) {
+          this.pagination.currentPage -= 1;
+          this.loadData();
+        }
       });
   }
 

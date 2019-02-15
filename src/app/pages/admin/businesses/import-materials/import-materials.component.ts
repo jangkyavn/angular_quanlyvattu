@@ -7,8 +7,6 @@ import { MaterialItemService } from 'src/app/shared/services/material-item.servi
 import { ImportMaterialService } from 'src/app/shared/services/import-material.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
 
-import { checkChietKhauNanValidator } from 'src/app/shared/vailidators/check-chiet-khau-nan-validator';
-import { checkChietKhauRangeValidator } from 'src/app/shared/vailidators/check-chiet-khau-range-validator';
 import { MaterialItem } from 'src/app/shared/models/material-item.model';
 import { MaterialStore } from 'src/app/shared/models/material-store.model';
 
@@ -49,7 +47,7 @@ export class ImportMaterialsComponent implements OnInit {
       maKho: [null, [Validators.required]],
       maHM: [null, [Validators.required]],
       ngayNhap: [currentDate, [Validators.required]],
-      chietKhau: [0, [checkChietKhauNanValidator, checkChietKhauRangeValidator]],
+      chietKhau: [0],
       ghiChu: [null]
     });
   }

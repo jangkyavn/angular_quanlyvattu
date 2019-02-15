@@ -1,20 +1,15 @@
-import { Component, OnInit, Output, EventEmitter, HostListener } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 
 import { MaterialStore } from 'src/app/shared/models/material-store.model';
 import { Personnel } from 'src/app/shared/models/personnel.model';
-import { Material } from 'src/app/shared/models/material.model';
 
 import { MaterialStoreService } from 'src/app/shared/services/material-store.service';
 import { PersonnelService } from 'src/app/shared/services/personnel.service';
-import { MaterialService } from 'src/app/shared/services/material.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
 import { ExportMaterialService } from 'src/app/shared/services/export-material.service';
-import { checkPriceKhongAmValidator } from 'src/app/shared/vailidators/check-price-khong-am-validator';
 import { checkExportQuantityValidator } from 'src/app/shared/vailidators/check-export-quantity-validator';
-import { checkChietKhauNanValidator } from 'src/app/shared/vailidators/check-chiet-khau-nan-validator';
-import { checkChietKhauRangeValidator } from 'src/app/shared/vailidators/check-chiet-khau-range-validator';
 
 @Component({
   selector: 'app-export-materials',

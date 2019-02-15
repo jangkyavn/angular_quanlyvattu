@@ -117,4 +117,11 @@ export class ExportMaterialDetailModalComponent implements OnInit {
         });
     }
   }
+
+  blurPrice(event: any) {
+    if (event.target.value.indexOf('-') > -1) {
+      const donGiaControl = this.exportDetailForm.get(`donGia`);
+      donGiaControl.setValue(0);
+    }
+  }
 }

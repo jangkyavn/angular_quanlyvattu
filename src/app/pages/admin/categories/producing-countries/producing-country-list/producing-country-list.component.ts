@@ -62,6 +62,11 @@ export class ProducingCountryListComponent implements OnInit {
       }, error => {
         this.notify.error('Có lỗi xảy ra');
         console.log('error getAllPagingProducingCountry');
+      }, () => {
+        if (this.dataSet.length === 0 && this.pagination.currentPage !== 1) {
+          this.pagination.currentPage -= 1;
+          this.loadData();
+        }
       });
   }
 

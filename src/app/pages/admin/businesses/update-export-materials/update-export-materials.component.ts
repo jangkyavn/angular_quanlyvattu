@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd';
@@ -6,16 +6,12 @@ import { NzModalService } from 'ng-zorro-antd';
 import { MaterialStore } from 'src/app/shared/models/material-store.model';
 import { Personnel } from 'src/app/shared/models/personnel.model';
 import { Material } from 'src/app/shared/models/material.model';
-import { ExportMaterial } from 'src/app/shared/models/export-material.model';
 
 import { MaterialStoreService } from 'src/app/shared/services/material-store.service';
 import { PersonnelService } from 'src/app/shared/services/personnel.service';
-import { MaterialService } from 'src/app/shared/services/material.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
 import { ExportMaterialService } from 'src/app/shared/services/export-material.service';
 import { ExportMaterialDetail } from 'src/app/shared/models/export-material-detail.model';
-import { checkPriceKhongAmValidator } from 'src/app/shared/vailidators/check-price-khong-am-validator';
-import { checkExportQuantityValidator } from 'src/app/shared/vailidators/check-export-quantity-validator';
 import { Inventory } from 'src/app/shared/models/inventory.model';
 import { ExportMaterialDetailModalComponent } from './export-material-detail-modal/export-material-detail-modal.component';
 import { ExportMaterialDetailService } from 'src/app/shared/services/export-material-detail.service';
@@ -35,6 +31,9 @@ export class UpdateExportMaterialsComponent implements OnInit {
   importMaterials: number[];
   exportMaterialDetails: ExportMaterialDetail[];
   exportMaterialForm: FormGroup;
+  totalAmount: number;
+  totalPrice: number;
+  discount: number;
   formatterPercent = value => `${value} %`;
   parserPercent = value => value.replace(' %', '');
   @HostListener('window:beforeunload', ['$event'])
@@ -81,6 +80,8 @@ export class UpdateExportMaterialsComponent implements OnInit {
       this.exportMaterialForm.patchValue(mxuatvattu);
       this.loadInventoriesByStoreId(mxuatvattu.maKho);
       this.exportMaterialDetails = listxuatchitiet;
+
+      this.loadTotalPrice();
     });
   }
 
@@ -235,5 +236,17 @@ export class UpdateExportMaterialsComponent implements OnInit {
     const { maKho } = this.exportMaterialForm.value;
     keyword = keyword || null;
     this.loadInventoriesByStoreId(maKho, keyword);
+  }
+
+  loadTotalPrice() {
+    this.totalPrice = 0;
+
+    this.exportMaterialDetails.forEach((item: ExportMaterialDetail) => {
+      this.totalPrice += item.soLuongXuat * item.donGia;
+    });
+
+    const { chietKhau } = this.exportMaterialForm.value;
+    this.discount = chietKhau;
+    this.totalAmount = this.totalPrice * (1 - chietKhau / 100);
   }
 }

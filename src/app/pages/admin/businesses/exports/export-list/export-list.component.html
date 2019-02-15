@@ -26,7 +26,7 @@
   <nz-table #table nzShowSizeChanger [nzFrontPagination]="false" [nzData]="dataSet" [nzLoading]="loading"
     [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage" [(nzPageSize)]="pagination.itemsPerPage"
     [nzNoResult]="'Không tìm thấy kết quả.'" (nzPageIndexChange)="loadData()" (nzPageSizeChange)="loadData(true)"
-    nzShowQuickJumper [nzShowTotal]="rangeTemplate">
+    nzShowQuickJumper [nzShowTotal]="rangeTemplate" nzBordered>
     <ng-template #rangeTemplate let-range="range" let-total>
       {{range[0]}}-{{range[1]}} của {{total}} bản ghi
     </ng-template>
@@ -34,10 +34,11 @@
       <tr>
         <th nzWidth="15%" nzShowSort nzSortKey="tenKho">Tên kho</th>
         <th nzWidth="15%" nzShowSort nzSortKey="tenNS">Nhân sự</th>
-        <th nzWidth="15%" nzShowSort nzSortKey="ngayNhap">Ngày xuất</th>
+        <th nzWidth="10%" nzShowSort nzSortKey="ngayNhap">Ngày xuất</th>
+        <th nzWidth="10%" nzShowSort nzSortKey="tongSoLuong">Tổng lượng</th>
         <th nzWidth="15%" nzShowSort nzSortKey="tongSoTien">Tổng tiền</th>
-        <th nzWidth="15%" nzShowSort nzSortKey="tongSoLuong">Tổng lượng</th>
-        <th nzWidth="15%">Thành tiền</th>
+        <th nzWidth="10%" nzShowSort nzSortKey="chietKhau">Chiết khấu</th>
+        <th nzWidth="15%" nzShowSort nzSortKey="thanhTien">Thành tiền</th>
         <th nzWidth="10%">Thao tác</th>
       </tr>
     </thead>
@@ -46,10 +47,11 @@
         <td>{{data.tenKho}}</td>
         <td>{{data.tenNS}}</td>
         <td>{{data.ngayNhap | date:'dd/MM/yyyy'}}</td>
-        <td>{{data.tongSoTien | number: '1.0-0'}}</td>
-        <td>{{data.tongSoLuong}}</td>
-        <td>{{data.tongSoTien * (1 - data.chietKhau / 100) | number: '1.0-0'}}</td>
-        <td>
+        <td class="text-center">{{data.tongSoLuong}}</td>
+        <td class="text-right">{{data.tongSoTien | number: '1.0-0'}}</td>
+        <td class="text-center">{{data.chietKhau}}</td>
+        <td class="text-right">{{data.tongSoTien * (1 - data.chietKhau / 100) | number: '1.0-0'}}</td>
+        <td class="text-center">
           <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
             [routerLink]="['/admin/nghiep-vu/sua-phieu-xuat', data.maPhieuXuat]">
             <i nz-icon type="edit" theme="outline"></i>

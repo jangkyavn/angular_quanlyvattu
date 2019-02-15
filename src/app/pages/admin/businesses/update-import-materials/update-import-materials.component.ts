@@ -13,13 +13,7 @@ import { NotifyService } from 'src/app/shared/services/notify.service';
 import { ImportMaterialDetailService } from 'src/app/shared/services/import-material-detail.service';
 
 import { ImportMaterialDetail } from 'src/app/shared/models/import-material-detail.model';
-import { checkImportQuantityValidator } from 'src/app/shared/vailidators/check-import-quantity-validator';
-import { checkChietKhauNanValidator } from 'src/app/shared/vailidators/check-chiet-khau-nan-validator';
-import { checkChietKhauRangeValidator } from 'src/app/shared/vailidators/check-chiet-khau-range-validator';
-import { checkQuantityKhongAmValidator } from 'src/app/shared/vailidators/check-quantity-khong-am.validator';
-import { checkPriceKhongAmValidator } from 'src/app/shared/vailidators/check-price-khong-am-validator';
 import { ImportMaterialDetailModalComponent } from './import-material-detail-modal/import-material-detail-modal.component';
-import { ImportMaterial } from 'src/app/shared/models/import-material.model';
 
 @Component({
   selector: 'app-update-import-materials',
@@ -33,6 +27,9 @@ export class UpdateImportMaterialsComponent implements OnInit {
   importMaterialForm: FormGroup;
   materialItemId: number;
   importMaterialDetails: ImportMaterialDetail[];
+  totalAmount: number;
+  totalPrice: number;
+  discount: number;
   formatterPercent = value => `${value} %`;
   parserPercent = value => value.replace(' %', '');
   @HostListener('window:beforeunload', ['$event'])
@@ -67,7 +64,7 @@ export class UpdateImportMaterialsComponent implements OnInit {
       maKho: [null, [Validators.required]],
       maHM: [null, [Validators.required]],
       ngayNhap: [null, [Validators.required]],
-      chietKhau: [0, [checkChietKhauNanValidator, checkChietKhauRangeValidator]],
+      chietKhau: [0],
       ghiChu: [null],
       tongSoLuong: [null],
       tongSoTien: [null]
@@ -78,7 +75,9 @@ export class UpdateImportMaterialsComponent implements OnInit {
 
       this.materialItemId = mnhapvattu.maHM;
       this.importMaterialForm.patchValue(mnhapvattu);
+
       this.importMaterialDetails = listnhapchitiet;
+      this.loadTotalPrice();
     });
   }
 
@@ -110,6 +109,7 @@ export class UpdateImportMaterialsComponent implements OnInit {
         this.notify.success('Sửa thành công');
         this.importMaterialForm.markAsPristine();
         this.importMaterialForm.updateValueAndValidity();
+        this.loadTotalPrice();
       }
     }, error => {
       this.notify.error('Có lỗi xảy ra');
@@ -165,6 +165,7 @@ export class UpdateImportMaterialsComponent implements OnInit {
       .subscribe((res: ImportMaterialDetail[]) => {
         this.importMaterialDetails = res;
         this.loading = false;
+        this.loadTotalPrice();
       });
   }
 
@@ -226,12 +227,15 @@ export class UpdateImportMaterialsComponent implements OnInit {
     });
   }
 
-  checkStatus(idx: any, matVatTu: any, soLuong: number) {
-    const maPhieuNhap = this.importMaterialForm.get('mnhapvattu.maPhieuNhap').value;
-    const maKho = this.importMaterialForm.get('mnhapvattu.maKho').value;
-    const soLuongControl = this.importMaterialForm.get(`listnhapchitiet.${idx}.soLuong`);
-    soLuongControl.setAsyncValidators(checkImportQuantityValidator(this.importMaterialService,
-      maPhieuNhap, maKho, matVatTu, soLuong));
-    soLuongControl.updateValueAndValidity();
+  loadTotalPrice() {
+    this.totalPrice = 0;
+
+    this.importMaterialDetails.forEach((item: ImportMaterialDetail) => {
+      this.totalPrice += item.soLuong * item.donGia;
+    });
+
+    const { chietKhau } = this.importMaterialForm.value;
+    this.discount = chietKhau;
+    this.totalAmount = this.totalPrice * (1 - chietKhau / 100);
   }
 }

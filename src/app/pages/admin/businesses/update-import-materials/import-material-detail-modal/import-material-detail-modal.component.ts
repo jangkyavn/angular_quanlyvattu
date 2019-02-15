@@ -73,6 +73,7 @@ export class ImportMaterialDetailModalComponent implements OnInit {
           maPhieuNhap: [null],
           maVatTu: [null, [Validators.required]],
           soLuong: [1, [Validators.required]],
+          donGia: [0, [Validators.required]],
           soKhung: [null],
           soMay: [null],
           namSX: [null],
@@ -85,6 +86,7 @@ export class ImportMaterialDetailModalComponent implements OnInit {
           maPhieuNhap: [null],
           maVatTu: [null, [Validators.required]],
           soLuong: [1, [Validators.required]],
+          donGia: [0, [Validators.required]],
           seri: [null],
           maHang: [null],
           maNuoc: [null],
@@ -236,6 +238,13 @@ export class ImportMaterialDetailModalComponent implements OnInit {
       soLuongControl.setAsyncValidators(checkImportQuantityValidator(this.importMaterialService,
         maPhieuNhap, maKho, maVatTu, value));
       soLuongControl.updateValueAndValidity();
+    }
+  }
+
+  blurPrice(event: any) {
+    if (event.target.value.indexOf('-') > -1) {
+      const donGiaControl = this.importDetailForm.get(`donGia`);
+      donGiaControl.setValue(0);
     }
   }
 }

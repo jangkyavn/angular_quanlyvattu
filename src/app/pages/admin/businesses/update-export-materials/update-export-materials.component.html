@@ -92,21 +92,21 @@
       </div>
     </div>
 
-    <nz-table #inventoryTable [nzData]="inventories" [nzLoading]="loadingInventories" [nzShowPagination]="false">
+    <nz-table #inventoryTable [nzData]="inventories" nzBordered [nzLoading]="loadingInventories" [nzShowPagination]="false">
       <thead>
         <tr>
           <th nzWidth="40%">Vật tư</th>
-          <th nzWidth="20%">Mã phiếu nhập</th>
+          <th nzWidth="30%">Mã phiếu nhập</th>
           <th nzWidth="20%">Số lượng tồn</th>
-          <th nzWidth="20%"></th>
+          <th nzWidth="10%"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of inventoryTable.data">
           <td>{{data.tenVatTu}}</td>
           <td>{{data.maPhieuNhap}}</td>
-          <td>{{data.soLuongTon}}</td>
-          <td>
+          <td class="text-center">{{data.soLuongTon}}</td>
+          <td class="text-center">
             <button nz-button nzType="primary" nz-tooltip nzTitle="Xuất" (click)="exportMaterial(data)">
               <i nz-icon type="caret-down" theme="outline"></i>
             </button>
@@ -117,25 +117,21 @@
   </nz-card>
   <br />
   <nz-card style="width:100%;" nzTitle="Danh sách xuất vật tư">
-    <nz-table #exportDetailTable [nzData]="exportMaterialDetails" [nzLoading]="loadingExportDetails"
+    <nz-table #exportDetailTable [nzData]="exportMaterialDetails" nzBordered [nzLoading]="loadingExportDetails"
       [nzShowPagination]="false">
       <thead>
         <tr>
-          <th nzWidth="20%">Vật tư</th>
+          <th nzWidth="10%"></th>
+          <th nzWidth="15%">Vật tư</th>
           <th nzWidth="15%">Mã phiếu nhập</th>
+          <th nzWidth="15%">Ghi chú</th>
           <th nzWidth="15%">Số lượng xuất</th>
           <th nzWidth="15%">Đơn giá</th>
-          <th nzWidth="20%">Ghi chú</th>
-          <th nzWidth="15%"></th>
+          <th nzWidth="15%">Tổng tiền</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of exportDetailTable.data">
-          <td>{{data.tenVT}}</td>
-          <td>{{data.maPhieuNhap}}</td>
-          <td>{{data.soLuongXuat}}</td>
-          <td>{{data.donGia | number: '1.0-0'}}</td>
-          <td>{{data.ghiChu}}</td>
           <td>
             <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
               (click)="updateExportDetail(data)">
@@ -146,7 +142,25 @@
               <i nz-icon type="delete" theme="outline"></i>
             </button>
           </td>
+          <td>{{data.tenVT}}</td>
+          <td>{{data.maPhieuNhap}}</td>
+          <td>{{data.ghiChu}}</td>
+          <td class="text-center">{{data.soLuongXuat}}</td>
+          <td class="text-right">{{data.donGia | number: '1.0-0'}}</td>
+          <td class="text-right">{{(data.soLuongXuat * data.donGia) | number: '1.0-0'}}</td>
         </tr>
+        <tr class="bg-footer-price">
+            <td colspan="6" class="text-right">Thành tiền:</td>
+            <td class="text-right">{{totalPrice | number: '1.0-0'}}</td>
+          </tr>
+          <tr class="bg-footer-price">
+            <td colspan="6" class="text-right">Chiết khấu:</td>
+            <td class="text-right">{{discount}}%</td>
+          </tr>
+          <tr class="bg-footer-price">
+            <td colspan="6" class="text-right">Thành tiền sau chiết khấu:</td>
+            <td class="text-total-amount text-right">{{totalAmount | number: '1.0-0'}}</td>
+          </tr>
       </tbody>
     </nz-table>
   </nz-card>
