@@ -31,17 +31,14 @@ export class UpdateExportMaterialsComponent implements OnInit {
   importMaterials: number[];
   exportMaterialDetails: ExportMaterialDetail[];
   exportMaterialForm: FormGroup;
+
   totalAmount: number;
-  totalPrice: number;
+  totalAmountAfterDiscount: number;
+  discountPrice: number;
   discount: number;
+
   formatterPercent = value => `${value} %`;
   parserPercent = value => value.replace(' %', '');
-  @HostListener('window:beforeunload', ['$event'])
-  beforeunloadHandler($event: any) {
-    if (this.exportMaterialForm.dirty) {
-      $event.returnValue = false;
-    }
-  }
 
   constructor(
     private route: ActivatedRoute,
@@ -80,7 +77,6 @@ export class UpdateExportMaterialsComponent implements OnInit {
       this.exportMaterialForm.patchValue(mxuatvattu);
       this.loadInventoriesByStoreId(mxuatvattu.maKho);
       this.exportMaterialDetails = listxuatchitiet;
-
       this.loadTotalPrice();
     });
   }
@@ -164,6 +160,7 @@ export class UpdateExportMaterialsComponent implements OnInit {
         this.notify.success('Sửa thành công');
         this.exportMaterialForm.markAsPristine();
         this.exportMaterialForm.updateValueAndValidity();
+        this.loadTotalPrice();
       }
     }, error => {
       this.notify.error('Có lỗi xảy ra');
@@ -177,6 +174,7 @@ export class UpdateExportMaterialsComponent implements OnInit {
       .subscribe((res: ExportMaterialDetail[]) => {
         this.exportMaterialDetails = res;
         this.loadingExportDetails = false;
+        this.loadTotalPrice();
       });
   }
 
@@ -239,14 +237,21 @@ export class UpdateExportMaterialsComponent implements OnInit {
   }
 
   loadTotalPrice() {
-    this.totalPrice = 0;
+    this.totalAmount = 0;
+    this.totalAmountAfterDiscount = 0;
+    this.discountPrice = 0;
 
+    let idx = 0;
     this.exportMaterialDetails.forEach((item: ExportMaterialDetail) => {
-      this.totalPrice += item.soLuongXuat * item.donGia;
-    });
+      idx++;
+      this.totalAmount += item.soLuongXuat * item.donGia;
 
-    const { chietKhau } = this.exportMaterialForm.value;
-    this.discount = chietKhau;
-    this.totalAmount = this.totalPrice * (1 - chietKhau / 100);
+      if (this.exportMaterialDetails.length === idx) {
+        const { chietKhau } = this.exportMaterialForm.value;
+        this.discount = chietKhau;
+        this.totalAmountAfterDiscount = this.totalAmount * (1 - chietKhau / 100);
+        this.discountPrice = this.totalAmount - this.totalAmountAfterDiscount;
+      }
+    });
   }
 }

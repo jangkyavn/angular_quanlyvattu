@@ -30,6 +30,8 @@ export class ImportMaterialService {
 
         if (pagingParams != null) {
             params = params.append('keyword', pagingParams.keyword);
+            params = params.append('fromDate', pagingParams.fromDate);
+            params = params.append('toDate', pagingParams.toDate);
             params = params.append('sortKey', pagingParams.sortKey);
             params = params.append('sortValue', pagingParams.sortValue);
         }

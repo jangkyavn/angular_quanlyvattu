@@ -357,12 +357,6 @@
         </nz-select>
       </nz-form-control>
     </nz-form-item>
-    <nz-form-item>
-      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="model">Model</nz-form-label>
-      <nz-form-control [nzSm]="16" [nzXs]="24">
-        <input nz-input formControlName="model" id="model" />
-      </nz-form-control>
-    </nz-form-item>
   </div>
   <div *ngSwitchCase="16">
     <nz-form-item>
@@ -392,12 +386,27 @@
     <nz-form-item>
       <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="donGia">Đơn giá</nz-form-label>
       <nz-form-control [nzSm]="16" [nzXs]="24">
-        <input currencyMask nz-input formControlName="donGia" id="donGia" />
+        <input currencyMask nz-input formControlName="donGia" id="donGia" (blur)="blurPrice($event)" />
         <nz-form-explain *ngIf="importDetailForm.get('donGia').dirty && importDetailForm.get('donGia').errors">
           <ng-container *ngIf="importDetailForm.get('donGia').hasError('required')">
             Vui lòng nhập đơn giá!
           </ng-container>
         </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="bietDuoc">Biệt dược</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input nz-input formControlName="bietDuoc" id="bietDuoc" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="maHang">Hãng sản xuất</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn hãng sản xuất" formControlName="maHang" id="maHang">
+          <nz-option *ngFor="let item of manufacturers" [nzValue]="item.maHang" [nzLabel]="item.tenHang">
+          </nz-option>
+        </nz-select>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
@@ -413,6 +422,18 @@
       <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="soDangKy">Số đăng ký</nz-form-label>
       <nz-form-control [nzSm]="16" [nzXs]="24">
         <input nz-input formControlName="soDangKy" id="soDangKy" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="soLo">Số lô</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input nz-input formControlName="soLo" id="soLo" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="hanDung">Hạng dùng</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input type="date" nz-input formControlName="hanDung" id="hanDung" />
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>

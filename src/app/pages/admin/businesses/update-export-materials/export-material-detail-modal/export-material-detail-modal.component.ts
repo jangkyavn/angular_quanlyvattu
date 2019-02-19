@@ -52,7 +52,7 @@ export class ExportMaterialDetailModalComponent implements OnInit {
       this.exportDetailForm.patchValue({
         ...this.exportDetail,
         tenVatTu: this.exportDetail.tenVT,
-      })
+      });
     }
   }
 

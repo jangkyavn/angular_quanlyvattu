@@ -12,6 +12,10 @@ export interface Personnel {
     banThan?: string;
     quaTrinhHocTap?: string;
     thanNhan?: string;
+    dang?: string;
     ghiChu?: string;
     status?: boolean;
+
+    huyenQuan?: any;
+    tinhThanhPho?: any;
 }

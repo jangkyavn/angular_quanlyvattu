@@ -74,6 +74,7 @@ export class UnitListComponent implements OnInit {
       nzTitle: 'Thêm đơn vị tính',
       nzContent: UnitAddEditModalComponent,
       nzMaskClosable: false,
+      nzClosable: false,
       nzComponentParams: {
         unit: {},
         isAddNew: true
@@ -88,17 +89,19 @@ export class UnitListComponent implements OnInit {
           label: 'Lưu',
           type: 'primary',
           onClick: (componentInstance) => {
-            componentInstance.saveChanges((res: boolean) => {
-              if (res) {
-                this.loadData();
-                modal.destroy();
-              } else {
-                modal.destroy();
-              }
-            });
+            componentInstance.saveChanges();
           }
         }
       ]
+    });
+
+    modal.afterClose.subscribe((result: boolean) => {
+      if (result) {
+        this.loadData();
+        modal.destroy();
+      } else {
+        modal.destroy();
+      }
     });
   }
 
@@ -122,17 +125,19 @@ export class UnitListComponent implements OnInit {
             label: 'Lưu',
             type: 'primary',
             onClick: (componentInstance) => {
-              componentInstance.saveChanges((res: boolean) => {
-                if (res) {
-                  this.loadData();
-                  modal.destroy();
-                } else {
-                  modal.destroy();
-                }
-              });
+              componentInstance.saveChanges();
             }
           }
         ]
+      });
+
+      modal.afterClose.subscribe((result: boolean) => {
+        if (result) {
+          this.loadData();
+          modal.destroy();
+        } else {
+          modal.destroy();
+        }
       });
     });
   }

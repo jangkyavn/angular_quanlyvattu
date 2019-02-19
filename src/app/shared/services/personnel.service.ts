@@ -61,4 +61,16 @@ export class PersonnelService {
   delete(id: number) {
     return this.http.delete(this.baseUrl + 'NhanSu/' + id);
   }
+
+  getCities() {
+    return this.http.get(this.baseUrl + 'NhanSu/LoadCities');
+  }
+
+  getDistrict(cityId: any) {
+    return this.http.get(this.baseUrl + 'NhanSu/loadDistricts/' + cityId);
+  }
+
+  getNations() {
+    return this.http.get(this.baseUrl + 'NhanSu/loadNations');
+  }
 }

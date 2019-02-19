@@ -16,6 +16,9 @@ export interface ImportMaterialDetail {
     donGia?: number;
     ghiChu?: string;
 
+    bietDuoc?: string;
+    soLo?: string;
+    hanDung?: string;
     tenVT?: string;
     tenHang?: string;
     tenNuoc?: string;

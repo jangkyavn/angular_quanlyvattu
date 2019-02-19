@@ -74,6 +74,7 @@ export class PersonnelListComponent implements OnInit {
       nzTitle: 'Thêm nhân sự',
       nzContent: PersonnelAddEditModalComponent,
       nzMaskClosable: false,
+      nzWidth: 880,
       nzComponentParams: {
         personnel: {},
         isAddNew: true
@@ -108,6 +109,7 @@ export class PersonnelListComponent implements OnInit {
         nzTitle: 'Sửa nhân sự',
         nzContent: PersonnelAddEditModalComponent,
         nzMaskClosable: false,
+        nzWidth: 880,
         nzComponentParams: {
           personnel,
           isAddNew: false

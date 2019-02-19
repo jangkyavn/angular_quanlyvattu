@@ -28,16 +28,11 @@ export class UpdateImportMaterialsComponent implements OnInit {
   materialItemId: number;
   importMaterialDetails: ImportMaterialDetail[];
   totalAmount: number;
-  totalPrice: number;
+  totalAmountAfterDiscount: number;
+  discountPrice: number;
   discount: number;
   formatterPercent = value => `${value} %`;
   parserPercent = value => value.replace(' %', '');
-  @HostListener('window:beforeunload', ['$event'])
-  beforeunloadHandler($event: any) {
-    if (this.importMaterialForm.dirty) {
-      $event.returnValue = false;
-    }
-  }
 
   constructor(
     private route: ActivatedRoute,
@@ -53,8 +48,6 @@ export class UpdateImportMaterialsComponent implements OnInit {
   ngOnInit() {
     this.importMaterialDetails = [];
 
-    this.loadAllMaterialStore();
-    this.loadAllMaterialItems();
     this.createForm();
   }
 
@@ -63,7 +56,10 @@ export class UpdateImportMaterialsComponent implements OnInit {
       maPhieuNhap: [null, [Validators.required]],
       maKho: [null, [Validators.required]],
       maHM: [null, [Validators.required]],
+      nguoiNhap: [null],
       ngayNhap: [null, [Validators.required]],
+      tenKho: [{ value: null, disabled: true }, [Validators.required]],
+      tenHM: [{ value: null, disabled: true }, [Validators.required]],
       chietKhau: [0],
       ghiChu: [null],
       tongSoLuong: [null],
@@ -122,7 +118,7 @@ export class UpdateImportMaterialsComponent implements OnInit {
     const { maPhieuNhap, maHM, maKho } = this.importMaterialForm.value;
 
     const modal = this.modalService.create({
-      nzTitle: 'Thêm chi tiết nhập vật tư',
+      nzTitle: 'Thêm chi tiết phiếu nhập',
       nzContent: ImportMaterialDetailModalComponent,
       nzMaskClosable: false,
       nzComponentParams: {
@@ -173,7 +169,7 @@ export class UpdateImportMaterialsComponent implements OnInit {
     const { maPhieuNhap, maHM, maKho } = this.importMaterialForm.value;
 
     const modal = this.modalService.create({
-      nzTitle: 'Sửa chi tiết nhập vật tư',
+      nzTitle: 'Sửa chi tiết phiếu nhập',
       nzContent: ImportMaterialDetailModalComponent,
       nzMaskClosable: false,
       nzComponentParams: {
@@ -228,14 +224,21 @@ export class UpdateImportMaterialsComponent implements OnInit {
   }
 
   loadTotalPrice() {
-    this.totalPrice = 0;
+    this.totalAmount = 0;
+    this.totalAmountAfterDiscount = 0;
+    this.discountPrice = 0;
 
+    let idx = 0;
     this.importMaterialDetails.forEach((item: ImportMaterialDetail) => {
-      this.totalPrice += item.soLuong * item.donGia;
-    });
+      idx++;
+      this.totalAmount += item.soLuong * item.donGia;
 
-    const { chietKhau } = this.importMaterialForm.value;
-    this.discount = chietKhau;
-    this.totalAmount = this.totalPrice * (1 - chietKhau / 100);
+      if (this.importMaterialDetails.length === idx) {
+        const { chietKhau } = this.importMaterialForm.value;
+        this.discount = chietKhau;
+        this.totalAmountAfterDiscount = this.totalAmount * (1 - chietKhau / 100);
+        this.discountPrice = this.totalAmount - this.totalAmountAfterDiscount;
+      }
+    });
   }
 }

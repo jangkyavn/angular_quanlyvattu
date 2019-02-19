@@ -9,3 +9,15 @@ th {
 .text-total-amount {
     color: red;
 }
+
+td {
+    padding: 0 10px 10px 10px;
+}
+
+:host ::ng-deep .ant-card-head {
+    height: 15px !important;
+
+    .ant-card-head-title {
+        padding-top: 10px !important;
+    }
+}

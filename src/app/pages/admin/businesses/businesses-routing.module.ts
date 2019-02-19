@@ -20,7 +20,7 @@ const routes: Routes = [
     resolve: { 'inventories': InventoryListResolver }
   },
   {
-    path: 'nhap-vat-tu', component: ImportMaterialsComponent
+    path: 'tao-phieu-nhap', component: ImportMaterialsComponent
   },
   {
     path: 'danh-sach-phieu-nhap', component: ImportListComponent,
@@ -31,7 +31,7 @@ const routes: Routes = [
     resolve: { 'import-material': ImportMaterialDetailResolver }
   },
   {
-    path: 'xuat-vat-tu', component: ExportMaterialsComponent
+    path: 'tao-phieu-xuat', component: ExportMaterialsComponent
   },
   {
     path: 'danh-sach-phieu-xuat', component: ExportListComponent,

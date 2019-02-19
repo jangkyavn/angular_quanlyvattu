@@ -122,7 +122,6 @@ export class ImportMaterialDetailModalComponent implements OnInit {
           donGia: [0, [Validators.required]],
           maHang: [null],
           maNuoc: [null],
-          model: [null]
         });
         break;
       case 16: // Danh mục thuốc
@@ -131,8 +130,12 @@ export class ImportMaterialDetailModalComponent implements OnInit {
           maVatTu: [null, [Validators.required]],
           soLuong: [1, [Validators.required]],
           donGia: [0, [Validators.required]],
+          bietDuoc: [null],
+          maHang: [null],
           maNuoc: [null],
           soDangKy: [null],
+          soLo: [null],
+          hanDung: [null],
           dotMua: [null]
         });
         break;

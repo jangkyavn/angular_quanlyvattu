@@ -43,7 +43,7 @@ export class MaterialAddEditModalComponent implements OnInit {
       maVatTu: [null],
       tenVT: [null, [Validators.required]],
       maLoaiVatTu: [null, [Validators.required]],
-      maDVT: [null, [Validators.required]],
+      maDVT: [null],
       ghiChu: [null]
     });
   }

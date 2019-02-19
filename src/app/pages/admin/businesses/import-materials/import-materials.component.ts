@@ -9,6 +9,8 @@ import { NotifyService } from 'src/app/shared/services/notify.service';
 
 import { MaterialItem } from 'src/app/shared/models/material-item.model';
 import { MaterialStore } from 'src/app/shared/models/material-store.model';
+import { ImportMaterial } from 'src/app/shared/models/import-material.model';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-import-materials',
@@ -25,6 +27,7 @@ export class ImportMaterialsComponent implements OnInit {
   constructor(
     private router: Router,
     private fb: FormBuilder,
+    private authService: AuthService,
     private importMaterialService: ImportMaterialService,
     private materialStoreService: MaterialStoreService,
     private materialItemService: MaterialItemService,
@@ -74,7 +77,8 @@ export class ImportMaterialsComponent implements OnInit {
       return;
     }
 
-    const importMaterial = Object.assign({}, this.importMaterialForm.value);
+    const importMaterial: ImportMaterial = Object.assign({}, this.importMaterialForm.value);
+    importMaterial.nguoiNhap = this.authService.currentUser.userName;
     this.importMaterialService.addNew(importMaterial).subscribe((res: any) => {
       if (res) {
         this.notify.success('Thêm mới thành công');

@@ -16,14 +16,20 @@ import { PagingParams } from 'src/app/shared/params/paging.param';
 export class ExportListComponent implements OnInit {
   dataSet = [];
   loading = true;
-  sortValue = null;
-  sortKey = null;
+  sortValue = '';
+  sortKey = '';
+
+  startValue = '';
+  endValue = '';
+  disabledButtonSearch = true;
 
   pagination: Pagination;
   pagingParams: PagingParams = {
     keyword: '',
     sortKey: '',
-    sortValue: ''
+    sortValue: '',
+    fromDate: '',
+    toDate: ''
   };
 
   constructor(
@@ -81,6 +87,40 @@ export class ExportListComponent implements OnInit {
 
   search(keyword: string) {
     this.pagingParams.keyword = keyword;
+    this.pagingParams.fromDate = this.startValue;
+    this.pagingParams.toDate = this.endValue;
+
     this.loadData(true);
+  }
+
+  enableButtonSearch() {
+    if (this.startValue > this.endValue) {
+      return true;
+    }
+
+    return !(this.startValue && this.endValue);
+  }
+
+  changeFromDate(value: any) {
+    this.startValue = value;
+
+    if (this.endValue === null || this.endValue === '') {
+      this.endValue = this.startValue;
+    }
+
+    this.disabledButtonSearch = this.enableButtonSearch();
+
+    if ((this.startValue === '' && this.endValue === '') || (this.startValue === null && this.endValue) === '') {
+      this.search(this.pagingParams.keyword);
+    }
+  }
+
+  changeToDate(value: any) {
+    this.endValue = value;
+    this.disabledButtonSearch = this.enableButtonSearch();
+
+    if ((this.startValue === '' && this.endValue === '') || (this.startValue === null && this.endValue) === '') {
+      this.search(this.pagingParams.keyword);
+    }
   }
 }

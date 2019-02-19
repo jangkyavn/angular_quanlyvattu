@@ -1,101 +1,178 @@
 <form nz-form [formGroup]="personnelForm" (ngSubmit)="saveChanges()" autocomplete="off">
-  <nz-form-item>
-    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="hoTen">Họ tên</nz-form-label>
-    <nz-form-control [nzSm]="16" [nzXs]="24">
-      <input nz-input formControlName="hoTen" id="hoTen" autofocus>
-      <nz-form-explain *ngIf="personnelForm.get('hoTen').dirty && personnelForm.get('hoTen').errors">
-        <ng-container *ngIf="personnelForm.get('hoTen').hasError('required')">
-          Vui lòng nhập họ tên!
-        </ng-container>
-      </nz-form-explain>
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="ngaySinh">Ngày sinh</nz-form-label>
-    <nz-form-control [nzSm]="16" [nzXs]="24">
-      <nz-date-picker formControlName="ngaySinh" nzPlaceHolder="Chọn ngày sinh" nzFormat="dd/MM/yyyy">
-      </nz-date-picker>
-      <nz-form-explain *ngIf="personnelForm.get('ngaySinh').dirty && personnelForm.get('ngaySinh').errors">
-        <ng-container *ngIf="personnelForm.get('ngaySinh').hasError('required')">
-          Vui lòng chọn ngày sinh!
-        </ng-container>
-      </nz-form-explain>
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="queQuan">Quê quán</nz-form-label>
-    <nz-form-control [nzSm]="16" [nzXs]="24">
-      <textarea nz-input formControlName="queQuan" id="queQuan"></textarea>
-      <nz-form-explain *ngIf="personnelForm.get('queQuan').dirty && personnelForm.get('queQuan').errors">
-        <ng-container *ngIf="personnelForm.get('queQuan').hasError('required')">
-          Vui lòng nhập quê quán!
-        </ng-container>
-      </nz-form-explain>
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="danToc">Dân tộc</nz-form-label>
-    <nz-form-control [nzSm]="16" [nzXs]="24">
-      <input nz-input formControlName="danToc" id="danToc">
-      <nz-form-explain *ngIf="personnelForm.get('danToc').dirty && personnelForm.get('danToc').errors">
-        <ng-container *ngIf="personnelForm.get('danToc').hasError('required')">
-          Vui lòng nhập dân tộc!
-        </ng-container>
-      </nz-form-explain>
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="tonGiao">Tôn giáo</nz-form-label>
-    <nz-form-control [nzSm]="16" [nzXs]="24">
-      <input nz-input formControlName="tonGiao" id="tonGiao">
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="capBacSHSQ">Cấp bậc SHSQ</nz-form-label>
-    <nz-form-control [nzSm]="16" [nzXs]="24">
-      <input nz-input formControlName="capBacSHSQ" id="capBacSHSQ">
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="chucVu">Chức vụ</nz-form-label>
-    <nz-form-control [nzSm]="16" [nzXs]="24">
-      <input nz-input formControlName="chucVu" id="chucVu">
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="ngayNhapNguTuyenDung">Ngày NN/TD</nz-form-label>
-    <nz-form-control [nzSm]="16" [nzXs]="24">
-      <nz-month-picker formControlName="ngayNhapNguTuyenDung" nzFormat="MM/yyyy" nzPlaceHolder="Chọn ngày"></nz-month-picker>
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="xuatThan">Xuất thân</nz-form-label>
-    <nz-form-control [nzSm]="16" [nzXs]="24">
-      <input nz-input formControlName="xuatThan" id="xuatThan">
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="banThan">Bản thân</nz-form-label>
-    <nz-form-control [nzSm]="16" [nzXs]="24">
-      <input nz-input formControlName="banThan" id="banThan">
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="quaTrinhHocTap">Quá trình học tập</nz-form-label>
-    <nz-form-control [nzSm]="16" [nzXs]="24">
-      <textarea rows="3" nz-input formControlName="quaTrinhHocTap" id="quaTrinhHocTap"></textarea>
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="thanNhan">Thân nhân</nz-form-label>
-    <nz-form-control [nzSm]="16" [nzXs]="24">
-      <textarea rows="3" nz-input formControlName="thanNhan" id="thanNhan"></textarea>
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="ghiChu">Ghi chú</nz-form-label>
-    <nz-form-control [nzSm]="16" [nzXs]="24">
-      <textarea nz-input formControlName="ghiChu" id="ghiChu"></textarea>
-    </nz-form-control>
-  </nz-form-item>
+  <table style="width: 100%;">
+    <tr>
+      <td style="width: 10%;">
+        <nz-form-label nzRequired nzFor="hoTen">Họ tên</nz-form-label>
+      </td>
+      <td style="width: 40%;">
+        <nz-form-control>
+          <input nz-input formControlName="hoTen" id="hoTen" autofocus>
+          <nz-form-explain *ngIf="personnelForm.get('hoTen').dirty && personnelForm.get('hoTen').errors">
+            <ng-container *ngIf="personnelForm.get('hoTen').hasError('required')">
+              Vui lòng nhập họ tên!
+            </ng-container>
+          </nz-form-explain>
+        </nz-form-control>
+      </td>
+      <td style="width: 10%;">
+        <nz-form-label nzRequired nzFor="ngaySinh">Ngày sinh</nz-form-label>
+      </td>
+      <td style="width: 40%;">
+        <nz-form-control>
+          <nz-date-picker formControlName="ngaySinh" nzPlaceHolder="Chọn ngày sinh" nzFormat="dd/MM/yyyy">
+          </nz-date-picker>
+          <nz-form-explain *ngIf="personnelForm.get('ngaySinh').dirty && personnelForm.get('ngaySinh').errors">
+            <ng-container *ngIf="personnelForm.get('ngaySinh').hasError('required')">
+              Vui lòng chọn ngày sinh!
+            </ng-container>
+          </nz-form-explain>
+        </nz-form-control>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <nz-form-label nzRequired nzFor="tinhThanhPho">Tỉnh/thành phố</nz-form-label>
+      </td>
+      <td>
+        <nz-form-control>
+          <nz-select nzShowSearch nzAllowClear id="tinhThanhPho" formControlName="tinhThanhPho"
+            nzPlaceHolder="Chọn tỉnh/thành phố" (ngModelChange)="changeCities($event)">
+            <nz-option *ngFor="let item of cities" [nzValue]="item.code" [nzLabel]="item.name"></nz-option>
+          </nz-select>
+          <nz-form-explain *ngIf="personnelForm.get('tinhThanhPho').dirty && personnelForm.get('tinhThanhPho').errors">
+            <ng-container *ngIf="personnelForm.get('tinhThanhPho').hasError('required')">
+              Vui lòng chọn tỉnh/thành phố!
+            </ng-container>
+          </nz-form-explain>
+        </nz-form-control>
+      </td>
+      <td>
+        <nz-form-label nzRequired nzFor="huyenQuan">Huyện/quận</nz-form-label>
+      </td>
+      <td>
+        <nz-form-control>
+          <nz-select nzShowSearch nzAllowClear id="huyenQuan" formControlName="huyenQuan"
+            nzPlaceHolder="Chọn huyện/quận">
+            <nz-option *ngFor="let item of districts" [nzValue]="item.code" [nzLabel]="item.name"></nz-option>
+          </nz-select>
+          <nz-form-explain *ngIf="personnelForm.get('huyenQuan').dirty && personnelForm.get('huyenQuan').errors">
+            <ng-container *ngIf="personnelForm.get('huyenQuan').hasError('required')">
+              Vui lòng chọn huyện/quận!
+            </ng-container>
+          </nz-form-explain>
+        </nz-form-control>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <nz-form-label nzRequired nzFor="danToc">Dân tộc</nz-form-label>
+      </td>
+      <td>
+        <nz-form-control>
+          <nz-select nzShowSearch nzAllowClear id="danToc" formControlName="danToc" nzPlaceHolder="Chọn dân tộc">
+            <nz-option *ngFor="let item of nations" [nzValue]="item.code" [nzLabel]="item.name"></nz-option>
+          </nz-select>
+          <nz-form-explain *ngIf="personnelForm.get('danToc').dirty && personnelForm.get('danToc').errors">
+            <ng-container *ngIf="personnelForm.get('danToc').hasError('required')">
+              Vui lòng chọn dân tộc!
+            </ng-container>
+          </nz-form-explain>
+        </nz-form-control>
+      </td>
+      <td>
+        <nz-form-label nzFor="tonGiao">Tôn giáo</nz-form-label>
+      </td>
+      <td>
+        <nz-form-control>
+          <nz-select nzShowSearch nzAllowClear id="tonGiao" formControlName="tonGiao" nzPlaceHolder="Chọn tôn giáo">
+            <nz-option nzValue="1" nzLabel="Có"></nz-option>
+            <nz-option nzValue="0" nzLabel="Không"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <nz-form-label nzFor="capBacSHSQ">Cấp bậc SHSQ</nz-form-label>
+      </td>
+      <td>
+        <nz-form-control>
+          <input nz-input formControlName="capBacSHSQ" id="capBacSHSQ">
+        </nz-form-control>
+      </td>
+      <td>
+        <nz-form-label nzFor="chucVu">Chức vụ</nz-form-label>
+      </td>
+      <td>
+        <nz-form-control>
+          <input nz-input formControlName="chucVu" id="chucVu">
+        </nz-form-control>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <nz-form-label nzFor="ngayNhapNguTuyenDung">Ngày NN/TD</nz-form-label>
+      </td>
+      <td>
+        <nz-form-control>
+          <nz-month-picker formControlName="ngayNhapNguTuyenDung" nzFormat="MM/yyyy" nzPlaceHolder="Chọn ngày">
+          </nz-month-picker>
+        </nz-form-control>
+      </td>
+      <td>
+        <nz-form-label nzFor="dang">Đảng</nz-form-label>
+      </td>
+      <td>
+        <nz-form-control>
+          <input nz-input formControlName="dang" id="dang">
+        </nz-form-control>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <nz-form-label nzFor="xuatThan">Xuất thân</nz-form-label>
+      </td>
+      <td>
+        <nz-form-control>
+          <input nz-input formControlName="xuatThan" id="xuatThan">
+        </nz-form-control>
+      </td>
+      <td>
+        <nz-form-label nzFor="banThan">Bản thân</nz-form-label>
+      </td>
+      <td>
+        <nz-form-control>
+          <input nz-input formControlName="banThan" id="banThan">
+        </nz-form-control>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <nz-form-label nzFor="quaTrinhHocTap">Quá trình học tập</nz-form-label>
+      </td>
+      <td>
+        <nz-form-control>
+          <textarea rows="5" nz-input formControlName="quaTrinhHocTap" id="quaTrinhHocTap"></textarea>
+        </nz-form-control>
+      </td>
+      <td>
+        <nz-form-label nzFor="thanNhan">Thân nhân</nz-form-label>
+      </td>
+      <td>
+        <nz-form-control>
+          <textarea rows="5" nz-input formControlName="thanNhan" id="thanNhan"></textarea>
+        </nz-form-control>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <nz-form-label nzFor="ghiChu">Ghi chú</nz-form-label>
+      </td>
+      <td colspan="3">
+        <nz-form-control>
+          <textarea nz-input formControlName="ghiChu" id="ghiChu"></textarea>
+        </nz-form-control>
+      </td>
+    </tr>
+  </table>
 </form>
