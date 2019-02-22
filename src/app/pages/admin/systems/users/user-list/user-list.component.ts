@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd';
 
@@ -32,6 +32,13 @@ export class UserListComponent implements OnInit {
     sortKey: '',
     sortValue: ''
   };
+
+  @HostListener('window:keydown', ['$event'])
+  onKeyPress($event: KeyboardEvent) {
+    if (($event.ctrlKey || $event.metaKey) && ($event.keyCode === 73 || $event.keyCode === 105)) {
+      this.addNew();
+    }
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -126,7 +133,10 @@ export class UserListComponent implements OnInit {
     this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
       this.userService.delete(id).subscribe((res: boolean) => {
         if (res) {
+          this.notify.success('Xóa thành công!');
           this.loadData();
+        } else {
+          console.log('Delete failed');
         }
       }, error => {
         console.log(error);
@@ -140,6 +150,7 @@ export class UserListComponent implements OnInit {
       nzTitle: 'Phân quyền người dùng',
       nzContent: RoleEditModalComponent,
       nzMaskClosable: false,
+      nzClosable: false,
       nzComponentParams: {
         user
       },

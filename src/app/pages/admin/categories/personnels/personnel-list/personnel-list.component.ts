@@ -142,8 +142,12 @@ export class PersonnelListComponent implements OnInit {
   delete(id: number) {
     this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
       this.personnelService.delete(id).subscribe((res: boolean) => {
-        this.notify.success('Xóa thành công!');
+        if (res) {
+          this.notify.success('Xóa thành công!');
         this.loadData();
+        } else {
+          this.notify.warning('Nhân sự đang được sử dụng. Không được xóa!');
+        }
       }, _ => {
         this.notify.error('Có lỗi xảy ra');
         console.log('error deletePersonnel');

@@ -18,6 +18,8 @@ import { PagingParams } from 'src/app/shared/params/paging.param';
 export class MaterialListComponent implements OnInit {
   dataSet = [];
   loading = true;
+  isLoadingImport: boolean;
+  isLoadingExport: boolean;
   sortValue = null;
   sortKey = null;
 
@@ -155,6 +157,7 @@ export class MaterialListComponent implements OnInit {
   }
 
   changeFile(event: any) {
+    this.isLoadingImport = true;
     const files = event.target.files;
 
     if (files && files[0]) {
@@ -168,30 +171,43 @@ export class MaterialListComponent implements OnInit {
           this.loadData(true);
           this.notify.success('Nhập excel thành công');
         }
+
+        this.isLoadingImport = false;
       }, _ => {
         this.notify.error('Có lỗi xảy ra');
         console.log('error importExcel');
+        this.isLoadingImport = false;
       });
     }
     event.target.value = null;
   }
 
   exportFile() {
+    this.isLoadingExport = true;
     this.materialService.exportExcel().subscribe((res: any) => {
-      window.location.href = res.url;
-      if (res.fileName) {
-        this.materialService.deleteExportFile(res.fileName).subscribe((rs) => {
-          if (rs) {
-            this.notify.success('Xuất excel thành công');
-          }
-        }, _ => {
-          this.notify.error('Có lỗi xảy ra');
-          console.log('error deleteExcel');
-        });
+      if (res) {
+        window.location.href = res.url;
+
+        setTimeout(() => {
+          this.materialService.deleteExportFile(res.fileName).subscribe((rs) => {
+            if (rs) {
+              this.notify.success('Xuất excel thành công');
+            } else {
+              this.notify.success('Xuất excel thất bại');
+            }
+            this.isLoadingExport = false;
+          }, _ => {
+            this.notify.error('Có lỗi xảy ra');
+            console.log('error deleteExcel');
+            this.isLoadingExport = false;
+          }, () => {
+          });
+        }, 1000);
       }
     }, _ => {
       this.notify.error('Có lỗi xảy ra');
       console.log('error exportExcel');
+      this.isLoadingExport = false;
     });
   }
 }

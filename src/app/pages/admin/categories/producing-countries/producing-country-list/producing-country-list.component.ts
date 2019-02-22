@@ -141,8 +141,12 @@ export class ProducingCountryListComponent implements OnInit {
   delete(id: number) {
     this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
       this.producingCountryService.delete(id).subscribe((res: boolean) => {
-        this.notify.success('Xóa thành công!');
+        if (res) {
+          this.notify.success('Xóa thành công!');
         this.loadData();
+        } else {
+          this.notify.warning('Tên nước sx đang được sử dụng. Không được xóa!');
+        }
       }, _ => {
         this.notify.error('Có lỗi xảy ra');
         console.log('error deleteProducingCountry');

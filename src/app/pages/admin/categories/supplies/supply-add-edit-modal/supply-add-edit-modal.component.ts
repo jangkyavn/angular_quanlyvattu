@@ -1,10 +1,11 @@
-import { Component, OnInit, AfterViewInit, Input } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, HostListener } from '@angular/core';
 
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Supply } from 'src/app/shared/models/supply.model';
 import { SupplyService } from 'src/app/shared/services/supply.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
+import { NzModalRef } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-supply-add-edit-modal',
@@ -17,8 +18,16 @@ export class SupplyAddEditModalComponent implements OnInit {
 
   supplyForm: FormGroup;
 
+  @HostListener('window:keydown', ['$event'])
+  onKeyPress($event: KeyboardEvent) {
+    if (($event.ctrlKey || $event.metaKey) && $event.keyCode === 13) {
+      this.saveChanges();
+    }
+  }
+
   constructor(
     private fb: FormBuilder,
+    private modal: NzModalRef,
     private supplyService: SupplyService,
     private notify: NotifyService
   ) { }
@@ -37,7 +46,7 @@ export class SupplyAddEditModalComponent implements OnInit {
     });
   }
 
-  saveChanges(callBack: (result: boolean) => any = null) {
+  saveChanges() {
     if (this.supplyForm.invalid) {
       // tslint:disable-next-line:forin
       for (const i in this.supplyForm.controls) {
@@ -53,7 +62,9 @@ export class SupplyAddEditModalComponent implements OnInit {
         if (typeof res === 'boolean') {
           if (res) {
             this.notify.success('Thêm thành công!');
-            callBack(true);
+            this.modal.destroy(true);
+          } else {
+            console.log('add Supply failed');
           }
         } else {
           if (res === -1) {
@@ -61,18 +72,20 @@ export class SupplyAddEditModalComponent implements OnInit {
           }
         }
       }, error => {
-        callBack(false);
+        this.modal.destroy(false);
         this.notify.success('Có lỗi xảy ra!');
         console.log('error addSupply');
       });
     } else {
       this.supplyService.update(supply).subscribe((res: any) => {
         if (res) {
-          callBack(true);
+          this.modal.destroy(true);
           this.notify.success('Sửa thành công!');
+        } else {
+          console.log('update Supply failed');
         }
       }, error => {
-        callBack(false);
+        this.modal.destroy(false);
         this.notify.success('Có lỗi xảy ra!');
         console.log('error updateSupply');
       });

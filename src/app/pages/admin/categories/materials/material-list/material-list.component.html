@@ -21,10 +21,11 @@
         <button nz-button nzType="primary" (click)="addNew()">
           <i nz-icon type="plus" theme="outline"></i> Thêm
         </button>
-        <button nz-button nzType="dashed" (click)="fImportExcel.click()">
+        <button [disabled]="isLoadingImport" [nzLoading]="isLoadingImport" nz-button nzType="dashed" (click)="fImportExcel.click()">
           <i nz-icon type="file-excel" theme="outline"></i> Nhập excel
         </button>
-        <button nz-button nzType="dashed" (click)="exportFile()">
+        <button [disabled]="isLoadingExport" [nzLoading]="isLoadingExport" nz-button nzType="dashed"
+          (click)="exportFile()">
           <i nz-icon type="file-excel" theme="outline"></i> Xuất excel
         </button>
         <input id="fImportExcel" type="file" #fImportExcel (change)="changeFile($event)" style="display: none;">

@@ -69,38 +69,38 @@ export class MaterialItemListComponent implements OnInit {
       });
   }
 
-  addNew() {
-    const modal = this.modalService.create({
-      nzTitle: 'Thêm hạng mục vật tư',
-      nzContent: MaterialItemAddEditModalComponent,
-      nzMaskClosable: false,
-      nzComponentParams: {
-        materialItem: {},
-        isAddNew: true
-      },
-      nzFooter: [
-        {
-          label: 'Hủy',
-          shape: 'default',
-          onClick: () => modal.destroy(),
-        },
-        {
-          label: 'Lưu',
-          type: 'primary',
-          onClick: (componentInstance) => {
-            componentInstance.saveChanges((res: boolean) => {
-              if (res) {
-                this.loadData();
-                modal.destroy();
-              } else {
-                modal.destroy();
-              }
-            });
-          }
-        }
-      ]
-    });
-  }
+  // addNew() {
+  //   const modal = this.modalService.create({
+  //     nzTitle: 'Thêm hạng mục vật tư',
+  //     nzContent: MaterialItemAddEditModalComponent,
+  //     nzMaskClosable: false,
+  //     nzComponentParams: {
+  //       materialItem: {},
+  //       isAddNew: true
+  //     },
+  //     nzFooter: [
+  //       {
+  //         label: 'Hủy',
+  //         shape: 'default',
+  //         onClick: () => modal.destroy(),
+  //       },
+  //       {
+  //         label: 'Lưu',
+  //         type: 'primary',
+  //         onClick: (componentInstance) => {
+  //           componentInstance.saveChanges((res: boolean) => {
+  //             if (res) {
+  //               this.loadData();
+  //               modal.destroy();
+  //             } else {
+  //               modal.destroy();
+  //             }
+  //           });
+  //         }
+  //       }
+  //     ]
+  //   });
+  // }
 
   update(id: number) {
     this.materialItemService.getDetail(id).subscribe((materialItem: MaterialItem) => {
@@ -122,17 +122,16 @@ export class MaterialItemListComponent implements OnInit {
             label: 'Lưu',
             type: 'primary',
             onClick: (componentInstance) => {
-              componentInstance.saveChanges((res: boolean) => {
-                if (res) {
-                  this.loadData();
-                  modal.destroy();
-                } else {
-                  modal.destroy();
-                }
-              });
+              componentInstance.saveChanges();
             }
           }
         ]
+      });
+
+      modal.afterClose.subscribe((result: boolean) => {
+        if (result) {
+          this.loadData();
+        }
       });
     });
   }
@@ -140,8 +139,12 @@ export class MaterialItemListComponent implements OnInit {
   delete(id: number) {
     this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
       this.materialItemService.delete(id).subscribe((res: boolean) => {
-        this.notify.success('Xóa thành công!');
-        this.loadData();
+        if (res) {
+          this.notify.success('Xóa thành công!');
+          this.loadData();
+        } else {
+          this.notify.warning('Tên hạng mục đang được sử dụng. Không được xóa!');
+        }
       }, _ => {
         this.notify.error('Có lỗi xảy ra');
         console.log('error deleteMaterialItem');

@@ -134,9 +134,6 @@ export class UnitListComponent implements OnInit {
       modal.afterClose.subscribe((result: boolean) => {
         if (result) {
           this.loadData();
-          modal.destroy();
-        } else {
-          modal.destroy();
         }
       });
     });

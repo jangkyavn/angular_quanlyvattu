@@ -22,7 +22,7 @@
     </div>
   </div>
 
-  <nz-table #table nzShowSizeChanger [nzFrontPagination]="false" [nzData]="dataSet" [nzLoading]="loading"
+  <nz-table #table nzShowSizeChanger [nzShowPagination]="pagination.totalPages > 1" [nzFrontPagination]="false" [nzData]="dataSet" [nzLoading]="loading"
     [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage" [(nzPageSize)]="pagination.itemsPerPage"
     [nzNoResult]="'Không tìm thấy kết quả.'" (nzPageIndexChange)="loadData()" (nzPageSizeChange)="loadData(true)"
     nzShowQuickJumper [nzShowTotal]="rangeTemplate" nzSize="middle">
@@ -32,11 +32,11 @@
     <thead (nzSortChange)="sort($event)" nzSingleSort>
       <tr>
         <th nzWidth="15%" nzShowSort nzSortKey="userName">Tài khoản</th>
-        <th nzWidth="20%" nzShowSort nzSortKey="fullName">Họ tên</th>
+        <th nzWidth="15%" nzShowSort nzSortKey="fullName">Họ tên</th>
         <th nzWidth="20%" nzShowSort nzSortKey="email">Email</th>
         <th nzWidth="20%">Vai trò</th>
         <th nzWidth="10%">Trạng thái</th>
-        <th nzWidth="15%">Thao tác</th>
+        <th nzWidth="20%">Thao tác</th>
       </tr>
     </thead>
     <tbody>
@@ -56,13 +56,17 @@
             <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa" (click)="update(data.id)">
               <i nz-icon type="edit" theme="outline"></i>
             </button>
-            <button nz-button nzType="default" class="btn-warning" nz-tooltip nzTitle="Xem" (click)="view(data.id)">
+            <button nz-button nzType="default" class="btn-primary" nz-tooltip nzTitle="Xem" (click)="view(data.id)">
               <i nz-icon type="eye" theme="outline"></i>
+            </button>
+            <button *ngIf="data.userName !== 'admin'" nz-button nzType="default" class="btn-danger" nz-tooltip nzTitle="Xóa"
+              (click)="delete(data.id)">
+              <i nz-icon type="delete" theme="outline"></i>
             </button>
             <button nz-button nzType="default" class="btn-success" nz-tooltip nzTitle="Đổi mật khẩu" (click)="changePassword(data.id)">
                 <i nz-icon type="safety-certificate" theme="outline"></i>
               </button>
-            <button nz-button nzType="default" class="btn-danger" nz-tooltip nzTitle="Phân quyền"
+            <button nz-button nzType="default" class="btn-warning" nz-tooltip nzTitle="Phân quyền"
               (click)="editRoles(data)">
               <i nz-icon type="usergroup-add" theme="outline"></i>
             </button>

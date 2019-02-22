@@ -61,4 +61,8 @@ export class SupplyService {
   delete(id: number) {
     return this.http.delete(this.baseUrl + 'NguonCungCap/' + id);
   }
+
+  deleteMulti(strIds: any) {
+    return this.http.delete(this.baseUrl + 'NguonCungCap/DeleteAllAsync/' + strIds);
+  }
 }
