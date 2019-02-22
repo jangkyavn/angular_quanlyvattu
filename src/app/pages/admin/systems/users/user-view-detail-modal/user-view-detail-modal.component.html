@@ -1,0 +1,22 @@
+<table>
+  <tr>
+    <td style="width: 30%;">Tài khoản:</td>
+    <td style="width: 70%;">{{user.userName}}</td>
+  </tr>
+  <tr>
+    <td>Họ tên:</td>
+    <td>{{user.fullName}}</td>
+  </tr>
+  <tr>
+    <td>Email:</td>
+    <td>{{user.email}}</td>
+  </tr>
+  <tr>
+    <td>Giới tính:</td>
+    <td>{{user.gender ? 'Nam' : 'Nữ'}}</td>
+  </tr>
+  <tr>
+    <td>Ngày sinh:</td>
+    <td>{{user.dateOfBirth | date:'dd/MM/yyyy'}}</td>
+  </tr>
+</table>

@@ -58,14 +58,15 @@ export class ImportMaterialDetailModalComponent implements OnInit {
 
   createForm() {
     switch (this.materialItemId) {
-      case 10: // Xe và vật tư thay thế
+      case 10: // Máy TTB - Vật tư y tế - Vật tư hậu cần - Thuốc hóa chất
         this.importDetailForm = this.fb.group({
           maPhieuNhap: [null],
           maVatTu: [null, [Validators.required]],
           soLuong: [1, [Validators.required]],
           donGia: [0, [Validators.required]],
           maNuoc: [null],
-          model: [null]
+          model: [null],
+          seri: [null]
         });
         break;
       case 11: // Vũ khí trang thiết bị

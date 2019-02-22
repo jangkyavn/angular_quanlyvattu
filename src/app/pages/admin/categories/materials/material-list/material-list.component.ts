@@ -153,4 +153,45 @@ export class MaterialListComponent implements OnInit {
     this.pagingParams.keyword = keyword;
     this.loadData(true);
   }
+
+  changeFile(event: any) {
+    const files = event.target.files;
+
+    if (files && files[0]) {
+      const fileData = new FormData();
+      for (let i = 0; i < files.length; i++) {
+        fileData.append('files', files[i]);
+      }
+
+      this.materialService.importExcel(fileData).subscribe((res) => {
+        if (res) {
+          this.loadData(true);
+          this.notify.success('Nhập excel thành công');
+        }
+      }, _ => {
+        this.notify.error('Có lỗi xảy ra');
+        console.log('error importExcel');
+      });
+    }
+    event.target.value = null;
+  }
+
+  exportFile() {
+    this.materialService.exportExcel().subscribe((res: any) => {
+      window.location.href = res.url;
+      if (res.fileName) {
+        this.materialService.deleteExportFile(res.fileName).subscribe((rs) => {
+          if (rs) {
+            this.notify.success('Xuất excel thành công');
+          }
+        }, _ => {
+          this.notify.error('Có lỗi xảy ra');
+          console.log('error deleteExcel');
+        });
+      }
+    }, _ => {
+      this.notify.error('Có lỗi xảy ra');
+      console.log('error exportExcel');
+    });
+  }
 }

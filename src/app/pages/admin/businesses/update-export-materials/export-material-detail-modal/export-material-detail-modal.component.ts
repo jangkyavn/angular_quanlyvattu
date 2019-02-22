@@ -48,6 +48,13 @@ export class ExportMaterialDetailModalComponent implements OnInit {
         maVatTu: this.inventory.maVatTu,
         soLuongXuat: this.inventory.soLuongTon
       });
+
+      this.exportDetailService.getDetailPrice(this.exportMaterialId, this.inventory.maPhieuNhap, this.inventory.maVatTu)
+        .subscribe((res: any) => {
+          this.exportDetailForm.patchValue({
+            donGia: res
+          });
+        });
     } else {
       this.exportDetailForm.patchValue({
         ...this.exportDetail,

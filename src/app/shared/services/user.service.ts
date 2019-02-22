@@ -79,6 +79,10 @@ export class UserService {
     return this.http.put(this.baseUrl + 'users/changePassword/' + newPassword, {});
   }
 
+  changePasswordForOther(id: any, newPassword: string) {
+    return this.http.put(this.baseUrl + `users/changePasswordForOther/${id}/${newPassword}`, {});
+  }
+
   getTotalCount() {
     return this.http.get(this.baseUrl + 'users/getTotalCount');
   }

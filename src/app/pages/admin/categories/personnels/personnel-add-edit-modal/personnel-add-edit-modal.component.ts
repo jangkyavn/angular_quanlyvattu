@@ -31,16 +31,18 @@ export class PersonnelAddEditModalComponent implements OnInit {
     this.createForm();
     this.personnelForm.reset();
 
-    if (!this.isAddNew) {
+    if (!this.isAddNew) { // Sửa
       const address = this.personnel.queQuan.split(',');
       this.loadDetailAddress(address);
-    } else {
+      this.personnelForm.patchValue({
+        ...this.personnel,
+        danToc: parseInt(this.personnel.danToc, 0)
+      });
+    } else { // Thêm mới
       this.loadCities();
+
+      this.personnelForm.patchValue(this.personnel);
     }
-    this.personnelForm.patchValue({
-      ...this.personnel,
-      danToc: parseInt(this.personnel.danToc, 0)
-    });
   }
 
   createForm() {
@@ -66,6 +68,8 @@ export class PersonnelAddEditModalComponent implements OnInit {
   }
 
   saveChanges(callBack: (result: boolean) => any = null) {
+    console.log(this.personnelForm.value);
+
     if (this.personnelForm.invalid) {
       // tslint:disable-next-line:forin
       for (const i in this.personnelForm.controls) {
@@ -78,35 +82,35 @@ export class PersonnelAddEditModalComponent implements OnInit {
     const personnel: Personnel = Object.assign({}, this.personnelForm.value);
     personnel.queQuan = personnel.huyenQuan + ',' + personnel.tinhThanhPho;
 
-    if (this.isAddNew) {
-      this.personnelService.addNew(personnel).subscribe((res: any) => {
-        if (typeof res === 'boolean') {
-          if (res) {
-            this.notify.success('Thêm thành công!');
-            callBack(true);
-          }
-        } else {
-          if (res === -1) {
-            this.notify.warning('Tên nhân sự đã tồn tại');
-          }
-        }
-      }, error => {
-        this.notify.success('Có lỗi xảy ra!');
-        console.log('error addPersonnel');
-        callBack(false);
-      });
-    } else {
-      this.personnelService.update(personnel).subscribe((res: any) => {
-        if (res) {
-          this.notify.success('Sửa thành công!');
-          callBack(true);
-        }
-      }, error => {
-        this.notify.success('Có lỗi xảy ra!');
-        console.log('error updatePersonnel');
-        callBack(false);
-      });
-    }
+    // if (this.isAddNew) {
+    //   this.personnelService.addNew(personnel).subscribe((res: any) => {
+    //     if (typeof res === 'boolean') {
+    //       if (res) {
+    //         this.notify.success('Thêm thành công!');
+    //         callBack(true);
+    //       }
+    //     } else {
+    //       if (res === -1) {
+    //         this.notify.warning('Tên nhân sự đã tồn tại');
+    //       }
+    //     }
+    //   }, error => {
+    //     this.notify.success('Có lỗi xảy ra!');
+    //     console.log('error addPersonnel');
+    //     callBack(false);
+    //   });
+    // } else {
+    //   this.personnelService.update(personnel).subscribe((res: any) => {
+    //     if (res) {
+    //       this.notify.success('Sửa thành công!');
+    //       callBack(true);
+    //     }
+    //   }, error => {
+    //     this.notify.success('Có lỗi xảy ra!');
+    //     console.log('error updatePersonnel');
+    //     callBack(false);
+    //   });
+    // }
   }
 
   loadCities() {
@@ -116,6 +120,10 @@ export class PersonnelAddEditModalComponent implements OnInit {
   }
 
   changeCities(data: any) {
+    this.personnelForm.patchValue({
+      huyenQuan: null
+    });
+
     if (data !== null && data !== undefined) {
       this.personnelService.getDistrict(data).subscribe((res: any[]) => {
         this.districts = res;

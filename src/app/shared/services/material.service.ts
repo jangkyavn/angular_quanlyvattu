@@ -69,4 +69,16 @@ export class MaterialService {
   delete(id: number) {
     return this.http.delete(this.baseUrl + 'VatTu/' + id);
   }
+
+  importExcel(data: any) {
+    return this.http.post(this.baseUrl + 'VatTu/ImportVT', data);
+  }
+
+  exportExcel() {
+    return this.http.get(this.baseUrl + 'VatTu/ExportVT');
+  }
+
+  deleteExportFile(fileName: string) {
+    return this.http.get(this.baseUrl + 'VatTu/DeleteFileVTAfterExport/' + fileName);
+  }
 }

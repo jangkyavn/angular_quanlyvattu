@@ -25,7 +25,7 @@
   <nz-table #table nzShowSizeChanger [nzFrontPagination]="false" [nzData]="dataSet" [nzLoading]="loading"
     [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage" [(nzPageSize)]="pagination.itemsPerPage"
     [nzNoResult]="'Không tìm thấy kết quả.'" (nzPageIndexChange)="loadData()" (nzPageSizeChange)="loadData(true)"
-    nzShowQuickJumper [nzShowTotal]="rangeTemplate">
+    nzShowQuickJumper [nzShowTotal]="rangeTemplate" nzSize="middle">
     <ng-template #rangeTemplate let-range="range" let-total>
       {{range[0]}}-{{range[1]}} của {{total}} bản ghi
     </ng-template>
@@ -45,13 +45,14 @@
         <td>{{data.queQuan}}</td>
         <td>{{data.danToc}}</td>
         <td>
-          <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa" (click)="update(data.maNS)">
-            <i nz-icon type="edit" theme="outline"></i>
-          </button>
-          <nz-divider nzType="vertical"></nz-divider>
-          <button nz-button nzType="default" class="btn-danger" nz-tooltip nzTitle="Xóa" (click)="delete(data.maNS)">
-            <i nz-icon type="delete" theme="outline"></i>
-          </button>
+          <nz-button-group>
+            <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa" (click)="update(data.maNS)">
+              <i nz-icon type="edit" theme="outline"></i>
+            </button>
+            <button nz-button nzType="default" class="btn-danger" nz-tooltip nzTitle="Xóa" (click)="delete(data.maNS)">
+              <i nz-icon type="delete" theme="outline"></i>
+            </button>
+          </nz-button-group>
         </td>
       </tr>
     </tbody>

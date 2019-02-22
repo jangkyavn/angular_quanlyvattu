@@ -68,16 +68,17 @@
         <nz-form-label nzRequired nzFor="danToc">Dân tộc</nz-form-label>
       </td>
       <td>
-        <nz-form-control>
-          <nz-select nzShowSearch nzAllowClear id="danToc" formControlName="danToc" nzPlaceHolder="Chọn dân tộc">
-            <nz-option *ngFor="let item of nations" [nzValue]="item.code" [nzLabel]="item.name"></nz-option>
-          </nz-select>
-          <nz-form-explain *ngIf="personnelForm.get('danToc').dirty && personnelForm.get('danToc').errors">
-            <ng-container *ngIf="personnelForm.get('danToc').hasError('required')">
-              Vui lòng chọn dân tộc!
-            </ng-container>
-          </nz-form-explain>
-        </nz-form-control>
+          <nz-form-control>
+              <nz-select nzShowSearch nzAllowClear id="danToc" formControlName="danToc"
+                nzPlaceHolder="Chọn dân tộc">
+                <nz-option *ngFor="let item of nations" [nzValue]="item.code" [nzLabel]="item.name"></nz-option>
+              </nz-select>
+              <nz-form-explain *ngIf="personnelForm.get('danToc').dirty && personnelForm.get('danToc').errors">
+                <ng-container *ngIf="personnelForm.get('danToc').hasError('required')">
+                  Vui lòng chọn huyện/quận!
+                </ng-container>
+              </nz-form-explain>
+            </nz-form-control>
       </td>
       <td>
         <nz-form-label nzFor="tonGiao">Tôn giáo</nz-form-label>

@@ -40,4 +40,8 @@ export class ExportMaterialDetailService {
     delete(exportId, importId, materialId, storeId) {
         return this.http.delete(this.baseUrl + `XuatVatTu/deleteXuatChiTiet/${exportId}/${importId}/${materialId}/${storeId}`);
     }
+
+    getDetailPrice(exportId, importId, materialId) {
+        return this.http.get(this.baseUrl + `XuatVatTu/getDonGiaChiTietXuat/${exportId}/${importId}/${materialId}`);
+    }
 }

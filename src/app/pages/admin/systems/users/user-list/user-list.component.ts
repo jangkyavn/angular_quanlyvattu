@@ -12,6 +12,8 @@ import { Pagination, PaginatedResult } from '../../../../../shared/models/pagina
 import { RoleEditModalComponent } from '../role-edit-modal/role-edit-modal.component';
 import { Role } from 'src/app/shared/models/role.model';
 import { PagingParams } from 'src/app/shared/params/paging.param';
+import { UserViewDetailModalComponent } from '../user-view-detail-modal/user-view-detail-modal.component';
+import { ChangePasswordModalComponent } from '../change-password-modal/change-password-modal.component';
 
 @Component({
   selector: 'app-user-list',
@@ -57,6 +59,7 @@ export class UserListComponent implements OnInit {
       nzTitle: 'Thêm mới người dùng',
       nzContent: UserAddEditModalComponent,
       nzMaskClosable: false,
+      nzClosable: false,
       nzComponentParams: {
         user: {},
         isAddNew: true
@@ -71,17 +74,16 @@ export class UserListComponent implements OnInit {
           label: 'Lưu',
           type: 'primary',
           onClick: (componentInstance) => {
-            componentInstance.saveChanges((res: boolean) => {
-              if (res) {
-                this.loadData();
-                modal.destroy();
-              } else {
-                modal.destroy();
-              }
-            });
+            componentInstance.saveChanges();
           }
         }
       ]
+    });
+
+    modal.afterClose.subscribe((result: boolean) => {
+      if (result) {
+        this.loadData();
+      }
     });
   }
 
@@ -91,6 +93,7 @@ export class UserListComponent implements OnInit {
         nzTitle: 'Sửa thông tin người dùng',
         nzContent: UserAddEditModalComponent,
         nzMaskClosable: false,
+        nzClosable: false,
         nzComponentParams: {
           user,
           isAddNew: false
@@ -99,23 +102,22 @@ export class UserListComponent implements OnInit {
           {
             label: 'Hủy',
             shape: 'default',
-            onClick: () =>  modal.destroy()
+            onClick: () => modal.destroy()
           },
           {
             label: 'Lưu',
             type: 'primary',
             onClick: (componentInstance) => {
-              componentInstance.saveChanges((res: boolean) => {
-                if (res) {
-                  this.loadData();
-                  modal.destroy();
-                } else {
-                  modal.destroy();
-                }
-              });
+              componentInstance.saveChanges();
             }
           }
         ]
+      });
+
+      modal.afterClose.subscribe((result: boolean) => {
+        if (result) {
+          this.loadData();
+        }
       });
     });
   }
@@ -190,6 +192,27 @@ export class UserListComponent implements OnInit {
     this.loadData(true);
   }
 
+  view(id: any) {
+    this.userService.getDetail(id).subscribe((user: User) => {
+      const modal = this.modalService.create({
+        nzTitle: 'Xem thông tin người dùng',
+        nzContent: UserViewDetailModalComponent,
+        nzMaskClosable: false,
+        nzClosable: false,
+        nzComponentParams: {
+          user
+        },
+        nzFooter: [
+          {
+            label: 'Hủy',
+            shape: 'default',
+            onClick: () => modal.destroy()
+          }
+        ]
+      });
+    });
+  }
+
   loadData(reset: boolean = false): void {
     if (reset) {
       this.pagination.currentPage = 1;
@@ -204,5 +227,31 @@ export class UserListComponent implements OnInit {
         this.notify.error('Có lỗi xảy ra');
         console.log('loadUsers: ' + error);
       });
+  }
+
+  changePassword(id: any) {
+    const modal = this.modalService.create({
+      nzTitle: 'Đổi mật khẩu',
+      nzContent: ChangePasswordModalComponent,
+      nzMaskClosable: false,
+      nzClosable: false,
+      nzComponentParams: {
+        id
+      },
+      nzFooter: [
+        {
+          label: 'Hủy',
+          shape: 'default',
+          onClick: () => modal.destroy()
+        },
+        {
+          label: 'Lưu',
+          shape: 'primary',
+          onClick: (componentInstance) => {
+            componentInstance.saveChanges();
+          }
+        }
+      ]
+    });
   }
 }
