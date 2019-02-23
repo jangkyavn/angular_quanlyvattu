@@ -3,10 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 
 import { ExportMaterialService } from 'src/app/shared/services/export-material.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
+import { NzModalService } from 'ng-zorro-antd';
 
 import { ExportMaterial } from 'src/app/shared/models/export-material.model';
 import { Pagination, PaginatedResult } from 'src/app/shared/models/pagination.model';
 import { PagingParams } from 'src/app/shared/params/paging.param';
+import { ExportViewDetailModalComponent } from '../export-view-detail-modal/export-view-detail-modal.component';
 
 @Component({
   selector: 'app-export-list',
@@ -34,6 +36,7 @@ export class ExportListComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private modalService: NzModalService,
     private exportMaterialService: ExportMaterialService,
     private notify: NotifyService) { }
 
@@ -91,6 +94,28 @@ export class ExportListComponent implements OnInit {
     this.pagingParams.toDate = this.endValue;
 
     this.loadData(true);
+  }
+
+  view(id: number) {
+    this.exportMaterialService.getDetail(id).subscribe((res: any) => {
+      const modal = this.modalService.create({
+        nzTitle: 'Xem phiếu xuất',
+        nzContent: ExportViewDetailModalComponent,
+        nzMaskClosable: false,
+        nzClosable: false,
+        nzWidth: 1000,
+        nzComponentParams: {
+          exportMaterialParams: res
+        },
+        nzFooter: [
+          {
+            label: 'Hủy',
+            shape: 'default',
+            onClick: () => modal.destroy()
+          }
+        ]
+      });
+    });
   }
 
   enableButtonSearch() {

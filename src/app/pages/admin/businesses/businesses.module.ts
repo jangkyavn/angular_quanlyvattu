@@ -38,6 +38,12 @@ import {
 import {
   ExportMaterialDetailModalComponent
 } from './update-export-materials/export-material-detail-modal/export-material-detail-modal.component';
+import {
+  ImportViewDetailModalComponent
+} from './imports/import-view-detail-modal/import-view-detail-modal.component';
+import {
+  ExportViewDetailModalComponent
+} from './exports/export-view-detail-modal/export-view-detail-modal.component';
 
 @NgModule({
   declarations: [BusinessesComponent,
@@ -50,7 +56,9 @@ import {
     UpdateExportMaterialsComponent,
     ImportMaterialDetailModalComponent,
     PageMaintenanceComponent,
-    ExportMaterialDetailModalComponent
+    ExportMaterialDetailModalComponent,
+    ImportViewDetailModalComponent,
+    ExportViewDetailModalComponent
   ],
   imports: [
     CommonModule,
@@ -71,7 +79,9 @@ import {
   ],
   entryComponents: [
     ImportMaterialDetailModalComponent,
-    ExportMaterialDetailModalComponent
+    ExportMaterialDetailModalComponent,
+    ImportViewDetailModalComponent,
+    ExportViewDetailModalComponent
   ]
 })
 export class BusinessesModule { }

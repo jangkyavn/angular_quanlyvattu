@@ -61,7 +61,7 @@ export class ImportMaterialDetailModalComponent implements OnInit {
       case 10: // Máy TTB - Vật tư y tế - Vật tư hậu cần - Thuốc hóa chất
         this.importDetailForm = this.fb.group({
           maPhieuNhap: [null],
-          maVatTu: [null, [Validators.required]],
+          maVatTu: [this.isAddNew ? null : { value: null, disabled: true }, [Validators.required]],
           soLuong: [1, [Validators.required]],
           donGia: [0, [Validators.required]],
           maNuoc: [null],
@@ -72,7 +72,7 @@ export class ImportMaterialDetailModalComponent implements OnInit {
       case 11: // Vũ khí trang thiết bị
         this.importDetailForm = this.fb.group({
           maPhieuNhap: [null],
-          maVatTu: [null, [Validators.required]],
+          maVatTu: [this.isAddNew ? null : { value: null, disabled: true }, [Validators.required]],
           soLuong: [1, [Validators.required]],
           donGia: [0, [Validators.required]],
           soKhung: [null],
@@ -85,7 +85,7 @@ export class ImportMaterialDetailModalComponent implements OnInit {
       case 12: // Hàng viện trợ Mỹ
         this.importDetailForm = this.fb.group({
           maPhieuNhap: [null],
-          maVatTu: [null, [Validators.required]],
+          maVatTu: [this.isAddNew ? null : { value: null, disabled: true }, [Validators.required]],
           soLuong: [1, [Validators.required]],
           donGia: [0, [Validators.required]],
           seri: [null],
@@ -98,7 +98,7 @@ export class ImportMaterialDetailModalComponent implements OnInit {
       case 13: // Trang thiết bị cục quân y cấp
         this.importDetailForm = this.fb.group({
           maPhieuNhap: [null],
-          maVatTu: [null, [Validators.required]],
+          maVatTu: [this.isAddNew ? null : { value: null, disabled: true }, [Validators.required]],
           soLuong: [1, [Validators.required]],
           donGia: [0, [Validators.required]],
           maNuoc: [null],
@@ -108,7 +108,7 @@ export class ImportMaterialDetailModalComponent implements OnInit {
       case 14: // Hàng tài trợ trong nước
         this.importDetailForm = this.fb.group({
           maPhieuNhap: [null],
-          maVatTu: [null, [Validators.required]],
+          maVatTu: [this.isAddNew ? null : { value: null, disabled: true }, [Validators.required]],
           soLuong: [1, [Validators.required]],
           donGia: [0, [Validators.required]],
           maNuoc: [null],
@@ -118,7 +118,7 @@ export class ImportMaterialDetailModalComponent implements OnInit {
       case 15: // Danh mục thể thao văn hóa
         this.importDetailForm = this.fb.group({
           maPhieuNhap: [null],
-          maVatTu: [null, [Validators.required]],
+          maVatTu: [this.isAddNew ? null : { value: null, disabled: true }, [Validators.required]],
           soLuong: [1, [Validators.required]],
           donGia: [0, [Validators.required]],
           maHang: [null],
@@ -128,7 +128,7 @@ export class ImportMaterialDetailModalComponent implements OnInit {
       case 16: // Danh mục thuốc
         this.importDetailForm = this.fb.group({
           maPhieuNhap: [null],
-          maVatTu: [null, [Validators.required]],
+          maVatTu: [this.isAddNew ? null : { value: null, disabled: true }, [Validators.required]],
           soLuong: [1, [Validators.required]],
           donGia: [0, [Validators.required]],
           bietDuoc: [null],

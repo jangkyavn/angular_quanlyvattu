@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NzModalService } from 'ng-zorro-antd';
 
 import { ImportMaterialService } from 'src/app/shared/services/import-material.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
@@ -7,6 +8,9 @@ import { NotifyService } from 'src/app/shared/services/notify.service';
 import { ImportMaterial } from 'src/app/shared/models/import-material.model';
 import { Pagination, PaginatedResult } from 'src/app/shared/models/pagination.model';
 import { PagingParams } from 'src/app/shared/params/paging.param';
+import {
+  ImportViewDetailModalComponent
+} from '../import-view-detail-modal/import-view-detail-modal.component';
 
 @Component({
   selector: 'app-import-list',
@@ -34,6 +38,7 @@ export class ImportListComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private modalService: NzModalService,
     private importMaterialService: ImportMaterialService,
     private notify: NotifyService) { }
 
@@ -93,6 +98,28 @@ export class ImportListComponent implements OnInit {
     this.pagingParams.toDate = this.endValue;
 
     this.loadData(true);
+  }
+
+  view(id: number) {
+    this.importMaterialService.getDetail(id).subscribe((res: any) => {
+      const modal = this.modalService.create({
+        nzTitle: 'Xem phiếu nhập',
+        nzContent: ImportViewDetailModalComponent,
+        nzMaskClosable: false,
+        nzClosable: false,
+        nzWidth: 1200,
+        nzComponentParams: {
+          importMaterialParams: res
+        },
+        nzFooter: [
+          {
+            label: 'Hủy',
+            shape: 'default',
+            onClick: () => modal.destroy()
+          }
+        ]
+      });
+    });
   }
 
   enableButtonSearch() {
