@@ -129,18 +129,17 @@ export class UpdateExportMaterialsComponent implements OnInit {
           label: 'Lưu',
           type: 'primary',
           onClick: (componentInstance) => {
-            componentInstance.saveChanges((res: boolean) => {
-              if (res) {
-                modal.destroy();
-                this.loadExportDetails(maPhieuXuat);
-                this.loadInventoriesByStoreId(maKho);
-              } else {
-                modal.destroy();
-              }
-            });
+            componentInstance.saveChanges();
           }
         }
       ]
+    });
+
+    modal.afterClose.subscribe((result: boolean) => {
+      if (result) {
+        this.loadExportDetails(maPhieuXuat);
+        this.loadInventoriesByStoreId(maKho);
+      }
     });
   }
 
@@ -201,18 +200,17 @@ export class UpdateExportMaterialsComponent implements OnInit {
           label: 'Lưu',
           type: 'primary',
           onClick: (componentInstance) => {
-            componentInstance.saveChanges((res: boolean) => {
-              if (res) {
-                modal.destroy();
-                this.loadExportDetails(maPhieuXuat);
-                this.loadInventoriesByStoreId(maKho);
-              } else {
-                modal.destroy();
-              }
-            });
+            componentInstance.saveChanges();
           }
         }
       ]
+    });
+
+    modal.afterClose.subscribe((result: boolean) => {
+      if (result) {
+        this.loadExportDetails(maPhieuXuat);
+        this.loadInventoriesByStoreId(maKho);
+      }
     });
   }
 

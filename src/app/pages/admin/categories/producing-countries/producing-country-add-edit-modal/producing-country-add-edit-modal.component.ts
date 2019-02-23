@@ -5,6 +5,7 @@ import { NzModalRef } from 'ng-zorro-antd';
 import { ProducingCountry } from 'src/app/shared/models/producing-country.model';
 import { ProducingCountryService } from 'src/app/shared/services/producing-country.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
+import { noWhitespaceValidator } from 'src/app/shared/vailidators/no-whitespace-validator';
 
 @Component({
   selector: 'app-producing-country-add-edit-modal',
@@ -40,7 +41,7 @@ export class ProducingCountryAddEditModalComponent implements OnInit {
   createForm() {
     this.producingCountryForm = this.fb.group({
       maNuoc: [null],
-      tenNuoc: [null, [Validators.required]]
+      tenNuoc: [null, [Validators.required, noWhitespaceValidator]]
     });
   }
 

@@ -5,6 +5,7 @@ import { NzModalRef } from 'ng-zorro-antd';
 import { Personnel } from 'src/app/shared/models/personnel.model';
 import { PersonnelService } from 'src/app/shared/services/personnel.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
+import { noWhitespaceValidator } from 'src/app/shared/vailidators/no-whitespace-validator';
 
 @Component({
   selector: 'app-personnel-add-edit-modal',
@@ -57,7 +58,7 @@ export class PersonnelAddEditModalComponent implements OnInit {
   createForm() {
     this.personnelForm = this.fb.group({
       maNS: [null],
-      hoTen: [null, [Validators.required]],
+      hoTen: [null, [Validators.required, noWhitespaceValidator]],
       ngaySinh: [null, [Validators.required]],
       queQuan: [null],
       danToc: [null, [Validators.required]],

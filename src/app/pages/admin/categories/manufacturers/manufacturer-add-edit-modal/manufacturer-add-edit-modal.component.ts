@@ -5,6 +5,7 @@ import { NzModalRef } from 'ng-zorro-antd';
 import { Manufacturer } from 'src/app/shared/models/manufacturer.model';
 import { ManufacturerService } from 'src/app/shared/services/manufacturer.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
+import { noWhitespaceValidator } from 'src/app/shared/vailidators/no-whitespace-validator';
 
 @Component({
   selector: 'app-manufacturer-add-edit-modal',
@@ -40,7 +41,7 @@ export class ManufacturerAddEditModalComponent implements OnInit {
   createForm() {
     this.manufacturerForm = this.fb.group({
       maHang: [null],
-      tenHang: [null, [Validators.required]],
+      tenHang: [null, [Validators.required, noWhitespaceValidator]],
       ghiChu: [null]
     });
   }

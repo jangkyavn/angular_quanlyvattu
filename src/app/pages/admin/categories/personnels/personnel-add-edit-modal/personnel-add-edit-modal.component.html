@@ -8,7 +8,7 @@
         <nz-form-control>
           <input nz-input formControlName="hoTen" id="hoTen" autofocus>
           <nz-form-explain *ngIf="personnelForm.get('hoTen').dirty && personnelForm.get('hoTen').errors">
-            <ng-container *ngIf="personnelForm.get('hoTen').hasError('required')">
+            <ng-container *ngIf="personnelForm.get('hoTen').hasError('required') || personnelForm.get('hoTen').hasError('whitespace')">
               Vui lòng nhập họ tên!
             </ng-container>
           </nz-form-explain>

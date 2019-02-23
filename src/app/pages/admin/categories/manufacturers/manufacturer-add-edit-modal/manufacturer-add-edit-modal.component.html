@@ -4,7 +4,7 @@
     <nz-form-control [nzSm]="16" [nzXs]="24">
       <input nz-input formControlName="tenHang" id="tenHang" autofocus>
       <nz-form-explain *ngIf="manufacturerForm.get('tenHang').dirty && manufacturerForm.get('tenHang').errors">
-        <ng-container *ngIf="manufacturerForm.get('tenHang').hasError('required')">
+        <ng-container *ngIf="manufacturerForm.get('tenHang').hasError('required') || manufacturerForm.get('tenHang').hasError('whitespace')">
           Vui lòng nhập tên hãng!
         </ng-container>
       </nz-form-explain>

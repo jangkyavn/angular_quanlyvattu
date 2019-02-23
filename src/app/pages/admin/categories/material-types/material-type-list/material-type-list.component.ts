@@ -81,6 +81,7 @@ export class MaterialTypeListComponent implements OnInit {
       nzTitle: 'Thêm loại vật tư',
       nzContent: MaterialTypeAddEditModalComponent,
       nzMaskClosable: false,
+      nzClosable: false,
       nzComponentParams: {
         materialType: {},
         isAddNew: true
@@ -114,6 +115,7 @@ export class MaterialTypeListComponent implements OnInit {
         nzTitle: 'Sửa loại vật tư',
         nzContent: MaterialTypeAddEditModalComponent,
         nzMaskClosable: false,
+        nzClosable: false,
         nzComponentParams: {
           materialType,
           isAddNew: false

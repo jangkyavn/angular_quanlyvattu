@@ -111,6 +111,7 @@ export class ProducingCountryListComponent implements OnInit {
       nzTitle: 'Thêm nước sản xuất',
       nzContent: ProducingCountryAddEditModalComponent,
       nzMaskClosable: false,
+      nzClosable: false,
       nzComponentParams: {
         producingCountry: {},
         isAddNew: true
@@ -144,6 +145,7 @@ export class ProducingCountryListComponent implements OnInit {
         nzTitle: 'Sửa nước sản xuất',
         nzContent: ProducingCountryAddEditModalComponent,
         nzMaskClosable: false,
+        nzClosable: false,
         nzComponentParams: {
           producingCountry,
           isAddNew: false

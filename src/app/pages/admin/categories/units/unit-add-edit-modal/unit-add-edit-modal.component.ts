@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, HostListener } from '@angular/core';
+import { Component, OnInit, Input, HostListener, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd';
 
@@ -6,6 +6,7 @@ import { UnitService } from 'src/app/shared/services/unit.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
 
 import { Unit } from 'src/app/shared/models/unit.model';
+import { noWhitespaceValidator } from 'src/app/shared/vailidators/no-whitespace-validator';
 
 @Component({
   selector: 'app-unit-add-edit-modal',
@@ -15,6 +16,7 @@ import { Unit } from 'src/app/shared/models/unit.model';
 export class UnitAddEditModalComponent implements OnInit {
   @Input() unit: Unit;
   @Input() isAddNew: boolean;
+  @ViewChild('focus') focus: ElementRef;
   unitForm: FormGroup;
 
   @HostListener('window:keydown', ['$event'])
@@ -35,12 +37,14 @@ export class UnitAddEditModalComponent implements OnInit {
     this.createForm();
     this.unitForm.reset();
     this.unitForm.patchValue(this.unit);
+
+    this.focus.nativeElement.focus();
   }
 
   createForm() {
     this.unitForm = this.fb.group({
       maDVT: [null],
-      tenDVT: [null, [Validators.required]],
+      tenDVT: [null, [Validators.required, noWhitespaceValidator]],
     });
   }
 

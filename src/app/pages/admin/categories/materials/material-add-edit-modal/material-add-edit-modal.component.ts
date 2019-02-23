@@ -10,6 +10,7 @@ import { UnitService } from 'src/app/shared/services/unit.service';
 import { Material } from 'src/app/shared/models/material.model';
 import { MaterialType } from 'src/app/shared/models/material-type.model';
 import { Unit } from 'src/app/shared/models/unit.model';
+import { noWhitespaceValidator } from 'src/app/shared/vailidators/no-whitespace-validator';
 
 @Component({
   selector: 'app-material-add-edit-modal',
@@ -51,7 +52,7 @@ export class MaterialAddEditModalComponent implements OnInit {
   createForm() {
     this.materialForm = this.fb.group({
       maVatTu: [null],
-      tenVT: [null, [Validators.required]],
+      tenVT: [null, [Validators.required, noWhitespaceValidator]],
       maLoaiVatTu: [null, [Validators.required]],
       maDVT: [null],
       ghiChu: [null]

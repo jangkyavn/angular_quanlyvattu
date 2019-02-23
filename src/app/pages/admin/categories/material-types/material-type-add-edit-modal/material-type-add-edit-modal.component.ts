@@ -8,6 +8,7 @@ import { MaterialItemService } from 'src/app/shared/services/material-item.servi
 
 import { MaterialItem } from 'src/app/shared/models/material-item.model';
 import { MaterialType } from 'src/app/shared/models/material-type.model';
+import { noWhitespaceValidator } from 'src/app/shared/vailidators/no-whitespace-validator';
 
 @Component({
   selector: 'app-material-type-add-edit-modal',
@@ -46,7 +47,7 @@ export class MaterialTypeAddEditModalComponent implements OnInit {
   createForm() {
     this.materialTypeForm = this.fb.group({
       maLoaiVatTu: [null],
-      tenLoai: [null, [Validators.required]],
+      tenLoai: [null, [Validators.required, noWhitespaceValidator]],
       maHM: [null, [Validators.required]],
       ghiChu: [null]
     });

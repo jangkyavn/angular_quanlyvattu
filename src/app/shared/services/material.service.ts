@@ -78,8 +78,8 @@ export class MaterialService {
     return this.http.post(this.baseUrl + 'VatTu/ImportVT', data);
   }
 
-  exportExcel() {
-    return this.http.get(this.baseUrl + 'VatTu/ExportVT');
+  exportExcel(data: any) {
+    return this.http.post(this.baseUrl + 'VatTu/ExportVT', data);
   }
 
   deleteExportFile(fileName: string) {

@@ -34,6 +34,13 @@ export class UpdateImportMaterialsComponent implements OnInit {
   formatterPercent = value => `${value} %`;
   parserPercent = value => value.replace(' %', '');
 
+  @HostListener('window:keydown', ['$event'])
+  onKeyPress($event: KeyboardEvent) {
+    if (($event.ctrlKey || $event.metaKey) && ($event.keyCode === 73 || $event.keyCode === 105)) {
+      this.addImportDetail();
+    }
+  }
+
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
@@ -121,6 +128,7 @@ export class UpdateImportMaterialsComponent implements OnInit {
       nzTitle: 'Thêm chi tiết phiếu nhập',
       nzContent: ImportMaterialDetailModalComponent,
       nzMaskClosable: false,
+      nzClosable: false,
       nzComponentParams: {
         importMaterialId: maPhieuNhap,
         materialItemId: maHM,
@@ -140,18 +148,17 @@ export class UpdateImportMaterialsComponent implements OnInit {
           label: 'Lưu',
           type: 'primary',
           onClick: (componentInstance) => {
-            componentInstance.saveChanges((res: boolean) => {
-              if (res) {
-                modal.destroy();
-                this.materialItemId = maHM;
-                this.loadImportDetails(maPhieuNhap);
-              } else {
-                modal.destroy();
-              }
-            });
+            componentInstance.saveChanges();
           }
         }
       ]
+    });
+
+    modal.afterClose.subscribe((result: boolean) => {
+      if (result) {
+        this.materialItemId = maHM;
+        this.loadImportDetails(maPhieuNhap);
+      }
     });
   }
 
@@ -172,6 +179,7 @@ export class UpdateImportMaterialsComponent implements OnInit {
       nzTitle: 'Sửa chi tiết phiếu nhập',
       nzContent: ImportMaterialDetailModalComponent,
       nzMaskClosable: false,
+      nzClosable: false,
       nzComponentParams: {
         importMaterialId: maPhieuNhap,
         materialItemId: maHM,
@@ -189,18 +197,17 @@ export class UpdateImportMaterialsComponent implements OnInit {
           label: 'Lưu',
           type: 'primary',
           onClick: (componentInstance) => {
-            componentInstance.saveChanges((res: boolean) => {
-              if (res) {
-                modal.destroy();
-                this.materialItemId = maHM;
-                this.loadImportDetails(maPhieuNhap);
-              } else {
-                modal.destroy();
-              }
-            });
+            componentInstance.saveChanges();
           }
         }
       ]
+    });
+
+    modal.afterClose.subscribe((result: boolean) => {
+      if (result) {
+        this.materialItemId = maHM;
+        this.loadImportDetails(maPhieuNhap);
+      }
     });
   }
 

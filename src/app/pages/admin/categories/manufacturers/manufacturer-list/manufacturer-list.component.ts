@@ -110,6 +110,7 @@ export class ManufacturerListComponent implements OnInit {
       nzTitle: 'Thêm hãng sản xuất',
       nzContent: ManufacturerAddEditModalComponent,
       nzMaskClosable: false,
+      nzClosable: false,
       nzComponentParams: {
         manufacturer: {},
         isAddNew: true
@@ -143,6 +144,7 @@ export class ManufacturerListComponent implements OnInit {
         nzTitle: 'Sửa đơn vị tính',
         nzContent: ManufacturerAddEditModalComponent,
         nzMaskClosable: false,
+        nzClosable: false,
         nzComponentParams: {
           manufacturer,
           isAddNew: false

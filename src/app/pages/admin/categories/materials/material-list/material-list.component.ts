@@ -112,6 +112,7 @@ export class MaterialListComponent implements OnInit {
       nzTitle: 'Thêm vật tư',
       nzContent: MaterialAddEditModalComponent,
       nzMaskClosable: false,
+      nzClosable: false,
       nzComponentParams: {
         material: {},
         isAddNew: true
@@ -145,6 +146,7 @@ export class MaterialListComponent implements OnInit {
         nzTitle: 'Sửa vật tư',
         nzContent: MaterialAddEditModalComponent,
         nzMaskClosable: false,
+        nzClosable: false,
         nzComponentParams: {
           material,
           isAddNew: false
@@ -236,7 +238,8 @@ export class MaterialListComponent implements OnInit {
 
   exportFile() {
     this.isLoadingExport = true;
-    this.materialService.exportExcel().subscribe((res: any) => {
+
+    this.materialService.exportExcel(this.dataSet).subscribe((res: any) => {
       if (res) {
         window.location.href = res.url;
 

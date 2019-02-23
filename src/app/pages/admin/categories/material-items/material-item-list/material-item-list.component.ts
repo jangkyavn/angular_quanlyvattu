@@ -108,6 +108,7 @@ export class MaterialItemListComponent implements OnInit {
         nzTitle: 'Sửa hạng mục vật tư',
         nzContent: MaterialItemAddEditModalComponent,
         nzMaskClosable: false,
+        nzClosable: false,
         nzComponentParams: {
           materialItem,
           isAddNew: false

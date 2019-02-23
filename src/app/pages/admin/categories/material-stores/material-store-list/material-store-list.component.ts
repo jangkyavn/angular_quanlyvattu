@@ -110,6 +110,7 @@ export class MaterialStoreListComponent implements OnInit {
       nzTitle: 'Thêm kho vật tư',
       nzContent: MaterialStoreAddEditModalComponent,
       nzMaskClosable: false,
+      nzClosable: false,
       nzComponentParams: {
         materialStore: {},
         isAddNew: true
@@ -143,6 +144,7 @@ export class MaterialStoreListComponent implements OnInit {
         nzTitle: 'Sửa kho vật tư',
         nzContent: MaterialStoreAddEditModalComponent,
         nzMaskClosable: false,
+        nzClosable: false,
         nzComponentParams: {
           materialStore,
           isAddNew: false

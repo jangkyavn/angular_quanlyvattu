@@ -1,11 +1,11 @@
-import { Component, OnInit, AfterViewInit, Input, HostListener } from '@angular/core';
-
+import { Component, OnInit, Input, HostListener } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Supply } from 'src/app/shared/models/supply.model';
 import { SupplyService } from 'src/app/shared/services/supply.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
 import { NzModalRef } from 'ng-zorro-antd';
+import { noWhitespaceValidator } from 'src/app/shared/vailidators/no-whitespace-validator';
 
 @Component({
   selector: 'app-supply-add-edit-modal',
@@ -15,7 +15,6 @@ import { NzModalRef } from 'ng-zorro-antd';
 export class SupplyAddEditModalComponent implements OnInit {
   @Input() supply: Supply;
   @Input() isAddNew: boolean;
-
   supplyForm: FormGroup;
 
   @HostListener('window:keydown', ['$event'])
@@ -41,7 +40,7 @@ export class SupplyAddEditModalComponent implements OnInit {
   createForm() {
     this.supplyForm = this.fb.group({
       maNguon: [null],
-      tenNguon: [null, [Validators.required]],
+      tenNguon: [null, [Validators.required, noWhitespaceValidator]],
       ghiChu: [null]
     });
   }

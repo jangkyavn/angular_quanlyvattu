@@ -5,6 +5,7 @@ import { NzModalRef } from 'ng-zorro-antd';
 import { MaterialStore } from 'src/app/shared/models/material-store.model';
 import { MaterialStoreService } from 'src/app/shared/services/material-store.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
+import { noWhitespaceValidator } from 'src/app/shared/vailidators/no-whitespace-validator';
 
 @Component({
   selector: 'app-material-store-add-edit-modal',
@@ -40,7 +41,7 @@ export class MaterialStoreAddEditModalComponent implements OnInit {
   createForm() {
     this.materialStoreForm = this.fb.group({
       maKho: [null],
-      tenKho: [null, [Validators.required]],
+      tenKho: [null, [Validators.required, noWhitespaceValidator]],
       dienThoai: [null],
       diaChi: [null],
       ghiChu: [null]

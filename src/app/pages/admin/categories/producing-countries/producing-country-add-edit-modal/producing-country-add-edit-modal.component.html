@@ -4,7 +4,7 @@
       <nz-form-control [nzSm]="16" [nzXs]="24">
         <input nz-input formControlName="tenNuoc" id="tenNuoc" autofocus>
         <nz-form-explain *ngIf="producingCountryForm.get('tenNuoc').dirty && producingCountryForm.get('tenNuoc').errors">
-          <ng-container *ngIf="producingCountryForm.get('tenNuoc').hasError('required')">
+          <ng-container *ngIf="producingCountryForm.get('tenNuoc').hasError('required') || producingCountryForm.get('tenNuoc').hasError('whitespace')">
             Vui lòng nhập tên nước sản xuất!
           </ng-container>
         </nz-form-explain>

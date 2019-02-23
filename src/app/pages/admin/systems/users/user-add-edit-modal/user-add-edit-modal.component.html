@@ -4,7 +4,8 @@
     <nz-form-control [nzSm]="16" [nzXs]="24">
       <input nz-input formControlName="userName" id="userName" autofocus>
       <nz-form-explain *ngIf="userForm.get('userName').dirty && userForm.get('userName').errors">
-        <ng-container *ngIf="userForm.get('userName').hasError('required')">
+        <ng-container
+          *ngIf="userForm.get('userName').hasError('required') || userForm.get('userName').hasError('whitespace')">
           Vui lòng nhập tài khoản!
         </ng-container>
         <ng-container *ngIf="userForm.get('userName').hasError('maxlength')">
@@ -21,7 +22,7 @@
     <nz-form-control [nzSm]="16" [nzXs]="24">
       <input type="password" nz-input formControlName="password" id="password">
       <nz-form-explain *ngIf="userForm.get('password').dirty && userForm.get('password').errors">
-        <ng-container *ngIf="userForm.get('password').hasError('required')">
+        <ng-container *ngIf="userForm.get('password').hasError('required') || userForm.get('password').hasError('whitespace')">
           Vui lòng nhập mật khẩu!
         </ng-container>
         <ng-container *ngIf="userForm.get('password').hasError('minlength')">
@@ -38,7 +39,7 @@
     <nz-form-control [nzSm]="16" [nzXs]="24">
       <input type="password" nz-input formControlName="confirmPassword" id="confirmPassword">
       <nz-form-explain *ngIf="userForm.get('confirmPassword').dirty && userForm.get('confirmPassword').errors">
-        <ng-container *ngIf="userForm.get('confirmPassword').hasError('required')">
+        <ng-container *ngIf="userForm.get('confirmPassword').hasError('required') || userForm.get('confirmPassword').hasError('whitespace')">
           Vui lòng nhập lại mật khẩu!
         </ng-container>
         <ng-container
@@ -53,7 +54,7 @@
     <nz-form-control [nzSm]="16" [nzXs]="24">
       <input type="text" nz-input formControlName="fullName" id="fullName">
       <nz-form-explain *ngIf="userForm.get('fullName').dirty && userForm.get('fullName').errors">
-        <ng-container *ngIf="userForm.get('fullName').hasError('required')">
+        <ng-container *ngIf="userForm.get('fullName').hasError('required') || userForm.get('fullName').hasError('whitespace')">
           Vui lòng nhập họ tên!
         </ng-container>
         <ng-container *ngIf="userForm.get('fullName').hasError('maxlength')">
@@ -67,7 +68,7 @@
     <nz-form-control [nzSm]="16" [nzXs]="24">
       <input type="email" nz-input formControlName="email" id="email">
       <nz-form-explain *ngIf="userForm.get('email').dirty && userForm.get('email').errors">
-        <ng-container *ngIf="userForm.get('email').hasError('required')">
+        <ng-container *ngIf="userForm.get('email').hasError('required') || userForm.get('email').hasError('whitespace')">
           Vui lòng nhập email!
         </ng-container>
         <ng-container *ngIf="userForm.get('email').hasError('email')">

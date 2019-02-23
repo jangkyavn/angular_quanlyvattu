@@ -11,6 +11,7 @@ import { User } from '../../../../../shared/models/user.model';
 import { passwordMatchValidator } from '../../../../../shared/vailidators/password-match-validator';
 import { checkUsernameDuplicateValidator } from 'src/app/shared/vailidators/check-username-duplicate-validator';
 import { checkEmailDuplicateValidator } from 'src/app/shared/vailidators/check-email-duplicate-validator';
+import { noWhitespaceValidator } from 'src/app/shared/vailidators/no-whitespace-validator';
 
 @Component({
   selector: 'app-user-add-edit-modal',
@@ -56,25 +57,30 @@ export class UserAddEditModalComponent implements OnInit {
         id: [null],
         userName: [null, [
           Validators.required,
-          Validators.maxLength(20)
+          Validators.maxLength(20),
+          noWhitespaceValidator
         ], [checkUsernameDuplicateValidator(this.userService)]],
         password: [null, [
           Validators.required,
           Validators.minLength(6),
-          Validators.maxLength(12)]
+          Validators.maxLength(12),
+          noWhitespaceValidator]
         ],
         confirmPassword: [null, [
           Validators.required,
-          passwordMatchValidator
+          passwordMatchValidator,
+          noWhitespaceValidator
         ]],
         fullName: [null, [
           Validators.required,
-          Validators.maxLength(50)
+          Validators.maxLength(50),
+          noWhitespaceValidator
         ]],
         email: [null, [
           Validators.required,
           Validators.email,
-          Validators.maxLength(50)
+          Validators.maxLength(50),
+          noWhitespaceValidator
         ], [checkEmailDuplicateValidator(this.userService, '')]],
         gender: [null, [Validators.required]],
         dateOfBirth: [null, [Validators.required]]
@@ -84,16 +90,19 @@ export class UserAddEditModalComponent implements OnInit {
         id: [null],
         userName: [{ value: null, disabled: true }, [
           Validators.required,
-          Validators.maxLength(20)
+          Validators.maxLength(20),
+          noWhitespaceValidator
         ]],
         fullName: [null, [
           Validators.required,
-          Validators.maxLength(50)
+          Validators.maxLength(50),
+          noWhitespaceValidator
         ]],
         email: [null, [
           Validators.required,
           Validators.email,
-          Validators.maxLength(50)
+          Validators.maxLength(50),
+          noWhitespaceValidator
         ], [checkEmailDuplicateValidator(this.userService, this.user.email)]],
         gender: [null, [Validators.required]],
         dateOfBirth: [null, [Validators.required]]

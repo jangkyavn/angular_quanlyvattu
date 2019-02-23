@@ -4,7 +4,7 @@
     <nz-form-control [nzSm]="16" [nzXs]="24">
       <input nz-input formControlName="tenVT" id="tenVT" autofocus>
       <nz-form-explain *ngIf="materialForm.get('tenVT').dirty && materialForm.get('tenVT').errors">
-        <ng-container *ngIf="materialForm.get('tenVT').hasError('required')">
+        <ng-container *ngIf="materialForm.get('tenVT').hasError('required') || materialForm.get('tenVT').hasError('whitespace')">
           Vui lòng nhập tên vật tư!
         </ng-container>
       </nz-form-explain>

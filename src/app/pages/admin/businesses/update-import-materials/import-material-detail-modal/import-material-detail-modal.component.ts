@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, HostListener } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { NzModalRef } from 'ng-zorro-antd';
 
 import { ImportMaterialDetailService } from 'src/app/shared/services/import-material-detail.service';
 import { MaterialService } from 'src/app/shared/services/material.service';
@@ -36,8 +37,16 @@ export class ImportMaterialDetailModalComponent implements OnInit {
   formatterPercent = value => `${value} %`;
   parserPercent = value => value.replace(' %', '');
 
+  @HostListener('window:keydown', ['$event'])
+  onKeyPress($event: KeyboardEvent) {
+    if (($event.ctrlKey || $event.metaKey) && $event.keyCode === 13) {
+      this.saveChanges();
+    }
+  }
+
   constructor(
     private fb: FormBuilder,
+    private modal: NzModalRef,
     private importMaterialService: ImportMaterialService,
     private importMaterialDetailService: ImportMaterialDetailService,
     private materialService: MaterialService,
@@ -172,7 +181,7 @@ export class ImportMaterialDetailModalComponent implements OnInit {
     });
   }
 
-  saveChanges(callBack: (result: boolean) => any = null) {
+  saveChanges() {
     if (this.importDetailForm.invalid) {
       // tslint:disable-next-line:forin
       for (const i in this.importDetailForm.controls) {
@@ -198,24 +207,24 @@ export class ImportMaterialDetailModalComponent implements OnInit {
               .subscribe((res: any) => {
                 if (res >= 0) {
                   this.notify.success('Sửa thành công!');
-                  callBack(true);
+                  this.modal.destroy(true);
                 }
               }, error => {
                 this.notify.error('Có lỗi xảy ra!');
                 console.log('error updateImportDetail');
-                callBack(false);
+                this.modal.destroy(false);
               });
           } else {
             this.importMaterialDetailService.addNew(importDetailParams)
               .subscribe((res: any) => {
                 if (res) {
                   this.notify.success('Thêm thành công!');
-                  callBack(true);
+                  this.modal.destroy(true);
                 }
               }, error => {
                 this.notify.error('Có lỗi xảy ra!');
                 console.log('error addImportDetail');
-                callBack(false);
+                this.modal.destroy(false);
               });
           }
         });
@@ -224,12 +233,12 @@ export class ImportMaterialDetailModalComponent implements OnInit {
         .subscribe((res: any) => {
           if (res >= 0) {
             this.notify.success('Sửa thành công!');
-            callBack(true);
+            this.modal.destroy(true);
           }
         }, error => {
           this.notify.error('Có lỗi xảy ra!');
           console.log('error updateImportDetail');
-          callBack(false);
+          this.modal.destroy(false);
         });
     }
   }

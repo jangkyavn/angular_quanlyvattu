@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, HostListener } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { NzModalRef } from 'ng-zorro-antd';
 
 import { Inventory } from 'src/app/shared/models/inventory.model';
 import { ExportMaterialDetailService } from 'src/app/shared/services/export-material-detail.service';
@@ -19,8 +20,16 @@ export class ExportMaterialDetailModalComponent implements OnInit {
   @Input() exportDetail: ExportMaterialDetail;
   exportDetailForm: FormGroup;
 
+  @HostListener('window:keydown', ['$event'])
+  onKeyPress($event: KeyboardEvent) {
+    if (($event.ctrlKey || $event.metaKey) && $event.keyCode === 13) {
+      this.saveChanges();
+    }
+  }
+
   constructor(
     private fb: FormBuilder,
+    private modal: NzModalRef,
     private exportDetailService: ExportMaterialDetailService,
     private notify: NotifyService
   ) { }
@@ -63,7 +72,7 @@ export class ExportMaterialDetailModalComponent implements OnInit {
     }
   }
 
-  saveChanges(callBack: (result: boolean) => any = null) {
+  saveChanges() {
     if (this.exportDetailForm.invalid) {
       // tslint:disable-next-line:forin
       for (const i in this.exportDetailForm.controls) {
@@ -89,24 +98,24 @@ export class ExportMaterialDetailModalComponent implements OnInit {
               .subscribe((res: any) => {
                 if (res >= 0) {
                   this.notify.success('Sửa thành công!');
-                  callBack(true);
+                  this.modal.destroy(true);
                 }
               }, error => {
                 this.notify.error('Có lỗi xảy ra!');
                 console.log('error updateExportDetail');
-                callBack(false);
+                this.modal.destroy(false);
               });
           } else {
             this.exportDetailService.addNew(exportDetailParams)
               .subscribe((res: any) => {
                 if (res) {
                   this.notify.success('Thêm thành công!');
-                  callBack(true);
+                  this.modal.destroy(true);
                 }
               }, error => {
                 this.notify.error('Có lỗi xảy ra!');
                 console.log('error addExportDetail');
-                callBack(false);
+                this.modal.destroy(false);
               });
           }
         });
@@ -115,12 +124,12 @@ export class ExportMaterialDetailModalComponent implements OnInit {
         .subscribe((res: any) => {
           if (res >= 0) {
             this.notify.success('Sửa thành công!');
-            callBack(true);
+            this.modal.destroy(true);
           }
         }, error => {
           this.notify.error('Có lỗi xảy ra!');
           console.log('error updateExportDetail');
-          callBack(false);
+          this.modal.destroy(false);
         });
     }
   }
