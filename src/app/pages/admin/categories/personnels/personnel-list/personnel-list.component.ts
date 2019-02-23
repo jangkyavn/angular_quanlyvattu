@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd';
 
@@ -9,6 +9,7 @@ import { Personnel } from 'src/app/shared/models/personnel.model';
 import { PersonnelAddEditModalComponent } from '../personnel-add-edit-modal/personnel-add-edit-modal.component';
 import { Pagination, PaginatedResult } from 'src/app/shared/models/pagination.model';
 import { PagingParams } from 'src/app/shared/params/paging.param';
+import { PersonnelViewDetailModalComponent } from '../personnel-view-detail-modal/personnel-view-detail-modal.component';
 
 @Component({
   selector: 'app-personnel-list',
@@ -27,6 +28,13 @@ export class PersonnelListComponent implements OnInit {
     sortKey: '',
     sortValue: ''
   };
+
+  @HostListener('window:keydown', ['$event'])
+  onKeyPress($event: KeyboardEvent) {
+    if (($event.ctrlKey || $event.metaKey) && ($event.keyCode === 73 || $event.keyCode === 105)) {
+      this.addNew();
+    }
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -74,6 +82,7 @@ export class PersonnelListComponent implements OnInit {
       nzTitle: 'Thêm nhân sự',
       nzContent: PersonnelAddEditModalComponent,
       nzMaskClosable: false,
+      nzClosable: false,
       nzWidth: 880,
       nzComponentParams: {
         personnel: {},
@@ -89,17 +98,16 @@ export class PersonnelListComponent implements OnInit {
           label: 'Lưu',
           type: 'primary',
           onClick: (componentInstance) => {
-            componentInstance.saveChanges((res: boolean) => {
-              if (res) {
-                this.loadData();
-                modal.destroy();
-              } else {
-                modal.destroy();
-              }
-            });
+            componentInstance.saveChanges();
           }
         }
       ]
+    });
+
+    modal.afterClose.subscribe((result: boolean) => {
+      if (result) {
+        this.loadData();
+      }
     });
   }
 
@@ -109,6 +117,7 @@ export class PersonnelListComponent implements OnInit {
         nzTitle: 'Sửa nhân sự',
         nzContent: PersonnelAddEditModalComponent,
         nzMaskClosable: false,
+        nzClosable: false,
         nzWidth: 880,
         nzComponentParams: {
           personnel,
@@ -124,18 +133,37 @@ export class PersonnelListComponent implements OnInit {
             label: 'Lưu',
             type: 'primary',
             onClick: (componentInstance) => {
-              componentInstance.saveChanges((res: boolean) => {
-                if (res) {
-                  this.loadData();
-                  modal.destroy();
-                } else {
-                  modal.destroy();
-                }
-              });
+              componentInstance.saveChanges();
             }
           }
         ]
       });
+
+      modal.afterClose.subscribe((result: boolean) => {
+        if (result) {
+          this.loadData();
+        }
+      });
+    });
+  }
+
+  view(personnel: Personnel) {
+    const modal = this.modalService.create({
+      nzTitle: 'Xem nhân sự',
+      nzContent: PersonnelViewDetailModalComponent,
+      nzMaskClosable: false,
+      nzClosable: false,
+      nzWidth: 700,
+      nzComponentParams: {
+        personnel
+      },
+      nzFooter: [
+        {
+          label: 'Hủy',
+          shape: 'default',
+          onClick: () => modal.destroy()
+        }
+      ]
     });
   }
 
@@ -144,7 +172,7 @@ export class PersonnelListComponent implements OnInit {
       this.personnelService.delete(id).subscribe((res: boolean) => {
         if (res) {
           this.notify.success('Xóa thành công!');
-        this.loadData();
+          this.loadData();
         } else {
           this.notify.warning('Nhân sự đang được sử dụng. Không được xóa!');
         }

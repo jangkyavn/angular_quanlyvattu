@@ -1,0 +1,58 @@
+<table>
+  <tr>
+    <td style="width: 30%;">Họ tên:</td>
+    <td style="width: 70%;">{{personnel.hoTen}}</td>
+  </tr>
+  <tr>
+    <td>Ngày sinh:</td>
+    <td>{{personnel.ngaySinh | date:'dd/MM/yyyy'}}</td>
+  </tr>
+  <tr>
+    <td>Quê quá:</td>
+    <td>{{personnel.queQuan}}</td>
+  </tr>
+  <tr>
+    <td>Dân tộc:</td>
+    <td>{{personnel.danToc}}</td>
+  </tr>
+  <tr>
+    <td>Tôn giáo:</td>
+    <td>{{personnel.tonGiao.toString() === '1' ? 'Có' : 'Không'}}</td>
+  </tr>
+  <tr>
+    <td>Cấp bậc SHSQ:</td>
+    <td>{{personnel.capBacSHSQ}}</td>
+  </tr>
+  <tr>
+    <td>Chức vụ:</td>
+    <td>{{personnel.chucVu}}</td>
+  </tr>
+  <tr>
+    <td>Ngày NN/TD:</td>
+    <td>{{personnel.ngayNhapNguTuyenDung}}</td>
+  </tr>
+  <tr>
+    <td>Đảng:</td>
+    <td>{{personnel.dang}}</td>
+  </tr>
+  <tr>
+    <td>Xuất thân:</td>
+    <td>{{personnel.xuatThan}}</td>
+  </tr>
+  <tr>
+    <td>Bản thân:</td>
+    <td>{{personnel.banThan}}</td>
+  </tr>
+  <tr>
+    <td>Quá trình học tập:</td>
+    <td>{{personnel.quaTrinhHocTap}}</td>
+  </tr>
+  <tr>
+    <td>Thân nhân:</td>
+    <td>{{personnel.thanNhan}}</td>
+  </tr>
+  <tr>
+    <td>Ghi chú:</td>
+    <td>{{personnel.ghiChu}}</td>
+  </tr>
+</table>

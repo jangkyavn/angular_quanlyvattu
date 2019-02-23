@@ -1,4 +1,4 @@
-<form nz-form [formGroup]="personnelForm" (ngSubmit)="saveChanges()" autocomplete="off">
+<form nz-form [formGroup]="personnelForm" autocomplete="off">
   <table style="width: 100%;">
     <tr>
       <td style="width: 10%;">
@@ -19,8 +19,7 @@
       </td>
       <td style="width: 40%;">
         <nz-form-control>
-          <nz-date-picker formControlName="ngaySinh" nzPlaceHolder="Chọn ngày sinh" nzFormat="dd/MM/yyyy">
-          </nz-date-picker>
+          <input type="date" nz-input formControlName="ngaySinh" id="ngaySinh" />
           <nz-form-explain *ngIf="personnelForm.get('ngaySinh').dirty && personnelForm.get('ngaySinh').errors">
             <ng-container *ngIf="personnelForm.get('ngaySinh').hasError('required')">
               Vui lòng chọn ngày sinh!
@@ -68,17 +67,16 @@
         <nz-form-label nzRequired nzFor="danToc">Dân tộc</nz-form-label>
       </td>
       <td>
-          <nz-form-control>
-              <nz-select nzShowSearch nzAllowClear id="danToc" formControlName="danToc"
-                nzPlaceHolder="Chọn dân tộc">
-                <nz-option *ngFor="let item of nations" [nzValue]="item.code" [nzLabel]="item.name"></nz-option>
-              </nz-select>
-              <nz-form-explain *ngIf="personnelForm.get('danToc').dirty && personnelForm.get('danToc').errors">
-                <ng-container *ngIf="personnelForm.get('danToc').hasError('required')">
-                  Vui lòng chọn huyện/quận!
-                </ng-container>
-              </nz-form-explain>
-            </nz-form-control>
+        <nz-form-control>
+          <nz-select nzShowSearch nzAllowClear id="danToc" formControlName="danToc" nzPlaceHolder="Chọn dân tộc">
+            <nz-option *ngFor="let item of nations" [nzValue]="item.code" [nzLabel]="item.name"></nz-option>
+          </nz-select>
+          <nz-form-explain *ngIf="personnelForm.get('danToc').dirty && personnelForm.get('danToc').errors">
+            <ng-container *ngIf="personnelForm.get('danToc').hasError('required')">
+              Vui lòng chọn huyện/quận!
+            </ng-container>
+          </nz-form-explain>
+        </nz-form-control>
       </td>
       <td>
         <nz-form-label nzFor="tonGiao">Tôn giáo</nz-form-label>

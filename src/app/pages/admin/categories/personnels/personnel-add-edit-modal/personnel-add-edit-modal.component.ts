@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, HostListener } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { NzModalRef } from 'ng-zorro-antd';
 
 import { Personnel } from 'src/app/shared/models/personnel.model';
 import { PersonnelService } from 'src/app/shared/services/personnel.service';
@@ -19,8 +20,16 @@ export class PersonnelAddEditModalComponent implements OnInit {
 
   personnelForm: FormGroup;
 
+  @HostListener('window:keydown', ['$event'])
+  onKeyPress($event: KeyboardEvent) {
+    if (($event.ctrlKey || $event.metaKey) && $event.keyCode === 13) {
+      this.saveChanges();
+    }
+  }
+
   constructor(
     private fb: FormBuilder,
+    private modal: NzModalRef,
     private personnelService: PersonnelService,
     private notify: NotifyService
   ) { }
@@ -67,7 +76,7 @@ export class PersonnelAddEditModalComponent implements OnInit {
     });
   }
 
-  saveChanges(callBack: (result: boolean) => any = null) {
+  saveChanges() {
     console.log(this.personnelForm.value);
 
     if (this.personnelForm.invalid) {
@@ -82,35 +91,35 @@ export class PersonnelAddEditModalComponent implements OnInit {
     const personnel: Personnel = Object.assign({}, this.personnelForm.value);
     personnel.queQuan = personnel.huyenQuan + ',' + personnel.tinhThanhPho;
 
-    // if (this.isAddNew) {
-    //   this.personnelService.addNew(personnel).subscribe((res: any) => {
-    //     if (typeof res === 'boolean') {
-    //       if (res) {
-    //         this.notify.success('Thêm thành công!');
-    //         callBack(true);
-    //       }
-    //     } else {
-    //       if (res === -1) {
-    //         this.notify.warning('Tên nhân sự đã tồn tại');
-    //       }
-    //     }
-    //   }, error => {
-    //     this.notify.success('Có lỗi xảy ra!');
-    //     console.log('error addPersonnel');
-    //     callBack(false);
-    //   });
-    // } else {
-    //   this.personnelService.update(personnel).subscribe((res: any) => {
-    //     if (res) {
-    //       this.notify.success('Sửa thành công!');
-    //       callBack(true);
-    //     }
-    //   }, error => {
-    //     this.notify.success('Có lỗi xảy ra!');
-    //     console.log('error updatePersonnel');
-    //     callBack(false);
-    //   });
-    // }
+    if (this.isAddNew) {
+      this.personnelService.addNew(personnel).subscribe((res: any) => {
+        if (typeof res === 'boolean') {
+          if (res) {
+            this.notify.success('Thêm thành công!');
+            this.modal.destroy(true);
+          }
+        } else {
+          if (res === -1) {
+            this.notify.warning('Tên nhân sự đã tồn tại');
+          }
+        }
+      }, error => {
+        this.notify.success('Có lỗi xảy ra!');
+        console.log('error addPersonnel');
+        this.modal.destroy(false);
+      });
+    } else {
+      this.personnelService.update(personnel).subscribe((res: any) => {
+        if (res) {
+          this.notify.success('Sửa thành công!');
+          this.modal.destroy(true);
+        }
+      }, error => {
+        this.notify.success('Có lỗi xảy ra!');
+        console.log('error updatePersonnel');
+        this.modal.destroy(false);
+      });
+    }
   }
 
   loadCities() {

@@ -37,6 +37,7 @@ import { MaterialListResolver } from 'src/app/shared/resolvers/material-list.res
 import { PersonnelListComponent } from './personnels/personnel-list/personnel-list.component';
 import { PersonnelAddEditModalComponent } from './personnels/personnel-add-edit-modal/personnel-add-edit-modal.component';
 import { PersonnelListResolver } from 'src/app/shared/resolvers/personnel-list-resolver';
+import { PersonnelViewDetailModalComponent } from './personnels/personnel-view-detail-modal/personnel-view-detail-modal.component';
 
 @NgModule({
   declarations: [CategoriesComponent,
@@ -57,7 +58,8 @@ import { PersonnelListResolver } from 'src/app/shared/resolvers/personnel-list-r
     MaterialListComponent,
     MaterialAddEditModalComponent,
     PersonnelListComponent,
-    PersonnelAddEditModalComponent
+    PersonnelAddEditModalComponent,
+    PersonnelViewDetailModalComponent
   ],
   imports: [
     CommonModule,
@@ -87,7 +89,8 @@ import { PersonnelListResolver } from 'src/app/shared/resolvers/personnel-list-r
     MaterialTypeAddEditModalComponent,
     MaterialItemAddEditModalComponent,
     MaterialAddEditModalComponent,
-    PersonnelAddEditModalComponent
+    PersonnelAddEditModalComponent,
+    PersonnelViewDetailModalComponent
   ]
 })
 export class CategoriesModule { }
