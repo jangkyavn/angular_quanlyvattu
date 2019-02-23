@@ -76,6 +76,10 @@ export class SupplyListComponent implements OnInit {
         this.loading = false;
         this.pagination = res.pagination;
         this.dataSet = res.result;
+
+        this.indeterminate = false;
+        this.allChecked = false;
+        this.checkedNumber = 0;
       }, error => {
         this.notify.error('Có lỗi xảy ra');
         console.log('error getAllPagingSupplies');
@@ -188,15 +192,12 @@ export class SupplyListComponent implements OnInit {
 
     this.notify.confirm(`Bạn có chắc chắn muốn xóa ${this.checkedNumber} không?`, () => {
       this.supplyService.deleteMulti(JSON.stringify(ids))
-      .subscribe((res: boolean) => {
-        if (res) {
-          this.notify.success('Xóa thành công');
-          this.loadData();
-          this.indeterminate = false;
-          this.allChecked = false;
-          this.checkedNumber = 0;
-        }
-      });
+        .subscribe((res: boolean) => {
+          if (res) {
+            this.notify.success('Xóa thành công');
+            this.loadData();
+          }
+        });
     });
   }
 

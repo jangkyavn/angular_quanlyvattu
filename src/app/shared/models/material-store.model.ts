@@ -4,4 +4,5 @@ export interface MaterialStore {
     diaChi?: string;
     dienThoai?: string;
     ghiChu?: string;
+    checked?: boolean;
 }

@@ -1,5 +1,6 @@
-import { Component, OnInit, Output, EventEmitter, AfterViewInit, Input } from '@angular/core';
+import { Component, OnInit, Input, HostListener } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { NzModalRef } from 'ng-zorro-antd';
 
 import { ProducingCountry } from 'src/app/shared/models/producing-country.model';
 import { ProducingCountryService } from 'src/app/shared/services/producing-country.service';
@@ -16,8 +17,16 @@ export class ProducingCountryAddEditModalComponent implements OnInit {
 
   producingCountryForm: FormGroup;
 
+  @HostListener('window:keydown', ['$event'])
+  onKeyPress($event: KeyboardEvent) {
+    if (($event.ctrlKey || $event.metaKey) && $event.keyCode === 13) {
+      this.saveChanges();
+    }
+  }
+
   constructor(
     private fb: FormBuilder,
+    private modal: NzModalRef,
     private producingCountryService: ProducingCountryService,
     private notify: NotifyService
   ) { }
@@ -35,7 +44,7 @@ export class ProducingCountryAddEditModalComponent implements OnInit {
     });
   }
 
-  saveChanges(callBack: (result: boolean) => any = null) {
+  saveChanges() {
     if (this.producingCountryForm.invalid) {
        // tslint:disable-next-line:forin
        for (const i in this.producingCountryForm.controls) {
@@ -51,7 +60,7 @@ export class ProducingCountryAddEditModalComponent implements OnInit {
         if (typeof res === 'boolean') {
           if (res) {
             this.notify.success('Thêm thành công!');
-            callBack(true);
+            this.modal.destroy(true);
           }
         } else {
           if (res === -1) {
@@ -61,18 +70,18 @@ export class ProducingCountryAddEditModalComponent implements OnInit {
       }, error => {
         this.notify.success('Có lỗi xảy ra!');
         console.log('error addProducingCountry');
-        callBack(false);
+        this.modal.destroy(false);
       });
     } else {
       this.producingCountryService.update(producingCountry).subscribe((res: any) => {
         if (res) {
           this.notify.success('Sửa thành công!');
-          callBack(true);
+          this.modal.destroy(true);
         }
       }, error => {
         this.notify.success('Có lỗi xảy ra!');
         console.log('error updateProducingCountry');
-        callBack(false);
+        this.modal.destroy(false);
       });
     }
   }

@@ -61,4 +61,8 @@ export class ManufacturerService {
   delete(id: number) {
     return this.http.delete(this.baseUrl + 'HangSanXuat/' + id);
   }
+
+  deleteMulti(strIds: string) {
+    return this.http.delete(this.baseUrl + 'HangSanXuat/DeleteAllAsync/' + strIds);
+  }
 }

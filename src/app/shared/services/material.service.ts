@@ -70,6 +70,10 @@ export class MaterialService {
     return this.http.delete(this.baseUrl + 'VatTu/' + id);
   }
 
+  deleteMulti(strIds: string) {
+    return this.http.delete(this.baseUrl + 'VatTu/DeleteAllAsync/' + strIds);
+  }
+
   importExcel(data: any) {
     return this.http.post(this.baseUrl + 'VatTu/ImportVT', data);
   }

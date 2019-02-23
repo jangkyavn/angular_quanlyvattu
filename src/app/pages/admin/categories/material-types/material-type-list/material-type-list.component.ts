@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd';
 
@@ -27,6 +27,13 @@ export class MaterialTypeListComponent implements OnInit {
     sortKey: '',
     sortValue: ''
   };
+
+  @HostListener('window:keydown', ['$event'])
+  onKeyPress($event: KeyboardEvent) {
+    if (($event.ctrlKey || $event.metaKey) && ($event.keyCode === 73 || $event.keyCode === 105)) {
+      this.addNew();
+    }
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -88,17 +95,16 @@ export class MaterialTypeListComponent implements OnInit {
           label: 'Lưu',
           type: 'primary',
           onClick: (componentInstance) => {
-            componentInstance.saveChanges((res: boolean) => {
-              if (res) {
-                this.loadData();
-                modal.destroy();
-              } else {
-                modal.destroy();
-              }
-            });
+            componentInstance.saveChanges();
           }
         }
       ]
+    });
+
+    modal.afterClose.subscribe((result: boolean) => {
+      if (result) {
+        this.loadData();
+      }
     });
   }
 
@@ -122,17 +128,16 @@ export class MaterialTypeListComponent implements OnInit {
             label: 'Lưu',
             type: 'primary',
             onClick: (componentInstance) => {
-              componentInstance.saveChanges((res: boolean) => {
-                if (res) {
-                  this.loadData();
-                  modal.destroy();
-                } else {
-                  modal.destroy();
-                }
-              });
+              componentInstance.saveChanges();
             }
           }
         ]
+      });
+
+      modal.afterClose.subscribe((result: boolean) => {
+        if (result) {
+          this.loadData();
+        }
       });
     });
   }

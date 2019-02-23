@@ -61,4 +61,8 @@ export class MaterialStoreService {
   delete(id: number) {
     return this.http.delete(this.baseUrl + 'KhoVatTu/' + id);
   }
+
+  deleteMulti(strIds: string) {
+    return this.http.delete(this.baseUrl + 'KhoVatTu/DeleteAllAsync/' + strIds);
+  }
 }

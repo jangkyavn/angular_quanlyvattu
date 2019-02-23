@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, HostListener } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { NzModalRef } from 'ng-zorro-antd';
 
 import { MaterialStore } from 'src/app/shared/models/material-store.model';
 import { MaterialStoreService } from 'src/app/shared/services/material-store.service';
@@ -16,8 +17,16 @@ export class MaterialStoreAddEditModalComponent implements OnInit {
 
   materialStoreForm: FormGroup;
 
+  @HostListener('window:keydown', ['$event'])
+  onKeyPress($event: KeyboardEvent) {
+    if (($event.ctrlKey || $event.metaKey) && $event.keyCode === 13) {
+      this.saveChanges();
+    }
+  }
+
   constructor(
     private fb: FormBuilder,
+    private modal: NzModalRef,
     private materialStoreService: MaterialStoreService,
     private notify: NotifyService
   ) { }
@@ -32,13 +41,13 @@ export class MaterialStoreAddEditModalComponent implements OnInit {
     this.materialStoreForm = this.fb.group({
       maKho: [null],
       tenKho: [null, [Validators.required]],
-      dienThoai: [null, [Validators.required]],
-      diaChi: [null, [Validators.required]],
+      dienThoai: [null],
+      diaChi: [null],
       ghiChu: [null]
     });
   }
 
-  saveChanges(callBack: (result: boolean) => any = null) {
+  saveChanges() {
     if (this.materialStoreForm.invalid) {
       // tslint:disable-next-line:forin
       for (const i in this.materialStoreForm.controls) {
@@ -54,7 +63,7 @@ export class MaterialStoreAddEditModalComponent implements OnInit {
         if (typeof res === 'boolean') {
           if (res) {
             this.notify.success('Thêm thành công!');
-            callBack(true);
+            this.modal.destroy(true);
           }
         } else {
           if (res === -1) {
@@ -64,18 +73,18 @@ export class MaterialStoreAddEditModalComponent implements OnInit {
       }, error => {
         this.notify.success('Có lỗi xảy ra!');
         console.log('error addMaterialStore');
-        callBack(false);
+        this.modal.destroy(false);
       });
     } else {
       this.materialStoreService.update(materialStore).subscribe((res: any) => {
         if (res) {
           this.notify.success('Sửa thành công!');
-          callBack(true);
+          this.modal.destroy(true);
         }
       }, error => {
         this.notify.success('Có lỗi xảy ra!');
         console.log('error updateMaterialStore');
-        callBack(false);
+        this.modal.destroy(false);
       });
     }
   }

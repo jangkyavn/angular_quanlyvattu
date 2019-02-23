@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd';
 
@@ -16,6 +16,13 @@ import { PagingParams } from 'src/app/shared/params/paging.param';
   styleUrls: ['./material-list.component.scss']
 })
 export class MaterialListComponent implements OnInit {
+  allChecked = false;
+  disabledButton = true;
+  checkedNumber = 0;
+  displayData: Array<Material> = [];
+  operating = false;
+  indeterminate = false;
+
   dataSet = [];
   loading = true;
   isLoadingImport: boolean;
@@ -30,6 +37,13 @@ export class MaterialListComponent implements OnInit {
     sortValue: ''
   };
 
+  @HostListener('window:keydown', ['$event'])
+  onKeyPress($event: KeyboardEvent) {
+    if (($event.ctrlKey || $event.metaKey) && ($event.keyCode === 73 || $event.keyCode === 105)) {
+      this.addNew();
+    }
+  }
+
   constructor(
     private route: ActivatedRoute,
     private modalService: NzModalService,
@@ -42,6 +56,10 @@ export class MaterialListComponent implements OnInit {
       this.pagination = data['materials'].pagination;
       this.dataSet = data['materials'].result;
     });
+  }
+
+  currentPageDataChange($event: Array<Material>): void {
+    this.displayData = $event;
   }
 
   sort(sort: { key: string, value: string }): void {
@@ -60,6 +78,10 @@ export class MaterialListComponent implements OnInit {
         this.loading = false;
         this.pagination = res.pagination;
         this.dataSet = res.result;
+
+        this.indeterminate = false;
+        this.allChecked = false;
+        this.checkedNumber = 0;
       }, error => {
         this.notify.error('Có lỗi xảy ra');
         console.log('error getAllPagingMaterial');
@@ -69,6 +91,20 @@ export class MaterialListComponent implements OnInit {
           this.loadData();
         }
       });
+  }
+
+  refreshStatus(): void {
+    const allChecked = this.displayData.every(value => value.checked === true);
+    const allUnChecked = this.displayData.every(value => !value.checked);
+    this.allChecked = allChecked;
+    this.indeterminate = (!allChecked) && (!allUnChecked);
+    this.disabledButton = !this.dataSet.some(value => value.checked);
+    this.checkedNumber = this.dataSet.filter(value => value.checked).length;
+  }
+
+  checkAll(value: boolean): void {
+    this.displayData.forEach(data => data.checked = value);
+    this.refreshStatus();
   }
 
   addNew() {
@@ -90,17 +126,16 @@ export class MaterialListComponent implements OnInit {
           label: 'Lưu',
           type: 'primary',
           onClick: (componentInstance) => {
-            componentInstance.saveChanges((res: boolean) => {
-              if (res) {
-                this.loadData();
-                modal.destroy();
-              } else {
-                modal.destroy();
-              }
-            });
+            componentInstance.saveChanges();
           }
         }
       ]
+    });
+
+    modal.afterClose.subscribe((result: boolean) => {
+      if (result) {
+        this.loadData();
+      }
     });
   }
 
@@ -124,17 +159,16 @@ export class MaterialListComponent implements OnInit {
             label: 'Lưu',
             type: 'primary',
             onClick: (componentInstance) => {
-              componentInstance.saveChanges((res: boolean) => {
-                if (res) {
-                  this.loadData();
-                  modal.destroy();
-                } else {
-                  modal.destroy();
-                }
-              });
+              componentInstance.saveChanges();
             }
           }
         ]
+      });
+
+      modal.afterClose.subscribe((result: boolean) => {
+        if (result) {
+          this.loadData();
+        }
       });
     });
   }
@@ -142,12 +176,30 @@ export class MaterialListComponent implements OnInit {
   delete(id: number) {
     this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
       this.materialService.delete(id).subscribe((res: boolean) => {
-        this.notify.success('Xóa thành công!');
-        this.loadData();
+        if (res) {
+          this.notify.success('Xóa thành công!');
+          this.loadData();
+        } else {
+          this.notify.warning('Vật tư đang được sử dụng. Không được xóa!');
+        }
       }, _ => {
         this.notify.error('Có lỗi xảy ra');
         console.log('error deleteMaterial');
       });
+    });
+  }
+
+  deleteMulti() {
+    const ids = this.displayData.filter(value => value.checked).map((value: Material) => value.maVatTu);
+
+    this.notify.confirm(`Bạn có chắc chắn muốn xóa ${this.checkedNumber} không?`, () => {
+      this.materialService.deleteMulti(JSON.stringify(ids))
+        .subscribe((res: boolean) => {
+          if (res) {
+            this.notify.success('Xóa thành công');
+            this.loadData();
+          }
+        });
     });
   }
 

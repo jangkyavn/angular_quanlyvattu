@@ -16,41 +16,50 @@
             type="search"></i></button>
       </ng-template>
     </div>
-    <div nz-col nzSpan="8" nzOffset="8" class="text-right">
+    <div nz-col nzSpan="16" class="text-right">
       <nz-button-group>
         <button nz-button nzType="primary" (click)="addNew()">
           <i nz-icon type="plus" theme="outline"></i> Thêm
         </button>
-        <button [disabled]="isLoadingImport" [nzLoading]="isLoadingImport" nz-button nzType="dashed" (click)="fImportExcel.click()">
+        <button [disabled]="isLoadingImport" [nzLoading]="isLoadingImport" nz-button nzType="dashed"
+          (click)="fImportExcel.click()">
           <i nz-icon type="file-excel" theme="outline"></i> Nhập excel
         </button>
         <button [disabled]="isLoadingExport" [nzLoading]="isLoadingExport" nz-button nzType="dashed"
           (click)="exportFile()">
           <i nz-icon type="file-excel" theme="outline"></i> Xuất excel
         </button>
+        <button *ngIf="checkedNumber > 0" nz-button nzType="default" class="btn-danger" (click)="deleteMulti()">
+          <i nz-icon type="delete" theme="outline"></i> Xóa <strong>{{checkedNumber}}</strong> bản ghi
+        </button>
         <input id="fImportExcel" type="file" #fImportExcel (change)="changeFile($event)" style="display: none;">
       </nz-button-group>
     </div>
   </div>
 
-  <nz-table #table nzShowSizeChanger [nzFrontPagination]="false" [nzData]="dataSet" [nzLoading]="loading"
-    [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage" [(nzPageSize)]="pagination.itemsPerPage"
-    [nzNoResult]="'Không tìm thấy kết quả.'" (nzPageIndexChange)="loadData()" (nzPageSizeChange)="loadData(true)"
-    nzShowQuickJumper [nzShowTotal]="rangeTemplate" nzSize="middle">
+  <nz-table #table nzShowSizeChanger [nzShowPagination]="pagination.totalPages > 1" [nzFrontPagination]="false"
+    [nzData]="dataSet" [nzLoading]="loading" [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage"
+    [(nzPageSize)]="pagination.itemsPerPage" [nzNoResult]="'Không tìm thấy kết quả.'"
+    (nzPageIndexChange)="loadData(); refreshStatus(); allChecked = false"
+    (nzPageSizeChange)="loadData(true); refreshStatus(); allChecked = false" nzShowQuickJumper
+    [nzShowTotal]="rangeTemplate" (nzCurrentPageDataChange)="currentPageDataChange($event)">
     <ng-template #rangeTemplate let-range="range" let-total>
       {{range[0]}}-{{range[1]}} của {{total}} bản ghi
     </ng-template>
     <thead (nzSortChange)="sort($event)" nzSingleSort>
       <tr>
+        <th nzWidth="10%" nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
+          (nzCheckedChange)="checkAll($event)"></th>
         <th nzWidth="20%" nzShowSort nzSortKey="tenVT">Tên vật tư</th>
         <th nzWidth="20%" nzShowSort nzSortKey="tenLoaiVatTu">Tên loại vật tư</th>
         <th nzWidth="15%" nzShowSort nzSortKey="tenDVT">Đơn vị tính</th>
-        <th nzWidth="25%" nzShowSort nzSortKey="ghiChu">Ghi chú</th>
-        <th nzWidth="20%">Thao tác</th>
+        <th nzWidth="20%" nzShowSort nzSortKey="ghiChu">Ghi chú</th>
+        <th nzWidth="15%">Thao tác</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let data of table.data">
+        <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus(data)"></td>
         <td>{{data.tenVT}}</td>
         <td>{{data.tenLoaiVatTu}}</td>
         <td>{{data.tenDVT}}</td>

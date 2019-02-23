@@ -61,4 +61,8 @@ export class ProducingCountryService {
   delete(id: number) {
     return this.http.delete(this.baseUrl + 'NuocSanXuat/' + id);
   }
+
+  deleteMulti(strIds: string) {
+    return this.http.delete(this.baseUrl + 'NuocSanXuat/DeleteAllAsync/' + strIds);
+  }
 }

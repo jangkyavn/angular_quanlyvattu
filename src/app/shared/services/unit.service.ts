@@ -61,4 +61,8 @@ export class UnitService {
   delete(id: number) {
     return this.http.delete(this.baseUrl + 'DonViTinh/' + id);
   }
+
+  deleteMulti(strIds: string) {
+    return this.http.delete(this.baseUrl + 'DonViTinh/DeleteAllAsync/' + strIds);
+  }
 }

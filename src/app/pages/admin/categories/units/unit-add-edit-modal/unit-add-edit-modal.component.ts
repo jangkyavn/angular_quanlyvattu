@@ -16,6 +16,7 @@ export class UnitAddEditModalComponent implements OnInit {
   @Input() unit: Unit;
   @Input() isAddNew: boolean;
   unitForm: FormGroup;
+
   @HostListener('window:keydown', ['$event'])
   onKeyPress($event: KeyboardEvent) {
     if (($event.ctrlKey || $event.metaKey) && $event.keyCode === 13) {

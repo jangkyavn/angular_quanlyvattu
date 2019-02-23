@@ -1,12 +1,14 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, HostListener } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { NzModalRef } from 'ng-zorro-antd';
 
-import { Material } from 'src/app/shared/models/material.model';
 import { MaterialService } from 'src/app/shared/services/material.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
 import { MaterialTypeService } from 'src/app/shared/services/material-type.service';
-import { MaterialType } from 'src/app/shared/models/material-type.model';
 import { UnitService } from 'src/app/shared/services/unit.service';
+
+import { Material } from 'src/app/shared/models/material.model';
+import { MaterialType } from 'src/app/shared/models/material-type.model';
 import { Unit } from 'src/app/shared/models/unit.model';
 
 @Component({
@@ -22,8 +24,16 @@ export class MaterialAddEditModalComponent implements OnInit {
 
   materialForm: FormGroup;
 
+  @HostListener('window:keydown', ['$event'])
+  onKeyPress($event: KeyboardEvent) {
+    if (($event.ctrlKey || $event.metaKey) && $event.keyCode === 13) {
+      this.saveChanges();
+    }
+  }
+
   constructor(
     private fb: FormBuilder,
+    private modal: NzModalRef,
     private materialService: MaterialService,
     private materialTypeService: MaterialTypeService,
     private unitService: UnitService,
@@ -48,7 +58,7 @@ export class MaterialAddEditModalComponent implements OnInit {
     });
   }
 
-  saveChanges(callBack: (result: boolean) => any = null) {
+  saveChanges() {
     if (this.materialForm.invalid) {
       // tslint:disable-next-line:forin
       for (const i in this.materialForm.controls) {
@@ -64,7 +74,7 @@ export class MaterialAddEditModalComponent implements OnInit {
         if (typeof res === 'boolean') {
           if (res) {
             this.notify.success('Thêm thành công!');
-            callBack(true);
+            this.modal.destroy(true);
           }
         } else {
           if (res === -1) {
@@ -74,18 +84,18 @@ export class MaterialAddEditModalComponent implements OnInit {
       }, error => {
         this.notify.success('Có lỗi xảy ra!');
         console.log('error addMaterial');
-        callBack(false);
+        this.modal.destroy(false);
       });
     } else {
       this.materialService.update(material).subscribe((res: any) => {
         if (res) {
           this.notify.success('Sửa thành công!');
-          callBack(true);
+          this.modal.destroy(true);
         }
       }, error => {
         this.notify.success('Có lỗi xảy ra!');
         console.log('error updateMaterial');
-        callBack(false);
+        this.modal.destroy(false);
       });
     }
   }

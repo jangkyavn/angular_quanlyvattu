@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd';
 
@@ -16,6 +16,13 @@ import { PagingParams } from 'src/app/shared/params/paging.param';
   styleUrls: ['./unit-list.component.scss']
 })
 export class UnitListComponent implements OnInit {
+  allChecked = false;
+  disabledButton = true;
+  checkedNumber = 0;
+  displayData: Array<Unit> = [];
+  operating = false;
+  indeterminate = false;
+
   dataSet = [];
   loading = true;
   sortValue = null;
@@ -27,6 +34,13 @@ export class UnitListComponent implements OnInit {
     sortKey: '',
     sortValue: ''
   };
+
+  @HostListener('window:keydown', ['$event'])
+  onKeyPress($event: KeyboardEvent) {
+    if (($event.ctrlKey || $event.metaKey) && ($event.keyCode === 73 || $event.keyCode === 105)) {
+      this.addNew();
+    }
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -40,6 +54,10 @@ export class UnitListComponent implements OnInit {
       this.pagination = data['units'].pagination;
       this.dataSet = data['units'].result;
     });
+  }
+
+  currentPageDataChange($event: Array<Unit>): void {
+    this.displayData = $event;
   }
 
   sort(sort: { key: string, value: string }): void {
@@ -58,6 +76,10 @@ export class UnitListComponent implements OnInit {
         this.loading = false;
         this.pagination = res.pagination;
         this.dataSet = res.result;
+
+        this.indeterminate = false;
+        this.allChecked = false;
+        this.checkedNumber = 0;
       }, error => {
         this.notify.error('Có lỗi xảy ra');
         console.log('error getAllPagingUnits');
@@ -67,6 +89,20 @@ export class UnitListComponent implements OnInit {
           this.loadData();
         }
       });
+  }
+
+  refreshStatus(): void {
+    const allChecked = this.displayData.every(value => value.checked === true);
+    const allUnChecked = this.displayData.every(value => !value.checked);
+    this.allChecked = allChecked;
+    this.indeterminate = (!allChecked) && (!allUnChecked);
+    this.disabledButton = !this.dataSet.some(value => value.checked);
+    this.checkedNumber = this.dataSet.filter(value => value.checked).length;
+  }
+
+  checkAll(value: boolean): void {
+    this.displayData.forEach(data => data.checked = value);
+    this.refreshStatus();
   }
 
   addNew() {
@@ -152,6 +188,20 @@ export class UnitListComponent implements OnInit {
         this.notify.error('Có lỗi xảy ra');
         console.log('error deleteUnit');
       });
+    });
+  }
+
+  deleteMulti() {
+    const ids = this.displayData.filter(value => value.checked).map((value: Unit) => value.maDVT);
+
+    this.notify.confirm(`Bạn có chắc chắn muốn xóa ${this.checkedNumber} không?`, () => {
+      this.unitService.deleteMulti(JSON.stringify(ids))
+        .subscribe((res: boolean) => {
+          if (res) {
+            this.notify.success('Xóa thành công');
+            this.loadData();
+          }
+        });
     });
   }
 
