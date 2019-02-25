@@ -54,4 +54,8 @@ export class AdminComponent implements OnInit {
     this.authService.currentUser = null;
     this.router.navigate(['/']);
   }
+
+  collapseMenu() {
+    //this.isCollapsed = true;
+  }
 }

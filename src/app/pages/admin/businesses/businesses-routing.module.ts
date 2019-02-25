@@ -12,6 +12,9 @@ import { UpdateImportMaterialsComponent } from './update-import-materials/update
 import { ImportMaterialDetailResolver } from 'src/app/shared/resolvers/import-material-detail.resolver';
 import { UpdateExportMaterialsComponent } from './update-export-materials/update-export-materials.component';
 import { ExportMaterialDetailResolver } from 'src/app/shared/resolvers/export-material-detail.resolver';
+import { SearchComponent } from './search/search.component';
+import { MaterialListResolver } from 'src/app/shared/resolvers/material-list.resolver';
+import { SearchDetailComponent } from './search-detail/search-detail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'vat-tu-ton-kho', pathMatch: 'full' },
@@ -40,6 +43,13 @@ const routes: Routes = [
   {
     path: 'sua-phieu-xuat/:id', component: UpdateExportMaterialsComponent,
     resolve: { 'export-material': ExportMaterialDetailResolver }
+  },
+  {
+    path: 'tim-kiem-vat-tu', component: SearchComponent,
+    resolve: { 'materials': MaterialListResolver }
+  },
+  {
+    path: 'tim-kiem-vat-tu-chi-tiet/:id', component: SearchDetailComponent
   }
 ];
 

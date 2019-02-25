@@ -200,7 +200,12 @@ export class MaterialListComponent implements OnInit {
           if (res) {
             this.notify.success('Xóa thành công');
             this.loadData();
+          } else {
+            this.notify.warning('Có tên vật tư đã được sử dụng. Không được xóa!');
           }
+        }, _ => {
+          this.notify.error('Có lỗi xảy ra');
+          console.log('error deleteMultiMaterial');
         });
     });
   }

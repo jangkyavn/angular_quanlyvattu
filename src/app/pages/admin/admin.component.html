@@ -133,7 +133,7 @@
               <li nz-menu-item><i nz-icon type="book" theme="outline"></i>Phiếu kiểm kê kho</li>
             </ul>
           </li>
-          <li nz-menu-item>
+          <li [routerLink]="['/admin/nghiep-vu/tim-kiem-vat-tu']" nz-menu-item (click)="collapseMenu()">
             <i nz-icon type="search" theme="outline"></i>Tìm kiếm vật tư
           </li>
         </ul>
@@ -189,7 +189,7 @@
       <router-outlet></router-outlet>
       <nz-back-top></nz-back-top>
     </nz-content>
-    <nz-footer style="text-align: center;">Copyright © 2019 - Hỗ trợ bởi <a class="footer-link" href="http://absoft.com.vn"
-        target="_blank">Absoft</a></nz-footer>
+    <nz-footer style="text-align: center;">Copyright © 2019 - Hỗ trợ bởi <a class="footer-link"
+        href="http://absoft.com.vn" target="_blank">Absoft</a></nz-footer>
   </nz-layout>
 </nz-layout>

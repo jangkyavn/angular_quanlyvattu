@@ -79,10 +79,13 @@
     <nz-form-item>
       <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="soLuong">Số lượng</nz-form-label>
       <nz-form-control [nzSm]="16" [nzXs]="24">
-        <nz-input-number formControlName="soLuong" [nzMin]="1" [nzStep]="1"></nz-input-number>
+        <nz-input-number formControlName="soLuong" [nzMin]="1" [nzStep]="1" (ngModelChange)="checkQuantity($event)"></nz-input-number>
         <nz-form-explain *ngIf="importDetailForm.get('soLuong').dirty && importDetailForm.get('soLuong').errors">
           <ng-container *ngIf="importDetailForm.get('soLuong').hasError('required')">
             Vui lòng nhập số lượng!
+          </ng-container>
+          <ng-container *ngIf="importDetailForm.get('soLuong').hasError('invalid')">
+            Vui lòng nhập số lượng >= {{ importDetailForm.get('soLuong').getError('quantity') }} (số lượng xuất)
           </ng-container>
         </nz-form-explain>
       </nz-form-control>
@@ -149,10 +152,13 @@
     <nz-form-item>
       <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="soLuong">Số lượng</nz-form-label>
       <nz-form-control [nzSm]="16" [nzXs]="24">
-        <nz-input-number formControlName="soLuong" [nzMin]="1" [nzStep]="1"></nz-input-number>
+        <nz-input-number formControlName="soLuong" [nzMin]="1" [nzStep]="1" (ngModelChange)="checkQuantity($event)"></nz-input-number>
         <nz-form-explain *ngIf="importDetailForm.get('soLuong').dirty && importDetailForm.get('soLuong').errors">
           <ng-container *ngIf="importDetailForm.get('soLuong').hasError('required')">
             Vui lòng nhập số lượng!
+          </ng-container>
+          <ng-container *ngIf="importDetailForm.get('soLuong').hasError('invalid')">
+            Vui lòng nhập số lượng >= {{ importDetailForm.get('soLuong').getError('quantity') }} (số lượng xuất)
           </ng-container>
         </nz-form-explain>
       </nz-form-control>
@@ -222,10 +228,13 @@
     <nz-form-item>
       <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="soLuong">Số lượng</nz-form-label>
       <nz-form-control [nzSm]="16" [nzXs]="24">
-        <nz-input-number formControlName="soLuong" [nzMin]="1" [nzStep]="1"></nz-input-number>
+        <nz-input-number formControlName="soLuong" [nzMin]="1" [nzStep]="1" (ngModelChange)="checkQuantity($event)"></nz-input-number>
         <nz-form-explain *ngIf="importDetailForm.get('soLuong').dirty && importDetailForm.get('soLuong').errors">
           <ng-container *ngIf="importDetailForm.get('soLuong').hasError('required')">
             Vui lòng nhập số lượng!
+          </ng-container>
+          <ng-container *ngIf="importDetailForm.get('soLuong').hasError('invalid')">
+            Vui lòng nhập số lượng >= {{ importDetailForm.get('soLuong').getError('quantity') }} (số lượng xuất)
           </ng-container>
         </nz-form-explain>
       </nz-form-control>
@@ -274,10 +283,13 @@
     <nz-form-item>
       <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="soLuong">Số lượng</nz-form-label>
       <nz-form-control [nzSm]="16" [nzXs]="24">
-        <nz-input-number formControlName="soLuong" [nzMin]="1" [nzStep]="1"></nz-input-number>
+        <nz-input-number formControlName="soLuong" [nzMin]="1" [nzStep]="1" (ngModelChange)="checkQuantity($event)"></nz-input-number>
         <nz-form-explain *ngIf="importDetailForm.get('soLuong').dirty && importDetailForm.get('soLuong').errors">
           <ng-container *ngIf="importDetailForm.get('soLuong').hasError('required')">
             Vui lòng nhập số lượng!
+          </ng-container>
+          <ng-container *ngIf="importDetailForm.get('soLuong').hasError('invalid')">
+            Vui lòng nhập số lượng >= {{ importDetailForm.get('soLuong').getError('quantity') }} (số lượng xuất)
           </ng-container>
         </nz-form-explain>
       </nz-form-control>
@@ -326,10 +338,13 @@
     <nz-form-item>
       <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="soLuong">Số lượng</nz-form-label>
       <nz-form-control [nzSm]="16" [nzXs]="24">
-        <nz-input-number formControlName="soLuong" [nzMin]="1" [nzStep]="1"></nz-input-number>
+        <nz-input-number formControlName="soLuong" [nzMin]="1" [nzStep]="1" (ngModelChange)="checkQuantity($event)"></nz-input-number>
         <nz-form-explain *ngIf="importDetailForm.get('soLuong').dirty && importDetailForm.get('soLuong').errors">
           <ng-container *ngIf="importDetailForm.get('soLuong').hasError('required')">
             Vui lòng nhập số lượng!
+          </ng-container>
+          <ng-container *ngIf="importDetailForm.get('soLuong').hasError('invalid')">
+            Vui lòng nhập số lượng >= {{ importDetailForm.get('soLuong').getError('quantity') }} (số lượng xuất)
           </ng-container>
         </nz-form-explain>
       </nz-form-control>
@@ -381,10 +396,13 @@
     <nz-form-item>
       <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="soLuong">Số lượng</nz-form-label>
       <nz-form-control [nzSm]="16" [nzXs]="24">
-        <nz-input-number formControlName="soLuong" [nzMin]="1" [nzStep]="1"></nz-input-number>
+        <nz-input-number formControlName="soLuong" [nzMin]="1" [nzStep]="1" (ngModelChange)="checkQuantity($event)"></nz-input-number>
         <nz-form-explain *ngIf="importDetailForm.get('soLuong').dirty && importDetailForm.get('soLuong').errors">
           <ng-container *ngIf="importDetailForm.get('soLuong').hasError('required')">
             Vui lòng nhập số lượng!
+          </ng-container>
+          <ng-container *ngIf="importDetailForm.get('soLuong').hasError('invalid')">
+            Vui lòng nhập số lượng >= {{ importDetailForm.get('soLuong').getError('quantity') }} (số lượng xuất)
           </ng-container>
         </nz-form-explain>
       </nz-form-control>

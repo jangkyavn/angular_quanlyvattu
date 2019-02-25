@@ -191,7 +191,10 @@ export class ImportMaterialDetailModalComponent implements OnInit {
       return;
     }
 
-    const importDetail: ImportMaterialDetail = Object.assign({}, this.importDetailForm.value);
+
+
+
+    const importDetail: ImportMaterialDetail = Object.assign({}, this.importDetailForm.getRawValue());
     const importDetailParams = {
       importDetail,
       importId: this.importMaterialId,
@@ -245,7 +248,7 @@ export class ImportMaterialDetailModalComponent implements OnInit {
 
   checkQuantity(value) {
     if (!this.isAddNew) {
-      const { maPhieuNhap, maVatTu } = this.importDetailForm.value;
+      const { maPhieuNhap, maVatTu } = this.importDetailForm.getRawValue();
       const maKho = this.materialStoreId;
       const soLuongControl = this.importDetailForm.get(`soLuong`);
       soLuongControl.setAsyncValidators(checkImportQuantityValidator(this.importMaterialService,

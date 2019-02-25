@@ -44,6 +44,9 @@ import {
 import {
   ExportViewDetailModalComponent
 } from './exports/export-view-detail-modal/export-view-detail-modal.component';
+import { SearchComponent } from './search/search.component';
+import { MaterialListResolver } from 'src/app/shared/resolvers/material-list.resolver';
+import { SearchDetailComponent } from './search-detail/search-detail.component';
 
 @NgModule({
   declarations: [BusinessesComponent,
@@ -58,7 +61,9 @@ import {
     PageMaintenanceComponent,
     ExportMaterialDetailModalComponent,
     ImportViewDetailModalComponent,
-    ExportViewDetailModalComponent
+    ExportViewDetailModalComponent,
+    SearchComponent,
+    SearchDetailComponent
   ],
   imports: [
     CommonModule,
@@ -75,7 +80,8 @@ import {
     ImportMaterialListResolver,
     ImportMaterialDetailResolver,
     ExportMaterialListResolver,
-    ExportMaterialDetailResolver
+    ExportMaterialDetailResolver,
+    MaterialListResolver
   ],
   entryComponents: [
     ImportMaterialDetailModalComponent,

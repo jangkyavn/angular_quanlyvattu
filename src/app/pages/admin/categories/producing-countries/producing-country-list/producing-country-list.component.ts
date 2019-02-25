@@ -199,7 +199,12 @@ export class ProducingCountryListComponent implements OnInit {
           if (res) {
             this.notify.success('Xóa thành công');
             this.loadData();
+          } else {
+            this.notify.warning('Có tên nước đã được sử dụng. Không được xóa!');
           }
+        }, _ => {
+          this.notify.error('Có lỗi xảy ra');
+          console.log('error deleteMultiProducingCountry');
         });
     });
   }
