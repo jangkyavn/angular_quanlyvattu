@@ -47,6 +47,7 @@ import {
 import { SearchComponent } from './search/search.component';
 import { MaterialListResolver } from 'src/app/shared/resolvers/material-list.resolver';
 import { SearchDetailComponent } from './search-detail/search-detail.component';
+import { MaterialDetailResolver } from 'src/app/shared/resolvers/material-detail.resolver';
 
 @NgModule({
   declarations: [BusinessesComponent,
@@ -81,7 +82,8 @@ import { SearchDetailComponent } from './search-detail/search-detail.component';
     ImportMaterialDetailResolver,
     ExportMaterialListResolver,
     ExportMaterialDetailResolver,
-    MaterialListResolver
+    MaterialListResolver,
+    MaterialDetailResolver
   ],
   entryComponents: [
     ImportMaterialDetailModalComponent,

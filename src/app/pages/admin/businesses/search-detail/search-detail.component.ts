@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+import { Material } from 'src/app/shared/models/material.model';
 
 @Component({
   selector: 'app-search-detail',
@@ -6,10 +9,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./search-detail.component.scss']
 })
 export class SearchDetailComponent implements OnInit {
+  material: Material;
 
-  constructor() { }
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.route.data.subscribe(data => {
+      this.material = data['material'];
+    });
   }
-
 }

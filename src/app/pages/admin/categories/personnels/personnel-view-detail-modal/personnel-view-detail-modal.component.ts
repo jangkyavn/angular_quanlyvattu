@@ -11,7 +11,5 @@ export class PersonnelViewDetailModalComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() { }
 }

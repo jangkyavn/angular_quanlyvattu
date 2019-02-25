@@ -1,58 +1,139 @@
-<table>
+<table style="width: 100%;">
   <tr>
-    <td style="width: 30%;">Họ tên:</td>
-    <td style="width: 70%;">{{personnel.hoTen}}</td>
+    <td style="width: 10%;">
+      <nz-form-label nzRequired nzFor="hoTen">Họ tên</nz-form-label>
+    </td>
+    <td style="width: 40%;">
+      <nz-form-control>
+        <input readonly nz-input [(ngModel)]="personnel.hoTen" id="hoTen" autofocus>
+      </nz-form-control>
+    </td>
+    <td style="width: 10%;">
+      <nz-form-label nzRequired nzFor="ngaySinh">Ngày sinh</nz-form-label>
+    </td>
+    <td style="width: 40%;">
+      <nz-form-control>
+        <input readonly nz-input [(ngModel)]="personnel.ngaySinh" id="ngaySinh" />
+      </nz-form-control>
+    </td>
   </tr>
   <tr>
-    <td>Ngày sinh:</td>
-    <td>{{personnel.ngaySinh | date:'dd/MM/yyyy'}}</td>
+    <td>
+      <nz-form-label nzRequired nzFor="tinhThanhPho">Tỉnh/thành phố</nz-form-label>
+    </td>
+    <td>
+      <nz-form-control>
+        <input readonly nz-input [(ngModel)]="personnel.queQuan.split(',')[1]" id="tinhThanhPho" />
+      </nz-form-control>
+    </td>
+    <td>
+      <nz-form-label nzRequired nzFor="huyenQuan">Huyện/quận</nz-form-label>
+    </td>
+    <td>
+      <nz-form-control>
+        <input readonly nz-input [(ngModel)]="personnel.queQuan.split(',')[0]" id="huyenQuan" />
+      </nz-form-control>
+    </td>
   </tr>
   <tr>
-    <td>Quê quá:</td>
-    <td>{{personnel.queQuan}}</td>
+    <td>
+      <nz-form-label nzRequired nzFor="danToc">Dân tộc</nz-form-label>
+    </td>
+    <td>
+      <nz-form-control>
+        <input readonly nz-input [(ngModel)]="personnel.danToc" id="danToc" />
+      </nz-form-control>
+    </td>
+    <td>
+      <nz-form-label nzFor="tonGiao">Tôn giáo</nz-form-label>
+    </td>
+    <td>
+      <nz-form-control>
+        <input readonly nz-input [ngModel]="personnel.tonGiao.toString() === '1' ? 'Có' : 'Không'" id="tonGiao" />
+      </nz-form-control>
+    </td>
   </tr>
   <tr>
-    <td>Dân tộc:</td>
-    <td>{{personnel.danToc}}</td>
+    <td>
+      <nz-form-label nzFor="capBacSHSQ">Cấp bậc SHSQ</nz-form-label>
+    </td>
+    <td>
+      <nz-form-control>
+        <input readonly nz-input [(ngModel)]="personnel.capBacSHSQ" id="capBacSHSQ" />
+      </nz-form-control>
+    </td>
+    <td>
+      <nz-form-label nzFor="chucVu">Chức vụ</nz-form-label>
+    </td>
+    <td>
+      <nz-form-control>
+        <input readonly nz-input [(ngModel)]="personnel.chucVu" id="chucVu" />
+      </nz-form-control>
+    </td>
   </tr>
   <tr>
-    <td>Tôn giáo:</td>
-    <td>{{personnel.tonGiao.toString() === '1' ? 'Có' : 'Không'}}</td>
+    <td>
+      <nz-form-label nzFor="ngayNhapNguTuyenDung">Ngày NN/TD</nz-form-label>
+    </td>
+    <td>
+      <nz-form-control>
+        <input readonly nz-input [ngModel]="personnel.ngayNhapNguTuyenDung | date:'MM/yyyy'"
+          id="ngayNhapNguTuyenDung" />
+      </nz-form-control>
+    </td>
+    <td>
+      <nz-form-label nzFor="dang">Đảng</nz-form-label>
+    </td>
+    <td>
+      <nz-form-control>
+        <input readonly nz-input [(ngModel)]="personnel.dang" id="dang" />
+      </nz-form-control>
+    </td>
   </tr>
   <tr>
-    <td>Cấp bậc SHSQ:</td>
-    <td>{{personnel.capBacSHSQ}}</td>
+    <td>
+      <nz-form-label nzFor="xuatThan">Xuất thân</nz-form-label>
+    </td>
+    <td>
+      <nz-form-control>
+        <input readonly nz-input [(ngModel)]="personnel.xuatThan" id="xuatThan" />
+      </nz-form-control>
+    </td>
+    <td>
+      <nz-form-label nzFor="banThan">Bản thân</nz-form-label>
+    </td>
+    <td>
+      <nz-form-control>
+        <input readonly nz-input [(ngModel)]="personnel.banThan" id="banThan" />
+      </nz-form-control>
+    </td>
   </tr>
   <tr>
-    <td>Chức vụ:</td>
-    <td>{{personnel.chucVu}}</td>
+    <td>
+      <nz-form-label nzFor="quaTrinhHocTap">Quá trình học tập</nz-form-label>
+    </td>
+    <td>
+      <nz-form-control>
+        <textarea rows="5" readonly nz-input [(ngModel)]="personnel.quaTrinhHocTap" id="quaTrinhHocTap"></textarea>
+      </nz-form-control>
+    </td>
+    <td>
+      <nz-form-label nzFor="thanNhan">Thân nhân</nz-form-label>
+    </td>
+    <td>
+      <nz-form-control>
+        <textarea rows="5" readonly nz-input [(ngModel)]="personnel.thanNhan" id="thanNhan"></textarea>
+      </nz-form-control>
+    </td>
   </tr>
   <tr>
-    <td>Ngày NN/TD:</td>
-    <td>{{personnel.ngayNhapNguTuyenDung}}</td>
-  </tr>
-  <tr>
-    <td>Đảng:</td>
-    <td>{{personnel.dang}}</td>
-  </tr>
-  <tr>
-    <td>Xuất thân:</td>
-    <td>{{personnel.xuatThan}}</td>
-  </tr>
-  <tr>
-    <td>Bản thân:</td>
-    <td>{{personnel.banThan}}</td>
-  </tr>
-  <tr>
-    <td>Quá trình học tập:</td>
-    <td>{{personnel.quaTrinhHocTap}}</td>
-  </tr>
-  <tr>
-    <td>Thân nhân:</td>
-    <td>{{personnel.thanNhan}}</td>
-  </tr>
-  <tr>
-    <td>Ghi chú:</td>
-    <td>{{personnel.ghiChu}}</td>
+    <td>
+      <nz-form-label nzFor="ghiChu">Ghi chú</nz-form-label>
+    </td>
+    <td colspan="3">
+      <nz-form-control>
+          <textarea readonly nz-input [(ngModel)]="personnel.ghiChu" id="ghiChu"></textarea>
+      </nz-form-control>
+    </td>
   </tr>
 </table>

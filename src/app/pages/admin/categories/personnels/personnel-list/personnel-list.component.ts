@@ -153,7 +153,7 @@ export class PersonnelListComponent implements OnInit {
       nzContent: PersonnelViewDetailModalComponent,
       nzMaskClosable: false,
       nzClosable: false,
-      nzWidth: 700,
+      nzWidth: 880,
       nzComponentParams: {
         personnel
       },

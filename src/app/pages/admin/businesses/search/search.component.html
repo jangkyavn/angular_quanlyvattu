@@ -17,7 +17,7 @@
     </div>
     <div nz-col nzSpan="16" class="text-right">
       <nz-button-group>
-       
+
       </nz-button-group>
     </div>
   </div>
@@ -46,7 +46,8 @@
         <td>{{data.ghiChu || 'Không có'}}</td>
         <td>
           <nz-button-group>
-            <button [routerLink]="['/admin/nghiep-vu/tim-kiem-vat-tu-chi-tiet', data.maVatTu]" nz-button nzType="default" nzSize="small" class="btn-primary" nz-tooltip nzTitle="Xem">
+            <button [routerLink]="['/admin/nghiep-vu/tim-kiem-vat-tu-chi-tiet', data.maVatTu]" nz-button
+              nzType="default" nzSize="small" class="btn-primary" nz-tooltip nzTitle="Xem" (click)="collapseMenu()">
               <i nz-icon type="eye" theme="outline"></i>
             </button>
           </nz-button-group>

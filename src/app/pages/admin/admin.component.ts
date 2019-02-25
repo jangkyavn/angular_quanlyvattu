@@ -4,6 +4,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 
 import { AuthService } from '../../shared/services/auth.service';
 import { User } from '../../shared/models/user.model';
+import { UtilitiesService } from 'src/app/shared/services/utilities.service';
 
 @Component({
   selector: 'app-admin',
@@ -24,7 +25,8 @@ export class AdminComponent implements OnInit {
 
   constructor(
     private router: Router,
-    public authService: AuthService) { }
+    public authService: AuthService,
+    private utilities: UtilitiesService) { }
 
   ngOnInit() {
     const token = localStorage.getItem('token');
@@ -37,12 +39,16 @@ export class AdminComponent implements OnInit {
     if (user) {
       this.authService.currentUser = user;
     }
+
+    this.utilities.currentCollapsed.subscribe((res: boolean) => {
+      this.isCollapsed = res;
+    });
   }
 
   openHandler(value: string): void {
     for (const key in this.openMap) {
       if (key !== value) {
-        this.openMap[ key ] = false;
+        this.openMap[key] = false;
       }
     }
   }
@@ -53,9 +59,5 @@ export class AdminComponent implements OnInit {
     this.authService.decodedToken = null;
     this.authService.currentUser = null;
     this.router.navigate(['/']);
-  }
-
-  collapseMenu() {
-    //this.isCollapsed = true;
   }
 }

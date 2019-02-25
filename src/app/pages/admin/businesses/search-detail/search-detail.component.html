@@ -1,3 +1,48 @@
-<p>
-  search-detail works!
-</p>
+<nz-breadcrumb style="margin:16px 0;">
+  <nz-breadcrumb-item>Trang chủ</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Nghiệp vụ</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Tìm kiếm vật tư chi tiết</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div style="padding:24px; background: #fff; min-height: 70vh">
+  <nz-card style="width:100%;" nzTitle="Vật tư">
+    <table style="width:100%;">
+      <thead>
+        <tr>
+          <th style="width: 30%;">Vật tư</th>
+          <th style="width: 25%;">Loại vật tư</th>
+          <th style="width: 20%;">Đơn vị tính</th>
+          <th style="width: 25%;">Ghi chú</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{material.tenVT}}</td>
+          <td>{{material.tenLoaiVatTu}}</td>
+          <td>{{material.tenDVT || 'Không có'}}</td>
+          <td>{{material.ghiChu || 'Không có'}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </nz-card>
+
+  <div nz-row>
+    <div nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="12" nzXl="12">
+      <nz-card style="width:100%;" nzTitle="Nhập vật tư">
+        
+      </nz-card>
+    </div>
+    <div nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="12" nzXl="12">
+      <nz-card style="width:100%;" nzTitle="Xuất vật tư">
+        
+      </nz-card>
+    </div>
+  </div>
+  <div nz-row>
+    <div nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="12" nzXl="12">
+      <nz-card style="width:100%;" nzTitle="Vật tư tồn kho">
+        
+      </nz-card>
+    </div>
+  </div>
+</div>

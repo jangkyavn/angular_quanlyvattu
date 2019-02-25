@@ -15,6 +15,7 @@ import { ExportMaterialDetailResolver } from 'src/app/shared/resolvers/export-ma
 import { SearchComponent } from './search/search.component';
 import { MaterialListResolver } from 'src/app/shared/resolvers/material-list.resolver';
 import { SearchDetailComponent } from './search-detail/search-detail.component';
+import { MaterialDetailResolver } from 'src/app/shared/resolvers/material-detail.resolver';
 
 const routes: Routes = [
   { path: '', redirectTo: 'vat-tu-ton-kho', pathMatch: 'full' },
@@ -49,7 +50,10 @@ const routes: Routes = [
     resolve: { 'materials': MaterialListResolver }
   },
   {
-    path: 'tim-kiem-vat-tu-chi-tiet/:id', component: SearchDetailComponent
+    path: 'tim-kiem-vat-tu-chi-tiet/:id', component: SearchDetailComponent,
+    resolve: {
+      'material': MaterialDetailResolver
+    }
   }
 ];
 
