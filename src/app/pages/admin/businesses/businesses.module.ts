@@ -48,6 +48,9 @@ import { SearchComponent } from './search/search.component';
 import { MaterialListResolver } from 'src/app/shared/resolvers/material-list.resolver';
 import { SearchDetailComponent } from './search-detail/search-detail.component';
 import { MaterialDetailResolver } from 'src/app/shared/resolvers/material-detail.resolver';
+import { CardImportDetailComponent } from './search-detail/card-import-detail/card-import-detail.component';
+import { CardExportDetailComponent } from './search-detail/card-export-detail/card-export-detail.component';
+import { CardInventoryComponent } from './search-detail/card-inventory/card-inventory.component';
 
 @NgModule({
   declarations: [BusinessesComponent,
@@ -64,7 +67,10 @@ import { MaterialDetailResolver } from 'src/app/shared/resolvers/material-detail
     ImportViewDetailModalComponent,
     ExportViewDetailModalComponent,
     SearchComponent,
-    SearchDetailComponent
+    SearchDetailComponent,
+    CardImportDetailComponent,
+    CardExportDetailComponent,
+    CardInventoryComponent
   ],
   imports: [
     CommonModule,

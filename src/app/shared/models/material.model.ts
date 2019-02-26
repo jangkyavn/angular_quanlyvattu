@@ -7,4 +7,6 @@ export interface Material {
     tenDVT?: string;
     ghiChu?: string;
     checked?: boolean;
+
+    tenHM?: string;
 }

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, HostListener } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd';
 
 import { ImportMaterialService } from 'src/app/shared/services/import-material.service';
@@ -36,8 +36,16 @@ export class ImportListComponent implements OnInit {
     toDate: ''
   };
 
+  @HostListener('window:keydown', ['$event'])
+  onKeyPress($event: KeyboardEvent) {
+    if (($event.ctrlKey || $event.metaKey) && ($event.keyCode === 73 || $event.keyCode === 105)) {
+      this.router.navigate(['/admin/nghiep-vu/tao-phieu-nhap']);
+    }
+  }
+
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private modalService: NzModalService,
     private importMaterialService: ImportMaterialService,
     private notify: NotifyService) { }

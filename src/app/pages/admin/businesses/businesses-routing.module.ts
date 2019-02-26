@@ -51,9 +51,7 @@ const routes: Routes = [
   },
   {
     path: 'tim-kiem-vat-tu-chi-tiet/:id', component: SearchDetailComponent,
-    resolve: {
-      'material': MaterialDetailResolver
-    }
+    resolve: { 'material': MaterialDetailResolver }
   }
 ];
 

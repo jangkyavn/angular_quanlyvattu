@@ -1,0 +1,24 @@
+<nz-card style="width:100%;" nzTitle="Kho vật tư">
+  <nz-table #table nzShowSizeChanger [nzFrontPagination]="false" [nzData]="dataSet"
+    [nzLoading]="isLoading" [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage"
+    [(nzPageSize)]="pagination.itemsPerPage" [nzNoResult]="'Không tìm thấy kết quả.'" (nzPageIndexChange)="loadData()"
+    (nzPageSizeChange)="loadData(true)" nzShowQuickJumper [nzShowTotal]="rangeTemplate" nzBordered nzSize="middle">
+    <ng-template #rangeTemplate let-range="range" let-total>
+      {{range[0]}}-{{range[1]}} của {{total}} bản ghi
+    </ng-template>
+    <thead (nzSortChange)="sort($event)" nzSingleSort>
+      <tr>
+        <th nzWidth="45%" nzShowSort nzSortKey="tenKho">Tên kho</th>
+        <th nzWidth="30%" nzShowSort nzSortKey="maPhieuNhap">Mã phiếu nhập</th>
+        <th nzWidth="25%" nzShowSort nzSortKey="soLuongTon">Số lượng tồn</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of table.data">
+        <td>{{data.tenKho}}</td>
+        <td class="text-center">{{data.maPhieuNhap}}</td>
+        <td class="text-center">{{data.soLuongTon}}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>

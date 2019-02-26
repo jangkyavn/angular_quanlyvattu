@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <nz-table #table nzShowSizeChanger [nzShowPagination]="pagination.totalPages > 1" [nzFrontPagination]="false"
+  <nz-table #table nzShowSizeChanger [nzFrontPagination]="false"
     [nzData]="dataSet" [nzLoading]="loading" [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage"
     [(nzPageSize)]="pagination.itemsPerPage" [nzNoResult]="'Không tìm thấy kết quả.'" (nzPageIndexChange)="loadData()"
     (nzPageSizeChange)="loadData(true)" nzShowQuickJumper [nzShowTotal]="rangeTemplate">
