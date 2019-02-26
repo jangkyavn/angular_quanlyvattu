@@ -61,4 +61,10 @@ export class CardInventoryComponent implements OnInit {
         console.log('error getAllPagingInventoriesByMaterialId');
       });
   }
+
+  search(keyword: string) {
+    this.pagingParams.keyword = keyword;
+
+    this.loadData(true);
+  }
 }

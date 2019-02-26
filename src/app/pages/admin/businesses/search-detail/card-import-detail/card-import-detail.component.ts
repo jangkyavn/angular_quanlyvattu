@@ -14,6 +14,7 @@ export class CardImportDetailComponent implements OnInit {
   dataSet = [];
   isLoading: boolean;
   materialId: any;
+  totalAmountAfterDiscount: any;
 
   pagination: Pagination = {
     currentPage: 1,
@@ -60,5 +61,11 @@ export class CardImportDetailComponent implements OnInit {
         this.notify.error('Có lỗi xảy ra');
         console.log('error getAllPagingImportDetaislByMaterialId');
       });
+  }
+
+  search(keyword: string) {
+    this.pagingParams.keyword = keyword;
+
+    this.loadData(true);
   }
 }

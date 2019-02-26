@@ -52,18 +52,20 @@
     </ng-template>
     <thead (nzSortChange)="sort($event)" nzSingleSort>
       <tr>
-        <th nzWidth="14%" nzShowSort nzSortKey="tenKho">Tên kho</th>
-        <th nzWidth="18%" nzShowSort nzSortKey="teHM">Hạng mục</th>
+        <th nzWidth="10%" nzShowSort nzSortKey="maPhieuNhap">Mã PN</th>
+        <th nzWidth="12%" nzShowSort nzSortKey="tenKho">Tên kho</th>
+        <th nzWidth="14%" nzShowSort nzSortKey="teHM">Hạng mục</th>
         <th nzWidth="10%" nzShowSort nzSortKey="ngayNhap">Ngày nhập</th>
         <th nzWidth="10%" nzShowSort nzSortKey="tongSoLuong">Tổng lượng</th>
-        <th nzWidth="12%" nzShowSort nzSortKey="tongSoTien">Tổng tiền</th>
+        <th nzWidth="10%" nzShowSort nzSortKey="tongSoTien">Tổng tiền</th>
         <th nzWidth="10%" nzShowSort nzSortKey="chietKhau">Chiết khấu</th>
-        <th nzWidth="12%" nzShowSort nzSortKey="thanhTien">Giá trị thực</th>
+        <th nzWidth="10%" nzShowSort nzSortKey="thanhTien">Giá trị thực</th>
         <th nzWidth="14%"></th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let data of table.data">
+        <td class="text-center">{{data.maPhieuNhap}}</td>
         <td>{{data.tenKho}}</td>
         <td>{{data.tenHM}}</td>
         <td>{{data.ngayNhap | date:'dd/MM/yyyy'}}</td>
@@ -77,7 +79,8 @@
               [routerLink]="['/admin/nghiep-vu/sua-phieu-nhap', data.maPhieuNhap]">
               <i nz-icon type="edit" theme="outline"></i>
             </button>
-            <button nz-button nzType="default" class="btn-primary" nz-tooltip nzTitle="Xem" (click)="view(data.maPhieuNhap)">
+            <button nz-button nzType="default" class="btn-primary" nz-tooltip nzTitle="Xem"
+              (click)="view(data.maPhieuNhap)">
               <i nz-icon type="eye" theme="outline"></i>
             </button>
             <button nz-button nzType="default" class="btn-danger" nz-tooltip nzTitle="Xóa"

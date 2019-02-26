@@ -6,6 +6,6 @@ th {
     text-align: center !important;
 }
 
-td {
-    padding: 0 10px 10px 10px;
+:host ::ng-deep .ant-card-body {
+    padding: 10px !important;
 }

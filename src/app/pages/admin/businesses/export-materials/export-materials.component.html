@@ -10,73 +10,76 @@
     <nz-card style="width:100%;" nzTitle="Xuất vật tư">
       <table style="width: 100%;">
         <tr>
-          <td style="width: 10%;">
-            <nz-form-label nzRequired nzFor="maKho">Kho hàng</nz-form-label>
+          <td style="width: 50%;">
+            <nz-form-item>
+              <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzFor="ngayNhap">Ngày nhập</nz-form-label>
+              <nz-form-control [nzSm]="16" [nzXs]="24">
+                <input type="date" nz-input formControlName="ngayNhap" id="ngayNhap" />
+                <nz-form-explain
+                  *ngIf="exportMaterialForm.get('ngayNhap').dirty && exportMaterialForm.get('ngayNhap').errors">
+                  <ng-container *ngIf="exportMaterialForm.get('ngayNhap').hasError('required')">
+                    Vui lòng chọn ngày xuất!
+                  </ng-container>
+                </nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
           </td>
-          <td style="width: 20%">
-            <nz-form-control>
-              <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn kho hàng" formControlName="maKho" id="maKho">
-                <nz-option *ngFor="let item of materialStores" [nzValue]="item.maKho" [nzLabel]="item.tenKho">
-                </nz-option>
-              </nz-select>
-              <nz-form-explain *ngIf="exportMaterialForm.get('maKho').dirty && exportMaterialForm.get('maKho').errors">
-                <ng-container *ngIf="exportMaterialForm.get('maKho').hasError('required')">
-                  Vui lòng chọn kho hàng!
-                </ng-container>
-              </nz-form-explain>
-            </nz-form-control>
-          </td>
-          <td style="width: 10%;">
-            <nz-form-label nzRequired nzFor="maNS">Nhân sự</nz-form-label>
-          </td>
-          <td style="width: 30%;">
-            <nz-form-control>
-              <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn nhân sự" formControlName="maNS" id="maNS">
-                <nz-option *ngFor="let item of personnels" [nzValue]="item.maNS" [nzLabel]="item.hoTen"></nz-option>
-              </nz-select>
-              <nz-form-explain *ngIf="exportMaterialForm.get('maNS').dirty && exportMaterialForm.get('maNS').errors">
-                <ng-container *ngIf="exportMaterialForm.get('maNS').hasError('required')">
-                  Vui lòng chọn nhân sự!
-                </ng-container>
-              </nz-form-explain>
-            </nz-form-control>
-          </td>
-          <td style="width: 10%;">
-            <nz-form-label nzRequired nzFor="ngayNhap">Ngày nhập</nz-form-label>
-          </td>
-          <td style="width: 20%;">
-            <nz-form-control>
-              <input type="date" nz-input formControlName="ngayNhap" id="ngayNhap" />
-              <nz-form-explain
-                *ngIf="exportMaterialForm.get('ngayNhap').dirty && exportMaterialForm.get('ngayNhap').errors">
-                <ng-container *ngIf="exportMaterialForm.get('ngayNhap').hasError('required')">
-                  Vui lòng chọn ngày xuất!
-                </ng-container>
-              </nz-form-explain>
-            </nz-form-control>
+          <td style="width: 50%;">
+            <nz-form-item>
+              <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="chietKhau">Chiết khấu</nz-form-label>
+              <nz-form-control [nzSm]="16" [nzXs]="24">
+                  <nz-input-number id="chietKhau" formControlName="chietKhau" [nzMin]="0" [nzMax]="100" [nzStep]="1"
+                  [nzFormatter]="formatterPercent" [nzParser]="parserPercent"></nz-input-number>
+              </nz-form-control>
+            </nz-form-item>
           </td>
         </tr>
         <tr>
           <td>
-            <nz-form-label nzFor="maHM">Chiết khấu</nz-form-label>
+            <nz-form-item>
+              <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzFor="maKho">Kho hàng</nz-form-label>
+              <nz-form-control [nzSm]="16" [nzXs]="24">
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn kho hàng" formControlName="maKho" id="maKho">
+                  <nz-option *ngFor="let item of materialStores" [nzValue]="item.maKho" [nzLabel]="item.tenKho">
+                  </nz-option>
+                </nz-select>
+                <nz-form-explain
+                  *ngIf="exportMaterialForm.get('maKho').dirty && exportMaterialForm.get('maKho').errors">
+                  <ng-container *ngIf="exportMaterialForm.get('maKho').hasError('required')">
+                    Vui lòng chọn kho hàng!
+                  </ng-container>
+                </nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
           </td>
           <td>
-            <nz-form-control>
-              <nz-input-number formControlName="chietKhau" [nzMin]="0" [nzMax]="100" [nzStep]="1"
-                [nzFormatter]="formatterPercent" [nzParser]="parserPercent"></nz-input-number>
-            </nz-form-control>
-          </td>
-          <td>
-            <nz-form-label nzFor="ghiChu">Ghi chú</nz-form-label>
-          </td>
-          <td colspan="3">
-            <nz-form-control>
-              <textarea nz-input formControlName="ghiChu" id="ghiChu"></textarea>
-            </nz-form-control>
+            <nz-form-item>
+              <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzFor="maNS">Nhân sự</nz-form-label>
+              <nz-form-control [nzSm]="16" [nzXs]="24">
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn nhân sự" formControlName="maNS" id="maNS">
+                  <nz-option *ngFor="let item of personnels" [nzValue]="item.maNS" [nzLabel]="item.hoTen"></nz-option>
+                </nz-select>
+                <nz-form-explain *ngIf="exportMaterialForm.get('maNS').dirty && exportMaterialForm.get('maNS').errors">
+                  <ng-container *ngIf="exportMaterialForm.get('maNS').hasError('required')">
+                    Vui lòng chọn nhân sự!
+                  </ng-container>
+                </nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
           </td>
         </tr>
         <tr>
-          <td colspan="6" style="text-align: right;">
+          <td colspan="2">
+            <nz-form-item>
+              <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="ghiChu">Ghi chú</nz-form-label>
+              <nz-form-control [nzSm]="20" [nzXs]="24">
+                <textarea nz-input formControlName="ghiChu" id="ghiChu"></textarea>
+              </nz-form-control>
+            </nz-form-item>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="text-align: right;">
             <button type="button" nz-button nzType="default" [routerLink]="['/admin/nghiep-vu/danh-sach-phieu-xuat']">
               <i nz-icon type="close" theme="outline"></i> Hủy
             </button>

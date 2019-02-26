@@ -21,3 +21,7 @@ td {
         padding-top: 10px !important;
     }
 }
+
+:host ::ng-deep .ant-card-body {
+    padding: 10px !important;
+}

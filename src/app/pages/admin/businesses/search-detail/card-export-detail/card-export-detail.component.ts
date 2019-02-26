@@ -63,4 +63,10 @@ export class CardExportDetailComponent implements OnInit {
         console.log('error getAllPagingExportDetaislByMaterialId');
       });
   }
+
+  search(keyword: string) {
+    this.pagingParams.keyword = keyword;
+
+    this.loadData(true);
+  }
 }

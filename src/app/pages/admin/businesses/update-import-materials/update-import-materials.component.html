@@ -11,74 +11,77 @@
       [nzExtra]="extraTemplate">
       <table style="width: 100%;">
         <tr>
-          <td style="width: 10%;">
-            <nz-form-label nzRequired nzFor="tenKho">Kho hàng</nz-form-label>
+          <td style="width: 50%;">
+            <nz-form-item>
+              <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzFor="ngayNhap">Ngày nhập</nz-form-label>
+              <nz-form-control [nzSm]="16" [nzXs]="24">
+                <input type="date" nz-input formControlName="ngayNhap" id="ngayNhap" />
+                <nz-form-explain
+                  *ngIf="importMaterialForm.get('ngayNhap').dirty && importMaterialForm.get('ngayNhap').errors">
+                  <ng-container *ngIf="importMaterialForm.get('ngayNhap').hasError('required')">
+                    Vui lòng chọn ngày nhập!
+                  </ng-container>
+                </nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
           </td>
-          <td style="width: 20%">
-            <nz-form-control>
-              <input nz-input formControlName="tenKho" id="tenKho" />
-              <nz-form-explain
-                *ngIf="importMaterialForm.get('tenKho').dirty && importMaterialForm.get('tenKho').errors">
-                <ng-container *ngIf="importMaterialForm.get('tenKho').hasError('required')">
-                  Kho hàng không được để trống!
-                </ng-container>
-              </nz-form-explain>
-            </nz-form-control>
-          </td>
-          <td style="width: 10%;">
-            <nz-form-label nzRequired nzFor="tenHM">Hạng mục vật tư</nz-form-label>
-          </td>
-          <td style="width: 30%;">
-            <nz-form-control>
-              <input nz-input formControlName="tenHM" id="tenHM" />
-              <nz-form-explain *ngIf="importMaterialForm.get('tenHM').dirty && importMaterialForm.get('tenHM').errors">
-                <ng-container *ngIf="importMaterialForm.get('tenHM').hasError('required')">
-                  Hạng mục vật tư không được để trống!
-                </ng-container>
-              </nz-form-explain>
-            </nz-form-control>
-          </td>
-          <td style="width: 10%;">
-            <nz-form-label nzRequired nzFor="ngayNhap">Ngày nhập</nz-form-label>
-          </td>
-          <td style="width: 20%;">
-            <nz-form-control>
-              <input type="date" nz-input formControlName="ngayNhap" id="ngayNhap" />
-              <nz-form-explain
-                *ngIf="importMaterialForm.get('ngayNhap').dirty && importMaterialForm.get('ngayNhap').errors">
-                <ng-container *ngIf="importMaterialForm.get('ngayNhap').hasError('required')">
-                  Vui lòng chọn ngày nhập!
-                </ng-container>
-              </nz-form-explain>
-            </nz-form-control>
+          <td style="width: 50%;">
+            <nz-form-item>
+              <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="chietKhau">Chiết khấu</nz-form-label>
+              <nz-form-control [nzSm]="16" [nzXs]="24">
+                <nz-input-number id="chietKhau" formControlName="chietKhau" [nzMin]="0" [nzMax]="100" [nzStep]="1"
+                  [nzFormatter]="formatterPercent" [nzParser]="parserPercent"></nz-input-number>
+              </nz-form-control>
+            </nz-form-item>
           </td>
         </tr>
         <tr>
           <td>
-            <nz-form-label nzFor="maHM">Chiết khấu</nz-form-label>
+            <nz-form-item>
+              <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzFor="tenKho">Kho hàng</nz-form-label>
+              <nz-form-control [nzSm]="16" [nzXs]="24">
+                <input nz-input formControlName="tenKho" id="tenKho" />
+                <nz-form-explain
+                  *ngIf="importMaterialForm.get('tenKho').dirty && importMaterialForm.get('tenKho').errors">
+                  <ng-container *ngIf="importMaterialForm.get('tenKho').hasError('required')">
+                    Kho hàng không được để trống!
+                  </ng-container>
+                </nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
           </td>
           <td>
-            <nz-form-control>
-              <nz-input-number formControlName="chietKhau" [nzMin]="0" [nzMax]="100" [nzStep]="1"
-                [nzFormatter]="formatterPercent" [nzParser]="parserPercent"></nz-input-number>
-            </nz-form-control>
-          </td>
-          <td>
-            <nz-form-label nzFor="ghiChu">Ghi chú</nz-form-label>
-          </td>
-          <td colspan="3">
-            <nz-form-control>
-              <textarea nz-input formControlName="ghiChu" id="ghiChu"></textarea>
-            </nz-form-control>
+            <nz-form-item>
+              <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzFor="tenHM">Hạng mục vật tư</nz-form-label>
+              <nz-form-control [nzSm]="16" [nzXs]="24">
+                <input nz-input formControlName="tenHM" id="tenHM" />
+                <nz-form-explain
+                  *ngIf="importMaterialForm.get('tenHM').dirty && importMaterialForm.get('tenHM').errors">
+                  <ng-container *ngIf="importMaterialForm.get('tenHM').hasError('required')">
+                    Hạng mục vật tư không được để trống!
+                  </ng-container>
+                </nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
           </td>
         </tr>
         <tr>
-          <td colspan="3">
+          <td colspan="2">
+            <nz-form-item>
+              <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="ghiChu">Ghi chú</nz-form-label>
+              <nz-form-control [nzSm]="20" [nzXs]="24">
+                <textarea nz-input formControlName="ghiChu" id="ghiChu"></textarea>
+              </nz-form-control>
+            </nz-form-item>
+          </td>
+        </tr>
+        <tr>
+          <td>
             <button type="button" nz-button nzType="primary" (click)="addImportDetail()" style="margin-right: 1rem;">
               <i nz-icon type="plus" theme="outline"></i> Nhập chi tiết
             </button>
           </td>
-          <td colspan="3" style="text-align: right;">
+          <td style="text-align: right;">
             <button type="button" nz-button nzType="default" [routerLink]="['/admin/nghiep-vu/danh-sach-phieu-nhap']">
               <i nz-icon type="close" theme="outline"></i> Hủy
             </button>
