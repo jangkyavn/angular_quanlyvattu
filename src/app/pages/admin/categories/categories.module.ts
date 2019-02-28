@@ -39,6 +39,7 @@ import { PersonnelAddEditModalComponent } from './personnels/personnel-add-edit-
 import { PersonnelListResolver } from 'src/app/shared/resolvers/personnel-list-resolver';
 import { PersonnelViewDetailModalComponent } from './personnels/personnel-view-detail-modal/personnel-view-detail-modal.component';
 import { MaterialExportModalComponent } from './materials/material-export-modal/material-export-modal.component';
+import { SharedModule } from 'src/app/shared.module';
 
 @NgModule({
   declarations: [CategoriesComponent,
@@ -65,6 +66,7 @@ import { MaterialExportModalComponent } from './materials/material-export-modal/
   ],
   imports: [
     CommonModule,
+    SharedModule,
     CategoriesRoutingModule,
     FormsModule,
     ReactiveFormsModule,

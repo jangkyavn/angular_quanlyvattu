@@ -5,11 +5,11 @@ import { map } from 'rxjs/operators';
 import { UserService } from '../services/user.service';
 
 export function checkUsernameDuplicateValidator(userService: UserService): AsyncValidatorFn {
-    return (c: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
-        return userService.checkUserNameExists(c.value).pipe(
-            map(res => {
-              return res ? { 'duplicate': true } : null;
-            })
-          );
-    };
+  return (c: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+    return userService.checkUserNameExists(c.value).pipe(
+      map(res => {
+        return res ? { 'duplicate': true } : null;
+      })
+    );
+  };
 }

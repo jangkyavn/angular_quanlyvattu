@@ -13,18 +13,9 @@
         <tr>
           <td style="width: 35%">
             <nz-form-item>
-              <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzFor="maKho">Kho hàng</nz-form-label>
+              <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzFor="tenKho">Kho hàng</nz-form-label>
               <nz-form-control [nzSm]="16" [nzXs]="24">
-                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn kho hàng" formControlName="maKho" id="maKho">
-                  <nz-option *ngFor="let item of materialStores" [nzValue]="item.maKho" [nzLabel]="item.tenKho">
-                  </nz-option>
-                </nz-select>
-                <nz-form-explain
-                  *ngIf="liquidationMaterialForm.get('maKho').dirty && liquidationMaterialForm.get('maKho').errors">
-                  <ng-container *ngIf="liquidationMaterialForm.get('maKho').hasError('required')">
-                    Vui lòng chọn kho hàng!
-                  </ng-container>
-                </nz-form-explain>
+                <input readonly nz-input formControlName="tenKho" id="tenKho" />
               </nz-form-control>
             </nz-form-item>
           </td>
@@ -125,8 +116,8 @@
           <th nzWidth="15%">Mã phiếu nhập</th>
           <th nzWidth="20%">Tên vật tư</th>
           <th nzWidth="10%">ĐVT</th>
-          <th nzWidth="10%">Ghi chú</th>
           <th nzWidth="10%">Diễn giải</th>
+          <th nzWidth="10%">Ghi chú</th>
           <th nzWidth="10%">Số lượng TL</th>
         </tr>
       </thead>
@@ -148,8 +139,8 @@
           <td class="text-center">{{data.maPhieuNhap}}</td>
           <td class="text-center">{{data.tenVT}}</td>
           <td class="text-center">{{data.tenDVT}}</td>
-          <td class="text-center">{{data.ghiChu}}</td>
           <td class="text-center">{{data.dienGiai}}</td>
+          <td class="text-center">{{data.ghiChu}}</td>
           <td class="text-center">{{data.soLuongThanhLy}}</td>
         </tr>
         <tr class="bg-footer-price">

@@ -14,6 +14,7 @@ import { RoleEditModalComponent } from './users/role-edit-modal/role-edit-modal.
 import { UserViewDetailModalComponent } from './users/user-view-detail-modal/user-view-detail-modal.component';
 import { ChangePasswordModalComponent } from './users/change-password-modal/change-password-modal.component';
 import { HighlightSearchPipe } from 'src/app/shared/pipes/highlight-search.pipe';
+import { SharedModule } from 'src/app/shared.module';
 
 @NgModule({
   declarations: [
@@ -22,11 +23,11 @@ import { HighlightSearchPipe } from 'src/app/shared/pipes/highlight-search.pipe'
     UserAddEditModalComponent,
     RoleEditModalComponent,
     UserViewDetailModalComponent,
-    ChangePasswordModalComponent,
-    HighlightSearchPipe
+    ChangePasswordModalComponent
   ],
   imports: [
     CommonModule,
+    SharedModule,
     FormsModule,
     ReactiveFormsModule,
     SystemsRoutingModule,

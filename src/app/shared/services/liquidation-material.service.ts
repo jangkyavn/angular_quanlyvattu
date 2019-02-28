@@ -59,4 +59,8 @@ export class LiquidationMaterialService {
     getInventoriesById(storeId: number, keyword: any = null) {
         return this.http.get(this.baseUrl + `ThanhLyVatTu/GetListByMaKho/${storeId}/${keyword}`);
     }
+
+    delete(liquidationId: any) {
+        return this.http.delete(this.baseUrl + 'ThanhLyVatTu/' + liquidationId);
+    }
 }

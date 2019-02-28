@@ -80,16 +80,16 @@ export class LiquidationMaterialsComponent implements OnInit {
   }
 
   delete(id: number) {
-    // this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
-    //   this.liquidationService.delete(id).subscribe((res: boolean) => {
-    //     if (res) {
-    //       this.loadData();
-    //       this.notify.success('Xóa thành công');
-    //     }
-    //   }, error => {
-    //     console.log('error deleteLiquidationMaterial');
-    //   });
-    // });
+    this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
+      this.liquidationService.delete(id).subscribe((res: boolean) => {
+        if (res) {
+          this.loadData();
+          this.notify.success('Xóa thành công');
+        }
+      }, error => {
+        console.log('error deleteLiquidationMaterial');
+      });
+    });
   }
 
   search(keyword: string) {

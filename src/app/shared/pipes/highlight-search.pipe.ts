@@ -8,6 +8,7 @@ export class HighlightSearchPipe implements PipeTransform {
     if (args && value) {
       value = String(value); // make sure its a string
       const startIndex = value.toLowerCase().indexOf(args.toLowerCase());
+
       if (startIndex !== -1) {
         const endLength = args.length;
         const matchingString = value.substr(startIndex, endLength);

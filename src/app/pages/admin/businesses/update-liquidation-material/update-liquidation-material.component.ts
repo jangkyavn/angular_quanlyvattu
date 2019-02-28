@@ -56,6 +56,8 @@ export class UpdateLiquidationMaterialComponent implements OnInit {
       this.liquidationDetails = listThanhlychitiet;
       this.loadInventoriesByStoreId(mthanhlyvattu.maKho);
       this.loadTotalQuantity();
+
+      console.log(mthanhlyvattu);
     });
   }
 
@@ -69,6 +71,8 @@ export class UpdateLiquidationMaterialComponent implements OnInit {
       maPhieuThanhLy: [null],
       maKho: [null, [Validators.required]],
       maNS: [null, [Validators.required]],
+      tenKho: [null],
+      tenNS: [null],
       ngayThanhLy: [currentDate, [Validators.required]],
     });
   }

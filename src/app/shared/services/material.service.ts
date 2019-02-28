@@ -179,4 +179,35 @@ export class MaterialService {
         })
       );
   }
+
+  getLiquidationsById(page?: any, itemsPerPage?: any, pagingParams?: PagingParams, id?: any): Observable<PaginatedResult<any[]>> {
+    const paginatedResult = new PaginatedResult<any[]>();
+
+    let params = new HttpParams();
+    if (page != null && itemsPerPage != null) {
+      params = params.append('pageNumber', page);
+      params = params.append('pageSize', itemsPerPage);
+    }
+
+    if (pagingParams != null) {
+      params = params.append('keyword', pagingParams.keyword);
+      params = params.append('sortKey', pagingParams.sortKey);
+      params = params.append('sortValue', pagingParams.sortValue);
+    }
+
+    if (id != null) {
+      params = params.append('id', id);
+    }
+
+    return this.http.get<any[]>(this.baseUrl + 'VatTu/ThongKeVatTuThanhLyByMaVT', { observe: 'response', params })
+      .pipe(
+        map(response => {
+          paginatedResult.result = response.body;
+          if (response.headers.get('Pagination') != null) {
+            paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+          }
+          return paginatedResult;
+        })
+      );
+  }
 }

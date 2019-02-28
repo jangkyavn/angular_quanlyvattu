@@ -40,13 +40,7 @@
             <nz-form-item>
               <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzFor="tenKho">Kho hàng</nz-form-label>
               <nz-form-control [nzSm]="16" [nzXs]="24">
-                <input nz-input formControlName="tenKho" id="tenKho" />
-                <nz-form-explain
-                  *ngIf="importMaterialForm.get('tenKho').dirty && importMaterialForm.get('tenKho').errors">
-                  <ng-container *ngIf="importMaterialForm.get('tenKho').hasError('required')">
-                    Kho hàng không được để trống!
-                  </ng-container>
-                </nz-form-explain>
+                <input readonly nz-input formControlName="tenKho" id="tenKho" />
               </nz-form-control>
             </nz-form-item>
           </td>
@@ -54,13 +48,7 @@
             <nz-form-item>
               <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzFor="tenHM">Hạng mục vật tư</nz-form-label>
               <nz-form-control [nzSm]="16" [nzXs]="24">
-                <input nz-input formControlName="tenHM" id="tenHM" />
-                <nz-form-explain
-                  *ngIf="importMaterialForm.get('tenHM').dirty && importMaterialForm.get('tenHM').errors">
-                  <ng-container *ngIf="importMaterialForm.get('tenHM').hasError('required')">
-                    Hạng mục vật tư không được để trống!
-                  </ng-container>
-                </nz-form-explain>
+                <input readonly nz-input formControlName="tenHM" id="tenHM" />
               </nz-form-control>
             </nz-form-item>
           </td>

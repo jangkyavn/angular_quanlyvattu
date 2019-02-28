@@ -37,18 +37,9 @@
         <tr>
           <td>
             <nz-form-item>
-              <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzFor="maKho">Kho hàng</nz-form-label>
+              <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzFor="tenKho">Kho hàng</nz-form-label>
               <nz-form-control [nzSm]="16" [nzXs]="24">
-                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn kho hàng" formControlName="maKho" id="maKho">
-                  <nz-option *ngFor="let item of materialStores" [nzValue]="item.maKho" [nzLabel]="item.tenKho">
-                  </nz-option>
-                </nz-select>
-                <nz-form-explain
-                  *ngIf="exportMaterialForm.get('maKho').dirty && exportMaterialForm.get('maKho').errors">
-                  <ng-container *ngIf="exportMaterialForm.get('maKho').hasError('required')">
-                    Vui lòng chọn kho hàng!
-                  </ng-container>
-                </nz-form-explain>
+                <input readonly nz-input formControlName="tenKho" id="tenKho" />
               </nz-form-control>
             </nz-form-item>
           </td>

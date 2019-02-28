@@ -48,8 +48,8 @@
     <tbody>
       <tr *ngFor="let data of table.data">
         <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus(data)"></td>
-        <td>{{data.tenHang}}</td>
-        <td>{{data.ghiChu || 'Không có'}}</td>
+        <td [innerHTML]="data.tenHang | highlight : pagingParams.keyword"></td>
+        <td [innerHTML]="data.ghiChu | highlight : pagingParams.keyword"></td>
         <td>
           <nz-button-group>
             <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa" (click)="update(data.maHang)">

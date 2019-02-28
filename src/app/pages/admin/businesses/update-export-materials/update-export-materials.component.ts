@@ -65,6 +65,8 @@ export class UpdateExportMaterialsComponent implements OnInit {
       maKho: [null, [Validators.required]],
       maNS: [null, [Validators.required]],
       ngayNhap: [null, [Validators.required]],
+      tenKho: [null],
+      tenNS: [null],
       chietKhau: [0],
       ghiChu: [null],
       tongSoTien: [null],
@@ -77,6 +79,9 @@ export class UpdateExportMaterialsComponent implements OnInit {
       this.loadInventoriesByStoreId(mxuatvattu.maKho);
       this.exportMaterialDetails = listxuatchitiet;
       this.loadTotalPrice();
+
+      console.log(mxuatvattu);
+      
     });
   }
 

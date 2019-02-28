@@ -1,3 +1,41 @@
 <nz-card style="width:100%;" nzTitle="Thanh lý vật tư" class="card-in-search-detail">
-  <!-- ***** -->
+  <div nz-row style="margin-bottom: 0.5rem;">
+    <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24">
+      <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
+        <input type="text" nz-input placeholder="Tìm kiếm..." #keyword (keyup.enter)="search(keyword.value)">
+      </nz-input-group>
+      <ng-template #suffixIconButton>
+        <button nz-button nzType="primary" nzSearch (click)="search(keyword.value)">
+          <i nz-icon type="search"></i>
+        </button>
+      </ng-template>
+    </div>
+  </div>
+
+  <nz-table #table nzShowSizeChanger [nzFrontPagination]="false" [nzData]="dataSet" [nzLoading]="isLoading"
+    [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage" [(nzPageSize)]="pagination.itemsPerPage"
+    [nzNoResult]="'Không tìm thấy kết quả.'" (nzPageIndexChange)="loadData()" (nzPageSizeChange)="loadData(true)"
+    nzShowQuickJumper [nzShowTotal]="rangeTemplate" nzBordered nzSize="middle" [nzPageSizeOptions]="[5, 10, 15]">
+    <ng-template #rangeTemplate let-range="range" let-total>
+      {{range[0]}}-{{range[1]}} của {{total}} bản ghi
+    </ng-template>
+    <thead (nzSortChange)="sort($event)" nzSingleSort>
+      <tr>
+        <th nzWidth="20%" nzShowSort nzSortKey="MaPTL">Mã phiếu TL</th>
+        <th nzWidth="15%" nzShowSort nzSortKey="ngayThanhLy">Ngày thanh lý</th>
+        <th nzWidth="15%" nzShowSort nzSortKey="soLuong">Số lượng TL</th>
+        <th nzWidth="25%" nzShowSort nzSortKey="dienGiai">Diễn giải</th>
+        <th nzWidth="25%" nzShowSort nzSortKey="ghiChu">Ghi chú</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of table.data">
+        <td class="text-center">{{data.maPTL}}</td>
+        <td>{{data.ngayThanhLy | date:'dd/MM/yyyy'}}</td>
+        <td class="text-center">{{data.soLuong}}</td>
+        <td>{{data.dienGiai}}</td>
+        <td>{{data.ghiChu}}</td>
+      </tr>
+    </tbody>
+  </nz-table>
 </nz-card>
