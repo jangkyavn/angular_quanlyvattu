@@ -51,6 +51,13 @@ import { MaterialDetailResolver } from 'src/app/shared/resolvers/material-detail
 import { CardImportDetailComponent } from './search-detail/card-import-detail/card-import-detail.component';
 import { CardExportDetailComponent } from './search-detail/card-export-detail/card-export-detail.component';
 import { CardInventoryComponent } from './search-detail/card-inventory/card-inventory.component';
+import { CardLiquidationMaterialComponent } from './search-detail/card-liquidation-material/card-liquidation-material.component';
+import { LiquidationMaterialsComponent } from './liquidation-materials/liquidation-materials.component';
+import { LiquidationMaterialListResolver } from 'src/app/shared/resolvers/liquidation-material-list.resolver';
+import { AddLiquidationMaterialComponent } from './add-liquidation-material/add-liquidation-material.component';
+import { UpdateLiquidationMaterialComponent } from './update-liquidation-material/update-liquidation-material.component';
+import { LiquidationMaterialDetailResolver } from 'src/app/shared/resolvers/liquidation-material-detail.resolver';
+import { LiquidationDetailModalComponent } from './update-liquidation-material/liquidation-detail-modal/liquidation-detail-modal.component';
 
 @NgModule({
   declarations: [BusinessesComponent,
@@ -70,7 +77,12 @@ import { CardInventoryComponent } from './search-detail/card-inventory/card-inve
     SearchDetailComponent,
     CardImportDetailComponent,
     CardExportDetailComponent,
-    CardInventoryComponent
+    CardInventoryComponent,
+    CardLiquidationMaterialComponent,
+    LiquidationMaterialsComponent,
+    AddLiquidationMaterialComponent,
+    UpdateLiquidationMaterialComponent,
+    LiquidationDetailModalComponent
   ],
   imports: [
     CommonModule,
@@ -89,13 +101,16 @@ import { CardInventoryComponent } from './search-detail/card-inventory/card-inve
     ExportMaterialListResolver,
     ExportMaterialDetailResolver,
     MaterialListResolver,
-    MaterialDetailResolver
+    MaterialDetailResolver,
+    LiquidationMaterialListResolver,
+    LiquidationMaterialDetailResolver
   ],
   entryComponents: [
     ImportMaterialDetailModalComponent,
     ExportMaterialDetailModalComponent,
     ImportViewDetailModalComponent,
-    ExportViewDetailModalComponent
+    ExportViewDetailModalComponent,
+    LiquidationDetailModalComponent
   ]
 })
 export class BusinessesModule { }

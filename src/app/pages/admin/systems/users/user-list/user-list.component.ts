@@ -30,7 +30,7 @@ export class UserListComponent implements OnInit {
   pagingParams: PagingParams = {
     keyword: '',
     sortKey: '',
-    sortValue: ''
+    sortValue: '',
   };
 
   @HostListener('window:keydown', ['$event'])

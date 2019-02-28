@@ -16,6 +16,11 @@ import { SearchComponent } from './search/search.component';
 import { MaterialListResolver } from 'src/app/shared/resolvers/material-list.resolver';
 import { SearchDetailComponent } from './search-detail/search-detail.component';
 import { MaterialDetailResolver } from 'src/app/shared/resolvers/material-detail.resolver';
+import { LiquidationMaterialsComponent } from './liquidation-materials/liquidation-materials.component';
+import { LiquidationMaterialListResolver } from 'src/app/shared/resolvers/liquidation-material-list.resolver';
+import { AddLiquidationMaterialComponent } from './add-liquidation-material/add-liquidation-material.component';
+import { UpdateLiquidationMaterialComponent } from './update-liquidation-material/update-liquidation-material.component';
+import { LiquidationMaterialDetailResolver } from 'src/app/shared/resolvers/liquidation-material-detail.resolver';
 
 const routes: Routes = [
   { path: '', redirectTo: 'vat-tu-ton-kho', pathMatch: 'full' },
@@ -44,6 +49,17 @@ const routes: Routes = [
   {
     path: 'sua-phieu-xuat/:id', component: UpdateExportMaterialsComponent,
     resolve: { 'export-material': ExportMaterialDetailResolver }
+  },
+  {
+    path: 'thanh-ly-vat-tu', component: LiquidationMaterialsComponent,
+    resolve: { 'liquidation-materials': LiquidationMaterialListResolver }
+  },
+  {
+    path: 'tao-phieu-thanh-ly', component: AddLiquidationMaterialComponent
+  },
+  {
+    path: 'sua-phieu-thanh-ly/:id', component: UpdateLiquidationMaterialComponent,
+    resolve: { 'liquidation-material': LiquidationMaterialDetailResolver }
   },
   {
     path: 'tim-kiem-vat-tu', component: SearchComponent,

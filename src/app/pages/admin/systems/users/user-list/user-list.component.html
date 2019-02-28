@@ -5,7 +5,7 @@
 </nz-breadcrumb>
 
 <div style="padding:24px; background: #fff; min-height: 80vh">
-  <div nz-row style="margin-bottom: 0.5rem">
+    <div nz-row style="margin-bottom: 1rem">
     <div nz-col nzSpan="8">
       <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
         <input type="text" nz-input placeholder="Tìm kiếm..." #keyword (keyup.enter)="search(keyword.value)">
@@ -41,10 +41,10 @@
     </thead>
     <tbody>
       <tr *ngFor="let data of table.data">
-        <td>{{data.userName}}</td>
-        <td>{{data.fullName}}</td>
-        <td>{{data.email}}</td>
-        <td>{{data.rolesOfUser}}</td>
+        <td [innerHTML]="data.userName | highlight : pagingParams.keyword"></td>
+        <td [innerHTML]="data.fullName | highlight : pagingParams.keyword"></td>
+        <td [innerHTML]="data.email | highlight : pagingParams.keyword"></td>
+        <td [innerHTML]="data.roles.toString() | highlight : pagingParams.keyword">{{data.roles.toString()}}</td>
         <td>
           <nz-switch [ngModel]="data.status" [nzCheckedChildren]="checkedTemplate"
             [nzUnCheckedChildren]="unCheckedTemplate" (click)="changeStatus(data.id)"></nz-switch>

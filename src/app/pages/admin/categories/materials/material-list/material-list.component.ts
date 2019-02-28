@@ -276,7 +276,7 @@ export class MaterialListComponent implements OnInit {
             this.materialService.exportExcel(data).subscribe((res: any) => {
               if (res) {
                 window.location.href = res.url;
-  
+
                 setTimeout(() => {
                   this.materialService.deleteExportFile(res.fileName).subscribe((rs) => {
                     if (rs) {
@@ -305,7 +305,7 @@ export class MaterialListComponent implements OnInit {
               this.materialService.exportExcel(data.result).subscribe((res: any) => {
                 if (res) {
                   window.location.href = res.url;
-  
+
                   setTimeout(() => {
                     this.materialService.deleteExportFile(res.fileName).subscribe((rs) => {
                       if (rs) {

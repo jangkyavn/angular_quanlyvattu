@@ -9,7 +9,6 @@ import { MaterialStoreService } from 'src/app/shared/services/material-store.ser
 import { PersonnelService } from 'src/app/shared/services/personnel.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
 import { ExportMaterialService } from 'src/app/shared/services/export-material.service';
-import { checkExportQuantityValidator } from 'src/app/shared/vailidators/check-export-quantity-validator';
 
 @Component({
   selector: 'app-export-materials',
@@ -85,12 +84,5 @@ export class ExportMaterialsComponent implements OnInit {
       console.log('error addExportMaterial');
       console.log(error);
     });
-  }
-
-  checkStatus(idx: any, matVatTu: any, maPhieuNhap: any, soLuong: number) {
-    const soLuongControl = this.exportMaterialForm.get(`listxuatchitiet.${idx}.soLuongXuat`);
-    soLuongControl.setAsyncValidators(checkExportQuantityValidator(this.exportMaterialService,
-      maPhieuNhap, matVatTu, soLuong));
-    soLuongControl.updateValueAndValidity();
   }
 }

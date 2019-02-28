@@ -46,7 +46,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let data of table.data">
-        <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus(data)"></td>
+        <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()"></td>
         <td>{{data.tenDVT}}</td>
         <td>
           <nz-button-group>

@@ -42,7 +42,6 @@ export class UpdateExportMaterialsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private fb: FormBuilder,
     private modalService: NzModalService,
     private materialStoreService: MaterialStoreService,

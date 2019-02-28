@@ -10,5 +10,4 @@ export interface User {
     address?: string;
     status?: string;
     roles?: string[];
-    rolesOfUser?: string;
 }
