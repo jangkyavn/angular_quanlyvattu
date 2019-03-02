@@ -17,7 +17,7 @@
     </div>
     <div nz-col nzXs="24" nzSm="8" nzMd="8" nzLg="8" nzXl="8">
       <nz-card *ngIf="totalMaterials$ | async as totalMaterials; else loadingTotalMaterials" class="card2"
-        [nzBordered]="false" [routerLink]="['/danh-muc/vat-tu']">
+        [nzBordered]="false" [routerLink]="['/danh-muc/thong-tin-vat-tu/vat-tu']">
         <h6>Vật tư</h6>
         <h1>{{totalMaterials}}</h1>
         <i nz-icon type="dropbox" theme="outline"></i>

@@ -1,0 +1,19 @@
+<form nz-form [formGroup]="materialItemForm" autocomplete="off">
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="tenHM">Tên hạng mục</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <p style="line-height: 20px; margin-top: 10px;">{{materialItem.tenHM}}</p>
+      <nz-form-explain *ngIf="materialItemForm.get('tenHM').dirty && materialItemForm.get('tenHM').errors">
+        <ng-container *ngIf="materialItemForm.get('tenHM').hasError('required')">
+          Vui lòng nhập tên hạng mục!
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="ghiChu">Ghi chú</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <textarea nz-input formControlName="ghiChu" id="ghiChu"></textarea>
+    </nz-form-control>
+  </nz-form-item>
+</form>

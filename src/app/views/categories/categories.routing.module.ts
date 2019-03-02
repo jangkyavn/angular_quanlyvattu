@@ -18,6 +18,10 @@ const routes: Routes = [
                 loadChildren: './supplies/supplies.module#SuppliesModule'
             },
             {
+                path: 'thong-tin-vat-tu',
+                loadChildren: './material-informations/material-informations.module#MaterialInformationsModule'
+            },
+            {
                 path: 'don-vi-tinh',
                 loadChildren: './units/units.module#UnitsModule'
             },

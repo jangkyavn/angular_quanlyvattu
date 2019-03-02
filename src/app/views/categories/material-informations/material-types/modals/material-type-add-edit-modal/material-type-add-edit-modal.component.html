@@ -1,0 +1,32 @@
+<form nz-form [formGroup]="materialTypeForm" autocomplete="off">
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="tenLoai">Tên loại</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <input nz-input formControlName="tenLoai" id="tenLoai" autofocus>
+      <nz-form-explain *ngIf="materialTypeForm.get('tenLoai').dirty && materialTypeForm.get('tenLoai').errors">
+        <ng-container *ngIf="materialTypeForm.get('tenLoai').hasError('required') || materialTypeForm.get('tenLoai').hasError('whitespace')">
+          Vui lòng nhập tên loại vật tư!
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="maHM">Hạng mục</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <nz-select nzShowSearch nzAllowClear id="maHM" formControlName="maHM" nzPlaceHolder="Chọn hạng mục vật tư">
+        <nz-option *ngFor="let item of materialItems" [nzValue]="item.maHM" [nzLabel]="item.tenHM"></nz-option>
+      </nz-select>
+      <nz-form-explain *ngIf="materialTypeForm.get('maHM').dirty && materialTypeForm.get('maHM').errors">
+        <ng-container *ngIf="materialTypeForm.get('maHM').hasError('required')">
+          Vui lòng chọn hạng mục vật tư!
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="ghiChu">Ghi chú</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <textarea nz-input formControlName="ghiChu" id="ghiChu"></textarea>
+    </nz-form-control>
+  </nz-form-item>
+</form>

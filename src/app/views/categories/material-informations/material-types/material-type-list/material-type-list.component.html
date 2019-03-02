@@ -1,0 +1,60 @@
+<nz-breadcrumb style="margin:16px 0;">
+  <nz-breadcrumb-item>Danh mục</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Thông tin vật tư</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Loại vật tư</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div style="padding:24px; background: #fff; min-height: 70vh">
+  <div nz-row style="margin-bottom: 1rem">
+    <div nz-col nzSpan="8">
+      <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
+        <input type="text" nz-input placeholder="Tìm kiếm..." #keyword (keyup.enter)="search(keyword.value)">
+      </nz-input-group>
+      <ng-template #suffixIconButton>
+        <button nz-button nzType="primary" nzSearch (click)="search(keyword.value)"><i nz-icon
+            type="search"></i></button>
+      </ng-template>
+    </div>
+    <div nz-col nzSpan="8" nzOffset="8" class="text-right">
+      <button nz-button nzType="primary" (click)="addNew()">
+        <i nz-icon type="plus" theme="outline"></i> Thêm
+      </button>
+    </div>
+  </div>
+
+  <nz-table #table nzShowSizeChanger [nzFrontPagination]="false" [nzData]="dataSet" [nzLoading]="loading"
+    [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage" [(nzPageSize)]="pagination.itemsPerPage"
+    [nzNoResult]="'Không tìm thấy kết quả.'" (nzPageIndexChange)="loadData()" (nzPageSizeChange)="loadData(true)"
+    nzShowQuickJumper [nzShowTotal]="rangeTemplate" nzSize="middle">
+    <ng-template #rangeTemplate let-range="range" let-total>
+      {{range[0]}}-{{range[1]}} của {{total}} bản ghi
+    </ng-template>
+    <thead (nzSortChange)="sort($event)" nzSingleSort>
+      <tr>
+        <th nzWidth="25%" nzShowSort nzSortKey="tenLoai">Tên loại vật tư</th>
+        <th nzWidth="25%" nzShowSort nzSortKey="tenHM">Tên hạng mục</th>
+        <th nzWidth="30%" nzShowSort nzSortKey="ghiChu">Ghi chú</th>
+        <th nzWidth="20%">Thao tác</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of table.data">
+        <td [innerHTML]="data.tenLoai | highlight : pagingParams.keyword"></td>
+        <td [innerHTML]="data.tenHM | highlight : pagingParams.keyword"></td>
+        <td [innerHTML]="data.ghiChu | highlight : pagingParams.keyword"></td>
+        <td>
+          <nz-button-group>
+            <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
+              (click)="update(data.maLoaiVatTu)">
+              <i nz-icon type="edit" theme="outline"></i>
+            </button>
+            <button nz-button nzType="default" class="btn-danger" nz-tooltip nzTitle="Xóa"
+              (click)="delete(data.maLoaiVatTu)">
+              <i nz-icon type="delete" theme="outline"></i>
+            </button>
+          </nz-button-group>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>
