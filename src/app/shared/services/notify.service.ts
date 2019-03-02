@@ -12,18 +12,22 @@ export class NotifyService {
     private modal: NzModalService) { }
 
   success(message: string) {
+    this.messageService.remove();
     this.messageService.create('success', message);
   }
 
   error(message: string) {
+    this.messageService.remove();
     this.messageService.create('error', message);
   }
 
   warning(message: string) {
+    this.messageService.remove();
     this.messageService.create('warning', message);
   }
 
   info(message: string) {
+    this.messageService.remove();
     this.messageService.create('info', message);
   }
 

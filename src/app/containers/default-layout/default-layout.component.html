@@ -1,0 +1,197 @@
+<nz-layout>
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzWidth]="width" [nzBreakpoint]="'sm'"
+    [nzTrigger]="triggerTemplate">
+    <div class="logo" [routerLink]="['/']" style="cursor: pointer;">
+    </div>
+    <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed" id="sidebarMenu">
+      <!-- menu quản trị -->
+      <li nz-submenu [(nzOpen)]="openMap.sub1" (nzOpenChange)="openHandler('sub1')">
+        <span title><i nz-icon type="setting"></i><span class="nav-text">Hệ thống</span></span>
+        <ul>
+          <li nz-menu-item>
+            <a [routerLink]="['/he-thong/nguoi-dung/danh-sach']">
+              <i nz-icon type="user" theme="outline"></i>Danh sách người dùng
+            </a>
+          </li>
+          <li nz-menu-item>
+            <a>
+              <i nz-icon type="team" theme="outline"></i>Phân quyền
+            </a>
+          </li>
+        </ul>
+      </li>
+      <!-- menu danh mục -->
+      <li nz-submenu [(nzOpen)]="openMap.sub2" (nzOpenChange)="openHandler('sub2')">
+        <span title>
+          <i nz-icon type="appstore" theme="outline">
+          </i><span class="nav-text">Danh mục</span>
+        </span>
+        <ul>
+          <li nz-menu-item>
+            <a [routerLink]="['/admin/danh-muc/nguon-cung-cap']">
+              <i nz-icon type="credit-card" theme="outline"></i>Nguồn cung cấp
+            </a>
+          </li>
+          <li nz-submenu>
+            <span title><i nz-icon type="info-circle" theme="outline"></i>Thông tin vật tư</span>
+            <ul>
+              <li nz-menu-item>
+                <a [routerLink]="['/admin/danh-muc/hang-muc-vat-tu']">
+                  <i nz-icon type="build" theme="outline"></i>Hạng mục vật tư
+                </a>
+              </li>
+              <li nz-menu-item>
+                <a [routerLink]="['/admin/danh-muc/loai-vat-tu']">
+                  <i nz-icon type="block" theme="outline"></i>Loại vật tư
+                </a>
+              </li>
+              <li nz-menu-item>
+                <a [routerLink]="['/admin/danh-muc/danh-muc-vat-tu']">
+                  <i nz-icon type="ordered-list" theme="outline"></i>Danh mục vật tư
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li nz-menu-item>
+            <a [routerLink]="['/admin/danh-muc/don-vi-tinh']">
+              <i nz-icon type="calculator" theme="outline"></i>Đơn vị tính
+            </a>
+          </li>
+          <li nz-menu-item>
+            <a [routerLink]="['/admin/danh-muc/kho-vat-tu']">
+              <i nz-icon type="database" theme="outline"></i>Kho vật tư
+            </a>
+          </li>
+          <li nz-menu-item>
+            <a [routerLink]="['/admin/danh-muc/hang-san-xuat']">
+              <i nz-icon type="trademark" theme="outline"></i>Hãng sản xuất
+            </a>
+          </li>
+          <li nz-menu-item>
+            <a [routerLink]="['/admin/danh-muc/nuoc-san-xuat']">
+              <i nz-icon type="global" theme="outline"></i>Nước sản xuất
+            </a>
+          </li>
+          <li nz-menu-item>
+            <a [routerLink]="['/admin/danh-muc/nhan-su']">
+              <i nz-icon type="usergroup-add" theme="outline"></i>Nhân sự
+            </a>
+          </li>
+        </ul>
+      </li>
+      <!-- menu nghiệp vụ -->
+      <li nz-submenu [(nzOpen)]="openMap.sub3" (nzOpenChange)="openHandler('sub3')">
+        <span title>
+          <i nz-icon type="project" theme="outline"></i>
+          <span class="nav-text">Nghiệp vụ</span>
+        </span>
+        <ul>
+          <li nz-submenu>
+            <span title><i nz-icon type="login" theme="outline"></i> Nhập</span>
+            <ul>
+              <li nz-menu-item>
+                <a [routerLink]="['/admin/nghiep-vu/tao-phieu-nhap']">
+                  <i nz-icon type="form" theme="outline"></i>
+                  Tạo phiếu nhập
+                </a>
+              </li>
+              <li nz-menu-item>
+                <a [routerLink]="['/admin/nghiep-vu/danh-sach-phieu-nhap']">
+                  <i nz-icon type="table" theme="outline"></i>
+                  Danh sách phiếu nhập
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li nz-submenu>
+            <span title><i nz-icon type="logout" theme="outline"></i> Xuất</span>
+            <ul>
+              <li nz-menu-item>
+                <a [routerLink]="['/admin/nghiep-vu/tao-phieu-xuat']">
+                  <i nz-icon type="form" theme="outline"></i>
+                  Tạo phiếu xuất
+                </a>
+              </li>
+              <li nz-menu-item>
+                <a [routerLink]="['/admin/nghiep-vu/danh-sach-phieu-xuat']">
+                  <i nz-icon type="table" theme="outline"></i>
+                  Danh sách phiếu xuất
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li nz-submenu>
+            <span title><i nz-icon type="appstore" theme="outline"></i> Kho</span>
+            <ul>
+              <li nz-menu-item>
+                <a [routerLink]="['/admin/nghiep-vu/vat-tu-ton-kho']">
+                  <i nz-icon type="border" theme="outline"></i>
+                  Vật tư tồn kho
+                </a>
+              </li>
+              <li nz-menu-item [routerLink]="['/admin/nghiep-vu/thanh-ly-vat-tu']">
+                <i nz-icon type="pay-circle" theme="outline"></i>Thanh lý vật tư
+              </li>
+              <li nz-menu-item><i nz-icon type="book" theme="outline"></i>Phiếu kiểm kê kho</li>
+            </ul>
+          </li>
+          <li [routerLink]="['/admin/nghiep-vu/tim-kiem-vat-tu']" nz-menu-item>
+            <i nz-icon type="search" theme="outline"></i>Tìm kiếm vật tư
+          </li>
+        </ul>
+      </li>
+      <!-- menu thông kê báo cáo -->
+      <li nz-submenu [(nzOpen)]="openMap.sub4" (nzOpenChange)="openHandler('sub4')">
+        <span title>
+          <i nz-icon type="table" theme="outline"></i>
+          <span class="nav-text">Thống kê báo cáo</span>
+        </span>
+        <ul>
+          <li nz-menu-item><i nz-icon type="file-add" theme="outline"></i>Thống kê nhập</li>
+          <li nz-menu-item><i nz-icon type="file-done" theme="outline"></i>Thống kê xuất</li>
+          <li nz-menu-item><i nz-icon type="file-exclamation" theme="outline"></i>Thống kê tồn</li>
+          <li nz-menu-item><i nz-icon type="file-sync" theme="outline"></i>Thống kê nhập-xuất-tồn</li>
+        </ul>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header style="background: #fff; padding:0;">
+      <div nz-row>
+        <div nz-col nzSpan="8">
+          <i class="trigger" nz-icon [type]="isCollapsed?'menu-unfold':'menu-fold'"
+            (click)="isCollapsed=!isCollapsed"></i>
+        </div>
+        <div nz-col nzSpan="8" nzOffset="8">
+          <ul class="list-inline">
+            <li class="list-inline-item">
+              <nz-dropdown [nzPlacement]="'bottomRight'">
+                <span nz-dropdown>
+                  <nz-avatar nzIcon="user" style="background-color:#87d068;"></nz-avatar>
+                  <span>{{authService.currentUser?.userName}}</span>
+                </span>
+                <ul nz-menu>
+                  <li nz-menu-item [routerLink]="['/admin/quan-ly-tai-khoan']">
+                    <i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;
+                    <span>Quản lý tài khoản</span>
+                  </li>
+                  <li nz-menu-divider></li>
+                  <li nz-menu-item (click)="logout()">
+                    <i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp;
+                    <span>Đăng xuất</span>
+                  </li>
+                </ul>
+              </nz-dropdown>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nz-header>
+    <nz-content style="margin:0 16px;">
+      <router-outlet></router-outlet>
+      <nz-back-top></nz-back-top>
+    </nz-content>
+    <nz-footer style="text-align: center;">Copyright © 2019 - Hỗ trợ bởi <a class="footer-link"
+        href="http://absoft.com.vn" target="_blank">Absoft</a></nz-footer>
+  </nz-layout>
+</nz-layout>

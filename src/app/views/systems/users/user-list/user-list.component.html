@@ -1,0 +1,78 @@
+<nz-breadcrumb style="margin:16px 0;">
+  <nz-breadcrumb-item>Trang chủ</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Hệ thống</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Danh sách người dùng</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div style="padding:24px; background: #fff; min-height: 80vh">
+    <div nz-row style="margin-bottom: 1rem">
+    <div nz-col nzSpan="8">
+      <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
+        <input type="text" nz-input placeholder="Tìm kiếm..." #keyword (keyup.enter)="search(keyword.value)">
+      </nz-input-group>
+      <ng-template #suffixIconButton>
+        <button nz-button nzType="primary" nzSearch (click)="search(keyword.value)"><i nz-icon
+            type="search"></i></button>
+      </ng-template>
+    </div>
+    <div nz-col nzSpan="8" nzOffset="8" class="text-right">
+      <button nz-button nzType="primary" (click)="addNew()">
+        <i nz-icon type="plus" theme="outline"></i> Thêm
+      </button>
+    </div>
+  </div>
+
+  <nz-table #table nzShowSizeChanger [nzFrontPagination]="false" [nzData]="dataSet" [nzLoading]="loading"
+    [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage" [(nzPageSize)]="pagination.itemsPerPage"
+    [nzNoResult]="'Không tìm thấy kết quả.'" (nzPageIndexChange)="loadData()" (nzPageSizeChange)="loadData(true)"
+    nzShowQuickJumper [nzShowTotal]="rangeTemplate" nzSize="middle">
+    <ng-template #rangeTemplate let-range="range" let-total>
+      {{range[0]}}-{{range[1]}} của {{total}} bản ghi
+    </ng-template>
+    <thead (nzSortChange)="sort($event)" nzSingleSort>
+      <tr>
+        <th nzWidth="15%" nzShowSort nzSortKey="userName">Tài khoản</th>
+        <th nzWidth="15%" nzShowSort nzSortKey="fullName">Họ tên</th>
+        <th nzWidth="20%" nzShowSort nzSortKey="email">Email</th>
+        <th nzWidth="20%">Vai trò</th>
+        <th nzWidth="10%">Trạng thái</th>
+        <th nzWidth="20%">Thao tác</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of table.data">
+        <td [innerHTML]="data.userName | highlight : pagingParams.keyword"></td>
+        <td [innerHTML]="data.fullName | highlight : pagingParams.keyword"></td>
+        <td [innerHTML]="data.email | highlight : pagingParams.keyword"></td>
+        <td [innerHTML]="data.roles.toString() | highlight : pagingParams.keyword">{{data.roles.toString()}}</td>
+        <td>
+          <nz-switch [ngModel]="data.status" [nzCheckedChildren]="checkedTemplate"
+            [nzUnCheckedChildren]="unCheckedTemplate" (click)="changeStatus(data.id)"></nz-switch>
+          <ng-template #checkedTemplate><i nz-icon type="check" nz-tooltip nzTitle="Kích hoạt"></i></ng-template>
+          <ng-template #unCheckedTemplate><i nz-icon type="close" nz-tooltip nzTitle="Khóa"></i></ng-template>
+        </td>
+        <td>
+          <nz-button-group>
+            <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa" (click)="update(data.id)">
+              <i nz-icon type="edit" theme="outline"></i>
+            </button>
+            <button nz-button nzType="default" class="btn-primary" nz-tooltip nzTitle="Xem" (click)="view(data.id)">
+              <i nz-icon type="eye" theme="outline"></i>
+            </button>
+            <button *ngIf="data.userName !== 'admin'" nz-button nzType="default" class="btn-danger" nz-tooltip nzTitle="Xóa"
+              (click)="delete(data.id)">
+              <i nz-icon type="delete" theme="outline"></i>
+            </button>
+            <button nz-button nzType="default" class="btn-success" nz-tooltip nzTitle="Đổi mật khẩu" (click)="changePassword(data.id)">
+                <i nz-icon type="safety-certificate" theme="outline"></i>
+              </button>
+            <button nz-button nzType="default" class="btn-warning" nz-tooltip nzTitle="Phân quyền"
+              (click)="editRoles(data)">
+              <i nz-icon type="usergroup-add" theme="outline"></i>
+            </button>
+          </nz-button-group>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

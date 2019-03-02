@@ -7,7 +7,9 @@ import { environment } from '../../../environments/environment';
 import { Role } from '../models/role.model';
 import { User } from '../models/user.model';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class RoleService {
   baseUrl = environment.apiUrl;
 

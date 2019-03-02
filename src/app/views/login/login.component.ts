@@ -21,13 +21,12 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private authService: AuthService,
-    private userSerivce: UserService,
     private notify: NotifyService
   ) { }
 
   ngOnInit() {
     if (this.authService.loggedIn()) {
-      this.router.navigate(['/admin']);
+      this.router.navigate(['/']);
     }
 
     this.route.queryParams
@@ -61,7 +60,7 @@ export class LoginComponent implements OnInit {
           if (this.returnUrl) {
             this.router.navigateByUrl(this.returnUrl);
           } else {
-            this.router.navigate(['/admin']);
+            this.router.navigate(['/']);
           }
         } else {
           this.notify.warning(res.messsage);

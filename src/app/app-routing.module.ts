@@ -1,12 +1,44 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
-import { PageErrorComponent } from './pages/page-error/page-error.component';
+
+import { DefaultLayoutComponent } from './containers/default-layout/default-layout.component';
+import { P404Component } from './views/errors/404/404.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'dang-nhap', pathMatch: 'full' },
-  { path: 'dang-nhap', loadChildren: './pages/login/login.module#LoginModule' },
-  { path: 'admin', loadChildren: './pages/admin/admin.module#AdminModule' },
-  { path: '**', component: PageErrorComponent }
+  {
+    path: '',
+    redirectTo: 'bang-dieu-khien',
+    pathMatch: 'full'
+  },
+  {
+    path: '404',
+    component: P404Component,
+    data: {
+      title: 'Trang 404'
+    },
+  },
+  {
+    path: 'dang-nhap',
+    loadChildren: './views/login/login.module#LoginModule'
+  },
+  {
+    path: '',
+    component: DefaultLayoutComponent,
+    data: {
+      title: 'Trang chủ'
+    },
+    children: [
+      {
+        path: 'bang-dieu-khien',
+        loadChildren: './views/dashboard/dashboard.module#DashboardModule'
+      },
+      {
+        path: 'he-thong',
+        loadChildren: './views/systems/systems.module#SystemsModule'
+      }
+    ]
+  },
+  { path: '**', component: P404Component }
 ];
 
 @NgModule({

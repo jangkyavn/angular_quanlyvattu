@@ -9,12 +9,14 @@ import { NgZorroAntdModule, NZ_I18N, vi_VN } from 'ng-zorro-antd';
 import { JwtModule } from '@auth0/angular-jwt';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
+import { AppComponent } from './app.component';
+import { DefaultLayoutComponent } from './containers/default-layout/default-layout.component';
+import { P404Component } from './views/errors/404/404.component';
+
+import { Config } from 'src/assets/config';
+
 import { registerLocaleData } from '@angular/common';
 import vi from '@angular/common/locales/vi';
-
-import { AppComponent } from './app.component';
-import { PageErrorComponent } from './pages/page-error/page-error.component';
-import { Config } from 'src/assets/config';
 
 registerLocaleData(vi);
 
@@ -25,7 +27,8 @@ export function tokenGetter() {
 @NgModule({
   declarations: [
     AppComponent,
-    PageErrorComponent
+    DefaultLayoutComponent,
+    P404Component
   ],
   imports: [
     BrowserModule,
