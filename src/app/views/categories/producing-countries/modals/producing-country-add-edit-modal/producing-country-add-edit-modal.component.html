@@ -1,0 +1,13 @@
+<form nz-form [formGroup]="producingCountryForm" autocomplete="off">
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="tenNuoc">Tên nước sản xuất</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <input nz-input formControlName="tenNuoc" id="tenNuoc" autofocus>
+      <nz-form-explain *ngIf="producingCountryForm.get('tenNuoc').dirty && producingCountryForm.get('tenNuoc').errors">
+        <ng-container *ngIf="producingCountryForm.get('tenNuoc').hasError('required') || producingCountryForm.get('tenNuoc').hasError('whitespace')">
+          Vui lòng nhập tên nước sản xuất!
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+</form>

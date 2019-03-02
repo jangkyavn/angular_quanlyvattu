@@ -19,7 +19,7 @@ export class AuthGuard implements CanActivate {
     }
 
     this.notify.error('Bạn cần phải đăng nhập');
-    this.router.navigate(['/'], { queryParams: { returnUrl: state.url }});
+    this.router.navigate(['/dang-nhap'], { queryParams: { returnUrl: state.url }});
     return false;
   }
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-404',
@@ -7,6 +8,6 @@ import { Component } from '@angular/core';
 })
 export class P404Component {
 
-  constructor() { }
+  constructor(public location: Location) { }
 
 }

@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
+import { AuthGuard } from './shared/guards/auth.guard';
+
 import { DefaultLayoutComponent } from './containers/default-layout/default-layout.component';
 import { P404Component } from './views/errors/404/404.component';
 
@@ -27,6 +29,8 @@ const routes: Routes = [
     data: {
       title: 'Trang chủ'
     },
+    runGuardsAndResolvers: 'always',
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'bang-dieu-khien',
@@ -35,6 +39,10 @@ const routes: Routes = [
       {
         path: 'he-thong',
         loadChildren: './views/systems/systems.module#SystemsModule'
+      },
+      {
+        path: 'danh-muc',
+        loadChildren: './views/categories/categories.module#CategoriesModule'
       }
     ]
   },
