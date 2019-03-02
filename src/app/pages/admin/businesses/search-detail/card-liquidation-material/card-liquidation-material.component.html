@@ -1,4 +1,4 @@
-<nz-card style="width:100%;" nzTitle="Thanh lý vật tư" class="card-in-search-detail">
+<nz-card style="width:100%;" nzTitle="Thanh lý" class="card-in-search-detail">
   <div nz-row style="margin-bottom: 0.5rem;">
     <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24">
       <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
@@ -23,18 +23,26 @@
       <tr>
         <th nzWidth="20%" nzShowSort nzSortKey="MaPTL">Mã phiếu TL</th>
         <th nzWidth="15%" nzShowSort nzSortKey="ngayThanhLy">Ngày thanh lý</th>
-        <th nzWidth="15%" nzShowSort nzSortKey="soLuong">Số lượng TL</th>
         <th nzWidth="25%" nzShowSort nzSortKey="dienGiai">Diễn giải</th>
         <th nzWidth="25%" nzShowSort nzSortKey="ghiChu">Ghi chú</th>
+        <th nzWidth="15%" nzShowSort nzSortKey="soLuong">Số lượng TL</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let data of table.data">
         <td class="text-center">{{data.maPTL}}</td>
         <td>{{data.ngayThanhLy | date:'dd/MM/yyyy'}}</td>
-        <td class="text-center">{{data.soLuong}}</td>
         <td>{{data.dienGiai}}</td>
         <td>{{data.ghiChu}}</td>
+        <td class="text-center">{{data.soLuong}}</td>
+      </tr>
+      <tr>
+        <td colspan="4" class="text-center">
+          <strong>Tổng</strong>
+        </td>
+        <td class="text-center">
+          <strong>{{totalQuantity | number: '1.0-0'}}</strong>
+        </td>
       </tr>
     </tbody>
   </nz-table>

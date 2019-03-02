@@ -14,7 +14,8 @@ export class CardImportDetailComponent implements OnInit {
   dataSet = [];
   isLoading: boolean;
   materialId: any;
-  totalAmountAfterDiscount: any;
+  totalAmount = 0;
+  totalQuantity = 0;
 
   pagination: Pagination = {
     currentPage: 1,
@@ -36,6 +37,8 @@ export class CardImportDetailComponent implements OnInit {
     this.isLoading = true;
     this.route.params.subscribe(data => {
       this.materialId = data['id'];
+
+      this.getTotal(this.materialId, 0);
       this.loadData();
     });
   }
@@ -67,5 +70,13 @@ export class CardImportDetailComponent implements OnInit {
     this.pagingParams.keyword = keyword;
 
     this.loadData(true);
+  }
+
+  getTotal(materialId: any, type: any) {
+    this.materialService.getTotalForAnotherTables(materialId, type)
+      .subscribe((res: any) => {
+        this.totalAmount = res.tongTien;
+        this.totalQuantity = res.tongLuong;
+      });
   }
 }

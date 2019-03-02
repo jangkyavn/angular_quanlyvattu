@@ -79,9 +79,6 @@ export class UpdateExportMaterialsComponent implements OnInit {
       this.loadInventoriesByStoreId(mxuatvattu.maKho);
       this.exportMaterialDetails = listxuatchitiet;
       this.loadTotalPrice();
-
-      console.log(mxuatvattu);
-      
     });
   }
 

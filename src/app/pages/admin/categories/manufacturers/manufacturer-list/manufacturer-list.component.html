@@ -30,9 +30,9 @@
   <nz-table #table nzShowSizeChanger [nzFrontPagination]="false"
     [nzData]="dataSet" [nzLoading]="loading" [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage"
     [(nzPageSize)]="pagination.itemsPerPage" [nzNoResult]="'Không tìm thấy kết quả.'"
-    (nzPageIndexChange)="loadData(); refreshStatus(); allChecked = false"
-    (nzPageSizeChange)="loadData(true); refreshStatus(); allChecked = false" nzShowQuickJumper
-    [nzShowTotal]="rangeTemplate" (nzCurrentPageDataChange)="currentPageDataChange($event)">
+    (nzPageIndexChange)="loadData(); refreshStatus()"
+    (nzPageSizeChange)="loadData(true); refreshStatus()" nzShowQuickJumper
+    [nzShowTotal]="rangeTemplate" nzSize="middle" (nzCurrentPageDataChange)="currentPageDataChange($event)">
     <ng-template #rangeTemplate let-range="range" let-total>
       {{range[0]}}-{{range[1]}} của {{total}} bản ghi
     </ng-template>

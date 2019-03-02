@@ -14,6 +14,7 @@ export class CardInventoryComponent implements OnInit {
   dataSet = [];
   isLoading: boolean;
   materialId: any;
+  totalQuantity = 0;
 
   pagination: Pagination = {
     currentPage: 1,
@@ -35,6 +36,8 @@ export class CardInventoryComponent implements OnInit {
     this.isLoading = true;
     this.route.params.subscribe(data => {
       this.materialId = data['id'];
+
+      this.getTotal(this.materialId, 3);
       this.loadData();
     });
   }
@@ -66,5 +69,12 @@ export class CardInventoryComponent implements OnInit {
     this.pagingParams.keyword = keyword;
 
     this.loadData(true);
+  }
+
+  getTotal(materialId: any, type: any) {
+    this.materialService.getTotalForAnotherTables(materialId, type)
+      .subscribe((res: any) => {
+        this.totalQuantity = res.tongLuong;
+      });
   }
 }

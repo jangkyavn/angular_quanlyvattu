@@ -25,7 +25,7 @@
   <nz-table #table nzShowSizeChanger [nzFrontPagination]="false"
     [nzData]="dataSet" [nzLoading]="loading" [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage"
     [(nzPageSize)]="pagination.itemsPerPage" [nzNoResult]="'Không tìm thấy kết quả.'" (nzPageIndexChange)="loadData()"
-    (nzPageSizeChange)="loadData(true)" nzShowQuickJumper [nzShowTotal]="rangeTemplate">
+    (nzPageSizeChange)="loadData(true)" nzSize="middle" nzShowQuickJumper [nzShowTotal]="rangeTemplate">
     <ng-template #rangeTemplate let-range="range" let-total>
       {{range[0]}}-{{range[1]}} của {{total}} bản ghi
     </ng-template>
@@ -40,10 +40,10 @@
     </thead>
     <tbody>
       <tr *ngFor="let data of table.data">
-        <td>{{data.hoTen}}</td>
-        <td>{{data.ngaySinh | date:'dd/MM/yyyy'}}</td>
-        <td>{{data.queQuan}}</td>
-        <td>{{data.danToc}}</td>
+        <td [innerHTML]="data.hoTen | highlight : pagingParams.keyword"></td>
+        <td [innerHTML]="data.ngaySinh | date:'dd/MM/yyyy' | highlight : pagingParams.keyword"></td>
+        <td [innerHTML]="data.queQuan | highlight : pagingParams.keyword"></td>
+        <td [innerHTML]="data.danToc | highlight : pagingParams.keyword"></td>
         <td>
           <nz-button-group>
             <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa" (click)="update(data.maNS)">

@@ -6,7 +6,7 @@
 </nz-breadcrumb>
 
 <div style="padding:24px; background: #fff; min-height: 70vh">
-    <div nz-row style="margin-bottom: 1rem">
+  <div nz-row style="margin-bottom: 1rem">
     <div nz-col nzSpan="8">
       <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
         <input type="text" nz-input placeholder="Tìm kiếm..." #keyword (keyup.enter)="search(keyword.value)">
@@ -23,10 +23,10 @@
     </div>
   </div>
 
-  <nz-table #table nzShowSizeChanger [nzFrontPagination]="false"
-    [nzData]="dataSet" [nzLoading]="loading" [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage"
-    [(nzPageSize)]="pagination.itemsPerPage" [nzNoResult]="'Không tìm thấy kết quả.'" (nzPageIndexChange)="loadData()"
-    (nzPageSizeChange)="loadData(true)" nzShowQuickJumper [nzShowTotal]="rangeTemplate">
+  <nz-table #table nzShowSizeChanger [nzFrontPagination]="false" [nzData]="dataSet" [nzLoading]="loading"
+    [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage" [(nzPageSize)]="pagination.itemsPerPage"
+    [nzNoResult]="'Không tìm thấy kết quả.'" (nzPageIndexChange)="loadData()" (nzPageSizeChange)="loadData(true)"
+    nzShowQuickJumper [nzShowTotal]="rangeTemplate" nzSize="middle">
     <ng-template #rangeTemplate let-range="range" let-total>
       {{range[0]}}-{{range[1]}} của {{total}} bản ghi
     </ng-template>
@@ -40,9 +40,9 @@
     </thead>
     <tbody>
       <tr *ngFor="let data of table.data">
-        <td>{{data.tenLoai}}</td>
-        <td>{{data.tenHM}}</td>
-        <td>{{data.ghiChu || 'Không có'}}</td>
+        <td [innerHTML]="data.tenLoai | highlight : pagingParams.keyword"></td>
+        <td [innerHTML]="data.tenHM | highlight : pagingParams.keyword"></td>
+        <td [innerHTML]="data.ghiChu | highlight : pagingParams.keyword"></td>
         <td>
           <nz-button-group>
             <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"

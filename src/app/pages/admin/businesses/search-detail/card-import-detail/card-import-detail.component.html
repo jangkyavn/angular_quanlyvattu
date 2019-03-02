@@ -1,4 +1,4 @@
-<nz-card style="width:100%;" nzTitle="Nhập vật tư" class="card-in-search-detail">
+<nz-card style="width:100%;" nzTitle="Nhập" class="card-in-search-detail">
   <div nz-row style="margin-bottom: 0.5rem;">
     <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24">
       <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
@@ -23,24 +23,31 @@
       <tr>
         <th nzWidth="15%" nzShowSort nzSortKey="maPN">Mã PN</th>
         <th nzWidth="15%" nzShowSort nzSortKey="ngayNhap">Ngày nhập</th>
-        <th nzWidth="15%" nzShowSort nzSortKey="soLuong">Số lượng</th>
         <th nzWidth="20%" nzShowSort nzSortKey="donGia">Đơn giá</th>
         <th nzWidth="15%" nzShowSort nzSortKey="chietKhau">Chiết khấu</th>
+        <th nzWidth="15%" nzShowSort nzSortKey="soLuong">Số lượng</th>
         <th nzWidth="20%" nzShowSort nzSortKey="thanhTien">Thành tiền</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let data of table.data">
-        <td>{{data.maPN}}</td>
+        <td class="text-center">{{data.maPN}}</td>
         <td>{{data.ngayNhap | date:'dd/MM/yyyy'}}</td>
-        <td class="text-center">{{data.soLuong}}</td>
         <td class="text-right">{{data.donGia | number: '1.0-0'}}</td>
         <td class="text-center">{{data.chietKhau}}%</td>
+        <td class="text-center">{{data.soLuong}}</td>
         <td class="text-right">{{data.thanhTien | number: '1.0-0'}}</td>
       </tr>
       <tr>
-        <td colspan="5">Tổng</td>
-        <td></td>
+        <td colspan="4" class="text-center">
+          <strong>Tổng</strong>
+        </td>
+        <td class="text-center">
+          <strong>{{totalQuantity | number: '1.0-0'}}</strong>
+        </td>
+        <td class="text-right">
+          <strong>{{totalAmount | number: '1.0-0'}}</strong>
+        </td>
       </tr>
     </tbody>
   </nz-table>

@@ -7,6 +7,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { NgZorroAntdModule, NZ_I18N, vi_VN } from 'ng-zorro-antd';
 import { JwtModule } from '@auth0/angular-jwt';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { registerLocaleData } from '@angular/common';
 import vi from '@angular/common/locales/vi';
@@ -32,6 +33,7 @@ export function tokenGetter() {
     HttpClientModule,
     AppRoutingModule,
     NgZorroAntdModule,
+    NgxSpinnerModule,
     JwtModule.forRoot({
       config: {
         tokenGetter,

@@ -14,6 +14,11 @@
     <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="dienThoai">Điện thoại</nz-form-label>
     <nz-form-control [nzSm]="16" [nzXs]="24">
       <input nz-input formControlName="dienThoai" id="dienThoai">
+      <nz-form-explain *ngIf="materialStoreForm.get('dienThoai').dirty && materialStoreForm.get('dienThoai').errors">
+          <ng-container *ngIf="materialStoreForm.get('dienThoai').hasError('pattern')">
+            Vui lòng chỉ nhập số!
+          </ng-container>
+        </nz-form-explain>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>

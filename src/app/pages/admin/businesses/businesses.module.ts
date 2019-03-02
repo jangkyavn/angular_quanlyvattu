@@ -58,6 +58,7 @@ import { AddLiquidationMaterialComponent } from './add-liquidation-material/add-
 import { UpdateLiquidationMaterialComponent } from './update-liquidation-material/update-liquidation-material.component';
 import { LiquidationMaterialDetailResolver } from 'src/app/shared/resolvers/liquidation-material-detail.resolver';
 import { LiquidationDetailModalComponent } from './update-liquidation-material/liquidation-detail-modal/liquidation-detail-modal.component';
+import { SharedModule } from 'src/app/shared.module';
 
 @NgModule({
   declarations: [BusinessesComponent,
@@ -87,6 +88,7 @@ import { LiquidationDetailModalComponent } from './update-liquidation-material/l
   imports: [
     CommonModule,
     FormsModule,
+    SharedModule,
     ReactiveFormsModule,
     BusinessesRoutingModule,
     NgZorroAntdModule,

@@ -13,7 +13,7 @@
     </td>
     <td style="width: 40%;">
       <nz-form-control>
-        <input readonly nz-input [(ngModel)]="personnel.ngaySinh" id="ngaySinh" />
+        <input readonly nz-input [ngModel]="personnel.ngaySinh | date:'dd/MM/yyyy'" id="ngaySinh" />
       </nz-form-control>
     </td>
   </tr>

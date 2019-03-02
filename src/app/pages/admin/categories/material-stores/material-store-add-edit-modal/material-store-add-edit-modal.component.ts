@@ -42,7 +42,7 @@ export class MaterialStoreAddEditModalComponent implements OnInit {
     this.materialStoreForm = this.fb.group({
       maKho: [null],
       tenKho: [null, [Validators.required, noWhitespaceValidator]],
-      dienThoai: [null],
+      dienThoai: [null, [Validators.pattern('[0-9]+')]],
       diaChi: [null],
       ghiChu: [null]
     });

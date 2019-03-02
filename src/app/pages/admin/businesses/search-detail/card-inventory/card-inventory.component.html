@@ -1,4 +1,4 @@
-<nz-card style="width:100%;" nzTitle="Kho vật tư" class="card-in-search-detail">
+<nz-card style="width:100%;" nzTitle="Tồn kho" class="card-in-search-detail">
   <div nz-row style="margin-bottom: 0.5rem;">
     <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24">
       <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
@@ -31,6 +31,14 @@
         <td>{{data.tenKho}}</td>
         <td class="text-center">{{data.maPhieuNhap}}</td>
         <td class="text-center">{{data.soLuongTon}}</td>
+      </tr>
+      <tr>
+        <td colspan="2" class="text-center">
+          <strong>Tổng</strong>
+        </td>
+        <td class="text-center">
+          <strong>{{totalQuantity | number: '1.0-0'}}</strong>
+        </td>
       </tr>
     </tbody>
   </nz-table>

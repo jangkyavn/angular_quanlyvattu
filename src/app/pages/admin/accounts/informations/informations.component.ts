@@ -38,7 +38,7 @@ export class InformationsComponent implements OnInit {
       email: [null, [Validators.required, Validators.email]],
       gender: [null, [Validators.required]],
       dateOfBirth: [null, [Validators.required]],
-      phoneNumber: [null],
+      phoneNumber: [null, [Validators.pattern('[0-9]+')]],
       avatar: [null],
       address: [null]
     });

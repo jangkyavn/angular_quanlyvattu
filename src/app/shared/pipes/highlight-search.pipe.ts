@@ -7,7 +7,13 @@ export class HighlightSearchPipe implements PipeTransform {
   transform(value: any, args: any): any {
     if (args && value) {
       value = String(value); // make sure its a string
-      const startIndex = value.toLowerCase().indexOf(args.toLowerCase());
+
+      if (!isNaN(args)) {
+        args = parseInt(args, 0);
+        args = args.toLocaleString('en-us');
+      }
+
+      const startIndex = value.toLowerCase().trim().indexOf(args.toLowerCase().trim());
 
       if (startIndex !== -1) {
         const endLength = args.length;
@@ -17,7 +23,7 @@ export class HighlightSearchPipe implements PipeTransform {
         const tempVavlue = this.toUnSign(value);
         const tempArgs = this.toUnSign(args);
 
-        const startIndex2 = tempVavlue.toLowerCase().indexOf(tempArgs.toLowerCase());
+        const startIndex2 = tempVavlue.toLowerCase().trim().indexOf(tempArgs.toLowerCase().trim());
         if (startIndex2 !== -1) {
           const endLength2 = tempArgs.length;
           const matchingString = value.substr(startIndex2, endLength2);

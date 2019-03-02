@@ -210,4 +210,8 @@ export class MaterialService {
         })
       );
   }
+
+  getTotalForAnotherTables(materialId, type) {
+    return this.http.get(this.baseUrl + 'VatTu/getTongCong/' + materialId + '/' + type);
+  }
 }
