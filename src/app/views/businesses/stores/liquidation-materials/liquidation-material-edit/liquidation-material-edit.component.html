@@ -69,7 +69,7 @@
         </button>
       </ng-template>
     <br />
-    <nz-card style="width:100%;" nzTitle="Danh sách tồn kho" *ngIf="inventories.length > 0">
+    <nz-card style="width:100%;" nzTitle="Danh sách tồn kho">
       <div nz-row style="margin-bottom: 0.5rem">
         <div nz-col nzSpan="8">
           <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
@@ -84,13 +84,20 @@
         <div nz-col nzSpan="8" nzOffset="8" class="text-right">
         </div>
       </div>
-      <nz-table #inventoryTable [nzData]="inventories" nzBordered [nzLoading]="loadingInventories"
-        [nzShowPagination]="false" nzSize="middle">
-        <thead>
+      <nz-table #inventoryTable [nzFrontPagination]="false" [nzData]="inventories" [nzLoading]="loadingInventories"
+        [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage"
+        [(nzPageSize)]="pagination.itemsPerPage" [nzNoResult]="'Không tìm thấy kết quả.'"
+        (nzPageIndexChange)="loadInventoriesByStoreId(liquidationMaterialForm.value.maKho)"
+        (nzPageSizeChange)="loadInventoriesByStoreId(liquidationMaterialForm.value.maKho, true)" [nzShowTotal]="rangeTemplate"
+        nzSize="middle" nzBordered>
+        <ng-template #rangeTemplate let-range="range" let-total>
+          {{range[0]}}-{{range[1]}} của {{total}} bản ghi
+        </ng-template>
+        <thead (nzSortChange)="sortInventories($event)" nzSingleSort>
           <tr>
-            <th nzWidth="40%">Vật tư</th>
-            <th nzWidth="30%">Mã phiếu nhập</th>
-            <th nzWidth="20%">Số lượng tồn</th>
+            <th nzWidth="40%" nzShowSort nzSortKey="tenVatTu">Vật tư</th>
+            <th nzWidth="30%" nzShowSort nzSortKey="maPhieuNhap">Mã phiếu nhập</th>
+            <th nzWidth="20%" nzShowSort nzSortKey="soLuongTon">Số lượng tồn</th>
             <th nzWidth="10%"></th>
           </tr>
         </thead>
@@ -100,8 +107,8 @@
             <td class="text-center">{{data.maPhieuNhap}}</td>
             <td class="text-center">{{data.soLuongTon}}</td>
             <td class="text-center">
-              <button nz-button nzType="primary" nz-tooltip nzTitle="Tạo"
-                (click)="createLiquidationDetail(data)" *ngIf="data.soLuongTon > 0">
+              <button nz-button nzType="primary" nz-tooltip nzTitle="Xuất" (click)="createLiquidationDetail(data)"
+                *ngIf="data.soLuongTon > 0">
                 <i nz-icon type="caret-down" theme="outline"></i>
               </button>
             </td>

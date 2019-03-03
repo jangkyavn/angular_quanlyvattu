@@ -14,10 +14,13 @@ import { Personnel } from 'src/app/shared/models/personnel.model';
 import { LiquidationDetail } from 'src/app/shared/models/liquidation-detail.model';
 import { Inventory } from 'src/app/shared/models/inventory.model';
 import { LiquidationMaterial } from 'src/app/shared/models/liquidation-material.model';
+import { Pagination, PaginatedResult } from 'src/app/shared/models/pagination.model';
+import { PagingParams } from 'src/app/shared/params/paging.param';
 
 import {
   LiquidationMaterialDetailAddEditModalComponent
 } from '../modals/liquidation-material-detail-add-edit-modal/liquidation-material-detail-add-edit-modal.component';
+
 
 @Component({
   selector: 'app-liquidation-material-edit',
@@ -33,6 +36,20 @@ export class LiquidationMaterialEditComponent implements OnInit {
   loadingLiquidationDetails: boolean;
   loadingInventories: boolean;
   totalQuantity: number;
+
+  sortValue = '';
+  sortKey = '';
+  pagination: Pagination = {
+    currentPage: 1,
+    itemsPerPage: 5
+  };
+  pagingParams: PagingParams = {
+    keyword: '',
+    sortKey: '',
+    sortValue: '',
+    fromDate: '',
+    toDate: ''
+  };
 
   constructor(private route: ActivatedRoute,
     private fb: FormBuilder,
@@ -78,12 +95,29 @@ export class LiquidationMaterialEditComponent implements OnInit {
     });
   }
 
-  loadInventoriesByStoreId(storeId: number, keyword: string = null) {
+  sortInventories(sort: { key: string, value: string }): void {
+    const { maKho } = this.liquidationMaterialForm.value;
+    this.pagingParams.sortKey = sort.key;
+    this.pagingParams.sortValue = sort.value;
+    this.loadInventoriesByStoreId(maKho);
+  }
+
+  loadInventoriesByStoreId(storeId: number, reset: boolean = false): void {
+    if (reset) {
+      this.pagination.currentPage = 1;
+    }
     this.loadingInventories = true;
-    this.liquidationMaterialService.getInventoriesById(storeId, keyword)
-      .subscribe((res: Inventory[]) => {
-        this.inventories = res;
+    this.liquidationMaterialService.getInventoriesByStoreId(
+      this.pagination.currentPage,
+      this.pagination.itemsPerPage,
+      this.pagingParams, storeId)
+      .subscribe((res: PaginatedResult<Inventory[]>) => {
         this.loadingInventories = false;
+        this.pagination = res.pagination;
+        this.inventories = res.result;
+      }, error => {
+        this.notify.error('Có lỗi xảy ra');
+        console.log('error getAllPagingInventory');
       });
   }
 
@@ -132,8 +166,9 @@ export class LiquidationMaterialEditComponent implements OnInit {
 
   searchInventory(keyword: any) {
     const { maKho } = this.liquidationMaterialForm.value;
-    keyword = keyword || null;
-    this.loadInventoriesByStoreId(maKho, keyword);
+    this.pagingParams.keyword = keyword;
+
+    this.loadInventoriesByStoreId(maKho, true);
   }
 
   createLiquidationDetail(inventory: Inventory) {

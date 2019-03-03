@@ -24,6 +24,10 @@ const routes: Routes = [
             {
                 path: 'kho',
                 loadChildren: './stores/stores.module#StoresModule'
+            },
+            {
+                path: 'tim-kiem-vat-tu',
+                loadChildren: './search-materials/search-materials.module#SearchMaterialsModule'
             }
         ]
     }

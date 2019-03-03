@@ -1,0 +1,54 @@
+<nz-card style="width:100%;" nzTitle="Xuất" class="card-in-search-detail">
+  <div nz-row style="margin-bottom: 0.5rem;">
+    <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24">
+      <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
+        <input type="text" nz-input placeholder="Tìm kiếm..." #keyword (keyup.enter)="search(keyword.value)">
+      </nz-input-group>
+      <ng-template #suffixIconButton>
+        <button nz-button nzType="primary" nzSearch (click)="search(keyword.value)">
+          <i nz-icon type="search"></i>
+        </button>
+      </ng-template>
+    </div>
+  </div>
+
+  <nz-table #table nzShowSizeChanger [nzFrontPagination]="false" [nzData]="dataSet" [nzLoading]="isLoading"
+    [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage" [(nzPageSize)]="pagination.itemsPerPage"
+    [nzNoResult]="'Không tìm thấy kết quả.'" (nzPageIndexChange)="loadData()" (nzPageSizeChange)="loadData(true)"
+    nzShowQuickJumper [nzShowTotal]="rangeTemplate" nzBordered nzSize="middle" [nzPageSizeOptions]="[5, 10, 15]">
+    <ng-template #rangeTemplate let-range="range" let-total>
+      {{range[0]}}-{{range[1]}} của {{total}} bản ghi
+    </ng-template>
+    <thead (nzSortChange)="sort($event)" nzSingleSort>
+      <tr>
+        <th nzWidth="15%" nzShowSort nzSortKey="maPN">Mã PX</th>
+        <th nzWidth="15%" nzShowSort nzSortKey="ngayXuat">Ngày xuất</th>
+        <th nzWidth="20%" nzShowSort nzSortKey="donGia">Đơn giá</th>
+        <th nzWidth="15%" nzShowSort nzSortKey="chietKhau">Chiết khấu</th>
+        <th nzWidth="15%" nzShowSort nzSortKey="soLuong">Số lượng</th>
+        <th nzWidth="20%" nzShowSort nzSortKey="thanhTien">Thành tiền</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of table.data">
+        <td class="text-center">{{data.maPX}}</td>
+        <td>{{data.ngayXuat | date:'dd/MM/yyyy'}}</td>
+        <td class="text-right">{{data.donGia | number: '1.0-0'}}</td>
+        <td class="text-center">{{data.chietKhau}}%</td>
+        <td class="text-center">{{data.soLuong}}</td>
+        <td class="text-right">{{data.thanhTien | number: '1.0-0'}}</td>
+      </tr>
+      <tr>
+        <td colspan="4" class="text-center">
+          <strong>Tổng</strong>
+        </td>
+        <td class="text-center">
+          <strong>{{totalQuantity | number: '1.0-0'}}</strong>
+        </td>
+        <td class="text-right">
+          <strong>{{totalAmount | number: '1.0-0'}}</strong>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>

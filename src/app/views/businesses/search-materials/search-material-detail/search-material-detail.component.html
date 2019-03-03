@@ -1,0 +1,33 @@
+<nz-breadcrumb style="margin:16px 0;">
+    <nz-breadcrumb-item>Nghiệp vụ</nz-breadcrumb-item>
+    <nz-breadcrumb-item>Tìm kiếm vật tư</nz-breadcrumb-item>
+    <nz-breadcrumb-item>Chi tiết</nz-breadcrumb-item>
+  </nz-breadcrumb>
+  
+  <div style="padding:24px; background: #fff; min-height: 70vh">
+    <div>
+      <div nz-row>
+        <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24">
+          Vật tư: <strong>{{material.tenVT}}</strong>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div nz-row nzGutter="8">
+      <div nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="12" nzXl="12">
+        <app-card-import-details></app-card-import-details>
+      </div>
+      <div nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="12" nzXl="12">
+        <app-card-export-details></app-card-export-details>
+      </div>
+    </div>
+    <br />
+    <div nz-row nzGutter="8">
+      <div nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="12" nzXl="12">
+        <app-card-liquidation-materials></app-card-liquidation-materials>
+      </div>
+      <div nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="12" nzXl="12">
+        <app-card-inventories></app-card-inventories>
+      </div>
+    </div>
+  </div>
