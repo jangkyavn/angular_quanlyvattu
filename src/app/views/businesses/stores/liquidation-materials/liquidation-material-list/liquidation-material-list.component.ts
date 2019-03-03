@@ -1,23 +1,20 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
-import { ExportMaterialService } from 'src/app/shared/services/export-material.service';
-import { NotifyService } from 'src/app/shared/services/notify.service';
 import { NzModalService } from 'ng-zorro-antd';
 
-import { ExportMaterial } from 'src/app/shared/models/export-material.model';
+import { NotifyService } from 'src/app/shared/services/notify.service';
+import { LiquidationMaterialService } from 'src/app/shared/services/liquidation-material.service';
+
 import { Pagination, PaginatedResult } from 'src/app/shared/models/pagination.model';
 import { PagingParams } from 'src/app/shared/params/paging.param';
-import {
-  ExportMaterialViewDetailModalComponent
-} from '../modals/export-material-view-detail-modal/export-material-view-detail-modal.component';
+import { LiquidationMaterial } from 'src/app/shared/models/liquidation-material.model';
 
 @Component({
-  selector: 'app-export-material-list',
-  templateUrl: './export-material-list.component.html',
-  styleUrls: ['./export-material-list.component.scss']
+  selector: 'app-liquidation-material-list',
+  templateUrl: './liquidation-material-list.component.html',
+  styleUrls: ['./liquidation-material-list.component.scss']
 })
-export class ExportMaterialListComponent implements OnInit {
+export class LiquidationMaterialListComponent implements OnInit {
   dataSet = [];
   loading = true;
   sortValue = '';
@@ -39,22 +36,21 @@ export class ExportMaterialListComponent implements OnInit {
   @HostListener('window:keydown', ['$event'])
   onKeyPress($event: KeyboardEvent) {
     if (($event.ctrlKey || $event.metaKey) && ($event.keyCode === 73 || $event.keyCode === 105)) {
-      this.router.navigate(['/nghiep-vu/xuat/tao-phieu-xuat']);
+      this.router.navigate(['/nghiep-vu/kho/thanh-ly-vat-tu/tao-phieu-thanh-ly']);
     }
   }
 
-  constructor(
-    private route: ActivatedRoute,
+  constructor(private route: ActivatedRoute,
     private router: Router,
     private modalService: NzModalService,
-    private exportMaterialService: ExportMaterialService,
+    private liquidationService: LiquidationMaterialService,
     private notify: NotifyService) { }
 
   ngOnInit() {
     this.route.data.subscribe(data => {
       this.loading = false;
-      this.pagination = data['export-material-list'].pagination;
-      this.dataSet = data['export-material-list'].result;
+      this.pagination = data['liquidation-material-list'].pagination;
+      this.dataSet = data['liquidation-material-list'].result;
     });
   }
 
@@ -69,14 +65,14 @@ export class ExportMaterialListComponent implements OnInit {
       this.pagination.currentPage = 1;
     }
     this.loading = true;
-    this.exportMaterialService.getAllPaging(this.pagination.currentPage, this.pagination.itemsPerPage, this.pagingParams)
-      .subscribe((res: PaginatedResult<ExportMaterial[]>) => {
+    this.liquidationService.getAllPaging(this.pagination.currentPage, this.pagination.itemsPerPage, this.pagingParams)
+      .subscribe((res: PaginatedResult<LiquidationMaterial[]>) => {
         this.loading = false;
         this.pagination = res.pagination;
         this.dataSet = res.result;
       }, error => {
         this.notify.error('Có lỗi xảy ra');
-        console.log('error getAllPagingExportMaterial');
+        console.log('error getAllPagingLiquidationMaterial');
       }, () => {
         if (this.dataSet.length === 0 && this.pagination.currentPage !== 1) {
           this.pagination.currentPage -= 1;
@@ -87,13 +83,13 @@ export class ExportMaterialListComponent implements OnInit {
 
   delete(id: number) {
     this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
-      this.exportMaterialService.delete(id).subscribe((res: boolean) => {
+      this.liquidationService.delete(id).subscribe((res: boolean) => {
         if (res) {
           this.loadData();
           this.notify.success('Xóa thành công');
         }
       }, error => {
-        console.log('error deleteExportMaterial');
+        console.log('error deleteLiquidationMaterial');
       });
     });
   }
@@ -107,25 +103,25 @@ export class ExportMaterialListComponent implements OnInit {
   }
 
   view(id: number) {
-    this.exportMaterialService.getDetail(id).subscribe((res: any) => {
-      const modal = this.modalService.create({
-        nzTitle: 'Xem phiếu xuất',
-        nzContent: ExportMaterialViewDetailModalComponent,
-        nzMaskClosable: false,
-        nzClosable: false,
-        nzWidth: 1000,
-        nzComponentParams: {
-          exportMaterialParams: res
-        },
-        nzFooter: [
-          {
-            label: 'Hủy',
-            shape: 'default',
-            onClick: () => modal.destroy()
-          }
-        ]
-      });
-    });
+    // this.liquidationService.getDetail(id).subscribe((res: any) => {
+    //   const modal = this.modalService.create({
+    //     nzTitle: 'Xem phiếu xuất',
+    //     nzContent: ExportViewDetailModalComponent,
+    //     nzMaskClosable: false,
+    //     nzClosable: false,
+    //     nzWidth: 1000,
+    //     nzComponentParams: {
+    //       exportMaterialParams: res
+    //     },
+    //     nzFooter: [
+    //       {
+    //         label: 'Hủy',
+    //         shape: 'default',
+    //         onClick: () => modal.destroy()
+    //       }
+    //     ]
+    //   });
+    // });
   }
 
   enableButtonSearch() {

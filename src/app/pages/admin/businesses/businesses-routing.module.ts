@@ -1,71 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { InventoryListComponent } from './inventories/inventory-list/inventory-list.component';
-import { InventoryListResolver } from 'src/app/shared/resolvers/inventory-list.resolver';
-import { ImportMaterialsComponent } from './import-materials/import-materials.component';
-import { ImportListComponent } from './imports/import-list/import-list.component';
-import { ImportMaterialListResolver } from 'src/app/shared/resolvers/import-list.resolver';
-import { ExportMaterialsComponent } from './export-materials/export-materials.component';
-import { ExportListComponent } from './exports/export-list/export-list.component';
-import { ExportMaterialListResolver } from 'src/app/shared/resolvers/export-list-resolver';
-import { UpdateImportMaterialsComponent } from './update-import-materials/update-import-materials.component';
-import { UpdateExportMaterialsComponent } from './update-export-materials/update-export-materials.component';
-import { SearchComponent } from './search/search.component';
-import { MaterialListResolver } from 'src/app/shared/resolvers/material-list.resolver';
-import { SearchDetailComponent } from './search-detail/search-detail.component';
-import { MaterialDetailResolver } from 'src/app/shared/resolvers/material-detail.resolver';
-import { LiquidationMaterialsComponent } from './liquidation-materials/liquidation-materials.component';
-import { LiquidationMaterialListResolver } from 'src/app/shared/resolvers/liquidation-material-list.resolver';
-import { AddLiquidationMaterialComponent } from './add-liquidation-material/add-liquidation-material.component';
-import { UpdateLiquidationMaterialComponent } from './update-liquidation-material/update-liquidation-material.component';
-import { LiquidationMaterialDetailResolver } from 'src/app/shared/resolvers/liquidation-material-detail.resolver';
 
-const routes: Routes = [
-  { path: '', redirectTo: 'vat-tu-ton-kho', pathMatch: 'full' },
-  {
-    path: 'vat-tu-ton-kho', component: InventoryListComponent,
-    resolve: { 'inventories': InventoryListResolver }
-  },
-  {
-    path: 'tao-phieu-nhap', component: ImportMaterialsComponent
-  },
-  {
-    path: 'danh-sach-phieu-nhap', component: ImportListComponent,
-    resolve: { 'import-materials': ImportMaterialListResolver }
-  },
-  {
-    path: 'sua-phieu-nhap/:id', component: UpdateImportMaterialsComponent
-  },
-  {
-    path: 'tao-phieu-xuat', component: ExportMaterialsComponent
-  },
-  {
-    path: 'danh-sach-phieu-xuat', component: ExportListComponent,
-    resolve: { 'export-materials': ExportMaterialListResolver }
-  },
-  {
-    path: 'sua-phieu-xuat/:id', component: UpdateExportMaterialsComponent
-  },
-  {
-    path: 'thanh-ly-vat-tu', component: LiquidationMaterialsComponent,
-    resolve: { 'liquidation-materials': LiquidationMaterialListResolver }
-  },
-  {
-    path: 'tao-phieu-thanh-ly', component: AddLiquidationMaterialComponent
-  },
-  {
-    path: 'sua-phieu-thanh-ly/:id', component: UpdateLiquidationMaterialComponent,
-    resolve: { 'liquidation-material': LiquidationMaterialDetailResolver }
-  },
-  {
-    path: 'tim-kiem-vat-tu', component: SearchComponent,
-    resolve: { 'materials': MaterialListResolver }
-  },
-  {
-    path: 'tim-kiem-vat-tu-chi-tiet/:id', component: SearchDetailComponent,
-    resolve: { 'material': MaterialDetailResolver }
-  }
-];
+const routes: Routes = [ ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

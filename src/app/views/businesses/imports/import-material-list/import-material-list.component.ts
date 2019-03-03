@@ -39,7 +39,7 @@ export class ImportMaterialListComponent implements OnInit {
   @HostListener('window:keydown', ['$event'])
   onKeyPress($event: KeyboardEvent) {
     if (($event.ctrlKey || $event.metaKey) && ($event.keyCode === 73 || $event.keyCode === 105)) {
-      this.router.navigate(['/admin/nghiep-vu/tao-phieu-nhap']);
+      this.router.navigate(['/nghiep-vu/nhap/tao-phieu-nhap']);
     }
   }
 

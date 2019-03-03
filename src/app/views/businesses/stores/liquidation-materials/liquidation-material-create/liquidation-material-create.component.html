@@ -1,0 +1,73 @@
+<nz-breadcrumb style="margin:16px 0;">
+    <nz-breadcrumb-item>Nghiệp vụ</nz-breadcrumb-item>
+    <nz-breadcrumb-item>Kho</nz-breadcrumb-item>
+    <nz-breadcrumb-item>Tạo phiếu thanh lý</nz-breadcrumb-item>
+  </nz-breadcrumb>
+  
+  <div style="padding:24px; background: #fff; min-height: 70vh">
+    <form nz-form [formGroup]="liquidationMaterialForm" (ngSubmit)="saveChanges()" autocomplete="off">
+      <nz-card style="width:100%;" nzTitle="Thanh lý vật tư">
+        <table style="width: 100%;">
+          <tr>
+            <td style="width: 35%">
+              <nz-form-item>
+                <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzFor="maKho">Kho hàng</nz-form-label>
+                <nz-form-control [nzSm]="16" [nzXs]="24">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn kho hàng" formControlName="maKho" id="maKho">
+                    <nz-option *ngFor="let item of materialStores" [nzValue]="item.maKho" [nzLabel]="item.tenKho">
+                    </nz-option>
+                  </nz-select>
+                  <nz-form-explain
+                    *ngIf="liquidationMaterialForm.get('maKho').dirty && liquidationMaterialForm.get('maKho').errors">
+                    <ng-container *ngIf="liquidationMaterialForm.get('maKho').hasError('required')">
+                      Vui lòng chọn kho hàng!
+                    </ng-container>
+                  </nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+            </td>
+            <td style="width: 35%">
+              <nz-form-item>
+                <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzFor="maNS">Nhân sự</nz-form-label>
+                <nz-form-control [nzSm]="16" [nzXs]="24">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn nhân sự" formControlName="maNS" id="maNS">
+                    <nz-option *ngFor="let item of personnels" [nzValue]="item.maNS" [nzLabel]="item.hoTen"></nz-option>
+                  </nz-select>
+                  <nz-form-explain
+                    *ngIf="liquidationMaterialForm.get('maNS').dirty && liquidationMaterialForm.get('maNS').errors">
+                    <ng-container *ngIf="liquidationMaterialForm.get('maNS').hasError('required')">
+                      Vui lòng chọn nhân sự!
+                    </ng-container>
+                  </nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+            </td>
+            <td style="width: 30%">
+              <nz-form-item>
+                <nz-form-label [nzSm]="10" [nzXs]="24" nzRequired nzFor="ngayThanhLy">Ngày thanh lý</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24">
+                  <input type="date" nz-input formControlName="ngayThanhLy" id="ngayThanhLy" />
+                  <nz-form-explain
+                    *ngIf="liquidationMaterialForm.get('ngayThanhLy').dirty && liquidationMaterialForm.get('ngayThanhLy').errors">
+                    <ng-container *ngIf="liquidationMaterialForm.get('ngayThanhLy').hasError('required')">
+                      Vui lòng chọn ngày thanh lý!
+                    </ng-container>
+                  </nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3" style="text-align: right;">
+              <button type="button" nz-button nzType="default" [routerLink]="['/nghiep-vu/kho/thanh-ly-vat-tu']">
+                <i nz-icon type="close" theme="outline"></i> Hủy
+              </button>
+              <button type="submit" nz-button nzType="primary" style="margin-left:1rem;">
+                <i nz-icon type="save" theme="outline"></i> Lưu
+              </button>
+            </td>
+          </tr>
+        </table>
+      </nz-card>
+    </form>
+  </div>

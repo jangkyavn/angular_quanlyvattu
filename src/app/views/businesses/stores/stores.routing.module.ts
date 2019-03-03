@@ -5,25 +5,21 @@ const routes: Routes = [
     {
         path: '',
         data: {
-            title: 'Nghiệp vụ'
+            title: 'Kho'
         },
         children: [
             {
                 path: '',
-                redirectTo: 'nhap',
+                redirectTo: 'vat-tu-ton-kho',
                 pathMatch: 'full'
             },
             {
-                path: 'nhap',
-                loadChildren: './imports/imports.module#ImportsModule'
+                path: 'vat-tu-ton-kho',
+                loadChildren: './inventories/inventories.module#InventoriesModule'
             },
             {
-                path: 'xuat',
-                loadChildren: './exports/exports.module#ExportsModule'
-            },
-            {
-                path: 'kho',
-                loadChildren: './stores/stores.module#StoresModule'
+                path: 'thanh-ly-vat-tu',
+                loadChildren: './liquidation-materials/liquidation-materials.module#LiquidationMaterialsModule'
             }
         ]
     }
@@ -33,4 +29,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
 })
-export class BusinessesRoutingModule { }
+export class StoresRoutingModule { }
