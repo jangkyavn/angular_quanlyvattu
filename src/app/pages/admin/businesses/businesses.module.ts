@@ -29,9 +29,7 @@ import { ExportMaterialsComponent } from './export-materials/export-materials.co
 import { ExportListComponent } from './exports/export-list/export-list.component';
 import { ExportMaterialListResolver } from 'src/app/shared/resolvers/export-list-resolver';
 import { UpdateImportMaterialsComponent } from './update-import-materials/update-import-materials.component';
-import { ImportMaterialDetailResolver } from 'src/app/shared/resolvers/import-material-detail.resolver';
 import { UpdateExportMaterialsComponent } from './update-export-materials/update-export-materials.component';
-import { ExportMaterialDetailResolver } from 'src/app/shared/resolvers/export-material-detail.resolver';
 import {
   ImportMaterialDetailModalComponent
 } from './update-import-materials/import-material-detail-modal/import-material-detail-modal.component';
@@ -99,9 +97,7 @@ import { SharedModule } from 'src/app/shared.module';
     { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig },
     InventoryListResolver,
     ImportMaterialListResolver,
-    ImportMaterialDetailResolver,
     ExportMaterialListResolver,
-    ExportMaterialDetailResolver,
     MaterialListResolver,
     MaterialDetailResolver,
     LiquidationMaterialListResolver,

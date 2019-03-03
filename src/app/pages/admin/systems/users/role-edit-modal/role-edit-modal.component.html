@@ -1,7 +1,0 @@
-<form #rolesForm="ngForm" id="rolesForm">
-  <div *ngFor="let role of roles">
-    <label nz-checkbox [(ngModel)]="role.checked" [nzDisabled]="role.name === 'Admin' && user.userName === 'admin'"
-      [ngModelOptions]="{standalone: true}" class='chk-role'>{{role.name}}</label>
-    <br />
-  </div>
-</form>

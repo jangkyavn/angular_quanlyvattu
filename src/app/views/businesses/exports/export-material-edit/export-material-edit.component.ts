@@ -1,27 +1,33 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd';
-
-import { MaterialStore } from 'src/app/shared/models/material-store.model';
-import { Personnel } from 'src/app/shared/models/personnel.model';
-import { Material } from 'src/app/shared/models/material.model';
 
 import { MaterialStoreService } from 'src/app/shared/services/material-store.service';
 import { PersonnelService } from 'src/app/shared/services/personnel.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
 import { ExportMaterialService } from 'src/app/shared/services/export-material.service';
-import { ExportMaterialDetail } from 'src/app/shared/models/export-material-detail.model';
-import { Inventory } from 'src/app/shared/models/inventory.model';
-import { ExportMaterialDetailModalComponent } from './export-material-detail-modal/export-material-detail-modal.component';
 import { ExportMaterialDetailService } from 'src/app/shared/services/export-material-detail.service';
 
+import { ExportMaterialDetail } from 'src/app/shared/models/export-material-detail.model';
+import { Inventory } from 'src/app/shared/models/inventory.model';
+import { MaterialStore } from 'src/app/shared/models/material-store.model';
+import { Personnel } from 'src/app/shared/models/personnel.model';
+import { Material } from 'src/app/shared/models/material.model';
+import { Pagination, PaginatedResult } from 'src/app/shared/models/pagination.model';
+import { PagingParams } from 'src/app/shared/params/paging.param';
+
+import {
+  ExportMaterialDetailAddEditModalComponent
+} from '../modals/export-material-detail-add-edit-modal/export-material-detail-add-edit-modal.component';
+
+
 @Component({
-  selector: 'app-update-export-materials',
-  templateUrl: './update-export-materials.component.html',
-  styleUrls: ['./update-export-materials.component.scss']
+  selector: 'app-export-material-edit',
+  templateUrl: './export-material-edit.component.html',
+  styleUrls: ['./export-material-edit.component.scss']
 })
-export class UpdateExportMaterialsComponent implements OnInit {
+export class ExportMaterialEditComponent implements OnInit {
   loadingInventories: boolean;
   loadingExportDetails: boolean;
   materialStores: MaterialStore[];
@@ -36,6 +42,20 @@ export class UpdateExportMaterialsComponent implements OnInit {
   totalAmountAfterDiscount: number;
   discountPrice: number;
   discount: number;
+
+  sortValue = '';
+  sortKey = '';
+  pagination: Pagination = {
+    currentPage: 1,
+    itemsPerPage: 5
+  };
+  pagingParams: PagingParams = {
+    keyword: '',
+    sortKey: '',
+    sortValue: '',
+    fromDate: '',
+    toDate: ''
+  };
 
   formatterPercent = value => `${value} %`;
   parserPercent = value => value.replace(' %', '');
@@ -53,6 +73,7 @@ export class UpdateExportMaterialsComponent implements OnInit {
 
   ngOnInit() {
     this.inventories = [];
+    this.exportMaterialDetails = [];
 
     this.loadAllMaterialStores();
     this.loadAllPersonnels();
@@ -75,6 +96,7 @@ export class UpdateExportMaterialsComponent implements OnInit {
 
     this.route.data.subscribe(data => {
       const { mxuatvattu, listxuatchitiet } = data['export-material'];
+
       this.exportMaterialForm.patchValue(mxuatvattu);
       this.loadInventoriesByStoreId(mxuatvattu.maKho);
       this.exportMaterialDetails = listxuatchitiet;
@@ -94,12 +116,37 @@ export class UpdateExportMaterialsComponent implements OnInit {
     });
   }
 
-  loadInventoriesByStoreId(storeId: number, keyword: string = null) {
-    /////
+  sortInventories(sort: { key: string, value: string }): void {
+    const { maKho } = this.exportMaterialForm.value;
+    this.pagingParams.sortKey = sort.key;
+    this.pagingParams.sortValue = sort.value;
+    this.loadInventoriesByStoreId(maKho);
   }
 
-  changeMaterialStore(storeId: number) {
-    this.loadInventoriesByStoreId(storeId);
+  loadInventoriesByStoreId(storeId: number, reset: boolean = false): void {
+    if (reset) {
+      this.pagination.currentPage = 1;
+    }
+    this.loadingInventories = true;
+    this.exportMaterialService.getInventoriesByStoreId(
+      this.pagination.currentPage,
+      this.pagination.itemsPerPage,
+      this.pagingParams, storeId)
+      .subscribe((res: PaginatedResult<Inventory[]>) => {
+        this.loadingInventories = false;
+        this.pagination = res.pagination;
+        this.inventories = res.result;
+      }, error => {
+        this.notify.error('Có lỗi xảy ra');
+        console.log('error getAllPagingInventory');
+      });
+  }
+
+  searchInventory(keyword: any) {
+    const { maKho } = this.exportMaterialForm.value;
+    this.pagingParams.keyword = keyword;
+
+    this.loadInventoriesByStoreId(maKho, true);
   }
 
   exportMaterial(inventory: Inventory) {
@@ -107,7 +154,7 @@ export class UpdateExportMaterialsComponent implements OnInit {
 
     const modal = this.modalService.create({
       nzTitle: 'Xuất chi tiết vật tư',
-      nzContent: ExportMaterialDetailModalComponent,
+      nzContent: ExportMaterialDetailAddEditModalComponent,
       nzMaskClosable: false,
       nzComponentParams: {
         inventory,
@@ -178,7 +225,7 @@ export class UpdateExportMaterialsComponent implements OnInit {
 
     const modal = this.modalService.create({
       nzTitle: 'Sửa Xuất chi tiết vật tư',
-      nzContent: ExportMaterialDetailModalComponent,
+      nzContent: ExportMaterialDetailAddEditModalComponent,
       nzMaskClosable: false,
       nzComponentParams: {
         materialStoreId: maKho,
@@ -222,12 +269,6 @@ export class UpdateExportMaterialsComponent implements OnInit {
           }
         });
     });
-  }
-
-  searchInventory(keyword: any) {
-    const { maKho } = this.exportMaterialForm.value;
-    keyword = keyword || null;
-    this.loadInventoriesByStoreId(maKho, keyword);
   }
 
   loadTotalPrice() {

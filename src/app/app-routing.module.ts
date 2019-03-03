@@ -43,7 +43,15 @@ const routes: Routes = [
       {
         path: 'danh-muc',
         loadChildren: './views/categories/categories.module#CategoriesModule'
-      }
+      },
+      {
+        path: 'nghiep-vu',
+        loadChildren: './views/businesses/businesses.module#BusinessesModule'
+      },
+      {
+        path: 'quan-ly-tai-khoan',
+        loadChildren: './views/manage-accounts/manage-accounts.module#ManageAccountsModule'
+      } 
     ]
   },
   { path: '**', component: P404Component }

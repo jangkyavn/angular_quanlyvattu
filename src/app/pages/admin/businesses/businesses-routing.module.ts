@@ -9,9 +9,7 @@ import { ExportMaterialsComponent } from './export-materials/export-materials.co
 import { ExportListComponent } from './exports/export-list/export-list.component';
 import { ExportMaterialListResolver } from 'src/app/shared/resolvers/export-list-resolver';
 import { UpdateImportMaterialsComponent } from './update-import-materials/update-import-materials.component';
-import { ImportMaterialDetailResolver } from 'src/app/shared/resolvers/import-material-detail.resolver';
 import { UpdateExportMaterialsComponent } from './update-export-materials/update-export-materials.component';
-import { ExportMaterialDetailResolver } from 'src/app/shared/resolvers/export-material-detail.resolver';
 import { SearchComponent } from './search/search.component';
 import { MaterialListResolver } from 'src/app/shared/resolvers/material-list.resolver';
 import { SearchDetailComponent } from './search-detail/search-detail.component';
@@ -36,8 +34,7 @@ const routes: Routes = [
     resolve: { 'import-materials': ImportMaterialListResolver }
   },
   {
-    path: 'sua-phieu-nhap/:id', component: UpdateImportMaterialsComponent,
-    resolve: { 'import-material': ImportMaterialDetailResolver }
+    path: 'sua-phieu-nhap/:id', component: UpdateImportMaterialsComponent
   },
   {
     path: 'tao-phieu-xuat', component: ExportMaterialsComponent
@@ -47,8 +44,7 @@ const routes: Routes = [
     resolve: { 'export-materials': ExportMaterialListResolver }
   },
   {
-    path: 'sua-phieu-xuat/:id', component: UpdateExportMaterialsComponent,
-    resolve: { 'export-material': ExportMaterialDetailResolver }
+    path: 'sua-phieu-xuat/:id', component: UpdateExportMaterialsComponent
   },
   {
     path: 'thanh-ly-vat-tu', component: LiquidationMaterialsComponent,

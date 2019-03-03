@@ -90,13 +90,13 @@
             <span title><i nz-icon type="login" theme="outline"></i> Nhập</span>
             <ul>
               <li nz-menu-item>
-                <a [routerLink]="['/admin/nghiep-vu/tao-phieu-nhap']">
+                <a [routerLink]="['/nghiep-vu/nhap/tao-phieu-nhap']">
                   <i nz-icon type="form" theme="outline"></i>
                   Tạo phiếu nhập
                 </a>
               </li>
               <li nz-menu-item>
-                <a [routerLink]="['/admin/nghiep-vu/danh-sach-phieu-nhap']">
+                <a [routerLink]="['/nghiep-vu/nhap']">
                   <i nz-icon type="table" theme="outline"></i>
                   Danh sách phiếu nhập
                 </a>
@@ -107,13 +107,13 @@
             <span title><i nz-icon type="logout" theme="outline"></i> Xuất</span>
             <ul>
               <li nz-menu-item>
-                <a [routerLink]="['/admin/nghiep-vu/tao-phieu-xuat']">
+                <a [routerLink]="['/nghiep-vu/xuat/tao-phieu-xuat']">
                   <i nz-icon type="form" theme="outline"></i>
                   Tạo phiếu xuất
                 </a>
               </li>
               <li nz-menu-item>
-                <a [routerLink]="['/admin/nghiep-vu/danh-sach-phieu-xuat']">
+                <a [routerLink]="['/nghiep-vu/xuat']">
                   <i nz-icon type="table" theme="outline"></i>
                   Danh sách phiếu xuất
                 </a>
@@ -171,7 +171,7 @@
                   <span>{{authService.currentUser?.userName}}</span>
                 </span>
                 <ul nz-menu>
-                  <li nz-menu-item [routerLink]="['/admin/quan-ly-tai-khoan']">
+                  <li nz-menu-item [routerLink]="['/quan-ly-tai-khoan']">
                     <i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;
                     <span>Quản lý tài khoản</span>
                   </li>

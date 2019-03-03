@@ -1,8 +1,0 @@
-<div>
-  <nz-radio-group [(ngModel)]="isGetAll">
-    <label nz-radio [nzValue]="true" style="margin-right: 2rem;">Tất cả</label>
-    <label nz-radio [nzValue]="false">
-      <nz-input-number [nzDisabled]="isGetAll !== false" [(ngModel)]="pageNumber" [nzMin]="1" [nzMax]="totalPages" [nzStep]="1"></nz-input-number> / {{totalPages}}
-    </label>
-  </nz-radio-group>
-</div>

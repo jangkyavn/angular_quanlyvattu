@@ -1,0 +1,29 @@
+th {
+    text-align: center !important;
+}
+
+input[type="date"]:before {
+    content: attr(placeholder) !important;
+    color: #aaa;
+    margin-right: 0.5em;
+}
+
+input[type="date"]:focus:before,
+input[type="date"]:valid:before {
+    content: "";
+}
+
+.date-range {
+    display: flex;
+    .from-date {
+        border-radius: 4px 0 0 4px;
+    }
+    .to-date {
+        border-left: none;
+        border-right: none;
+        border-radius: 0;
+    }
+    .btn-search-date-range {
+        border-radius: 0 4px 4px 0;
+    }
+}

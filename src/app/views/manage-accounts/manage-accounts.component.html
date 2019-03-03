@@ -1,0 +1,14 @@
+<nz-breadcrumb style="margin:16px 0;">
+  <nz-breadcrumb-item>Quản lý tài khoản</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div style="padding:24px; background: #fff; min-height: 80vh">
+  <nz-tabset [nzTabPosition]="'left'">
+    <nz-tab [nzTitle]="'Cập nhật thông tin'">
+      <app-update-informations></app-update-informations>
+    </nz-tab>
+    <nz-tab [nzTitle]="'Đổi mật khẩu'">
+      <app-change-password></app-change-password>
+    </nz-tab>
+  </nz-tabset>
+</div>
