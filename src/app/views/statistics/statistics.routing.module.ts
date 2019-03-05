@@ -22,8 +22,8 @@ const routes: Routes = [
                 loadChildren: './export-statistics/export-statistics.module#ExportStatisticsModule'
             },
             {
-                path: 'thong-ke-ton-kho',
-                loadChildren: './inventory-statistics/inventory-statistics.module#InventoryStatisticsModule'
+                path: 'thong-ke-thanh-ly',
+                loadChildren: './liquidation-statistics/liquidation-statistics.module#LiquidationStatisticsModule'
             },
             {
                 path: 'thong-ke-nhap-xuat-ton',

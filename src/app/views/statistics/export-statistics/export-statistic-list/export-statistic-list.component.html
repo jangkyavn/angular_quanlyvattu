@@ -1,3 +1,71 @@
-<p>
-  export-statistic-list works!
-</p>
+<nz-breadcrumb style="margin:16px 0;">
+    <nz-breadcrumb-item>Thống kê báo cáo</nz-breadcrumb-item>
+    <nz-breadcrumb-item>Thống kê xuất</nz-breadcrumb-item>
+  </nz-breadcrumb>
+  
+  <div style="padding:24px; background: #fff; min-height: 70vh">
+    <div nz-row nzGutter="16">
+      <div nz-col nzXs="24" nzSm="24" nzMd="8" nzLg="8" nzXl="8">
+        <nz-select style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="Chọn kho" [(ngModel)]="storeId"
+          (ngModelChange)="changeMaterialStores($event)">
+          <nz-option *ngFor="let item of materialStores" [nzValue]="item.maKho" [nzLabel]="item.tenKho">
+          </nz-option>
+        </nz-select>
+      </div>
+      <div nz-col nzXs="24" nzSm="24" nzMd="8" nzLg="8" nzXl="8">
+        <nz-select style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="Chọn hạng mục" [(ngModel)]="itemId"
+          (ngModelChange)="changeMaterialItems($event)">
+          <nz-option *ngFor="let item of materialItems" [nzValue]="item.maHM" [nzLabel]="item.tenHM">
+          </nz-option>
+        </nz-select>
+      </div>
+      <div nz-col nzXs="24" nzSm="24" nzMd="8" nzLg="8" nzXl="8">
+        <nz-select style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="Chọn loại vật tư" [(ngModel)]="typeId"
+          (ngModelChange)="changeMaterialTypes($event)">
+          <nz-option *ngFor="let item of materialTypes" [nzValue]="item.maLoaiVatTu" [nzLabel]="item.tenLoai">
+          </nz-option>
+        </nz-select>
+      </div>
+    </div>
+    <br />
+    <div nz-row nzGutter="16">
+      <div nz-col nzXs="24" nzSm="24" nzMd="8" nzLg="8" nzXl="8">
+        <input nz-input type="date" class="from-date" placeholder="Từ ngày" [(ngModel)]="statisticParams.fromDate">
+      </div>
+      <div nz-col nzXs="24" nzSm="24" nzMd="8" nzLg="8" nzXl="8">
+        <input nz-input type="date" class="to-date" placeholder="Đến ngày" [(ngModel)]="statisticParams.toDate">
+      </div>
+      <div nz-col nzXs="24" nzSm="24" nzMd="8" nzLg="8" nzXl="8">
+        <button nz-button nzType="primary" nzSearch (click)="search()" style="margin-right: 1rem;">
+          <i nz-icon type="search"></i> Tìm kiếm
+        </button>
+        <button nz-button nzType="default" (click)="refresh()">
+          <i nz-icon type="sync" theme="outline"></i> Làm mới tìm kiếm
+        </button>
+      </div>
+    </div>
+    <br />
+    <nz-table #table [nzData]="dataSet" [nzLoading]="loading" [nzNoResult]="'Không tìm thấy kết quả.'" nzSize="middle">
+      <thead>
+        <tr>
+          <th nzWidth="40%">Tên vật tư</th>
+          <th nzWidth="20%">Tổng lượng xuất</th>
+          <th nzWidth="20%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of table.data">
+          <td>{{data.tenVT}}</td>
+          <td>{{data.tongLuongXuat}}</td>
+          <td>
+            <nz-button-group>
+              <button [routerLink]="['/thong-ke-bao-cao/thong-ke-xuat/xem-chi-tiet', data.maVatTu]" [queryParams]="{fromDate: statisticParams.fromDate, toDate: statisticParams.toDate}" nz-button
+                nzType="default" class="btn-primary" nz-tooltip nzTitle="Xem">
+                <i nz-icon type="eye" theme="outline"></i>
+              </button>
+            </nz-button-group>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>

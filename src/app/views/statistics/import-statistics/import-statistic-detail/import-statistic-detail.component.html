@@ -1,6 +1,22 @@
-<nz-card style="width:100%;" nzTitle="Nhập" class="card-in-search-detail">
+<nz-breadcrumb style="margin:16px 0;">
+  <nz-breadcrumb-item>Thống kê báo cáo</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Thống kê nhập</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Xem chi tiết</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div style="padding:24px; background: #fff; min-height: 70vh">
+  <div nz-row>
+    <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24">
+      Vật tư: <strong>{{material.tenVT}}</strong>
+      <span style="margin: 0 1rem 0 1rem;"></span>
+      Từ ngày: <strong>{{pagingParams.fromDate}}</strong> ->
+      Đến ngày: <strong>{{pagingParams.toDate}}</strong>
+    </div>
+  </div>
+  <br />
+  <nz-card style="width:100%;" nzTitle="Nhập" class="card-in-search-detail">
     <div nz-row style="margin-bottom: 0.5rem;">
-      <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24">
+      <div nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="12" nzXl="12">
         <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
           <input type="text" nz-input placeholder="Tìm kiếm..." #keyword (keyup.enter)="search(keyword.value)">
         </nz-input-group>
@@ -11,11 +27,11 @@
         </ng-template>
       </div>
     </div>
-  
     <nz-table #table nzShowSizeChanger [nzFrontPagination]="false" [nzData]="dataSet" [nzLoading]="isLoading"
-      [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage" [(nzPageSize)]="pagination.itemsPerPage"
-      [nzNoResult]="'Không tìm thấy kết quả.'" (nzPageIndexChange)="loadData()" (nzPageSizeChange)="loadData(true)"
-      nzShowQuickJumper [nzShowTotal]="rangeTemplate" nzBordered nzSize="middle" [nzPageSizeOptions]="[5, 10, 15]">
+      [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage"
+      [(nzPageSize)]="pagination.itemsPerPage" [nzNoResult]="'Không tìm thấy kết quả.'" (nzPageIndexChange)="loadData()"
+      (nzPageSizeChange)="loadData(true)" nzShowQuickJumper [nzShowTotal]="rangeTemplate" nzBordered nzSize="middle"
+      [nzPageSizeOptions]="[5, 10, 15]">
       <ng-template #rangeTemplate let-range="range" let-total>
         {{range[0]}}-{{range[1]}} của {{total}} bản ghi
       </ng-template>
@@ -52,3 +68,4 @@
       </tbody>
     </nz-table>
   </nz-card>
+</div>

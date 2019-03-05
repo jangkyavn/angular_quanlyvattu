@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { ImportStatisticListComponent } from './import-statistic-list/import-statistic-list.component';
+import { ImportStatisticDetailComponent } from './import-statistic-detail/import-statistic-detail.component';
+
+import { MaterialDetailResolver } from 'src/app/shared/resolvers/material-detail.resolver';
 
 const routes: Routes = [
     {
@@ -16,6 +19,14 @@ const routes: Routes = [
                 data: {
                     title: 'Danh sách'
                 }
+            },
+            {
+                path: 'xem-chi-tiet/:id',
+                component: ImportStatisticDetailComponent,
+                data: {
+                    title: 'Xem chi tiết'
+                },
+                resolve: { 'material-statistic-detail': MaterialDetailResolver }
             },
             {
                 path: '',

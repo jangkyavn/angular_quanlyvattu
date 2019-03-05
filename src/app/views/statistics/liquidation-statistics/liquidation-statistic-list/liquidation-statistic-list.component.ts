@@ -11,11 +11,11 @@ import { MaterialType } from 'src/app/shared/models/material-type.model';
 import { NotifyService } from 'src/app/shared/services/notify.service';
 
 @Component({
-  selector: 'app-export-statistic-list',
-  templateUrl: './export-statistic-list.component.html',
-  styleUrls: ['./export-statistic-list.component.scss']
+  selector: 'app-liquidation-statistic-list',
+  templateUrl: './liquidation-statistic-list.component.html',
+  styleUrls: ['./liquidation-statistic-list.component.scss']
 })
-export class ExportStatisticListComponent implements OnInit {
+export class LiquidationStatisticListComponent implements OnInit {
   dataSet = [];
   loading: boolean;
   materialStores: MaterialStore[] = [];
@@ -52,7 +52,7 @@ export class ExportStatisticListComponent implements OnInit {
 
   loadData() {
     this.loading = true;
-    this.statisticService.getExportStatistics(this.statisticParams)
+    this.statisticService.getLiquidationStatistics(this.statisticParams)
       .subscribe((res: any[]) => {
         this.dataSet = res;
         this.loading = false;

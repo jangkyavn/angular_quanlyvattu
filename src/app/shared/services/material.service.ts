@@ -102,6 +102,11 @@ export class MaterialService {
       params = params.append('sortValue', pagingParams.sortValue);
     }
 
+    if (pagingParams.fromDate !== '' && pagingParams.toDate !== '') {
+      params = params.append('fromDate', pagingParams.fromDate);
+      params = params.append('toDate', pagingParams.toDate);
+    }
+
     if (id != null) {
       params = params.append('id', id);
     }
@@ -131,6 +136,11 @@ export class MaterialService {
       params = params.append('keyword', pagingParams.keyword);
       params = params.append('sortKey', pagingParams.sortKey);
       params = params.append('sortValue', pagingParams.sortValue);
+    }
+
+    if (pagingParams.fromDate !== '' && pagingParams.toDate !== '') {
+      params = params.append('fromDate', pagingParams.fromDate);
+      params = params.append('toDate', pagingParams.toDate);
     }
 
     if (id != null) {
@@ -211,7 +221,23 @@ export class MaterialService {
       );
   }
 
-  getTotalForAnotherTables(materialId, type) {
-    return this.http.get(this.baseUrl + 'VatTu/getTongCong/' + materialId + '/' + type);
+  getTotalForAnotherTables(materialId, type, fromDate = '', toDate = '') {
+    let params = new HttpParams();
+    if (materialId != null && type != null) {
+      params = params.append('materialId', materialId);
+      params = params.append('enums', type);
+    }
+
+    if (fromDate !== '' && toDate !== '') {
+      params = params.append('fromDate', fromDate);
+      params = params.append('toDate', toDate);
+    }
+
+    return this.http.get<any[]>(this.baseUrl + 'VatTu/getTongCong', { observe: 'response', params })
+      .pipe(
+        map(response => {
+          return response.body;
+        })
+      );
   }
 }

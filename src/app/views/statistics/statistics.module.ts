@@ -6,6 +6,7 @@ import { StatisticsRoutingModule } from './statistics.routing.module';
   imports: [
     StatisticsRoutingModule
   ],
-  declarations: []
+  declarations: [],
+  providers: []
 })
 export class StatisticsModule { }

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { GeneralStatisticListComponent } from './general-statistic-list/general-statistic-list.component';
-import { GeneralStatisticDetailComponent } from './general-statistic-detail/general-statistic-detail.component';
+import { LiquidationStatisticListComponent } from './liquidation-statistic-list/liquidation-statistic-list.component';
+import { LiquidationStatisticDetailComponent } from './liquidation-statistic-detail/liquidation-statistic-detail.component';
 
 import { MaterialDetailResolver } from 'src/app/shared/resolvers/material-detail.resolver';
 
@@ -10,19 +10,19 @@ const routes: Routes = [
     {
         path: '',
         data: {
-            title: 'Thống kê nhập xuất tồn'
+            title: 'Thống kê thanh lý'
         },
         children: [
             {
                 path: 'danh-sach',
-                component: GeneralStatisticListComponent,
+                component: LiquidationStatisticListComponent,
                 data: {
-                    title: 'Danh sách thống kê nhập xuất tồn'
+                    title: 'Danh sách'
                 }
             },
             {
                 path: 'xem-chi-tiet/:id',
-                component: GeneralStatisticDetailComponent,
+                component: LiquidationStatisticDetailComponent,
                 data: {
                     title: 'Xem chi tiết'
                 },
@@ -41,4 +41,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
 })
-export class GeneralStatisticsRoutingModule { }
+export class LiquidationStatisticsRoutingModule { }

@@ -1,6 +1,6 @@
 <nz-card style="width:100%;" nzTitle="Thanh lý" class="card-in-search-detail">
   <div nz-row style="margin-bottom: 0.5rem;">
-    <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24">
+    <div nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="12" nzXl="12">
       <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
         <input type="text" nz-input placeholder="Tìm kiếm..." #keyword (keyup.enter)="search(keyword.value)">
       </nz-input-group>
@@ -21,23 +21,19 @@
     </ng-template>
     <thead (nzSortChange)="sort($event)" nzSingleSort>
       <tr>
-        <th nzWidth="20%" nzShowSort nzSortKey="MaPTL">Mã phiếu TL</th>
-        <th nzWidth="15%" nzShowSort nzSortKey="ngayThanhLy">Ngày thanh lý</th>
-        <th nzWidth="25%" nzShowSort nzSortKey="dienGiai">Diễn giải</th>
-        <th nzWidth="25%" nzShowSort nzSortKey="ghiChu">Ghi chú</th>
-        <th nzWidth="15%" nzShowSort nzSortKey="soLuong">Số lượng TL</th>
+        <th nzWidth="40%" nzShowSort nzSortKey="MaPTL">Mã phiếu TL</th>
+        <th nzWidth="30%" nzShowSort nzSortKey="ngayThanhLy">Ngày thanh lý</th>
+        <th nzWidth="30%" nzShowSort nzSortKey="soLuong">Số lượng TL</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let data of table.data">
         <td class="text-center">{{data.maPTL}}</td>
         <td>{{data.ngayThanhLy | date:'dd/MM/yyyy'}}</td>
-        <td>{{data.dienGiai}}</td>
-        <td>{{data.ghiChu}}</td>
         <td class="text-center">{{data.soLuong}}</td>
       </tr>
       <tr>
-        <td colspan="4" class="text-center">
+        <td colspan="2" class="text-center">
           <strong>Tổng tất cả</strong>
         </td>
         <td class="text-center">
