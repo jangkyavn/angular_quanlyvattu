@@ -72,7 +72,7 @@ export class LiquidationMaterialCreateComponent implements OnInit {
     this.liquidationMaterialService.addNew(liquidation).subscribe((res: number) => {
       if (res) {
         this.notify.success('Thêm mới thành công!');
-        this.router.navigate(['/admin/nghiep-vu/sua-phieu-thanh-ly', res]);
+        this.router.navigate(['/nghiep-vu/kho/thanh-ly-vat-tu/sua-phieu-thanh-ly', res]);
       }
     }, error => {
       console.log('error addLiquidationMaterial');

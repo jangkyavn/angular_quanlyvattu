@@ -151,10 +151,25 @@
           <span class="nav-text">Thống kê báo cáo</span>
         </span>
         <ul>
-          <li nz-menu-item><i nz-icon type="file-add" theme="outline"></i>Thống kê nhập</li>
-          <li nz-menu-item><i nz-icon type="file-done" theme="outline"></i>Thống kê xuất</li>
-          <li nz-menu-item><i nz-icon type="file-exclamation" theme="outline"></i>Thống kê tồn</li>
-          <li nz-menu-item><i nz-icon type="file-sync" theme="outline"></i>Thống kê nhập-xuất-tồn</li>
+          <li nz-menu-item>
+            <a [routerLink]="['/thong-ke-bao-cao/thong-ke-nhap']">
+              <i nz-icon type="file-add" theme="outline"></i>Thống kê nhập
+            </a>
+          </li>
+          <li nz-menu-item>
+            <a [routerLink]="['/thong-ke-bao-cao/thong-ke-xuat']">
+              <i nz-icon type="file-done" theme="outline"></i>Thống kê xuất
+            </a>
+          </li>
+          <li nz-menu-item>
+            <a [routerLink]="['/thong-ke-bao-cao/thong-ke-ton-kho']">
+              <i nz-icon type="file-exclamation" theme="outline"></i>Thống kê tồn
+            </a>
+          </li>
+          <li nz-menu-item>
+            <a [routerLink]="[ '/thong-ke-bao-cao/thong-ke-nhap-xuat-ton']"></a>
+            <i nz-icon type="file-sync" theme="outline"></i>Thống kê nhập-xuất-tồn
+          </li>
         </ul>
       </li>
     </ul>

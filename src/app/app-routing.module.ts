@@ -49,9 +49,13 @@ const routes: Routes = [
         loadChildren: './views/businesses/businesses.module#BusinessesModule'
       },
       {
+        path: 'thong-ke-bao-cao',
+        loadChildren: './views/statistics/statistics.module#StatisticsModule'
+      },
+      {
         path: 'quan-ly-tai-khoan',
         loadChildren: './views/manage-accounts/manage-accounts.module#ManageAccountsModule'
-      } 
+      }
     ]
   },
   { path: '**', component: P404Component }

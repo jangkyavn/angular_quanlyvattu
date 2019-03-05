@@ -157,6 +157,8 @@ export class LiquidationMaterialEditComponent implements OnInit {
     this.liquidationMaterialService.update(liquidation).subscribe((res: number) => {
       if (res) {
         this.notify.success('Sửa thành công!');
+        this.liquidationMaterialForm.markAsPristine();
+        this.liquidationMaterialForm.updateValueAndValidity();
       }
     }, error => {
       console.log('error updateLiquidationMaterial');
