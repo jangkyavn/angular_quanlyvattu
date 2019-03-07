@@ -46,6 +46,33 @@ export class MaterialService {
       );
   }
 
+  getAllPagingSearch(page?: any, itemsPerPage?: any, pagingParams?: PagingParams): Observable<PaginatedResult<Material[]>> {
+    const paginatedResult = new PaginatedResult<Material[]>();
+
+    let params = new HttpParams();
+    if (page != null && itemsPerPage != null) {
+      params = params.append('pageNumber', page);
+      params = params.append('pageSize', itemsPerPage);
+    }
+
+    if (pagingParams != null) {
+      params = params.append('keyword', pagingParams.keyword);
+      params = params.append('sortKey', pagingParams.sortKey);
+      params = params.append('sortValue', pagingParams.sortValue);
+    }
+
+    return this.http.get<Material[]>(this.baseUrl + 'VatTu/getAllPagingWithTongTon', { observe: 'response', params })
+      .pipe(
+        map(response => {
+          paginatedResult.result = response.body;
+          if (response.headers.get('Pagination') != null) {
+            paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+          }
+          return paginatedResult;
+        })
+      );
+  }
+
   getDetail(id: number) {
     return this.http.get(this.baseUrl + 'VatTu/' + id);
   }
@@ -86,45 +113,8 @@ export class MaterialService {
     return this.http.get(this.baseUrl + 'VatTu/DeleteFileVTAfterExport/' + fileName);
   }
 
-
-  getImportDetailsById(page?: any, itemsPerPage?: any, pagingParams?: PagingParams, id?: any): Observable<PaginatedResult<any[]>> {
-    const paginatedResult = new PaginatedResult<any[]>();
-
-    let params = new HttpParams();
-    if (page != null && itemsPerPage != null) {
-      params = params.append('pageNumber', page);
-      params = params.append('pageSize', itemsPerPage);
-    }
-
-    if (pagingParams != null) {
-      params = params.append('keyword', pagingParams.keyword);
-      params = params.append('sortKey', pagingParams.sortKey);
-      params = params.append('sortValue', pagingParams.sortValue);
-    }
-
-    if (pagingParams.fromDate !== '' && pagingParams.toDate !== '') {
-      params = params.append('fromDate', pagingParams.fromDate);
-      params = params.append('toDate', pagingParams.toDate);
-    }
-
-    if (id != null) {
-      params = params.append('id', id);
-    }
-
-    return this.http.get<any[]>(this.baseUrl + 'VatTu/ThongKeVatTuNhapByMaVT', { observe: 'response', params })
-      .pipe(
-        map(response => {
-          paginatedResult.result = response.body;
-          if (response.headers.get('Pagination') != null) {
-            paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
-          }
-          return paginatedResult;
-        })
-      );
-  }
-
-  getExportDetailsById(page?: any, itemsPerPage?: any, pagingParams?: PagingParams, id?: any): Observable<PaginatedResult<any[]>> {
-    const paginatedResult = new PaginatedResult<any[]>();
+  getImportDetailsById(page?: any, itemsPerPage?: any, pagingParams?: PagingParams, id?: any): Observable<PaginatedResult<any>> {
+    const paginatedResult = new PaginatedResult<any>();
 
     let params = new HttpParams();
     if (page != null && itemsPerPage != null) {
@@ -147,7 +137,7 @@ export class MaterialService {
       params = params.append('id', id);
     }
 
-    return this.http.get<any[]>(this.baseUrl + 'VatTu/ThongKeVatTuXuatpByMaVT', { observe: 'response', params })
+    return this.http.get<any>(this.baseUrl + 'VatTu/ThongKeVatTuNhapByMaVT', { observe: 'response', params })
       .pipe(
         map(response => {
           paginatedResult.result = response.body;
@@ -159,8 +149,44 @@ export class MaterialService {
       );
   }
 
-  getInventoriesById(page?: any, itemsPerPage?: any, pagingParams?: PagingParams, id?: any): Observable<PaginatedResult<any[]>> {
-    const paginatedResult = new PaginatedResult<any[]>();
+  getExportDetailsById(page?: any, itemsPerPage?: any, pagingParams?: PagingParams, id?: any): Observable<PaginatedResult<any>> {
+    const paginatedResult = new PaginatedResult<any>();
+
+    let params = new HttpParams();
+    if (page != null && itemsPerPage != null) {
+      params = params.append('pageNumber', page);
+      params = params.append('pageSize', itemsPerPage);
+    }
+
+    if (pagingParams != null) {
+      params = params.append('keyword', pagingParams.keyword);
+      params = params.append('sortKey', pagingParams.sortKey);
+      params = params.append('sortValue', pagingParams.sortValue);
+    }
+
+    if (pagingParams.fromDate !== '' && pagingParams.toDate !== '') {
+      params = params.append('fromDate', pagingParams.fromDate);
+      params = params.append('toDate', pagingParams.toDate);
+    }
+
+    if (id != null) {
+      params = params.append('id', id);
+    }
+
+    return this.http.get<any>(this.baseUrl + 'VatTu/ThongKeVatTuXuatpByMaVT', { observe: 'response', params })
+      .pipe(
+        map(response => {
+          paginatedResult.result = response.body;
+          if (response.headers.get('Pagination') != null) {
+            paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+          }
+          return paginatedResult;
+        })
+      );
+  }
+
+  getInventoriesById(page?: any, itemsPerPage?: any, pagingParams?: PagingParams, id?: any): Observable<PaginatedResult<any>> {
+    const paginatedResult = new PaginatedResult<any>();
 
     let params = new HttpParams();
     if (page != null && itemsPerPage != null) {
@@ -178,7 +204,7 @@ export class MaterialService {
       params = params.append('id', id);
     }
 
-    return this.http.get<any[]>(this.baseUrl + 'VatTu/ThongKeVatTuTonKhoByMaVT', { observe: 'response', params })
+    return this.http.get<any>(this.baseUrl + 'VatTu/ThongKeVatTuTonKhoByMaVT', { observe: 'response', params })
       .pipe(
         map(response => {
           paginatedResult.result = response.body;
@@ -190,8 +216,8 @@ export class MaterialService {
       );
   }
 
-  getLiquidationsById(page?: any, itemsPerPage?: any, pagingParams?: PagingParams, id?: any): Observable<PaginatedResult<any[]>> {
-    const paginatedResult = new PaginatedResult<any[]>();
+  getLiquidationsById(page?: any, itemsPerPage?: any, pagingParams?: PagingParams, id?: any): Observable<PaginatedResult<any>> {
+    const paginatedResult = new PaginatedResult<any>();
 
     let params = new HttpParams();
     if (page != null && itemsPerPage != null) {
@@ -205,11 +231,16 @@ export class MaterialService {
       params = params.append('sortValue', pagingParams.sortValue);
     }
 
+    if (pagingParams.fromDate !== '' && pagingParams.toDate !== '') {
+      params = params.append('fromDate', pagingParams.fromDate);
+      params = params.append('toDate', pagingParams.toDate);
+    }
+
     if (id != null) {
       params = params.append('id', id);
     }
 
-    return this.http.get<any[]>(this.baseUrl + 'VatTu/ThongKeVatTuThanhLyByMaVT', { observe: 'response', params })
+    return this.http.get<any>(this.baseUrl + 'VatTu/ThongKeVatTuThanhLyByMaVT', { observe: 'response', params })
       .pipe(
         map(response => {
           paginatedResult.result = response.body;
@@ -217,26 +248,6 @@ export class MaterialService {
             paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
           }
           return paginatedResult;
-        })
-      );
-  }
-
-  getTotalForAnotherTables(materialId, type, fromDate = '', toDate = '') {
-    let params = new HttpParams();
-    if (materialId != null && type != null) {
-      params = params.append('materialId', materialId);
-      params = params.append('enums', type);
-    }
-
-    if (fromDate !== '' && toDate !== '') {
-      params = params.append('fromDate', fromDate);
-      params = params.append('toDate', toDate);
-    }
-
-    return this.http.get<any[]>(this.baseUrl + 'VatTu/getTongCong', { observe: 'response', params })
-      .pipe(
-        map(response => {
-          return response.body;
         })
       );
   }

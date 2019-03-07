@@ -93,6 +93,10 @@ export class ExportStatisticListComponent implements OnInit {
       return;
     }
 
+    this.statisticParams.maLoaiVT = this.statisticParams.maLoaiVT || '';
+    this.statisticParams.maHM = this.statisticParams.maHM || '';
+    this.statisticParams.maKho = this.statisticParams.maKho || '';
+
     this.loadData();
   }
 

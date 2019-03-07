@@ -77,7 +77,8 @@ export class ExportMaterialService {
         page?: any,
         itemsPerPage?: any,
         pagingParams?: PagingParams,
-        storeId?: any): Observable<PaginatedResult<Inventory[]>> {
+        storeId?: any,
+        exportDate?: any): Observable<PaginatedResult<Inventory[]>> {
         const paginatedResult = new PaginatedResult<Inventory[]>();
 
         let params = new HttpParams();
@@ -96,6 +97,10 @@ export class ExportMaterialService {
 
         if (storeId != null) {
             params = params.append('maKho', storeId);
+        }
+
+        if (exportDate != null) {
+            params = params.append('ngayxuat', exportDate);
         }
 
         return this.http.get<Inventory[]>(this.baseUrl + 'XuatVatTu/GetListByMaKho', { observe: 'response', params })

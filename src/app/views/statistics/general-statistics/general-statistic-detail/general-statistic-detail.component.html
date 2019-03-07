@@ -6,26 +6,31 @@
 
 <div style="padding:24px; background: #fff; min-height: 70vh">
   <div nz-row>
-    <div nz-col nzXs="24" nzSm="24" nzMd="16" nzLg="16" nzXl="16">
+    <div nz-col nzXs="24" nzSm="24" nzMd="20" nzLg="20" nzXl="20">
       Vật tư: <strong>{{material.tenVT}}</strong>
-      <span style="margin: 0 1rem 0 1rem;"></span>
-      Từ ngày: <strong>{{fromDate}}</strong> ->
-      Đến ngày: <strong>{{toDate}}</strong>
+      <span style="margin-right: 0.5rem;"></span>
+      <input style="width: 230px;" nz-input type="date" class="from-date" placeholder="Từ ngày" [(ngModel)]="fromDate">
+      <span> -> </span>
+      <input style="width: 230px;" nz-input type="date" class="to-date" placeholder="Đến ngày" [(ngModel)]="toDate">
+      <span style="margin-right: 0.5rem;"></span>
+      <button nz-button nzType="primary" nzSearch (click)="searchPeriod()">
+        <i nz-icon type="search"></i> Tìm kiếm
+      </button>
     </div>
-    <div nz-col nzXs="24" nzSm="24" nzMd="8" nzLg="8" nzXl="8" style="text-align: right;">
+    <div nz-col nzXs="24" nzSm="24" nzMd="4" nzLg="4" nzXl="4" style="text-align: right;">
       Tồn đầu kỳ: <strong>{{tonDauKy}}</strong>
     </div>
   </div>
   <br />
   <div nz-row nzGutter="8">
     <div nz-col nzXs="24" nzSm="24" nzMd="8" nzLg="8" nzXl="8">
-      <app-card-import-statistics></app-card-import-statistics>
+      <app-card-import-statistics #cardImportStatistics></app-card-import-statistics>
     </div>
     <div nz-col nzXs="24" nzSm="24" nzMd="8" nzLg="8" nzXl="8">
-      <app-card-export-statistics></app-card-export-statistics>
+      <app-card-export-statistics #cardExportStatistics></app-card-export-statistics>
     </div>
     <div nz-col nzXs="24" nzSm="24" nzMd="8" nzLg="8" nzXl="8">
-      <app-card-liquidation-statistics></app-card-liquidation-statistics>
+      <app-card-liquidation-statistics #cardLiquidationStatistics></app-card-liquidation-statistics>
     </div>
   </div>
   <br />

@@ -23,9 +23,9 @@ export class ExportMaterialListComponent implements OnInit {
   sortValue = '';
   sortKey = '';
 
+  keyword = '';
   startValue = '';
   endValue = '';
-  disabledButtonSearch = true;
 
   pagination: Pagination;
   pagingParams: PagingParams = {
@@ -85,27 +85,6 @@ export class ExportMaterialListComponent implements OnInit {
       });
   }
 
-  delete(id: number) {
-    this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
-      this.exportMaterialService.delete(id).subscribe((res: boolean) => {
-        if (res) {
-          this.loadData();
-          this.notify.success('Xóa thành công');
-        }
-      }, error => {
-        console.log('error deleteExportMaterial');
-      });
-    });
-  }
-
-  search(keyword: string) {
-    this.pagingParams.keyword = keyword;
-    this.pagingParams.fromDate = this.startValue;
-    this.pagingParams.toDate = this.endValue;
-
-    this.loadData(true);
-  }
-
   view(id: number) {
     this.exportMaterialService.getDetail(id).subscribe((res: any) => {
       const modal = this.modalService.create({
@@ -128,34 +107,34 @@ export class ExportMaterialListComponent implements OnInit {
     });
   }
 
-  enableButtonSearch() {
-    if (this.startValue > this.endValue) {
-      return true;
-    }
-
-    return !(this.startValue && this.endValue);
+  delete(id: number) {
+    this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
+      this.exportMaterialService.delete(id).subscribe((res: boolean) => {
+        if (res) {
+          this.loadData();
+          this.notify.success('Xóa thành công');
+        }
+      }, error => {
+        console.log('error deleteExportMaterial');
+      });
+    });
   }
 
-  changeFromDate(value: any) {
-    this.startValue = value;
-
-    if (this.endValue === null || this.endValue === '') {
-      this.endValue = this.startValue;
-    }
-
-    this.disabledButtonSearch = this.enableButtonSearch();
-
-    if ((this.startValue === '' && this.endValue === '') || (this.startValue === null && this.endValue) === '') {
-      this.search(this.pagingParams.keyword);
-    }
+  search() {
+    this.pagingParams.keyword = this.keyword;
+    this.pagingParams.fromDate = this.startValue;
+    this.pagingParams.toDate = this.endValue;
+    this.loadData(true);
   }
 
-  changeToDate(value: any) {
-    this.endValue = value;
-    this.disabledButtonSearch = this.enableButtonSearch();
+  refresh() {
+    this.startValue = '';
+    this.endValue = '';
+    this.keyword = '';
 
-    if ((this.startValue === '' && this.endValue === '') || (this.startValue === null && this.endValue) === '') {
-      this.search(this.pagingParams.keyword);
-    }
+    this.pagingParams.keyword = '';
+    this.pagingParams.fromDate = '';
+    this.pagingParams.toDate = '';
+    this.loadData(true);
   }
 }

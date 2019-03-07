@@ -8,6 +8,9 @@ import { LiquidationMaterialService } from 'src/app/shared/services/liquidation-
 import { Pagination, PaginatedResult } from 'src/app/shared/models/pagination.model';
 import { PagingParams } from 'src/app/shared/params/paging.param';
 import { LiquidationMaterial } from 'src/app/shared/models/liquidation-material.model';
+import {
+  LiquidationMaterialViewDetailModalComponent
+} from '../modals/liquidation-material-view-detail-modal/liquidation-material-view-detail-modal.component';
 
 @Component({
   selector: 'app-liquidation-material-list',
@@ -20,9 +23,9 @@ export class LiquidationMaterialListComponent implements OnInit {
   sortValue = '';
   sortKey = '';
 
+  keyword = '';
   startValue = '';
   endValue = '';
-  disabledButtonSearch = true;
 
   pagination: Pagination;
   pagingParams: PagingParams = {
@@ -81,6 +84,28 @@ export class LiquidationMaterialListComponent implements OnInit {
       });
   }
 
+  view(id: number) {
+    this.liquidationService.getDetail(id).subscribe((res: any) => {
+      const modal = this.modalService.create({
+        nzTitle: 'Xem phiếu thanh lý',
+        nzContent: LiquidationMaterialViewDetailModalComponent,
+        nzMaskClosable: false,
+        nzClosable: false,
+        nzWidth: 1000,
+        nzComponentParams: {
+          liquidationMaterialParams: res
+        },
+        nzFooter: [
+          {
+            label: 'Hủy',
+            shape: 'default',
+            onClick: () => modal.destroy()
+          }
+        ]
+      });
+    });
+  }
+
   delete(id: number) {
     this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
       this.liquidationService.delete(id).subscribe((res: boolean) => {
@@ -94,64 +119,21 @@ export class LiquidationMaterialListComponent implements OnInit {
     });
   }
 
-  search(keyword: string) {
-    this.pagingParams.keyword = keyword;
+  search() {
+    this.pagingParams.keyword = this.keyword;
     this.pagingParams.fromDate = this.startValue;
     this.pagingParams.toDate = this.endValue;
-
     this.loadData(true);
   }
 
-  view(id: number) {
-    // this.liquidationService.getDetail(id).subscribe((res: any) => {
-    //   const modal = this.modalService.create({
-    //     nzTitle: 'Xem phiếu xuất',
-    //     nzContent: ExportViewDetailModalComponent,
-    //     nzMaskClosable: false,
-    //     nzClosable: false,
-    //     nzWidth: 1000,
-    //     nzComponentParams: {
-    //       exportMaterialParams: res
-    //     },
-    //     nzFooter: [
-    //       {
-    //         label: 'Hủy',
-    //         shape: 'default',
-    //         onClick: () => modal.destroy()
-    //       }
-    //     ]
-    //   });
-    // });
-  }
+  refresh() {
+    this.startValue = '';
+    this.endValue = '';
+    this.keyword = '';
 
-  enableButtonSearch() {
-    if (this.startValue > this.endValue) {
-      return true;
-    }
-
-    return !(this.startValue && this.endValue);
-  }
-
-  changeFromDate(value: any) {
-    this.startValue = value;
-
-    if (this.endValue === null || this.endValue === '') {
-      this.endValue = this.startValue;
-    }
-
-    this.disabledButtonSearch = this.enableButtonSearch();
-
-    if ((this.startValue === '' && this.endValue === '') || (this.startValue === null && this.endValue) === '') {
-      this.search(this.pagingParams.keyword);
-    }
-  }
-
-  changeToDate(value: any) {
-    this.endValue = value;
-    this.disabledButtonSearch = this.enableButtonSearch();
-
-    if ((this.startValue === '' && this.endValue === '') || (this.startValue === null && this.endValue) === '') {
-      this.search(this.pagingParams.keyword);
-    }
+    this.pagingParams.keyword = '';
+    this.pagingParams.fromDate = '';
+    this.pagingParams.toDate = '';
+    this.loadData(true);
   }
 }

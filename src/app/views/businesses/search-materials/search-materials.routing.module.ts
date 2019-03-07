@@ -4,8 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { SearchMaterialListComponent } from './search-material-list/search-material-list.component';
 import { SearchMaterialDetailComponent } from './search-material-detail/search-material-detail.component';
 
-import { MaterialListResolver } from 'src/app/shared/resolvers/material-list.resolver';
 import { MaterialDetailResolver } from 'src/app/shared/resolvers/material-detail.resolver';
+import { SearchMaterialListResolver } from 'src/app/shared/resolvers/search-material-list.resolver';
 
 const routes: Routes = [
     {
@@ -20,7 +20,7 @@ const routes: Routes = [
                 data: {
                     title: 'Danh sách tìm kiếm vật tư'
                 },
-                resolve: { 'search-material-list': MaterialListResolver }
+                resolve: { 'search-material-list': SearchMaterialListResolver }
             },
             {
                 path: 'chi-tiet/:id',

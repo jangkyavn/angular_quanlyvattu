@@ -43,9 +43,7 @@ export class ExportStatisticDetailComponent implements OnInit {
       this.route.queryParams.subscribe(params => {
         this.pagingParams.fromDate = params['fromDate'];
         this.pagingParams.toDate = params['toDate'];
-
         this.loadData();
-        this.getTotal(this.material.maVatTu, 1);
       });
     });
   }
@@ -66,10 +64,12 @@ export class ExportStatisticDetailComponent implements OnInit {
       this.pagination.itemsPerPage,
       this.pagingParams,
       this.material.maVatTu)
-      .subscribe((res: PaginatedResult<any[]>) => {
+      .subscribe((res: PaginatedResult<any>) => {
         this.isLoading = false;
         this.pagination = res.pagination;
-        this.dataSet = res.result;
+        this.dataSet = res.result.items;
+        this.totalQuantity = res.result.tongluong;
+        this.totalAmount = res.result.tongtien;
       }, error => {
         this.notify.error('Có lỗi xảy ra');
         console.log('error getAllPagingExportDetaislByMaterialId');
@@ -81,11 +81,11 @@ export class ExportStatisticDetailComponent implements OnInit {
     this.loadData(true);
   }
 
-  getTotal(materialId: any, type: any) {
-    this.materialService.getTotalForAnotherTables(materialId, type, this.pagingParams.fromDate, this.pagingParams.toDate)
-      .subscribe((res: any) => {
-        this.totalAmount = res.tongTien;
-        this.totalQuantity = res.tongLuong;
-      });
+  searchPeriod() {
+    if (this.pagingParams.fromDate === '' || this.pagingParams.toDate === '') {
+      this.notify.warning('Vui lòng chọn từ ngày đến ngày');
+      return;
+    }
+    this.loadData(true);
   }
 }

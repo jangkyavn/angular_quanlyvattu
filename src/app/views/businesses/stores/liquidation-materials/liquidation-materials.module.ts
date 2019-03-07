@@ -10,6 +10,9 @@ import { LiquidationMaterialEditComponent } from './liquidation-material-edit/li
 import {
   LiquidationMaterialDetailAddEditModalComponent
 } from './modals/liquidation-material-detail-add-edit-modal/liquidation-material-detail-add-edit-modal.component';
+import {
+  LiquidationMaterialViewDetailModalComponent
+} from './modals/liquidation-material-view-detail-modal/liquidation-material-view-detail-modal.component';
 
 import { LiquidationMaterialListResolver } from 'src/app/shared/resolvers/liquidation-material-list.resolver';
 import { LiquidationMaterialResolver } from 'src/app/shared/resolvers/liquidation-material.resolver';
@@ -25,10 +28,12 @@ import { LiquidationMaterialResolver } from 'src/app/shared/resolvers/liquidatio
     LiquidationMaterialListComponent,
     LiquidationMaterialCreateComponent,
     LiquidationMaterialEditComponent,
-    LiquidationMaterialDetailAddEditModalComponent
+    LiquidationMaterialDetailAddEditModalComponent,
+    LiquidationMaterialViewDetailModalComponent
   ],
   entryComponents: [
-    LiquidationMaterialDetailAddEditModalComponent
+    LiquidationMaterialDetailAddEditModalComponent,
+    LiquidationMaterialViewDetailModalComponent
   ],
   providers: [
     LiquidationMaterialListResolver,

@@ -37,7 +37,7 @@ export class LiquidationMaterialDetailAddEditModalComponent implements OnInit {
       maVatTu: [null],
       tenVatTu: [{ value: null, disabled: true }],
       soLuongThanhLy: [1, [Validators.required]],
-      dienGiai: [null],
+      dienGiai: [null, [Validators.required]],
       ghiChu: [null]
     });
 

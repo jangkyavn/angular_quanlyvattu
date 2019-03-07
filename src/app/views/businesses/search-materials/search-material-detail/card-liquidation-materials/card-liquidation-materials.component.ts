@@ -38,8 +38,6 @@ export class CardLiquidationMaterialsComponent implements OnInit {
     this.isLoading = true;
     this.route.params.subscribe(data => {
       this.materialId = data['id'];
-
-      this.getTotal(this.materialId, 2);
       this.loadData();
     });
   }
@@ -56,10 +54,11 @@ export class CardLiquidationMaterialsComponent implements OnInit {
     }
 
     this.materialService.getLiquidationsById(this.pagination.currentPage, this.pagination.itemsPerPage, this.pagingParams, this.materialId)
-      .subscribe((res: PaginatedResult<any[]>) => {
+      .subscribe((res: PaginatedResult<any>) => {
         this.isLoading = false;
         this.pagination = res.pagination;
-        this.dataSet = res.result;
+        this.dataSet = res.result.items;
+        this.totalQuantity = res.result.tongluong;
       }, error => {
         this.notify.error('Có lỗi xảy ra');
         console.log('error getAllPagingLiquidationsByMaterialId');
@@ -69,12 +68,5 @@ export class CardLiquidationMaterialsComponent implements OnInit {
   search(keyword: string) {
     this.pagingParams.keyword = keyword;
     this.loadData(true);
-  }
-
-  getTotal(materialId: any, type: any) {
-    this.materialService.getTotalForAnotherTables(materialId, type)
-      .subscribe((res: any) => {
-        this.totalQuantity = res.tongLuong;
-      });
   }
 }

@@ -54,8 +54,7 @@
     <nz-form-item>
       <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="dateOfBirth">Ngày sinh</nz-form-label>
       <nz-form-control [nzSm]="14" [nzXs]="24">
-        <nz-date-picker formControlName="dateOfBirth" nzPlaceHolder="Chọn ngày sinh" nzFormat="dd/MM/yyyy">
-        </nz-date-picker>
+        <input nz-input type="date" formControlName="dateOfBirth" id="dateOfBirth" />
         <nz-form-explain
           *ngIf="accountInformationForm.get('dateOfBirth').dirty && accountInformationForm.get('dateOfBirth').errors">
           <ng-container *ngIf="accountInformationForm.get('dateOfBirth').hasError('required')">

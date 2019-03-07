@@ -14,10 +14,8 @@ export class MaterialExportExcelModalComponent implements OnInit {
   constructor(private modal: NzModalRef) { }
 
   ngOnInit() {
-    this.isGetAll = false;
+    this.isGetAll = true;
     this.pageNumber = 1;
-
-    console.log(this.totalPages);
   }
 
   saveChanges() {

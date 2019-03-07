@@ -54,14 +54,14 @@ export class SearchMaterialListComponent implements OnInit {
       this.pagination.currentPage = 1;
     }
     this.loading = true;
-    this.materialService.getAllPaging(this.pagination.currentPage, this.pagination.itemsPerPage, this.pagingParams)
+    this.materialService.getAllPagingSearch(this.pagination.currentPage, this.pagination.itemsPerPage, this.pagingParams)
       .subscribe((res: PaginatedResult<Material[]>) => {
         this.loading = false;
         this.pagination = res.pagination;
         this.dataSet = res.result;
       }, error => {
         this.notify.error('Có lỗi xảy ra');
-        console.log('error getAllPagingMaterial');
+        console.log('error getAllPagingMaterialSearch');
       }, () => {
         if (this.dataSet.length === 0 && this.pagination.currentPage !== 1) {
           this.pagination.currentPage -= 1;

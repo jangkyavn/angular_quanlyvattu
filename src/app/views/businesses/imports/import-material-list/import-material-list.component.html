@@ -6,26 +6,24 @@
 
 <div style="padding:24px; background: #fff; min-height: 70vh">
   <div nz-row style="margin-bottom: 0.5rem" nzGutter="16">
-    <div nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="12" nzXl="12">
-      <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
-        <input type="text" nz-input placeholder="Tìm kiếm..." #keyword (keyup.enter)="search(keyword.value)">
-      </nz-input-group>
-      <ng-template #suffixIconButton>
-        <button nz-button nzType="primary" nzSearch (click)="search(keyword.value)"><i nz-icon
-            type="search"></i></button>
-      </ng-template>
+    <div nz-col nzXs="24" nzSm="24" nzMd="6" nzLg="6" nzXl="6">
+      <input type="text" nz-input placeholder="Tìm kiếm..." [(ngModel)]="keyword" (keyup.enter)="search()">
     </div>
-    <div nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="12" nzXl="12">
-      <div class="date-range">
-        <input nz-input type="date" class="from-date" placeholder="Từ ngày" [(ngModel)]="startValue"
-          (ngModelChange)="changeFromDate($event)">
-        <input nz-input type="date" class="to-date" placeholder="Đến ngày" [(ngModel)]="endValue"
-          (ngModelChange)="changeToDate($event)">
-        <button [disabled]="disabledButtonSearch" nz-button nzType="primary" class="btn-search-date-range" nzSearch
-          (click)="search(keyword.value)">
-          <i nz-icon type="search"></i>
+    <div nz-col nzXs="24" nzSm="24" nzMd="6" nzLg="6" nzXl="6">
+      <input nz-input type="date" class="from-date" placeholder="Từ ngày" [(ngModel)]="startValue">
+    </div>
+    <div nz-col nzXs="24" nzSm="24" nzMd="6" nzLg="6" nzXl="6">
+      <input nz-input type="date" class="to-date" placeholder="Đến ngày" [(ngModel)]="endValue">
+    </div>
+    <div nz-col nzXs="24" nzSm="24" nzMd="6" nzLg="6" nzXl="6">
+      <nz-button-group>
+        <button nz-button nzType="primary" nzSearch (click)="search()">
+          <i nz-icon type="search"></i> Tìm kiếm
         </button>
-      </div>
+        <button nz-button nzType="default" nzSearch (click)="refresh()">
+          <i nz-icon type="sync" theme="outline"></i> Làm mới
+        </button>
+      </nz-button-group>
     </div>
   </div>
   <hr style="border: 0.5px solid #E8E8E8;" />

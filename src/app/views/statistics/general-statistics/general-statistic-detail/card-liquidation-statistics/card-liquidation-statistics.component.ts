@@ -15,7 +15,6 @@ import { Material } from 'src/app/shared/models/material.model';
 })
 export class CardLiquidationStatisticsComponent implements OnInit {
   material: Material;
-  totalAmount = 0;
   totalQuantity = 0;
   dataSet = [];
   isLoading: boolean;
@@ -43,9 +42,7 @@ export class CardLiquidationStatisticsComponent implements OnInit {
       this.route.queryParams.subscribe(params => {
         this.pagingParams.fromDate = params['fromDate'];
         this.pagingParams.toDate = params['toDate'];
-
         this.loadData();
-        this.getTotal(this.material.maVatTu, 2);
       });
     });
   }
@@ -66,10 +63,11 @@ export class CardLiquidationStatisticsComponent implements OnInit {
       this.pagination.itemsPerPage,
       this.pagingParams,
       this.material.maVatTu)
-      .subscribe((res: PaginatedResult<any[]>) => {
+      .subscribe((res: PaginatedResult<any>) => {
         this.isLoading = false;
         this.pagination = res.pagination;
-        this.dataSet = res.result;
+        this.dataSet = res.result.items;
+        this.totalQuantity = res.result.tongluong;
       }, error => {
         this.notify.error('Có lỗi xảy ra');
         console.log('error getAllPagingLiquidationDetaislByMaterialId');
@@ -79,12 +77,5 @@ export class CardLiquidationStatisticsComponent implements OnInit {
   search(keyword: string) {
     this.pagingParams.keyword = keyword;
     this.loadData(true);
-  }
-
-  getTotal(materialId: any, type: any) {
-    this.materialService.getTotalForAnotherTables(materialId, type, this.pagingParams.fromDate, this.pagingParams.toDate)
-      .subscribe((res: any) => {
-        this.totalQuantity = res.tongLuong;
-      });
   }
 }

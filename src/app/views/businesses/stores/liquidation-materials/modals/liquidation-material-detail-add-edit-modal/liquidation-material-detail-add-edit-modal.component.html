@@ -29,9 +29,15 @@
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="dienGiai">Diễn giải</nz-form-label>
+        <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="dienGiai">Diễn giải</nz-form-label>
         <nz-form-control [nzSm]="16" [nzXs]="24">
           <textarea nz-input formControlName="dienGiai" id="dienGiai"></textarea>
+          <nz-form-explain
+            *ngIf="liquidationDetailForm.get('dienGiai').dirty && liquidationDetailForm.get('dienGiai').errors">
+            <ng-container *ngIf="liquidationDetailForm.get('dienGiai').hasError('required')">
+              Vui lòng nhập diễn giải!
+            </ng-container>
+          </nz-form-explain>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>

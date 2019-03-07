@@ -87,16 +87,17 @@
       <nz-table #inventoryTable [nzFrontPagination]="false" [nzData]="inventories" [nzLoading]="loadingInventories"
         [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage"
         [(nzPageSize)]="pagination.itemsPerPage" [nzNoResult]="'Không tìm thấy kết quả.'"
-        (nzPageIndexChange)="loadInventoriesByStoreId(liquidationMaterialForm.value.maKho)"
-        (nzPageSizeChange)="loadInventoriesByStoreId(liquidationMaterialForm.value.maKho, true)" [nzShowTotal]="rangeTemplate"
+        (nzPageIndexChange)="loadInventoriesByStoreId()"
+        (nzPageSizeChange)="loadInventoriesByStoreId(true)" [nzShowTotal]="rangeTemplate"
         nzSize="middle" nzBordered>
         <ng-template #rangeTemplate let-range="range" let-total>
           {{range[0]}}-{{range[1]}} của {{total}} bản ghi
         </ng-template>
         <thead (nzSortChange)="sortInventories($event)" nzSingleSort>
           <tr>
-            <th nzWidth="40%" nzShowSort nzSortKey="tenVatTu">Vật tư</th>
-            <th nzWidth="30%" nzShowSort nzSortKey="maPhieuNhap">Mã phiếu nhập</th>
+            <th nzWidth="30%" nzShowSort nzSortKey="tenVatTu">Vật tư</th>
+            <th nzWidth="20%" nzShowSort nzSortKey="maPhieuNhap">Mã phiếu nhập</th>
+            <th nzWidth="20%" nzShowSort nzSortKey="maPhieuNhap">Ngày nhập</th>
             <th nzWidth="20%" nzShowSort nzSortKey="soLuongTon">Số lượng tồn</th>
             <th nzWidth="10%"></th>
           </tr>
@@ -105,6 +106,7 @@
           <tr *ngFor="let data of inventoryTable.data">
             <td>{{data.tenVatTu}}</td>
             <td class="text-center">{{data.maPhieuNhap}}</td>
+            <td>{{data.ngayNhap | date:'dd/MM/yyyy'}}</td>
             <td class="text-center">{{data.soLuongTon}}</td>
             <td class="text-center">
               <button nz-button nzType="primary" nz-tooltip nzTitle="Xuất" (click)="createLiquidationDetail(data)"

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd';
 
@@ -86,7 +86,7 @@ export class ExportMaterialEditComponent implements OnInit {
       maKho: [null, [Validators.required]],
       maNS: [null, [Validators.required]],
       ngayNhap: [null, [Validators.required]],
-      tenKho: [null],
+      tenKho: [{ value: null, disabled: true }],
       tenNS: [null],
       chietKhau: [0],
       ghiChu: [null],
@@ -98,8 +98,11 @@ export class ExportMaterialEditComponent implements OnInit {
       const { mxuatvattu, listxuatchitiet } = data['export-material'];
 
       this.exportMaterialForm.patchValue(mxuatvattu);
-      this.loadInventoriesByStoreId(mxuatvattu.maKho);
+      this.loadInventoriesByStoreId(true);
       this.exportMaterialDetails = listxuatchitiet;
+      if (this.exportMaterialDetails.length > 0) {
+        this.exportMaterialForm.controls['ngayNhap'].disable();
+      }
       this.loadTotalPrice();
     });
   }
@@ -117,21 +120,21 @@ export class ExportMaterialEditComponent implements OnInit {
   }
 
   sortInventories(sort: { key: string, value: string }): void {
-    const { maKho } = this.exportMaterialForm.value;
     this.pagingParams.sortKey = sort.key;
     this.pagingParams.sortValue = sort.value;
-    this.loadInventoriesByStoreId(maKho);
+    this.loadInventoriesByStoreId();
   }
 
-  loadInventoriesByStoreId(storeId: number, reset: boolean = false): void {
+  loadInventoriesByStoreId(reset: boolean = false): void {
     if (reset) {
       this.pagination.currentPage = 1;
     }
     this.loadingInventories = true;
+    const { maKho, ngayNhap } = this.exportMaterialForm.getRawValue();
     this.exportMaterialService.getInventoriesByStoreId(
       this.pagination.currentPage,
       this.pagination.itemsPerPage,
-      this.pagingParams, storeId)
+      this.pagingParams, maKho, ngayNhap)
       .subscribe((res: PaginatedResult<Inventory[]>) => {
         this.loadingInventories = false;
         this.pagination = res.pagination;
@@ -143,10 +146,8 @@ export class ExportMaterialEditComponent implements OnInit {
   }
 
   searchInventory(keyword: any) {
-    const { maKho } = this.exportMaterialForm.value;
     this.pagingParams.keyword = keyword;
-
-    this.loadInventoriesByStoreId(maKho, true);
+    this.loadInventoriesByStoreId(true);
   }
 
   exportMaterial(inventory: Inventory) {
@@ -181,7 +182,7 @@ export class ExportMaterialEditComponent implements OnInit {
     modal.afterClose.subscribe((result: boolean) => {
       if (result) {
         this.loadExportDetails(maPhieuXuat);
-        this.loadInventoriesByStoreId(maKho);
+        this.loadInventoriesByStoreId();
       }
     });
   }
@@ -196,13 +197,14 @@ export class ExportMaterialEditComponent implements OnInit {
       return;
     }
 
-    const exportMaterial = Object.assign({}, this.exportMaterialForm.value);
+    const exportMaterial = Object.assign({}, this.exportMaterialForm.getRawValue());
     this.exportMaterialService.update(exportMaterial).subscribe((res: any) => {
       if (res) {
         this.notify.success('Sửa thành công');
         this.exportMaterialForm.markAsPristine();
         this.exportMaterialForm.updateValueAndValidity();
         this.loadTotalPrice();
+        this.loadInventoriesByStoreId(true);
       }
     }, error => {
       this.notify.error('Có lỗi xảy ra');
@@ -217,6 +219,12 @@ export class ExportMaterialEditComponent implements OnInit {
         this.exportMaterialDetails = res;
         this.loadingExportDetails = false;
         this.loadTotalPrice();
+
+        if (this.exportMaterialDetails.length > 0) {
+          this.exportMaterialForm.controls['ngayNhap'].disable();
+        } else {
+          this.exportMaterialForm.controls['ngayNhap'].enable();
+        }
       });
   }
 
@@ -252,7 +260,7 @@ export class ExportMaterialEditComponent implements OnInit {
     modal.afterClose.subscribe((result: boolean) => {
       if (result) {
         this.loadExportDetails(maPhieuXuat);
-        this.loadInventoriesByStoreId(maKho);
+        this.loadInventoriesByStoreId();
       }
     });
   }
@@ -265,7 +273,7 @@ export class ExportMaterialEditComponent implements OnInit {
         .subscribe((res: boolean) => {
           if (res) {
             this.loadExportDetails(maPhieuXuat);
-            this.loadInventoriesByStoreId(maKho);
+            this.loadInventoriesByStoreId();
           }
         });
     });

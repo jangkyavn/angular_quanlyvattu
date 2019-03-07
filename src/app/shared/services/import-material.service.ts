@@ -76,4 +76,8 @@ export class ImportMaterialService {
     checkQuantity(importId, inventoryId, materialId, quantity) {
         return this.http.get(this.baseUrl + `NhapVatTu/CheckSoLuongNhapChiTietAsync/${importId}/${inventoryId}/${materialId}/${quantity}`);
     }
+
+    checkUpdateImportDate(importId?: any) {
+        return this.http.get(this.baseUrl + 'NhapVatTu/CheckUpdateNgayNhap/' + importId);
+    }
 }

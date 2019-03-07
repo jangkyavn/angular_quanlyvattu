@@ -30,10 +30,11 @@
     </ng-template>
     <thead (nzSortChange)="sort($event)" nzSingleSort>
       <tr>
-        <th nzWidth="30%" nzShowSort nzSortKey="tenVT">Tên vật tư</th>
-        <th nzWidth="25%" nzShowSort nzSortKey="tenLoaiVatTu">Tên loại vật tư</th>
-        <th nzWidth="15%" nzShowSort nzSortKey="tenDVT">Đơn vị tính</th>
+        <th nzWidth="25%" nzShowSort nzSortKey="tenVT">Tên vật tư</th>
+        <th nzWidth="20%" nzShowSort nzSortKey="tenLoaiVatTu">Tên loại vật tư</th>
+        <th nzWidth="10%" nzShowSort nzSortKey="tenDVT">ĐVT</th>
         <th nzWidth="15%" nzShowSort nzSortKey="ghiChu">Ghi chú</th>
+        <th nzWidth="15%" nzShowSort nzSortKey="ghiChu">SL tồn</th>
         <th nzWidth="15%">Thao tác</th>
       </tr>
     </thead>
@@ -43,6 +44,7 @@
         <td>{{data.tenLoaiVatTu}}</td>
         <td>{{data.tenDVT}}</td>
         <td>{{data.ghiChu || 'Không có'}}</td>
+        <td>{{data.tongTon}}</td>
         <td>
           <nz-button-group>
             <button [routerLink]="['/nghiep-vu/tim-kiem-vat-tu/chi-tiet', data.maVatTu]" nz-button nzType="default" class="btn-primary" nz-tooltip nzTitle="Xem" (click)="collapseMenu()">

@@ -5,12 +5,24 @@
 </nz-breadcrumb>
 
 <div style="padding:24px; background: #fff; min-height: 70vh">
-  <div nz-row>
-    <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24">
+  <div nz-row nzGutter="16">
+    <div nz-col nzXs="24" nzSm="24" nzMd="8" nzLg="8" nzXl="8">
       Vật tư: <strong>{{material.tenVT}}</strong>
-      <span style="margin: 0 1rem 0 1rem;"></span>
-      Từ ngày: <strong>{{pagingParams.fromDate}}</strong> ->
-      Đến ngày: <strong>{{pagingParams.toDate}}</strong>
+    </div>
+    <div nz-col nzXs="24" nzSm="24" nzMd="16" nzLg="16" nzXl="16">
+      <div nz-row nzGutter="16">
+        <div nz-col nzXs="24" nzSm="24" nzMd="9" nzLg="9" nzXl="9">
+          <input nz-input type="date" class="from-date" placeholder="Từ ngày" [(ngModel)]="pagingParams.fromDate">
+        </div>
+        <div nz-col nzXs="24" nzSm="24" nzMd="9" nzLg="9" nzXl="9">
+          <input nz-input type="date" class="to-date" placeholder="Đến ngày" [(ngModel)]="pagingParams.toDate">
+        </div>
+        <div nz-col nzXs="24" nzSm="24" nzMd="6" nzLg="6" nzXl="6">
+          <button nz-button nzType="primary" nzSearch (click)="searchPeriod()">
+            <i nz-icon type="search"></i> Tìm kiếm
+          </button>
+        </div>
+      </div>
     </div>
   </div>
   <br />
@@ -38,16 +50,18 @@
       <thead (nzSortChange)="sort($event)" nzSingleSort>
         <tr>
           <th nzWidth="15%" nzShowSort nzSortKey="maPN">Mã PN</th>
+          <th nzWidth="20%" nzShowSort nzSortKey="tenKho">Kho</th>
           <th nzWidth="15%" nzShowSort nzSortKey="ngayNhap">Ngày nhập</th>
-          <th nzWidth="20%" nzShowSort nzSortKey="donGia">Đơn giá</th>
-          <th nzWidth="15%" nzShowSort nzSortKey="chietKhau">Chiết khấu</th>
-          <th nzWidth="15%" nzShowSort nzSortKey="soLuong">Số lượng</th>
-          <th nzWidth="20%" nzShowSort nzSortKey="thanhTien">Thành tiền</th>
+          <th nzWidth="15%" nzShowSort nzSortKey="donGia">Đơn giá</th>
+          <th nzWidth="10%" nzShowSort nzSortKey="chietKhau">Chiết khấu</th>
+          <th nzWidth="10%" nzShowSort nzSortKey="soLuong">Số lượng</th>
+          <th nzWidth="15%" nzShowSort nzSortKey="thanhTien">Thành tiền</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of table.data">
           <td class="text-center">{{data.maPN}}</td>
+          <td class="text-center">{{data.tenKho}}</td>
           <td>{{data.ngayNhap | date:'dd/MM/yyyy'}}</td>
           <td class="text-right">{{data.donGia | number: '1.0-0'}}</td>
           <td class="text-center">{{data.chietKhau}}%</td>
@@ -55,7 +69,7 @@
           <td class="text-right">{{data.thanhTien | number: '1.0-0'}}</td>
         </tr>
         <tr>
-          <td colspan="4" class="text-center">
+          <td colspan="5" class="text-center">
             <strong>Tổng tất cả</strong>
           </td>
           <td class="text-center">

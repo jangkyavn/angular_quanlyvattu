@@ -270,33 +270,34 @@ export class MaterialListComponent implements OnInit {
         this.isLoadingExport = true;
 
         if (result.isGetAll) {
-          this.materialService.getAll().subscribe((data: any[]) => {
-            this.materialService.exportExcel(data).subscribe((res: any) => {
-              if (res) {
-                window.location.href = res.url;
+          this.materialService.getAllPaging(1, this.pagination.totalItems, this.pagingParams)
+            .subscribe((data: PaginatedResult<Material[]>) => {
+              this.materialService.exportExcel(data.result).subscribe((res: any) => {
+                if (res) {
+                  window.location.href = res.url;
 
-                setTimeout(() => {
-                  this.materialService.deleteExportFile(res.fileName).subscribe((rs) => {
-                    if (rs) {
-                      this.notify.success('Xuất excel thành công');
-                    } else {
-                      this.notify.success('Xuất excel thất bại');
-                    }
-                    this.isLoadingExport = false;
-                  }, _ => {
-                    this.notify.error('Có lỗi xảy ra');
-                    console.log('error deleteExcel');
-                    this.isLoadingExport = false;
-                  }, () => {
-                  });
-                }, 1000);
-              }
-            }, _ => {
-              this.notify.error('Có lỗi xảy ra');
-              console.log('error exportExcel');
-              this.isLoadingExport = false;
+                  setTimeout(() => {
+                    this.materialService.deleteExportFile(res.fileName).subscribe((rs) => {
+                      if (rs) {
+                        this.notify.success('Xuất excel thành công');
+                      } else {
+                        this.notify.success('Xuất excel thất bại');
+                      }
+                      this.isLoadingExport = false;
+                    }, _ => {
+                      this.notify.error('Có lỗi xảy ra');
+                      console.log('error deleteExcel');
+                      this.isLoadingExport = false;
+                    }, () => {
+                    });
+                  }, 1000);
+                }
+              }, _ => {
+                this.notify.error('Có lỗi xảy ra');
+                console.log('error exportExcel');
+                this.isLoadingExport = false;
+              });
             });
-          });
         } else {
           this.materialService.getAllPaging(result.pageNumber, this.pagination.itemsPerPage, this.pagingParams)
             .subscribe((data: PaginatedResult<Material[]>) => {

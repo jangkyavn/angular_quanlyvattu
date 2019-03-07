@@ -43,9 +43,7 @@ export class CardExportStatisticsComponent implements OnInit {
       this.route.queryParams.subscribe(params => {
         this.pagingParams.fromDate = params['fromDate'];
         this.pagingParams.toDate = params['toDate'];
-
         this.loadData();
-        this.getTotal(this.material.maVatTu, 1);
       });
     });
   }
@@ -66,10 +64,12 @@ export class CardExportStatisticsComponent implements OnInit {
       this.pagination.itemsPerPage,
       this.pagingParams,
       this.material.maVatTu)
-      .subscribe((res: PaginatedResult<any[]>) => {
+      .subscribe((res: PaginatedResult<any>) => {
         this.isLoading = false;
         this.pagination = res.pagination;
-        this.dataSet = res.result;
+        this.dataSet = res.result.items;
+        this.totalQuantity = res.result.tongluong;
+        this.totalAmount = res.result.tongtien;
       }, error => {
         this.notify.error('Có lỗi xảy ra');
         console.log('error getAllPagingExportDetaislByMaterialId');
@@ -79,13 +79,5 @@ export class CardExportStatisticsComponent implements OnInit {
   search(keyword: string) {
     this.pagingParams.keyword = keyword;
     this.loadData(true);
-  }
-
-  getTotal(materialId: any, type: any) {
-    this.materialService.getTotalForAnotherTables(materialId, type, this.pagingParams.fromDate, this.pagingParams.toDate)
-      .subscribe((res: any) => {
-        this.totalAmount = res.tongTien;
-        this.totalQuantity = res.tongLuong;
-      });
   }
 }

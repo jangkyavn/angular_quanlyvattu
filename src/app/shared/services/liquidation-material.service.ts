@@ -69,7 +69,8 @@ export class LiquidationMaterialService {
         page?: any,
         itemsPerPage?: any,
         pagingParams?: PagingParams,
-        storeId?: any): Observable<PaginatedResult<Inventory[]>> {
+        storeId?: any,
+        liquidationDate?: any): Observable<PaginatedResult<Inventory[]>> {
         const paginatedResult = new PaginatedResult<Inventory[]>();
 
         let params = new HttpParams();
@@ -88,6 +89,10 @@ export class LiquidationMaterialService {
 
         if (storeId != null) {
             params = params.append('maKho', storeId);
+        }
+
+        if (liquidationDate != null) {
+            params = params.append('ngaythanhly', liquidationDate);
         }
 
         return this.http.get<Inventory[]>(this.baseUrl + 'ThanhLyVatTu/GetListByMaKho', { observe: 'response', params })

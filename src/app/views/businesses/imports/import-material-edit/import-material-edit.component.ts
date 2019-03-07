@@ -68,8 +68,8 @@ export class ImportMaterialEditComponent implements OnInit {
       maHM: [null, [Validators.required]],
       nguoiNhap: [null],
       ngayNhap: [null, [Validators.required]],
-      tenKho: [null, [Validators.required]],
-      tenHM: [null, [Validators.required]],
+      tenKho: [{ value: null, disabled: true }, [Validators.required]],
+      tenHM: [{ value: null, disabled: true }, [Validators.required]],
       chietKhau: [0],
       ghiChu: [null],
       tongSoLuong: [null],
@@ -84,6 +84,15 @@ export class ImportMaterialEditComponent implements OnInit {
 
       this.importMaterialDetails = listnhapchitiet;
       this.loadTotalPrice();
+
+      this.importMaterialService.checkUpdateImportDate(mnhapvattu.maPhieuNhap)
+        .subscribe((res: boolean) => {
+          if (res) {
+            this.importMaterialForm.controls['ngayNhap'].disable();
+          } else {
+            this.importMaterialForm.controls['ngayNhap'].enable();
+          }
+        });
     });
   }
 
@@ -109,7 +118,7 @@ export class ImportMaterialEditComponent implements OnInit {
       return;
     }
 
-    const importMaterial = Object.assign({}, this.importMaterialForm.value);
+    const importMaterial = Object.assign({}, this.importMaterialForm.getRawValue());
     this.importMaterialService.update(importMaterial).subscribe((res: any) => {
       if (res) {
         this.notify.success('Sửa thành công');

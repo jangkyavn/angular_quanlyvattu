@@ -74,7 +74,10 @@ export class LiquidationMaterialEditComponent implements OnInit {
       const { mthanhlyvattu, listThanhlychitiet } = data['liquidation-material'];
       this.liquidationMaterialForm.patchValue(mthanhlyvattu);
       this.liquidationDetails = listThanhlychitiet;
-      this.loadInventoriesByStoreId(mthanhlyvattu.maKho);
+      if (this.liquidationDetails.length > 0) {
+        this.liquidationMaterialForm.controls['ngayThanhLy'].disable();
+      }
+      this.loadInventoriesByStoreId(true);
       this.loadTotalQuantity();
     });
   }
@@ -89,28 +92,28 @@ export class LiquidationMaterialEditComponent implements OnInit {
       maPhieuThanhLy: [null],
       maKho: [null, [Validators.required]],
       maNS: [null, [Validators.required]],
-      tenKho: [null],
+      tenKho: [{ value: null, disabled: true }],
       tenNS: [null],
       ngayThanhLy: [currentDate, [Validators.required]],
     });
   }
 
   sortInventories(sort: { key: string, value: string }): void {
-    const { maKho } = this.liquidationMaterialForm.value;
     this.pagingParams.sortKey = sort.key;
     this.pagingParams.sortValue = sort.value;
-    this.loadInventoriesByStoreId(maKho);
+    this.loadInventoriesByStoreId();
   }
 
-  loadInventoriesByStoreId(storeId: number, reset: boolean = false): void {
+  loadInventoriesByStoreId(reset: boolean = false): void {
     if (reset) {
       this.pagination.currentPage = 1;
     }
     this.loadingInventories = true;
+    const { maKho, ngayThanhLy } = this.liquidationMaterialForm.getRawValue();
     this.liquidationMaterialService.getInventoriesByStoreId(
       this.pagination.currentPage,
       this.pagination.itemsPerPage,
-      this.pagingParams, storeId)
+      this.pagingParams, maKho, ngayThanhLy)
       .subscribe((res: PaginatedResult<Inventory[]>) => {
         this.loadingInventories = false;
         this.pagination = res.pagination;
@@ -139,6 +142,11 @@ export class LiquidationMaterialEditComponent implements OnInit {
       .subscribe((res: LiquidationDetail[]) => {
         this.liquidationDetails = res;
         this.loadingLiquidationDetails = false;
+        if (this.liquidationDetails.length > 0) {
+          this.liquidationMaterialForm.controls['ngayThanhLy'].disable();
+        } else {
+          this.liquidationMaterialForm.controls['ngayThanhLy'].enable();
+        }
         this.loadTotalQuantity();
       });
   }
@@ -153,12 +161,13 @@ export class LiquidationMaterialEditComponent implements OnInit {
       return;
     }
 
-    const liquidation = Object.assign({}, this.liquidationMaterialForm.value);
+    const liquidation = Object.assign({}, this.liquidationMaterialForm.getRawValue());
     this.liquidationMaterialService.update(liquidation).subscribe((res: number) => {
       if (res) {
         this.notify.success('Sửa thành công!');
         this.liquidationMaterialForm.markAsPristine();
         this.liquidationMaterialForm.updateValueAndValidity();
+        this.loadInventoriesByStoreId(true);
       }
     }, error => {
       console.log('error updateLiquidationMaterial');
@@ -167,10 +176,8 @@ export class LiquidationMaterialEditComponent implements OnInit {
   }
 
   searchInventory(keyword: any) {
-    const { maKho } = this.liquidationMaterialForm.value;
     this.pagingParams.keyword = keyword;
-
-    this.loadInventoriesByStoreId(maKho, true);
+    this.loadInventoriesByStoreId(true);
   }
 
   createLiquidationDetail(inventory: Inventory) {
@@ -204,7 +211,7 @@ export class LiquidationMaterialEditComponent implements OnInit {
     modal.afterClose.subscribe((result: boolean) => {
       if (result) {
         this.loadLiquidationDetails(liquidationMaterial.maPhieuThanhLy);
-        this.loadInventoriesByStoreId(liquidationMaterial.maKho);
+        this.loadInventoriesByStoreId();
       }
     });
   }
@@ -240,7 +247,7 @@ export class LiquidationMaterialEditComponent implements OnInit {
     modal.afterClose.subscribe((result: boolean) => {
       if (result) {
         this.loadLiquidationDetails(liquidationMaterial.maPhieuThanhLy);
-        this.loadInventoriesByStoreId(liquidationMaterial.maKho);
+        this.loadInventoriesByStoreId();
       }
     });
   }
@@ -253,7 +260,7 @@ export class LiquidationMaterialEditComponent implements OnInit {
         .subscribe((res: boolean) => {
           if (res) {
             this.loadLiquidationDetails(maPhieuThanhLy);
-            this.loadInventoriesByStoreId(maKho);
+            this.loadInventoriesByStoreId();
           }
         });
     });

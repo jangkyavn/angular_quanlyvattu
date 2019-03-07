@@ -12,8 +12,8 @@ import {
   CardLiquidationMaterialsComponent
 } from './search-material-detail/card-liquidation-materials/card-liquidation-materials.component';
 
-import { MaterialListResolver } from 'src/app/shared/resolvers/material-list.resolver';
 import { MaterialDetailResolver } from 'src/app/shared/resolvers/material-detail.resolver';
+import { SearchMaterialListResolver } from 'src/app/shared/resolvers/search-material-list.resolver';
 
 @NgModule({
   imports: [
@@ -29,7 +29,7 @@ import { MaterialDetailResolver } from 'src/app/shared/resolvers/material-detail
     CardLiquidationMaterialsComponent
   ],
   providers: [
-    MaterialListResolver,
+    SearchMaterialListResolver,
     MaterialDetailResolver
   ]
 })
