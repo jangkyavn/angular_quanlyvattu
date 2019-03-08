@@ -65,7 +65,7 @@
             <button nz-button nzType="default" class="btn-success" nz-tooltip nzTitle="Đổi mật khẩu" (click)="changePassword(data.id)">
                 <i nz-icon type="safety-certificate" theme="outline"></i>
               </button>
-            <button nz-button nzType="default" class="btn-warning" nz-tooltip nzTitle="Phân quyền"
+            <button *appHasRole="['Admin']" nz-button nzType="default" class="btn-warning" nz-tooltip nzTitle="Phân quyền"
               (click)="editRoles(data)">
               <i nz-icon type="usergroup-add" theme="outline"></i>
             </button>

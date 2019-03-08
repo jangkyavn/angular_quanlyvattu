@@ -13,6 +13,10 @@ const routes: Routes = [
                 loadChildren: './users/users.module#UsersModule'
             },
             {
+                path: 'phan-quyen',
+                loadChildren: './permissions/permissions.module#PermissionsModule'
+            },
+            {
                 path: '',
                 redirectTo: 'nguoi-dung',
                 pathMatch: 'full'

@@ -1,0 +1,16 @@
+<form nz-form [formGroup]="roleForm" autocomplete="off">
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="name">Quyền</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <input nz-input formControlName="name" id="name" autofocus>
+      <nz-form-explain *ngIf="roleForm.get('name').dirty && roleForm.get('name').errors">
+        <ng-container *ngIf="roleForm.get('name').hasError('required') || roleForm.get('name').hasError('whitespace')">
+          Vui lòng nhập tên quyền!
+        </ng-container>
+        <ng-container *ngIf="roleForm.get('name').hasError('duplicate')">
+          Tên này đã được dùng!
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+</form>

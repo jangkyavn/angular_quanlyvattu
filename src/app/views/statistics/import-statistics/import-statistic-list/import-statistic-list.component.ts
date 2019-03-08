@@ -22,13 +22,7 @@ export class ImportStatisticListComponent implements OnInit {
   materialItems: MaterialItem[] = [];
   materialTypes: MaterialType[] = [];
 
-  statisticParams: any = {
-    fromDate: new Date().toISOString().split('T')[0],
-    toDate: new Date().toISOString().split('T')[0],
-    maLoaiVT: '',
-    maHM: '',
-    maKho: ''
-  };
+  statisticParams: any;
   startValue = '';
   endValue = '';
   storeId = null;
@@ -43,6 +37,8 @@ export class ImportStatisticListComponent implements OnInit {
     private notify: NotifyService) { }
 
   ngOnInit() {
+    this.statisticParams = this.initialRangeDate();
+
     this.getAllMaterialStores();
     this.getAllMaterialItems();
     this.getAllMaterialTypes();
@@ -78,13 +74,7 @@ export class ImportStatisticListComponent implements OnInit {
   }
 
   initialSearch() {
-    this.statisticParams = {
-      fromDate: new Date().toISOString().split('T')[0],
-      toDate: new Date().toISOString().split('T')[0],
-      maLoaiVT: '',
-      maHM: '',
-      maKho: ''
-    };
+    this.statisticParams = this.initialRangeDate();
   }
 
   search() {
@@ -110,6 +100,23 @@ export class ImportStatisticListComponent implements OnInit {
 
   changeMaterialTypes(event: any) {
     this.statisticParams.maLoaiVT = event;
+  }
+
+  initialRangeDate() {
+    const curr = new Date;
+    const first = curr.getDate() - curr.getDay();
+    const last = first + 6;
+
+    const firstday = new Date(curr.setDate(first)).toISOString().split('T')[0];
+    const lastday = new Date(curr.setDate(last)).toISOString().split('T')[0];
+
+    return {
+      fromDate: firstday,
+      toDate: lastday,
+      maLoaiVT: '',
+      maHM: '',
+      maKho: ''
+    };
   }
 
   refresh() {

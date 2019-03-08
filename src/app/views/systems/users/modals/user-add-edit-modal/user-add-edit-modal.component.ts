@@ -121,7 +121,6 @@ export class UserAddEditModalComponent implements OnInit {
 
     const user = Object.assign({}, this.userForm.getRawValue());
     if (this.isAddNew) {
-      console.log(user);
       this.userService.addNew(user).subscribe((res: any) => {
         if (res) {
           this.notify.success('Thêm mới thành công!');
