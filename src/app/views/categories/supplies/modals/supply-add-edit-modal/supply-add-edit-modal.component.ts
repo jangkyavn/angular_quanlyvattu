@@ -71,10 +71,6 @@ export class SupplyAddEditModalComponent implements OnInit {
             this.notify.warning('Tên nguồn cung cấp đã tồn tại');
           }
         }
-      }, error => {
-        this.modal.destroy(false);
-        this.notify.success('Có lỗi xảy ra!');
-        console.log('error addSupply');
       });
     } else {
       this.supplyService.update(supply).subscribe((res: any) => {
@@ -84,10 +80,6 @@ export class SupplyAddEditModalComponent implements OnInit {
         } else {
           console.log('update Supply failed');
         }
-      }, error => {
-        this.modal.destroy(false);
-        this.notify.success('Có lỗi xảy ra!');
-        console.log('error updateSupply');
       });
     }
   }

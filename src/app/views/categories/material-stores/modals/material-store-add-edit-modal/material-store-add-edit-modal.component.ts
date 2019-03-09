@@ -73,7 +73,7 @@ export class MaterialStoreAddEditModalComponent implements OnInit {
           }
         }
       }, error => {
-        this.notify.success('Có lỗi xảy ra!');
+        this.notify.error('Có lỗi xảy ra!');
         console.log('error addMaterialStore');
         this.modal.destroy(false);
       });
@@ -84,7 +84,7 @@ export class MaterialStoreAddEditModalComponent implements OnInit {
           this.modal.destroy(true);
         }
       }, error => {
-        this.notify.success('Có lỗi xảy ra!');
+        this.notify.error('Có lỗi xảy ra!');
         console.log('error updateMaterialStore');
         this.modal.destroy(false);
       });

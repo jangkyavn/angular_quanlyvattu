@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { UnitService } from '../services/unit.service';
-import { NotifyService } from '../services/notify.service';
+import { UtilitiesService } from '../services/utilities.service';
 
 import { Unit } from '../models/unit.model';
 
@@ -16,16 +16,11 @@ export class UnitListResolver implements Resolve<Unit[]> {
     constructor(
         private router: Router,
         private unitService: UnitService,
-        private notify: NotifyService) { }
+        private utility: UtilitiesService) { }
 
     resolve(route: ActivatedRouteSnapshot): Observable<Unit[]> {
         return this.unitService.getAllPaging(this.pageNumber, this.pageSize).pipe(
-            catchError(_ => {
-                this.notify.error('Có lỗi xảy ra');
-                console.log('error getAllPagingUnit');
-                this.router.navigate(['/']);
-                return of(null);
-            })
+            catchError(error => this.utility.handleError(error, 'getAllPagingUnit'))
         );
     }
 }

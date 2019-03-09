@@ -71,4 +71,12 @@ export class RoleService {
   checkNameExists(name: string) {
     return this.http.get(this.baseUrl + 'roles/checkNameExists/' + name);
   }
+
+  getListPermissionById(id: any) {
+    return this.http.get(this.baseUrl + 'roles/getListPermissionByRoleId/' + id);
+  }
+
+  checkPermission(functionId: string, action: string) {
+    return this.http.get(this.baseUrl + `roles/checkPermission/${functionId}/${action}`);
+  }
 }

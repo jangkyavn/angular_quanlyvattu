@@ -20,7 +20,7 @@
         <button nz-button nzType="primary" (click)="addNew()">
           <i nz-icon type="plus" theme="outline"></i> Thêm
         </button>
-        <button [disabled]="isLoadingImport" [nzLoading]="isLoadingImport" nz-button nzType="dashed"
+        <button *appHasRole="['Admin']" [disabled]="isLoadingImport" [nzLoading]="isLoadingImport" nz-button nzType="dashed"
           (click)="fImportExcel.click()">
           <i nz-icon type="file-excel" theme="outline"></i> Nhập excel
         </button>

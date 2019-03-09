@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { SupplyService } from '../services/supply.service';
-import { NotifyService } from '../services/notify.service';
+import { UtilitiesService } from '../services/utilities.service';
 
 import { Supply } from '../models/supply.model';
 
@@ -16,16 +16,11 @@ export class SupplyListResolver implements Resolve<Supply[]> {
     constructor(
         private router: Router,
         private supplyService: SupplyService,
-        private notify: NotifyService) { }
+        private utility: UtilitiesService) { }
 
     resolve(route: ActivatedRouteSnapshot): Observable<Supply[]> {
         return this.supplyService.getAllPaging(this.pageNumber, this.pageSize).pipe(
-            catchError(_ => {
-                this.notify.error('Có lỗi xảy ra');
-                console.log('error getAllPagingSupplies');
-                this.router.navigate(['/']);
-                return of(null);
-            })
+            catchError(error => this.utility.handleError(error, 'getAllPagingSupply'))
         );
     }
 }

@@ -1,8 +1,9 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd';
 
 import { UnitService } from 'src/app/shared/services/unit.service';
+import { RoleService } from 'src/app/shared/services/role.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
 
 import { Unit } from 'src/app/shared/models/unit.model';
@@ -42,8 +43,10 @@ export class UnitListComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private modalService: NzModalService,
     private unitService: UnitService,
+    public roleService: RoleService,
     private notify: NotifyService) { }
 
   ngOnInit() {
@@ -78,10 +81,7 @@ export class UnitListComponent implements OnInit {
         this.indeterminate = false;
         this.allChecked = false;
         this.checkedNumber = 0;
-      }, error => {
-        this.notify.error('Có lỗi xảy ra');
-        console.log('error getAllPagingUnits');
-      }, () => {
+
         if (this.dataSet.length === 0 && this.pagination.currentPage !== 1) {
           this.pagination.currentPage -= 1;
           this.loadData();
@@ -103,107 +103,121 @@ export class UnitListComponent implements OnInit {
   }
 
   addNew() {
-    const modal = this.modalService.create({
-      nzTitle: 'Thêm đơn vị tính',
-      nzContent: UnitAddEditModalComponent,
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzComponentParams: {
-        unit: {},
-        isAddNew: true
-      },
-      nzFooter: [
-        {
-          label: 'Hủy',
-          shape: 'default',
-          onClick: () => modal.destroy(),
-        },
-        {
-          label: 'Lưu',
-          type: 'primary',
-          onClick: (componentInstance) => {
-            componentInstance.saveChanges();
-          }
-        }
-      ]
-    });
+    this.roleService.checkPermission('DON_VI_TINH', 'Create')
+      .subscribe((res: boolean) => {
+        if (res) {
+          const modal = this.modalService.create({
+            nzTitle: 'Thêm đơn vị tính',
+            nzContent: UnitAddEditModalComponent,
+            nzMaskClosable: false,
+            nzClosable: false,
+            nzComponentParams: {
+              unit: {},
+              isAddNew: true
+            },
+            nzFooter: [
+              {
+                label: 'Hủy',
+                shape: 'default',
+                onClick: () => modal.destroy(),
+              },
+              {
+                label: 'Lưu',
+                type: 'primary',
+                onClick: (componentInstance) => {
+                  componentInstance.saveChanges();
+                }
+              }
+            ]
+          });
 
-    modal.afterClose.subscribe((result: boolean) => {
-      if (result) {
-        this.loadData();
-        modal.destroy();
+          modal.afterClose.subscribe((result: boolean) => {
+            if (result) {
+              this.loadData();
+              modal.destroy();
+            } else {
+              modal.destroy();
+            }
+          });
+        } else {
+          this.notify.warning('Bạn không có quyền');
+        }
+      });
+  }
+
+  update(id: number) {
+    this.roleService.checkPermission('DON_VI_TINH', 'Update').subscribe((res: boolean) => {
+      if (res) {
+        this.unitService.getDetail(id).subscribe((unit: Unit) => {
+          const modal = this.modalService.create({
+            nzTitle: 'Sửa đơn vị tính',
+            nzContent: UnitAddEditModalComponent,
+            nzMaskClosable: false,
+            nzComponentParams: {
+              unit,
+              isAddNew: false
+            },
+            nzFooter: [
+              {
+                label: 'Hủy',
+                shape: 'default',
+                onClick: () => modal.destroy()
+              },
+              {
+                label: 'Lưu',
+                type: 'primary',
+                onClick: (componentInstance) => {
+                  componentInstance.saveChanges();
+                }
+              }
+            ]
+          });
+
+          modal.afterClose.subscribe((result: boolean) => {
+            if (result) {
+              this.loadData();
+            }
+          });
+        });
       } else {
-        modal.destroy();
+        this.notify.warning('Bạn không có quyền');
       }
     });
   }
 
-  update(id: number) {
-    this.unitService.getDetail(id).subscribe((unit: Unit) => {
-      const modal = this.modalService.create({
-        nzTitle: 'Sửa đơn vị tính',
-        nzContent: UnitAddEditModalComponent,
-        nzMaskClosable: false,
-        nzComponentParams: {
-          unit,
-          isAddNew: false
-        },
-        nzFooter: [
-          {
-            label: 'Hủy',
-            shape: 'default',
-            onClick: () => modal.destroy()
-          },
-          {
-            label: 'Lưu',
-            type: 'primary',
-            onClick: (componentInstance) => {
-              componentInstance.saveChanges();
-            }
-          }
-        ]
-      });
-
-      modal.afterClose.subscribe((result: boolean) => {
-        if (result) {
-          this.loadData();
-        }
-      });
-    });
-  }
-
   delete(id: number) {
-    this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
-      this.unitService.delete(id).subscribe((res: boolean) => {
-        if (res) {
-          this.notify.success('Xóa thành công!');
-          this.loadData();
-        } else {
-          this.notify.warning('Đơn vị tính đang được sử dụng. Không được xóa!');
-        }
-      }, _ => {
-        this.notify.error('Có lỗi xảy ra');
-        console.log('error deleteUnit');
-      });
+    this.roleService.checkPermission('DON_VI_TINH', 'Delete').subscribe((response: boolean) => {
+      if (response) {
+        this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
+          this.unitService.delete(id).subscribe((res: boolean) => {
+            if (res) {
+              this.notify.success('Xóa thành công!');
+              this.loadData();
+            } else {
+              this.notify.warning('Đơn vị tính đang được sử dụng. Không được xóa!');
+            }
+          });
+        });
+      } else {
+        this.notify.warning('Bạn không có quyền');
+      }
     });
   }
 
   deleteMulti() {
-    const ids = this.displayData.filter(value => value.checked).map((value: Unit) => value.maDVT);
-
-    this.notify.confirm(`Bạn có chắc chắn muốn xóa ${this.checkedNumber} không?`, () => {
-      this.unitService.deleteMulti(JSON.stringify(ids))
-        .subscribe((res: boolean) => {
-          if (res) {
-            this.notify.success('Xóa thành công');
-            this.loadData();
-          } else {
-            this.notify.warning('Có tên đơn vị đã được sử dụng. Không được xóa!');
-          }
-        }, _ => {
-          this.notify.error('Có lỗi xảy ra');
-          console.log('error deleteMultiUnit');
-        });
+    this.roleService.checkPermission('DON_VI_TINH', 'Delete').subscribe((response: boolean) => {
+      const ids = this.displayData.filter(value => value.checked).map((value: Unit) => value.maDVT);
+      this.notify.confirm(`Bạn có chắc chắn muốn xóa ${this.checkedNumber} không?`, () => {
+        this.unitService.deleteMulti(JSON.stringify(ids))
+          .subscribe((res: boolean) => {
+            if (res) {
+              this.notify.success('Xóa thành công');
+              this.loadData();
+            } else {
+              this.notify.warning('Có tên đơn vị đã được sử dụng. Không được xóa!');
+            }
+          });
+      });
     });
   }
 

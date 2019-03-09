@@ -127,7 +127,7 @@ export class UserAddEditModalComponent implements OnInit {
           this.modal.destroy(true);
         }
       }, error => {
-        this.notify.success('Có lỗi xảy ra!');
+        this.notify.error('Có lỗi xảy ra!');
         console.log('error addUser');
         this.modal.destroy(false);
       });
@@ -138,7 +138,7 @@ export class UserAddEditModalComponent implements OnInit {
           this.modal.destroy(true);
         }
       }, error => {
-        this.notify.success('Có lỗi xảy ra!');
+        this.notify.error('Có lỗi xảy ra!');
         console.log('error updateUser');
         this.modal.destroy(false);
       });

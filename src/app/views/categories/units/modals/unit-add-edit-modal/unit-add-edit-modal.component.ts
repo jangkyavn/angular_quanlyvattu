@@ -71,10 +71,6 @@ export class UnitAddEditModalComponent implements OnInit {
             this.notify.warning('Tên đơn vị tính đã tồn tại');
           }
         }
-      }, error => {
-        this.notify.success('Có lỗi xảy ra!');
-        console.log('error addNewUnit');
-        this.modal.destroy(false);
       });
     } else {
       this.unitService.update(unit).subscribe((res: any) => {
@@ -82,10 +78,6 @@ export class UnitAddEditModalComponent implements OnInit {
           this.notify.success('Sửa thành công!');
           this.modal.destroy(true);
         }
-      }, error => {
-        this.notify.success('Có lỗi xảy ra!');
-        console.log('error updateUnit');
-        this.modal.destroy(false);
       });
     }
   }

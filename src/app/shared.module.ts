@@ -7,7 +7,14 @@ import { HasRoleDirective } from './shared/directives/has-role.directive';
 
 @NgModule({
     imports: [CommonModule, NgZorroAntdModule],
-    declarations: [HighlightSearchPipe, HasRoleDirective],
-    exports: [CommonModule, NgZorroAntdModule, HighlightSearchPipe, HasRoleDirective]
+    declarations: [
+        HighlightSearchPipe,
+        HasRoleDirective
+    ],
+    exports: [CommonModule,
+        NgZorroAntdModule,
+        HighlightSearchPipe,
+        HasRoleDirective
+    ]
 })
 export class SharedModule { }

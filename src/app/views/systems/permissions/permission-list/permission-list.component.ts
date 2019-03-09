@@ -78,6 +78,7 @@ export class PermissionListComponent implements OnInit {
       nzContent: PermissonAddEditModalComponent,
       nzMaskClosable: false,
       nzClosable: false,
+      nzWidth: 600,
       nzComponentParams: {
         role: {},
         isAddNew: true

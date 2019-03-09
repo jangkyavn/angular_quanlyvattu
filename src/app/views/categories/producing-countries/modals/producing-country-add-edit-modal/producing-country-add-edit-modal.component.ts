@@ -70,7 +70,7 @@ export class ProducingCountryAddEditModalComponent implements OnInit {
           }
         }
       }, error => {
-        this.notify.success('Có lỗi xảy ra!');
+        this.notify.error('Có lỗi xảy ra!');
         console.log('error addProducingCountry');
         this.modal.destroy(false);
       });
@@ -81,7 +81,7 @@ export class ProducingCountryAddEditModalComponent implements OnInit {
           this.modal.destroy(true);
         }
       }, error => {
-        this.notify.success('Có lỗi xảy ra!');
+        this.notify.error('Có lỗi xảy ra!');
         console.log('error updateProducingCountry');
         this.modal.destroy(false);
       });

@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Supply } from '../models/supply.model';
 import { PagingParams } from '../params/paging.param';
 import { PaginatedResult } from '../models/pagination.model';
+import { UtilitiesService } from './utilities.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,12 @@ import { PaginatedResult } from '../models/pagination.model';
 export class SupplyService {
   baseUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    private utility: UtilitiesService) { }
 
   getAll() {
-    return this.http.get(this.baseUrl + 'NguonCungCap');
+    return this.http.get(this.baseUrl + 'NguonCungCap')
+      .pipe(catchError(error => this.utility.handleError(error, 'getAllSupply')));
   }
 
   getAllPaging(page?: any, itemsPerPage?: any, pagingParams?: PagingParams): Observable<PaginatedResult<Supply[]>> {
@@ -42,27 +45,33 @@ export class SupplyService {
             paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
           }
           return paginatedResult;
-        })
+        }),
+        catchError(error => this.utility.handleError(error, 'getAllPagingSupply'))
       );
   }
 
   getDetail(id: number) {
-    return this.http.get(this.baseUrl + 'NguonCungCap/' + id);
+    return this.http.get(this.baseUrl + 'NguonCungCap/' + id)
+      .pipe(catchError(error => this.utility.handleError(error, 'getDetailSupply')));
   }
 
   addNew(supply: Supply) {
-    return this.http.post(this.baseUrl + 'NguonCungCap', supply);
+    return this.http.post(this.baseUrl + 'NguonCungCap', supply)
+      .pipe(catchError(error => this.utility.handleError(error, 'addNewSupply')));
   }
 
   update(supply: Supply) {
-    return this.http.put(this.baseUrl + 'NguonCungCap', supply);
+    return this.http.put(this.baseUrl + 'NguonCungCap', supply)
+      .pipe(catchError(error => this.utility.handleError(error, 'updateSupply')));
   }
 
   delete(id: number) {
-    return this.http.delete(this.baseUrl + 'NguonCungCap/' + id);
+    return this.http.delete(this.baseUrl + 'NguonCungCap/' + id)
+      .pipe(catchError(error => this.utility.handleError(error, 'deleteSupply')));
   }
 
   deleteMulti(strIds: any) {
-    return this.http.delete(this.baseUrl + 'NguonCungCap/DeleteAllAsync/' + strIds);
+    return this.http.delete(this.baseUrl + 'NguonCungCap/DeleteAllAsync/' + strIds)
+      .pipe(catchError(error => this.utility.handleError(error, 'deleteMulitSupply')));
   }
 }

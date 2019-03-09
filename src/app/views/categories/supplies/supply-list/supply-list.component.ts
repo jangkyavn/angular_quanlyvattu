@@ -9,6 +9,7 @@ import { Supply } from 'src/app/shared/models/supply.model';
 import { SupplyAddEditModalComponent } from '../modals/supply-add-edit-modal/supply-add-edit-modal.component';
 import { Pagination, PaginatedResult } from 'src/app/shared/models/pagination.model';
 import { PagingParams } from 'src/app/shared/params/paging.param';
+import { RoleService } from 'src/app/shared/services/role.service';
 
 @Component({
   selector: 'app-supply-list',
@@ -44,6 +45,7 @@ export class SupplyListComponent implements OnInit {
     private route: ActivatedRoute,
     private modalService: NzModalService,
     private supplyService: SupplyService,
+    private roleService: RoleService,
     private notify: NotifyService) { }
 
   ngOnInit() {
@@ -78,10 +80,7 @@ export class SupplyListComponent implements OnInit {
         this.indeterminate = false;
         this.allChecked = false;
         this.checkedNumber = 0;
-      }, error => {
-        this.notify.error('Có lỗi xảy ra');
-        console.log('error getAllPagingSupplies');
-      }, () => {
+
         if (this.dataSet.length === 0 && this.pagination.currentPage !== 1) {
           this.pagination.currentPage -= 1;
           this.loadData();
@@ -103,103 +102,120 @@ export class SupplyListComponent implements OnInit {
   }
 
   addNew() {
-    const modal = this.modalService.create({
-      nzTitle: 'Thêm nguồn cung cấp',
-      nzContent: SupplyAddEditModalComponent,
-      nzMaskClosable: false,
-      nzComponentParams: {
-        supply: {},
-        isAddNew: true
-      },
-      nzFooter: [
-        {
-          label: 'Hủy',
-          shape: 'default',
-          onClick: () => modal.destroy(),
-        },
-        {
-          label: 'Lưu',
-          type: 'primary',
-          onClick: (componentInstance) => {
-            componentInstance.saveChanges();
-          }
-        }
-      ]
-    });
+    this.roleService.checkPermission('NGUON_CUNG_CAP', 'Create').subscribe((response: boolean) => {
+      if (response) {
+        const modal = this.modalService.create({
+          nzTitle: 'Thêm nguồn cung cấp',
+          nzContent: SupplyAddEditModalComponent,
+          nzMaskClosable: false,
+          nzComponentParams: {
+            supply: {},
+            isAddNew: true
+          },
+          nzFooter: [
+            {
+              label: 'Hủy',
+              shape: 'default',
+              onClick: () => modal.destroy(),
+            },
+            {
+              label: 'Lưu',
+              type: 'primary',
+              onClick: (componentInstance) => {
+                componentInstance.saveChanges();
+              }
+            }
+          ]
+        });
 
-    modal.afterClose.subscribe((result: boolean) => {
-      if (result) {
-        this.loadData();
+        modal.afterClose.subscribe((result: boolean) => {
+          if (result) {
+            this.loadData();
+          }
+        });
+      } else {
+        this.notify.warning('Bạn không có quyền');
       }
     });
   }
 
   update(id: number) {
-    this.supplyService.getDetail(id).subscribe((supply: Supply) => {
-      const modal = this.modalService.create({
-        nzTitle: 'Sửa nguồn cung cấp',
-        nzContent: SupplyAddEditModalComponent,
-        nzMaskClosable: false,
-        nzComponentParams: {
-          supply,
-          isAddNew: false
-        },
-        nzFooter: [
-          {
-            label: 'Hủy',
-            shape: 'default',
-            onClick: () => modal.destroy()
-          },
-          {
-            label: 'Lưu',
-            type: 'primary',
-            onClick: (componentInstance) => {
-              componentInstance.saveChanges();
-            }
-          }
-        ]
-      });
+    this.roleService.checkPermission('NGUON_CUNG_CAP', 'Update').subscribe((res: boolean) => {
+      if (res) {
+        this.supplyService.getDetail(id).subscribe((supply: Supply) => {
+          const modal = this.modalService.create({
+            nzTitle: 'Sửa nguồn cung cấp',
+            nzContent: SupplyAddEditModalComponent,
+            nzMaskClosable: false,
+            nzComponentParams: {
+              supply,
+              isAddNew: false
+            },
+            nzFooter: [
+              {
+                label: 'Hủy',
+                shape: 'default',
+                onClick: () => modal.destroy()
+              },
+              {
+                label: 'Lưu',
+                type: 'primary',
+                onClick: (componentInstance) => {
+                  componentInstance.saveChanges();
+                }
+              }
+            ]
+          });
 
-      modal.afterClose.subscribe((result: boolean) => {
-        if (result) {
-          this.loadData();
-        }
-      });
+          modal.afterClose.subscribe((result: boolean) => {
+            if (result) {
+              this.loadData();
+            }
+          });
+        });
+      } else {
+        this.notify.warning('Bạn không có quyền');
+      }
     });
   }
 
   delete(id: number) {
-    this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
-      this.supplyService.delete(id).subscribe((res: boolean) => {
-        if (res) {
-          this.notify.success('Xóa thành công!');
-          this.loadData();
-        } else {
-          this.notify.warning('Tên nguồn cung cấp đang được sử dụng. Không được xóa!');
-        }
-      }, _ => {
-        this.notify.error('Có lỗi xảy ra');
-        console.log('error deleteSupply');
-      });
+    this.roleService.checkPermission('NGUON_CUNG_CAP', 'Delete').subscribe((response: boolean) => {
+      if (response) {
+        this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
+          this.supplyService.delete(id).subscribe((res: boolean) => {
+            if (res) {
+              this.notify.success('Xóa thành công!');
+              this.loadData();
+            } else {
+              this.notify.warning('Tên nguồn cung cấp đang được sử dụng. Không được xóa!');
+            }
+          });
+        });
+      } else {
+        this.notify.warning('Bạn không có quyền');
+      }
     });
   }
 
   deleteMulti() {
-    const ids = this.displayData.filter(value => value.checked).map((value: Supply) => value.maNguon);
-
-    this.notify.confirm(`Bạn có chắc chắn muốn xóa ${this.checkedNumber} không?`, () => {
-      this.supplyService.deleteMulti(JSON.stringify(ids))
-        .subscribe((res: boolean) => {
-          if (res) {
-            this.notify.success('Xóa thành công');
-            this.loadData();
-          } else {
-            this.notify.warning('Có tên nguồn đã được sử dụng. Không được xóa!');
-          }
-        }, _ => {
-          this.notify.error('Có lỗi xảy ra');
-          console.log('error deleteMultiSupply');
+    this.roleService.checkPermission('NGUON_CUNG_CAP', 'Delete').subscribe((response: boolean) => {
+      if (response) {
+        const ids = this.displayData.filter(value => value.checked).map((value: Supply) => value.maNguon);
+        this.notify.confirm(`Bạn có chắc chắn muốn xóa ${this.checkedNumber} không?`, () => {
+          this.supplyService.deleteMulti(JSON.stringify(ids))
+            .subscribe((res: boolean) => {
+              if (res) {
+                this.notify.success('Xóa thành công');
+                this.loadData();
+              } else {
+                this.notify.warning('Có tên nguồn đã được sử dụng. Không được xóa!');
+              }
+            });
         });
+      } else {
+        this.notify.warning('Bạn không có quyền');
+      }
     });
   }
 

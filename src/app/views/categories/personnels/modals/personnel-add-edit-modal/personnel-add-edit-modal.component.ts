@@ -106,7 +106,7 @@ export class PersonnelAddEditModalComponent implements OnInit {
           }
         }
       }, error => {
-        this.notify.success('Có lỗi xảy ra!');
+        this.notify.error('Có lỗi xảy ra!');
         console.log('error addPersonnel');
         this.modal.destroy(false);
       });
@@ -117,7 +117,7 @@ export class PersonnelAddEditModalComponent implements OnInit {
           this.modal.destroy(true);
         }
       }, error => {
-        this.notify.success('Có lỗi xảy ra!');
+        this.notify.error('Có lỗi xảy ra!');
         console.log('error updatePersonnel');
         this.modal.destroy(false);
       });

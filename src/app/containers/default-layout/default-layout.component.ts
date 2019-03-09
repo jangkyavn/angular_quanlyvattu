@@ -15,6 +15,7 @@ export class DefaultLayoutComponent implements OnInit {
   triggerTemplate = null;
   isCollapsed = false;
   width = 256;
+  returnUrl = '';
   jwtHelper = new JwtHelperService();
   openMap = {
     sub1: false,
@@ -34,6 +35,11 @@ export class DefaultLayoutComponent implements OnInit {
 
     if (token) {
       this.authService.decodedToken = this.jwtHelper.decodeToken(token);
+
+      const userRoles = this.authService.decodedToken.role as Array<string>;
+      if (!userRoles) {
+        this.router.navigate(['/dang-nhap'], { queryParams: { returnUrl: this.router.url } });
+      }
     }
 
     if (user) {
