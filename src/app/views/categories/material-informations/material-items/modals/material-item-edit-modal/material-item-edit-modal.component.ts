@@ -63,10 +63,6 @@ export class MaterialItemEditModalComponent implements OnInit {
         this.notify.error('Sửa thất bại!');
         this.modal.destroy(false);
       }
-    }, error => {
-      this.notify.error('Có lỗi xảy ra!');
-      console.log('error updateMMaterialItem');
-      this.modal.destroy(false);
     });
   }
 }

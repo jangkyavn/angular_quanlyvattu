@@ -14,7 +14,6 @@ export class SupplyListResolver implements Resolve<Supply[]> {
     pageSize = 10;
 
     constructor(
-        private router: Router,
         private supplyService: SupplyService,
         private utility: UtilitiesService) { }
 

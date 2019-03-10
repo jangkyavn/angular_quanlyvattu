@@ -2,6 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd';
 
+import { RoleService } from 'src/app/shared/services/role.service';
 import { ManufacturerService } from 'src/app/shared/services/manufacturer.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
 
@@ -45,6 +46,7 @@ export class ManufacturerListComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private modalService: NzModalService,
+    private roleService: RoleService,
     private manufacturerService: ManufacturerService,
     private notify: NotifyService) { }
 
@@ -80,10 +82,7 @@ export class ManufacturerListComponent implements OnInit {
         this.indeterminate = false;
         this.allChecked = false;
         this.checkedNumber = 0;
-      }, error => {
-        this.notify.error('Có lỗi xảy ra');
-        console.log('error getAllPagingManufacturer');
-      }, () => {
+
         if (this.dataSet.length === 0 && this.pagination.currentPage !== 1) {
           this.pagination.currentPage -= 1;
           this.loadData();
@@ -106,106 +105,127 @@ export class ManufacturerListComponent implements OnInit {
   }
 
   addNew() {
-    const modal = this.modalService.create({
-      nzTitle: 'Thêm hãng sản xuất',
-      nzContent: ManufacturerAddEditModalComponent,
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzComponentParams: {
-        manufacturer: {},
-        isAddNew: true
-      },
-      nzFooter: [
-        {
-          label: 'Hủy',
-          shape: 'default',
-          onClick: () => modal.destroy(),
-        },
-        {
-          label: 'Lưu',
-          type: 'primary',
-          onClick: (componentInstance) => {
-            componentInstance.saveChanges();
-          }
-        }
-      ]
-    });
+    this.roleService.checkPermission('HANG_SAN_XUAT', 'Create')
+      .subscribe((response: boolean) => {
+        if (response) {
+          const modal = this.modalService.create({
+            nzTitle: 'Thêm hãng sản xuất',
+            nzContent: ManufacturerAddEditModalComponent,
+            nzMaskClosable: false,
+            nzClosable: false,
+            nzComponentParams: {
+              manufacturer: {},
+              isAddNew: true
+            },
+            nzFooter: [
+              {
+                label: 'Hủy',
+                shape: 'default',
+                onClick: () => modal.destroy(),
+              },
+              {
+                label: 'Lưu',
+                type: 'primary',
+                onClick: (componentInstance) => {
+                  componentInstance.saveChanges();
+                }
+              }
+            ]
+          });
 
-    modal.afterClose.subscribe((result: boolean) => {
-      if (result) {
-        this.loadData();
-      }
-    });
+          modal.afterClose.subscribe((result: boolean) => {
+            if (result) {
+              this.loadData();
+            }
+          });
+        } else {
+          this.notify.warning('Bạn không có quyền');
+        }
+      });
   }
 
   update(id: number) {
-    this.manufacturerService.getDetail(id).subscribe((manufacturer: Manufacturer) => {
-      const modal = this.modalService.create({
-        nzTitle: 'Sửa đơn vị tính',
-        nzContent: ManufacturerAddEditModalComponent,
-        nzMaskClosable: false,
-        nzClosable: false,
-        nzComponentParams: {
-          manufacturer,
-          isAddNew: false
-        },
-        nzFooter: [
-          {
-            label: 'Hủy',
-            shape: 'default',
-            onClick: () => modal.destroy()
-          },
-          {
-            label: 'Lưu',
-            type: 'primary',
-            onClick: (componentInstance) => {
-              componentInstance.saveChanges();
-            }
-          }
-        ]
-      });
+    this.roleService.checkPermission('HANG_SAN_XUAT', 'Update')
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.manufacturerService.getDetail(id).subscribe((manufacturer: Manufacturer) => {
+            const modal = this.modalService.create({
+              nzTitle: 'Sửa đơn vị tính',
+              nzContent: ManufacturerAddEditModalComponent,
+              nzMaskClosable: false,
+              nzClosable: false,
+              nzComponentParams: {
+                manufacturer,
+                isAddNew: false
+              },
+              nzFooter: [
+                {
+                  label: 'Hủy',
+                  shape: 'default',
+                  onClick: () => modal.destroy()
+                },
+                {
+                  label: 'Lưu',
+                  type: 'primary',
+                  onClick: (componentInstance) => {
+                    componentInstance.saveChanges();
+                  }
+                }
+              ]
+            });
 
-      modal.afterClose.subscribe((result: boolean) => {
-        if (result) {
-          this.loadData();
+            modal.afterClose.subscribe((result: boolean) => {
+              if (result) {
+                this.loadData();
+              }
+            });
+          });
+        } else {
+          this.notify.warning('Bạn không có quyền');
         }
       });
-    });
   }
 
   delete(id: number) {
-    this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
-      this.manufacturerService.delete(id).subscribe((res: boolean) => {
-        if (res) {
-          this.notify.success('Xóa thành công!');
-          this.loadData();
+    this.roleService.checkPermission('HANG_SAN_XUAT', 'Delete')
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
+            this.manufacturerService.delete(id).subscribe((res: boolean) => {
+              if (res) {
+                this.notify.success('Xóa thành công!');
+                this.loadData();
+              } else {
+                this.notify.warning('Tên hãng sx đang được sử dụng. Không được xóa!');
+              }
+            });
+          });
         } else {
-          this.notify.warning('Tên hãng sx đang được sử dụng. Không được xóa!');
+          this.notify.warning('Bạn không có quyền');
         }
-      }, _ => {
-        this.notify.error('Có lỗi xảy ra');
-        console.log('error deleteManufacturer');
       });
-    });
   }
 
   deleteMulti() {
-    const ids = this.displayData.filter(value => value.checked).map((value: Manufacturer) => value.maHang);
-
-    this.notify.confirm(`Bạn có chắc chắn muốn xóa ${this.checkedNumber} không?`, () => {
-      this.manufacturerService.deleteMulti(JSON.stringify(ids))
-        .subscribe((res: boolean) => {
-          if (res) {
-            this.notify.success('Xóa thành công');
-            this.loadData();
-          } else {
-            this.notify.warning('Có tên hãng đã được sử dụng. Không được xóa!');
-          }
-        }, _ => {
-          this.notify.error('Có lỗi xảy ra');
-          console.log('error deleteMultiManufacturer');
-        });
-    });
+    this.roleService.checkPermission('HANG_SAN_XUAT', 'Delete')
+      .subscribe((response: boolean) => {
+        if (response) {
+          const ids = this.displayData.filter(value => value.checked).map((value: Manufacturer) => value.maHang);
+          this.notify.confirm(`Bạn có chắc chắn muốn xóa ${this.checkedNumber} không?`, () => {
+            this.manufacturerService.deleteMulti(JSON.stringify(ids))
+              .subscribe((res: boolean) => {
+                if (res) {
+                  this.notify.success('Xóa thành công');
+                  this.loadData();
+                } else {
+                  this.notify.warning('Có tên hãng đã được sử dụng. Không được xóa!');
+                }
+              });
+          });
+        } else {
+          this.notify.warning('Bạn không có quyền');
+        }
+      });
   }
 
   search(keyword: string) {

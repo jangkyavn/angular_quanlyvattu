@@ -14,23 +14,33 @@
     </nz-form-control>
   </nz-form-item>
 </form>
-<nz-table #basicTable [nzData]="functions" nzSize="middle">
-  <thead>
+<nz-table #basicTable nzShowSizeChanger [nzFrontPagination]="false" [nzData]="functions" [nzLoading]="loading"
+  [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage" [(nzPageSize)]="pagination.itemsPerPage"
+  [nzNoResult]="'Không tìm thấy kết quả.'" (nzPageIndexChange)="loadAllFunctions()"
+  (nzPageSizeChange)="loadAllFunctions(true)" nzShowQuickJumper [nzShowTotal]="rangeTemplate" nzSize="middle">
+  <ng-template #rangeTemplate let-range="range" let-total>
+    {{range[0]}}-{{range[1]}} của {{total}} bản ghi
+  </ng-template>
+  <thead (nzSortChange)="sort($event)" nzSingleSort>
     <tr>
-      <th>Chức năng</th>
-      <th>Xem</th>
-      <th>Thêm</th>
-      <th>Sửa</th>
-      <th>Xóa</th>
+      <th nzWidth="40%" nzShowSort nzSortKey="tenChucNang">Chức năng</th>
+      <th nzWidth="15%">Xem</th>
+      <th nzWidth="15%">Thêm</th>
+      <th nzWidth="15%">Sửa</th>
+      <th nzWidth="15%">Xóa</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let item of basicTable.data">
       <td>{{item.tenChucNang}}</td>
-      <td><label *ngIf="item.hasRead" nz-checkbox [(ngModel)]="item.read" [ngModelOptions]="{standalone: true}"></label></td>
-      <td><label *ngIf="item.hasCreate" nz-checkbox [(ngModel)]="item.create" [ngModelOptions]="{standalone: true}"></label></td>
-      <td><label *ngIf="item.hasUpdate" nz-checkbox [(ngModel)]="item.update" [ngModelOptions]="{standalone: true}"></label></td>
-      <td><label *ngIf="item.hasDelete" nz-checkbox [(ngModel)]="item.delete" [ngModelOptions]="{standalone: true}"></label></td>
+      <td><label *ngIf="item.hasRead" nz-checkbox [(ngModel)]="item.read" [ngModelOptions]="{standalone: true}"></label>
+      </td>
+      <td><label *ngIf="item.hasCreate" nz-checkbox [(ngModel)]="item.create"
+          [ngModelOptions]="{standalone: true}"></label></td>
+      <td><label *ngIf="item.hasUpdate" nz-checkbox [(ngModel)]="item.update"
+          [ngModelOptions]="{standalone: true}"></label></td>
+      <td><label *ngIf="item.hasDelete" nz-checkbox [(ngModel)]="item.delete"
+          [ngModelOptions]="{standalone: true}"></label></td>
     </tr>
   </tbody>
 </nz-table>

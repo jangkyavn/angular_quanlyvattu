@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { MaterialItemService } from '../services/material-item.service';
-import { NotifyService } from '../services/notify.service';
+import { UtilitiesService } from '../services/utilities.service';
 
 import { MaterialItem } from '../models/material-item.model';
 
@@ -14,18 +14,12 @@ export class MaterialItemListResolver implements Resolve<MaterialItem[]> {
     pageSize = 10;
 
     constructor(
-        private router: Router,
         private materialItemService: MaterialItemService,
-        private notify: NotifyService) { }
+        private utility: UtilitiesService) { }
 
     resolve(route: ActivatedRouteSnapshot): Observable<MaterialItem[]> {
         return this.materialItemService.getAllPaging(this.pageNumber, this.pageSize).pipe(
-            catchError(_ => {
-                this.notify.error('Có lỗi xảy ra');
-                console.log('error getAllPagingMaterialItem');
-                this.router.navigate(['/']);
-                return of(null);
-            })
+            catchError(error => this.utility.handleError(error, 'getAllPagingMaterialItem'))
         );
     }
 }

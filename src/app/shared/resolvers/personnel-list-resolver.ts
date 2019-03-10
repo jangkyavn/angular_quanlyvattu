@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { PersonnelService } from '../services/personnel.service';
-import { NotifyService } from '../services/notify.service';
+import { UtilitiesService } from '../services/utilities.service';
 
 import { Personnel } from '../models/personnel.model';
 
@@ -14,18 +14,12 @@ export class PersonnelListResolver implements Resolve<Personnel[]> {
     pageSize = 10;
 
     constructor(
-        private router: Router,
         private personnelService: PersonnelService,
-        private notify: NotifyService) { }
+        private utility: UtilitiesService) { }
 
     resolve(route: ActivatedRouteSnapshot): Observable<Personnel[]> {
         return this.personnelService.getAllPaging(this.pageNumber, this.pageSize).pipe(
-            catchError(_ => {
-                this.notify.error('Có lỗi xảy ra');
-                console.log('error getAllPagingPersonnel');
-                this.router.navigate(['/']);
-                return of(null);
-            })
+            catchError(error => this.utility.handleError(error, 'getAllPagingPersonnel'))
         );
     }
 }

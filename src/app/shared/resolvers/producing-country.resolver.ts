@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { ProducingCountryService } from '../services/producing-country.service';
-import { NotifyService } from '../services/notify.service';
+import { UtilitiesService } from '../services/utilities.service';
 
 import { ProducingCountry } from '../models/producing-country.model';
 
@@ -14,18 +14,12 @@ export class ProducingCountryListResolver implements Resolve<ProducingCountry[]>
     pageSize = 10;
 
     constructor(
-        private router: Router,
         private producingCountryService: ProducingCountryService,
-        private notify: NotifyService) { }
+        private utility: UtilitiesService) { }
 
     resolve(route: ActivatedRouteSnapshot): Observable<ProducingCountry[]> {
         return this.producingCountryService.getAllPaging(this.pageNumber, this.pageSize).pipe(
-            catchError(_ => {
-                this.notify.error('Có lỗi xảy ra');
-                console.log('error getAllPagingProducingCountry');
-                this.router.navigate(['/']);
-                return of(null);
-            })
+            catchError(error => this.utility.handleError(error, 'getAllPagingProducingCountry'))
         );
     }
 }

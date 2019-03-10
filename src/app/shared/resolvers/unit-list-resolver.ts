@@ -14,7 +14,6 @@ export class UnitListResolver implements Resolve<Unit[]> {
     pageSize = 10;
 
     constructor(
-        private router: Router,
         private unitService: UnitService,
         private utility: UtilitiesService) { }
 

@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+
+import { UtilitiesService } from './utilities.service';
+
 import { Manufacturer } from '../models/manufacturer.model';
 import { PagingParams } from '../params/paging.param';
 import { PaginatedResult } from '../models/pagination.model';
@@ -13,10 +16,12 @@ import { PaginatedResult } from '../models/pagination.model';
 export class ManufacturerService {
   baseUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    private utility: UtilitiesService) { }
 
   getAll() {
-    return this.http.get(this.baseUrl + 'HangSanXuat');
+    return this.http.get(this.baseUrl + 'HangSanXuat')
+      .pipe(catchError(error => this.utility.handleError(error, 'getAllManufacturer')));
   }
 
   getAllPaging(page?: any, itemsPerPage?: any, pagingParams?: PagingParams): Observable<PaginatedResult<Manufacturer[]>> {
@@ -42,27 +47,33 @@ export class ManufacturerService {
             paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
           }
           return paginatedResult;
-        })
+        }),
+        catchError(error => this.utility.handleError(error, 'getAllPagingManufacturer'))
       );
   }
 
   getDetail(id: number) {
-    return this.http.get(this.baseUrl + 'HangSanXuat/' + id);
+    return this.http.get(this.baseUrl + 'HangSanXuat/' + id)
+      .pipe(catchError(error => this.utility.handleError(error, 'getDetailManufacturer')));
   }
 
   addNew(manufacturer: Manufacturer) {
-    return this.http.post(this.baseUrl + 'HangSanXuat', manufacturer);
+    return this.http.post(this.baseUrl + 'HangSanXuat', manufacturer)
+      .pipe(catchError(error => this.utility.handleError(error, 'addNewManufacturer')));
   }
 
   update(manufacturer: Manufacturer) {
-    return this.http.put(this.baseUrl + 'HangSanXuat', manufacturer);
+    return this.http.put(this.baseUrl + 'HangSanXuat', manufacturer)
+      .pipe(catchError(error => this.utility.handleError(error, 'updateManufacturer')));
   }
 
   delete(id: number) {
-    return this.http.delete(this.baseUrl + 'HangSanXuat/' + id);
+    return this.http.delete(this.baseUrl + 'HangSanXuat/' + id)
+      .pipe(catchError(error => this.utility.handleError(error, 'deleteManufacturer')));
   }
 
   deleteMulti(strIds: string) {
-    return this.http.delete(this.baseUrl + 'HangSanXuat/DeleteAllAsync/' + strIds);
+    return this.http.delete(this.baseUrl + 'HangSanXuat/DeleteAllAsync/' + strIds)
+      .pipe(catchError(error => this.utility.handleError(error, 'deleteMultiManufacturer')));
   }
 }

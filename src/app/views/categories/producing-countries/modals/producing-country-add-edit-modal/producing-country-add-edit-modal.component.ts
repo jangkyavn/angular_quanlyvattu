@@ -69,10 +69,6 @@ export class ProducingCountryAddEditModalComponent implements OnInit {
             this.notify.warning('Tên nước sản xuất đã tồn tại');
           }
         }
-      }, error => {
-        this.notify.error('Có lỗi xảy ra!');
-        console.log('error addProducingCountry');
-        this.modal.destroy(false);
       });
     } else {
       this.producingCountryService.update(producingCountry).subscribe((res: any) => {
@@ -80,10 +76,6 @@ export class ProducingCountryAddEditModalComponent implements OnInit {
           this.notify.success('Sửa thành công!');
           this.modal.destroy(true);
         }
-      }, error => {
-        this.notify.error('Có lỗi xảy ra!');
-        console.log('error updateProducingCountry');
-        this.modal.destroy(false);
       });
     }
   }

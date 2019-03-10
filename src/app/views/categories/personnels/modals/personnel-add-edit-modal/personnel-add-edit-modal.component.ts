@@ -105,10 +105,6 @@ export class PersonnelAddEditModalComponent implements OnInit {
             this.notify.warning('Tên nhân sự đã tồn tại');
           }
         }
-      }, error => {
-        this.notify.error('Có lỗi xảy ra!');
-        console.log('error addPersonnel');
-        this.modal.destroy(false);
       });
     } else {
       this.personnelService.update(personnel).subscribe((res: any) => {
@@ -116,10 +112,6 @@ export class PersonnelAddEditModalComponent implements OnInit {
           this.notify.success('Sửa thành công!');
           this.modal.destroy(true);
         }
-      }, error => {
-        this.notify.error('Có lỗi xảy ra!');
-        console.log('error updatePersonnel');
-        this.modal.destroy(false);
       });
     }
   }

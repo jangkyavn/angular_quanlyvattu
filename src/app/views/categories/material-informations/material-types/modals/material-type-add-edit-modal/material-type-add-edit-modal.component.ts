@@ -76,10 +76,6 @@ export class MaterialTypeAddEditModalComponent implements OnInit {
             this.notify.warning('Tên loại vật tư đã tồn tại');
           }
         }
-      }, error => {
-        this.notify.error('Có lỗi xảy ra!');
-        console.log('error addMaterialType');
-        this.modal.destroy(false);
       });
     } else {
       this.materialTypeService.update(materialType).subscribe((res: any) => {
@@ -87,10 +83,6 @@ export class MaterialTypeAddEditModalComponent implements OnInit {
           this.notify.success('Sửa thành công!');
           this.modal.destroy(true);
         }
-      }, error => {
-        this.notify.error('Có lỗi xảy ra!');
-        console.log('error updateMaterialType');
-        this.modal.destroy(false);
       });
     }
   }

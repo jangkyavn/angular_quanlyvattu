@@ -2,6 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd';
 
+import { RoleService } from 'src/app/shared/services/role.service';
 import { MaterialStoreService } from 'src/app/shared/services/material-store.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
 
@@ -43,6 +44,7 @@ export class MaterialStoreListComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private modalService: NzModalService,
+    private roleService: RoleService,
     private materialStoreService: MaterialStoreService,
     private notify: NotifyService) { }
 
@@ -78,10 +80,7 @@ export class MaterialStoreListComponent implements OnInit {
         this.indeterminate = false;
         this.allChecked = false;
         this.checkedNumber = 0;
-      }, error => {
-        this.notify.error('Có lỗi xảy ra');
-        console.log('error getAllPagingMaterialStore');
-      }, () => {
+
         if (this.dataSet.length === 0 && this.pagination.currentPage !== 1) {
           this.pagination.currentPage -= 1;
           this.loadData();
@@ -103,106 +102,128 @@ export class MaterialStoreListComponent implements OnInit {
   }
 
   addNew() {
-    const modal = this.modalService.create({
-      nzTitle: 'Thêm kho vật tư',
-      nzContent: MaterialStoreAddEditModalComponent,
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzComponentParams: {
-        materialStore: {},
-        isAddNew: true
-      },
-      nzFooter: [
-        {
-          label: 'Hủy',
-          shape: 'default',
-          onClick: () => modal.destroy(),
-        },
-        {
-          label: 'Lưu',
-          type: 'primary',
-          onClick: (componentInstance) => {
-            componentInstance.saveChanges();
-          }
-        }
-      ]
-    });
+    this.roleService.checkPermission('KHO_VAT_TU', 'Create')
+      .subscribe((response: boolean) => {
+        if (response) {
+          const modal = this.modalService.create({
+            nzTitle: 'Thêm kho vật tư',
+            nzContent: MaterialStoreAddEditModalComponent,
+            nzMaskClosable: false,
+            nzClosable: false,
+            nzComponentParams: {
+              materialStore: {},
+              isAddNew: true
+            },
+            nzFooter: [
+              {
+                label: 'Hủy',
+                shape: 'default',
+                onClick: () => modal.destroy(),
+              },
+              {
+                label: 'Lưu',
+                type: 'primary',
+                onClick: (componentInstance) => {
+                  componentInstance.saveChanges();
+                }
+              }
+            ]
+          });
 
-    modal.afterClose.subscribe((result: boolean) => {
-      if (result) {
-        this.loadData();
-      }
-    });
+          modal.afterClose.subscribe((result: boolean) => {
+            if (result) {
+              this.loadData();
+            }
+          });
+        } else {
+          this.notify.warning('Bạn không có quyền');
+        }
+      });
   }
 
   update(id: number) {
-    this.materialStoreService.getDetail(id).subscribe((materialStore: MaterialStore) => {
-      const modal = this.modalService.create({
-        nzTitle: 'Sửa kho vật tư',
-        nzContent: MaterialStoreAddEditModalComponent,
-        nzMaskClosable: false,
-        nzClosable: false,
-        nzComponentParams: {
-          materialStore,
-          isAddNew: false
-        },
-        nzFooter: [
-          {
-            label: 'Hủy',
-            shape: 'default',
-            onClick: () => modal.destroy()
-          },
-          {
-            label: 'Lưu',
-            type: 'primary',
-            onClick: (componentInstance) => {
-              componentInstance.saveChanges();
-            }
-          }
-        ]
-      });
+    this.roleService.checkPermission('KHO_VAT_TU', 'Update')
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.materialStoreService.getDetail(id).subscribe((materialStore: MaterialStore) => {
+            const modal = this.modalService.create({
+              nzTitle: 'Sửa kho vật tư',
+              nzContent: MaterialStoreAddEditModalComponent,
+              nzMaskClosable: false,
+              nzClosable: false,
+              nzComponentParams: {
+                materialStore,
+                isAddNew: false
+              },
+              nzFooter: [
+                {
+                  label: 'Hủy',
+                  shape: 'default',
+                  onClick: () => modal.destroy()
+                },
+                {
+                  label: 'Lưu',
+                  type: 'primary',
+                  onClick: (componentInstance) => {
+                    componentInstance.saveChanges();
+                  }
+                }
+              ]
+            });
 
-      modal.afterClose.subscribe((result: boolean) => {
-        if (result) {
-          this.loadData();
+            modal.afterClose.subscribe((result: boolean) => {
+              if (result) {
+                this.loadData();
+              }
+            });
+          });
+        } else {
+          this.notify.warning('Bạn không có quyền');
         }
       });
-    });
   }
 
   delete(id: number) {
-    this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
-      this.materialStoreService.delete(id).subscribe((res: boolean) => {
-        if (res) {
-          this.notify.success('Xóa thành công!');
-          this.loadData();
+    this.roleService.checkPermission('KHO_VAT_TU', 'Delete')
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
+            this.materialStoreService.delete(id).subscribe((res: boolean) => {
+              if (res) {
+                this.notify.success('Xóa thành công!');
+                this.loadData();
+              } else {
+                this.notify.warning('Tên kho đang được sử dụng. Không được xóa!');
+              }
+            });
+          });
         } else {
-          this.notify.warning('Tên kho đang được sử dụng. Không được xóa!');
+          this.notify.warning('Bạn không có quyền');
         }
-      }, _ => {
-        this.notify.error('Có lỗi xảy ra');
-        console.log('error deleteMaterialStore');
       });
-    });
   }
 
   deleteMulti() {
-    const ids = this.displayData.filter(value => value.checked).map((value: MaterialStore) => value.maKho);
+    this.roleService.checkPermission('KHO_VAT_TU', 'Delete')
+      .subscribe((response: boolean) => {
+        if (response) {
+          const ids = this.displayData.filter(value => value.checked).map((value: MaterialStore) => value.maKho);
+          this.notify.confirm(`Bạn có chắc chắn muốn xóa ${this.checkedNumber} không?`, () => {
+            this.materialStoreService.deleteMulti(JSON.stringify(ids))
+              .subscribe((res: boolean) => {
+                if (res) {
+                  this.notify.success('Xóa thành công');
+                  this.loadData();
+                } else {
+                  this.notify.warning('Có tên kho đã được sử dụng. Không được xóa!');
+                }
+              });
+          });
+        } else {
+          this.notify.warning('Bạn không có quyền');
+        }
+      });
 
-    this.notify.confirm(`Bạn có chắc chắn muốn xóa ${this.checkedNumber} không?`, () => {
-      this.materialStoreService.deleteMulti(JSON.stringify(ids))
-        .subscribe((res: boolean) => {
-          if (res) {
-            this.notify.success('Xóa thành công');
-            this.loadData();
-          } else {
-            this.notify.warning('Có tên kho đã được sử dụng. Không được xóa!');
-          }
-        }, _ => {
-          this.notify.error('Có lỗi xảy ra');
-          console.log('error deleteMultiMaterialStore');
-        });
-    });
   }
 
   search(keyword: string) {

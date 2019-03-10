@@ -9,6 +9,7 @@ import { MaterialItem } from 'src/app/shared/models/material-item.model';
 import { MaterialItemEditModalComponent } from '../modals/material-item-edit-modal/material-item-edit-modal.component';
 import { Pagination, PaginatedResult } from 'src/app/shared/models/pagination.model';
 import { PagingParams } from 'src/app/shared/params/paging.param';
+import { RoleService } from 'src/app/shared/services/role.service';
 
 @Component({
   selector: 'app-material-item-list',
@@ -31,6 +32,7 @@ export class MaterialItemListComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private modalService: NzModalService,
+    private roleService: RoleService,
     private materialItemService: MaterialItemService,
     private notify: NotifyService) { }
 
@@ -58,10 +60,7 @@ export class MaterialItemListComponent implements OnInit {
         this.loading = false;
         this.pagination = res.pagination;
         this.dataSet = res.result;
-      }, error => {
-        this.notify.error('Có lỗi xảy ra');
-        console.log('error getAllPagingMaterialItem');
-      }, () => {
+
         if (this.dataSet.length === 0 && this.pagination.currentPage !== 1) {
           this.pagination.currentPage -= 1;
           this.loadData();
@@ -70,53 +69,67 @@ export class MaterialItemListComponent implements OnInit {
   }
 
   update(id: number) {
-    this.materialItemService.getDetail(id).subscribe((materialItem: MaterialItem) => {
-      const modal = this.modalService.create({
-        nzTitle: 'Sửa hạng mục vật tư',
-        nzContent: MaterialItemEditModalComponent,
-        nzMaskClosable: false,
-        nzClosable: false,
-        nzComponentParams: {
-          materialItem
-        },
-        nzFooter: [
-          {
-            label: 'Hủy',
-            shape: 'default',
-            onClick: () => modal.destroy()
-          },
-          {
-            label: 'Lưu',
-            type: 'primary',
-            onClick: (componentInstance) => {
-              componentInstance.saveChanges();
-            }
-          }
-        ]
-      });
+    this.roleService.checkPermission('HANG_MUC_VAT_TU', 'Update')
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.materialItemService.getDetail(id).subscribe((materialItem: MaterialItem) => {
+            const modal = this.modalService.create({
+              nzTitle: 'Sửa hạng mục vật tư',
+              nzContent: MaterialItemEditModalComponent,
+              nzMaskClosable: false,
+              nzClosable: false,
+              nzComponentParams: {
+                materialItem
+              },
+              nzFooter: [
+                {
+                  label: 'Hủy',
+                  shape: 'default',
+                  onClick: () => modal.destroy()
+                },
+                {
+                  label: 'Lưu',
+                  type: 'primary',
+                  onClick: (componentInstance) => {
+                    componentInstance.saveChanges();
+                  }
+                }
+              ]
+            });
 
-      modal.afterClose.subscribe((result: boolean) => {
-        if (result) {
-          this.loadData();
+            modal.afterClose.subscribe((result: boolean) => {
+              if (result) {
+                this.loadData();
+              }
+            });
+          });
+        } else {
+          this.notify.warning('Bạn không có quyền');
         }
       });
-    });
   }
 
   delete(id: number) {
-    this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
-      this.materialItemService.delete(id).subscribe((res: boolean) => {
-        if (res) {
-          this.notify.success('Xóa thành công!');
-          this.loadData();
+    this.roleService.checkPermission('HANG_MUC_VAT_TU', 'Delete')
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
+            this.materialItemService.delete(id).subscribe((res: boolean) => {
+              if (res) {
+                this.notify.success('Xóa thành công!');
+                this.loadData();
+              } else {
+                this.notify.warning('Tên hạng mục đang được sử dụng. Không được xóa!');
+              }
+            }, _ => {
+              this.notify.error('Có lỗi xảy ra');
+              console.log('error deleteMaterialItem');
+            });
+          });
         } else {
-          this.notify.warning('Tên hạng mục đang được sử dụng. Không được xóa!');
+          this.notify.warning('Bạn không có quyền');
         }
-      }, _ => {
-        this.notify.error('Có lỗi xảy ra');
-        console.log('error deleteMaterialItem');
       });
-    });
   }
 
   search(keyword: string) {

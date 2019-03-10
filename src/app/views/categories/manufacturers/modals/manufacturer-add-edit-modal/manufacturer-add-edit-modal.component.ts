@@ -70,10 +70,6 @@ export class ManufacturerAddEditModalComponent implements OnInit {
             this.notify.warning('Tên hãng sản xuất đã tồn tại');
           }
         }
-      }, error => {
-        this.notify.error('Có lỗi xảy ra!');
-        console.log('error addManufacturer');
-        this.modal.destroy(false);
       });
     } else {
       this.manufacturerService.update(manufacturer).subscribe((res: any) => {
@@ -81,10 +77,6 @@ export class ManufacturerAddEditModalComponent implements OnInit {
           this.notify.success('Sửa thành công!');
           this.modal.destroy(true);
         }
-      }, error => {
-        this.notify.error('Có lỗi xảy ra!');
-        console.log('error updateManufacturer');
-        this.modal.destroy(false);
       });
     }
   }

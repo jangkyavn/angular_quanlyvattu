@@ -11,6 +11,8 @@ import { Function } from 'src/app/shared/models/function.model';
 import { Permission } from 'src/app/shared/models/permission.model';
 import { checkRoleNameDuplicateValidator } from 'src/app/shared/vailidators/check-role-name-duplicate-validator';
 import { noWhitespaceValidator } from 'src/app/shared/vailidators/no-whitespace-validator';
+import { Pagination, PaginatedResult } from 'src/app/shared/models/pagination.model';
+import { PagingParams } from 'src/app/shared/params/paging.param';
 
 @Component({
   selector: 'app-permisson-add-edit-modal',
@@ -23,6 +25,20 @@ export class PermissonAddEditModalComponent implements OnInit {
   functions: Function[] = [];
   roleForm: FormGroup;
   check = true;
+
+  loading = true;
+  sortValue = null;
+  sortKey = null;
+
+  pagination: Pagination = {
+    currentPage: 1,
+    itemsPerPage: 10
+  };
+  pagingParams: PagingParams = {
+    keyword: '',
+    sortKey: '',
+    sortValue: ''
+  };
 
   @HostListener('window:keydown', ['$event'])
   onKeyPress($event: KeyboardEvent) {
@@ -62,13 +78,27 @@ export class PermissonAddEditModalComponent implements OnInit {
     }
   }
 
-  loadAllFunctions() {
-    this.functionService.getAll().subscribe((res: Function[]) => {
-      this.functions = res;
-      if (this.isAddNew === false) {
-        this.fillPermissions(this.role.id);
-      }
-    });
+  sort(sort: { key: string, value: string }): void {
+    this.pagingParams.sortKey = sort.key;
+    this.pagingParams.sortValue = sort.value;
+    this.loadAllFunctions();
+  }
+
+  loadAllFunctions(reset: boolean = false) {
+    if (reset) {
+      this.pagination.currentPage = 1;
+    }
+    this.loading = true;
+    this.functionService.getAllPaging(this.pagination.currentPage, this.pagination.itemsPerPage, this.pagingParams)
+      .subscribe((res: PaginatedResult<Function[]>) => {
+        this.loading = false;
+        this.pagination = res.pagination;
+        this.functions = res.result;
+
+        if (this.isAddNew === false) {
+          this.fillPermissions(this.role.id);
+        }
+      });
   }
 
   saveChanges() {

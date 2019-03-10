@@ -82,10 +82,6 @@ export class MaterialAddEditModalComponent implements OnInit {
             this.notify.warning('Tên vật tư đã tồn tại');
           }
         }
-      }, error => {
-        this.notify.error('Có lỗi xảy ra!');
-        console.log('error addMaterial');
-        this.modal.destroy(false);
       });
     } else {
       this.materialService.update(material).subscribe((res: any) => {
@@ -93,10 +89,6 @@ export class MaterialAddEditModalComponent implements OnInit {
           this.notify.success('Sửa thành công!');
           this.modal.destroy(true);
         }
-      }, error => {
-        this.notify.error('Có lỗi xảy ra!');
-        console.log('error updateMaterial');
-        this.modal.destroy(false);
       });
     }
   }

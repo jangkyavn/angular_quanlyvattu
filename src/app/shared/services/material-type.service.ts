@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+
+import { UtilitiesService } from './utilities.service';
+
 import { MaterialType } from '../models/material-type.model';
 import { PagingParams } from '../params/paging.param';
 import { PaginatedResult } from '../models/pagination.model';
@@ -13,10 +16,12 @@ import { PaginatedResult } from '../models/pagination.model';
 export class MaterialTypeService {
   baseUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    private utility: UtilitiesService) { }
 
   getAll() {
-    return this.http.get(this.baseUrl + 'LoaiVatTu');
+    return this.http.get(this.baseUrl + 'LoaiVatTu')
+      .pipe(catchError(error => this.utility.handleError(error, 'getAllMaterialType')));
   }
 
   getAllPaging(page?: any, itemsPerPage?: any, pagingParams?: PagingParams): Observable<PaginatedResult<MaterialType[]>> {
@@ -42,27 +47,33 @@ export class MaterialTypeService {
             paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
           }
           return paginatedResult;
-        })
+        }),
+        catchError(error => this.utility.handleError(error, 'getAllPagingMaterialType'))
       );
   }
 
   getDetail(id: number) {
-    return this.http.get(this.baseUrl + 'LoaiVatTu/' + id);
+    return this.http.get(this.baseUrl + 'LoaiVatTu/' + id)
+      .pipe(catchError(error => this.utility.handleError(error, 'getDetailMaterialType')));
   }
 
   getAllByItemId(itemId: number) {
-    return this.http.get(this.baseUrl + 'LoaiVatTu/getListLoaiByMaHM/' + itemId);
+    return this.http.get(this.baseUrl + 'LoaiVatTu/getListLoaiByMaHM/' + itemId)
+      .pipe(catchError(error => this.utility.handleError(error, 'getAllByItemIdMaterialType')));
   }
 
   addNew(materialType: MaterialType) {
-    return this.http.post(this.baseUrl + 'LoaiVatTu', materialType);
+    return this.http.post(this.baseUrl + 'LoaiVatTu', materialType)
+      .pipe(catchError(error => this.utility.handleError(error, 'addNewMaterialType')));
   }
 
   update(materialType: MaterialType) {
-    return this.http.put(this.baseUrl + 'LoaiVatTu', materialType);
+    return this.http.put(this.baseUrl + 'LoaiVatTu', materialType)
+      .pipe(catchError(error => this.utility.handleError(error, 'updateMaterialType')));
   }
 
   delete(id: number) {
-    return this.http.delete(this.baseUrl + 'LoaiVatTu/' + id);
+    return this.http.delete(this.baseUrl + 'LoaiVatTu/' + id)
+      .pipe(catchError(error => this.utility.handleError(error, 'deleteMaterialType')));
   }
 }

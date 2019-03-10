@@ -72,10 +72,6 @@ export class MaterialStoreAddEditModalComponent implements OnInit {
             this.notify.warning('Tên kho vật tư đã tồn tại');
           }
         }
-      }, error => {
-        this.notify.error('Có lỗi xảy ra!');
-        console.log('error addMaterialStore');
-        this.modal.destroy(false);
       });
     } else {
       this.materialStoreService.update(materialStore).subscribe((res: any) => {
@@ -83,10 +79,6 @@ export class MaterialStoreAddEditModalComponent implements OnInit {
           this.notify.success('Sửa thành công!');
           this.modal.destroy(true);
         }
-      }, error => {
-        this.notify.error('Có lỗi xảy ra!');
-        console.log('error updateMaterialStore');
-        this.modal.destroy(false);
       });
     }
   }
