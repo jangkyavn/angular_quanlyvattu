@@ -1,7 +1,8 @@
-<form #rolesForm="ngForm" id="rolesForm">
-  <div *ngFor="let role of roles">
-    <label nz-checkbox [(ngModel)]="role.checked" [nzDisabled]="role.name === 'Admin' && user.userName === 'admin'"
-      [ngModelOptions]="{standalone: true}" class='chk-role'>{{role.name}}</label>
-    <br />
-  </div>
-</form>
+<nz-tabset [nzSelectedIndex]="selectedIndex">
+  <nz-tab [nzTitle]="tabListTitle" (nzClick)="backToList()">
+    <app-role-list #roleList [user]="user" (viewPermission)="viewPermission($event)"></app-role-list>
+  </nz-tab>
+  <nz-tab [nzTitle]="tabDetailTitle" *ngIf="visibleTabDetail">
+    <app-role-detail [role]="role"></app-role-detail>
+  </nz-tab>
+</nz-tabset>

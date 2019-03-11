@@ -24,7 +24,6 @@ export class PermissonAddEditModalComponent implements OnInit {
   @Input() isAddNew: boolean;
   functions: Function[] = [];
   roleForm: FormGroup;
-  check = true;
 
   loading = true;
   sortValue = null;

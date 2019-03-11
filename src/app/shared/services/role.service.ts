@@ -79,4 +79,8 @@ export class RoleService {
   checkPermission(functionId: string, action: string) {
     return this.http.get(this.baseUrl + `roles/checkPermission/${functionId}/${action}`);
   }
+
+  savePermission(permissionParams) {
+    return this.http.post(this.baseUrl + 'roles/savePermission', permissionParams);
+  }
 }

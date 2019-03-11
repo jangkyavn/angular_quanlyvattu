@@ -14,10 +14,8 @@
     </nz-form-control>
   </nz-form-item>
 </form>
-<nz-table #basicTable nzShowSizeChanger [nzFrontPagination]="false" [nzData]="functions" [nzLoading]="loading"
-  [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage" [(nzPageSize)]="pagination.itemsPerPage"
-  [nzNoResult]="'Không tìm thấy kết quả.'" (nzPageIndexChange)="loadAllFunctions()"
-  (nzPageSizeChange)="loadAllFunctions(true)" nzShowQuickJumper [nzShowTotal]="rangeTemplate" nzSize="middle">
+<nz-table #basicTable [nzData]="functions" [nzLoading]="loading" [nzTotal]="pagination.totalItems"
+  [nzNoResult]="'Không tìm thấy kết quả.'" nzShowQuickJumper [nzShowTotal]="rangeTemplate" nzSize="middle">
   <ng-template #rangeTemplate let-range="range" let-total>
     {{range[0]}}-{{range[1]}} của {{total}} bản ghi
   </ng-template>

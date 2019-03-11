@@ -5,4 +5,5 @@ export interface Role {
     name?: string;
     checked?: boolean;
     phanQuyens?: Permission[];
+    isSave?: boolean;
 }

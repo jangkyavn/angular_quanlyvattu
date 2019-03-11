@@ -167,6 +167,10 @@ export class UserListComponent implements OnInit {
       nzContent: RoleEditModalComponent,
       nzMaskClosable: false,
       nzClosable: false,
+      nzClassName: 'permission-modal',
+      nzBodyStyle: {
+        'padding-top': 0
+      },
       nzComponentParams: {
         user
       },

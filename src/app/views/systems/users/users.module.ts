@@ -9,6 +9,8 @@ import { UserAddEditModalComponent } from './modals/user-add-edit-modal/user-add
 import { UserViewDetailModalComponent } from './modals/user-view-detail-modal/user-view-detail-modal.component';
 import { ChangePasswordModalComponent } from './modals/change-password-modal/change-password-modal.component';
 import { RoleEditModalComponent } from './modals/role-edit-modal/role-edit-modal.component';
+import { RoleListComponent } from './modals/role-edit-modal/role-list/role-list.component';
+import { RoleDetailComponent } from './modals/role-edit-modal/role-detail/role-detail.component';
 
 import { UserListResolver } from 'src/app/shared/resolvers/user-list.resolver';
 
@@ -24,7 +26,9 @@ import { UserListResolver } from 'src/app/shared/resolvers/user-list.resolver';
     UserAddEditModalComponent,
     UserViewDetailModalComponent,
     ChangePasswordModalComponent,
-    RoleEditModalComponent
+    RoleEditModalComponent,
+    RoleListComponent,
+    RoleDetailComponent
   ],
   entryComponents: [
     UserAddEditModalComponent,

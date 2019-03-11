@@ -1,0 +1,80 @@
+<div nz-row nzGutter="16" style="margin-bottom: 1rem;">
+  <div nz-col nzXs="24" nzSm="24" nzMd="18" nzLg="18" nzXl="18">
+    <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
+      <input type="text" nz-input placeholder="Tìm kiếm..." #keyword (keyup.enter)="search(keyword.value)">
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+      <button nz-button nzType="primary" nzSearch (click)="search(keyword.value)"><i nz-icon type="search"></i></button>
+    </ng-template>
+  </div>
+  <div nz-col nzXs="24" nzSm="24" nzMd="6" nzLg="6" nzXl="6" style="text-align: right;">
+    <button nz-button nzType="primary" (click)="addNew()" [disabled]="disabledAddNewButton">
+      <i nz-icon type="plus" theme="outline"></i> Thêm
+    </button>
+  </div>
+</div>
+
+<nz-table #table nzShowSizeChanger [nzFrontPagination]="false" [nzData]="roles" [nzLoading]="loading"
+  [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage" [(nzPageSize)]="pagination.itemsPerPage"
+  [nzNoResult]="'Không tìm thấy kết quả.'" (nzPageIndexChange)="loadData()" (nzPageSizeChange)="loadData(true)"
+  nzShowQuickJumper [nzShowTotal]="rangeTemplate" nzSize="middle">
+  <ng-template #rangeTemplate let-range="range" let-total>
+    {{range[0]}}-{{range[1]}} của {{total}} bản ghi
+  </ng-template>
+  <thead (nzSortChange)="sort($event)" nzSingleSort>
+    <tr>
+      <th nzWidth="10%"></th>
+      <th nzWidth="60%" nzShowSort nzSortKey="name">Quyền</th>
+      <th nzWidth="30%">Thao tác</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of table.data; let i = index">
+      <td>
+        <label *ngIf="data.isSave === false" nz-checkbox [(ngModel)]="data.checked" [nzDisabled]="data.name === 'Admin' && user.userName === 'admin'"
+          [ngModelOptions]="{standalone: true}" class='chk-role'></label>
+      </td>
+      <td>
+        <div *ngIf="data.isSave; else label">
+          <form [formGroup]="roleForm">
+            <input nz-input formControlName="name" id="name" />
+            <nz-form-explain *ngIf="roleForm.get('name').dirty && roleForm.get('name').errors">
+              <ng-container
+                *ngIf="roleForm.get('name').hasError('required') || roleForm.get('name').hasError('whitespace')">
+                Vui lòng nhập tên quyền!
+              </ng-container>
+              <ng-container *ngIf="roleForm.get('name').hasError('duplicate')">
+                Tên này đã được dùng!
+              </ng-container>
+            </nz-form-explain>
+          </form>
+        </div>
+        <ng-template #label>
+          {{data.name}}
+        </ng-template>
+      </td>
+      <td>
+        <nz-button-group *ngIf="data.name !== 'Admin' && data.isSave === false">
+          <button nz-button nzType="default" class="btn-info" title="Sửa" (click)="updateRow(data, i)">
+            <i nz-icon type="edit" theme="outline"></i>
+          </button>
+          <button nz-button nzType="default" class="btn-primary" title="Phân quyền" (click)="permission(data)">
+            <i nz-icon type="user-add" theme="outline"></i>
+          </button>
+          <button *ngIf="data.userName !== 'admin'" nz-button nzType="default" class="btn-danger" title="Xóa"
+             nz-popconfirm nzTitle="Sure to delete?" (nzOnConfirm)="deleteRow(data.id)">
+            <i nz-icon type="delete" theme="outline"></i>
+          </button>
+        </nz-button-group>
+        <nz-button-group *ngIf="data.name !== 'Admin' && data.isSave === true">
+          <button nz-button nzType="default" class="btn-info" title="Lưu" (click)="saveRow()">
+            <i nz-icon type="save" theme="outline"></i>
+          </button>
+          <button nz-button nzType="default" class="btn-danger" title="Hủy" (click)="cancelRow(i)">
+            <i nz-icon type="close" theme="outline"></i>
+          </button>
+        </nz-button-group>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
