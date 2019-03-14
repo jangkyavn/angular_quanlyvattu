@@ -57,7 +57,7 @@
         <tr *ngFor="let data of table.data">
           <td>{{data.tenVT}}</td>
           <td>{{data.tongLuongXuat}}</td>
-          <td>
+          <td class="decrease-row">
             <nz-button-group>
               <button [routerLink]="['/thong-ke-bao-cao/thong-ke-xuat/xem-chi-tiet', data.maVatTu]" [queryParams]="{fromDate: statisticParams.fromDate, toDate: statisticParams.toDate}" nz-button
                 nzType="default" class="btn-primary" nz-tooltip nzTitle="Xem">

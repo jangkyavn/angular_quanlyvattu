@@ -63,7 +63,7 @@
         <td [innerHTML]="data.tenLoaiVatTu | highlight : pagingParams.keyword"></td>
         <td [innerHTML]="data.tenDVT | highlight : pagingParams.keyword"></td>
         <td [innerHTML]="data.ghiChu | highlight : pagingParams.keyword"></td>
-        <td>
+        <td class="decrease-row">
           <nz-button-group>
             <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa" (click)="update(data.maVatTu)">
               <i nz-icon type="edit" theme="outline"></i>

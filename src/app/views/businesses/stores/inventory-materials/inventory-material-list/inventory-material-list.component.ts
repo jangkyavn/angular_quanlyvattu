@@ -112,6 +112,8 @@ export class InventoryMaterialListComponent implements OnInit {
         if (res) {
           this.loadData();
           this.notify.success('Xóa thành công');
+        } else {
+          this.notify.warning('Không được xóa vì đã xuất hoặc thanh lý');
         }
       });
     });

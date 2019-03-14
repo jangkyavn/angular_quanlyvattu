@@ -144,7 +144,7 @@ export class MaterialTypeListComponent implements OnInit {
                 }
               ]
             });
-  
+
             modal.afterClose.subscribe((result: boolean) => {
               if (result) {
                 this.loadData();

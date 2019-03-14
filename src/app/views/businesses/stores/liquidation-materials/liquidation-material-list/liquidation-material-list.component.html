@@ -62,8 +62,8 @@
         <td>{{data.tenNS}}</td>
         <td>{{data.ngayThanhLy | date:'dd/MM/yyyy'}}</td>
         <td class="text-center">{{data.tongSoLuong}}</td>
-        <td class="text-center">
-          <nz-button-group >
+        <td class="text-center decrease-row">
+          <nz-button-group>
             <button *ngIf="data.status" nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
               [routerLink]="['/nghiep-vu/kho/thanh-ly-vat-tu/sua-phieu-thanh-ly', data.maPhieuThanhLy]">
               <i nz-icon type="edit" theme="outline"></i>

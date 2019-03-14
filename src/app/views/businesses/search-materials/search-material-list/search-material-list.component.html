@@ -45,9 +45,9 @@
         <td>{{data.tenDVT}}</td>
         <td>{{data.ghiChu || 'Không có'}}</td>
         <td>{{data.tongTon}}</td>
-        <td>
+        <td class="decrease-row">
           <nz-button-group>
-            <button [routerLink]="['/nghiep-vu/tim-kiem-vat-tu/chi-tiet', data.maVatTu]" nz-button nzType="default" class="btn-primary" nz-tooltip nzTitle="Xem" (click)="collapseMenu()">
+            <button [routerLink]="['/nghiep-vu/tim-kiem-vat-tu/chi-tiet', data.maVatTu]" nz-button nzType="default" class="btn-primary" nz-tooltip nzTitle="Xem">
               <i nz-icon type="eye" theme="outline"></i>
             </button>
           </nz-button-group>

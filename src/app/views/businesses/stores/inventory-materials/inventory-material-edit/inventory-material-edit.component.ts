@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { NzModalService } from 'ng-zorro-antd';
 import { PersonnelService } from 'src/app/shared/services/personnel.service';
 import { MaterialStoreService } from 'src/app/shared/services/material-store.service';
+import { MaterialService } from 'src/app/shared/services/material.service';
+import { ImportMaterialService } from 'src/app/shared/services/import-material.service';
 import { InventoryMaterialService } from 'src/app/shared/services/inventory-material.service';
 import { InventoryMaterialDetailService } from 'src/app/shared/services/inventory-material-detail.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
@@ -21,21 +23,27 @@ import { PagingParams } from 'src/app/shared/params/paging.param';
 import {
   InventoryMateriaDetailAddEditModalComponent
 } from '../modals/inventory-materia-detail-add-edit-modal/inventory-materia-detail-add-edit-modal.component';
+import { ImportMaterial } from 'src/app/shared/models/import-material.model';
+import { Material } from 'src/app/shared/models/material.model';
 
 @Component({
   selector: 'app-inventory-material-edit',
   templateUrl: './inventory-material-edit.component.html',
   styleUrls: ['./inventory-material-edit.component.scss']
 })
-export class InventoryMaterialEditComponent implements OnInit {
+export class InventoryMaterialEditComponent implements OnInit, AfterViewInit {
   materialStores: MaterialStore[];
   personnels: Personnel[];
+  importMaterials: ImportMaterial[];
+  materials: Material[];
   inventoryMaterialForm: FormGroup;
   inventories: Inventory[];
   inventoryMaterailDetails: InventoryMaterialDetail[];
   loadingInventoryMaterialDetails: boolean;
   loadingInventories: boolean;
   totalQuantity: number;
+  materialSearch: any = null;
+  importMaterialSearch: any = null;
   isShowAllInventories = false;
 
   sortValue = '';
@@ -57,6 +65,8 @@ export class InventoryMaterialEditComponent implements OnInit {
     private modalService: NzModalService,
     private materialStoreService: MaterialStoreService,
     private personnelService: PersonnelService,
+    private importMaterialService: ImportMaterialService,
+    private materailService: MaterialService,
     private inventoryMaterialService: InventoryMaterialService,
     private inventoryMaterialDetailService: InventoryMaterialDetailService,
     private notify: NotifyService,
@@ -68,6 +78,8 @@ export class InventoryMaterialEditComponent implements OnInit {
 
     this.loadAllMaterialStores();
     this.loadAllPersonnels();
+    this.loadAllImportMaterials();
+    this.loadAllMaterials();
     this.createForm();
 
     this.route.data.subscribe(data => {
@@ -75,9 +87,18 @@ export class InventoryMaterialEditComponent implements OnInit {
       const { mKiemKeVatTu, listKiemKeChiTiet } = data['inventory-material'];
       this.inventoryMaterialForm.patchValue(mKiemKeVatTu);
       this.inventoryMaterailDetails = listKiemKeChiTiet;
+      if (this.inventoryMaterailDetails.length > 0) {
+        this.inventoryMaterialForm.controls['ngayKiemKe'].disable();
+      }
       this.loadInventories(true);
       // this.loadTotalQuantity();
     });
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.utilities.changeCollapsed(true);
+    }, 0);
   }
 
   createForm() {
@@ -112,7 +133,10 @@ export class InventoryMaterialEditComponent implements OnInit {
     this.inventoryMaterialService.getInventories(
       this.pagination.currentPage,
       this.pagination.itemsPerPage,
-      this.pagingParams, maKho, '', '',
+      this.pagingParams,
+      maKho,
+      this.importMaterialSearch || '',
+      this.materialSearch || '',
       maPhieuKiemKe,
       this.isShowAllInventories)
       .subscribe((res: PaginatedResult<Inventory[]>) => {
@@ -134,12 +158,31 @@ export class InventoryMaterialEditComponent implements OnInit {
     });
   }
 
+  loadAllImportMaterials() {
+    this.importMaterialService.getAll()
+      .subscribe((res: ImportMaterial[]) => {
+        this.importMaterials = res;
+      });
+  }
+
+  loadAllMaterials() {
+    this.materailService.getAll()
+      .subscribe((res: Material[]) => {
+        this.materials = res;
+      });
+  }
+
   loadInventoryMaterialDetails(inventoryMaterialId: number) {
     this.loadingInventoryMaterialDetails = true;
     this.inventoryMaterialDetailService.getDetailsByInventoryMateralId(inventoryMaterialId)
       .subscribe((res: InventoryMaterialDetail[]) => {
         this.inventoryMaterailDetails = res;
         this.loadingInventoryMaterialDetails = false;
+        if (this.inventoryMaterailDetails.length > 0) {
+          this.inventoryMaterialForm.controls['ngayKiemKe'].disable();
+        } else {
+          this.inventoryMaterialForm.controls['ngayKiemKe'].enable();
+        }
         // this.loadTotalQuantity();
       });
   }
@@ -201,6 +244,7 @@ export class InventoryMaterialEditComponent implements OnInit {
       if (result) {
         this.loadInventories();
         this.loadInventoryMaterialDetails(inventoryMaterial.maPhieuKiemKe);
+        this.notify.success('Thêm mới thành công');
       }
     });
   }
@@ -237,6 +281,7 @@ export class InventoryMaterialEditComponent implements OnInit {
       if (result) {
         this.loadInventories();
         this.loadInventoryMaterialDetails(inventoryMaterial.maPhieuKiemKe);
+        this.notify.success('Sửa thành công');
       }
     });
   }
@@ -250,6 +295,9 @@ export class InventoryMaterialEditComponent implements OnInit {
           if (res) {
             this.loadInventories();
             this.loadInventoryMaterialDetails(maPhieuKiemKe);
+            this.notify.success('Xóa thành công');
+          } else {
+            this.notify.warning('Không được xóa vì đã xuất hoặc thanh lý');
           }
         });
     });
@@ -261,5 +309,12 @@ export class InventoryMaterialEditComponent implements OnInit {
     // this.liquidationDetails.forEach((item: LiquidationDetail) => {
     //   this.totalQuantity += item.soLuongThanhLy;
     // });
+  }
+
+  refreshInventory() {
+    this.importMaterialSearch = null;
+    this.materialSearch = null;
+    this.pagingParams.keyword = '';
+    this.loadInventories(true);
   }
 }

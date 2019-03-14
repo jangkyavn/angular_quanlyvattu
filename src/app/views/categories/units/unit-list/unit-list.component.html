@@ -47,7 +47,7 @@
       <tr *ngFor="let data of table.data">
         <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()"></td>
         <td [innerHTML]="data.tenDVT | highlight : pagingParams.keyword"></td>
-        <td>
+        <td class="decrease-row">
           <nz-button-group>
             <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
               (click)="update(data.maDVT)">

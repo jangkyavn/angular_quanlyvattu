@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd';
 
@@ -62,6 +62,7 @@ export class ExportMaterialEditComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private fb: FormBuilder,
     private modalService: NzModalService,
     private materialStoreService: MaterialStoreService,
@@ -96,6 +97,10 @@ export class ExportMaterialEditComponent implements OnInit {
 
     this.route.data.subscribe(data => {
       const { mxuatvattu, listxuatchitiet } = data['export-material'];
+      if (!mxuatvattu.status) {
+        this.router.navigate(['/nghiep-vu/xuat']);
+        return;
+      }
 
       this.exportMaterialForm.patchValue(mxuatvattu);
       this.loadInventoriesByStoreId(true);

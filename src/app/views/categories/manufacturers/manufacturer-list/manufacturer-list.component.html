@@ -49,7 +49,7 @@
         <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus(data)"></td>
         <td [innerHTML]="data.tenHang | highlight : pagingParams.keyword"></td>
         <td [innerHTML]="data.ghiChu | highlight : pagingParams.keyword"></td>
-        <td>
+        <td class="decrease-row">
           <nz-button-group>
             <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa" (click)="update(data.maHang)">
               <i nz-icon type="edit" theme="outline"></i>

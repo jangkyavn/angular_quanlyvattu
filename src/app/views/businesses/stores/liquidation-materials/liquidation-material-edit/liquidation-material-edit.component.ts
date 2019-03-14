@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { NzModalService } from 'ng-zorro-antd';
@@ -51,6 +51,7 @@ export class LiquidationMaterialEditComponent implements OnInit {
   };
 
   constructor(private route: ActivatedRoute,
+    private router: Router,
     private fb: FormBuilder,
     private modalService: NzModalService,
     private materialStoreService: MaterialStoreService,
@@ -71,6 +72,11 @@ export class LiquidationMaterialEditComponent implements OnInit {
       this.loadingLiquidationDetails = false;
 
       const { mthanhlyvattu, listThanhlychitiet } = data['liquidation-material'];
+      if (!mthanhlyvattu.status) {
+        this.router.navigate(['/nghiep-vu/kho/thanh-ly-vat-tu']);
+        return;
+      }
+
       this.liquidationMaterialForm.patchValue(mthanhlyvattu);
       this.liquidationDetails = listThanhlychitiet;
       if (this.liquidationDetails.length > 0) {

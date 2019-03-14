@@ -53,7 +53,7 @@
         <td [innerHTML]="data.dienThoai | highlight : pagingParams.keyword"></td>
         <td [innerHTML]="data.diaChi | highlight : pagingParams.keyword"></td>
         <td [innerHTML]="data.ghiChu | highlight : pagingParams.keyword"></td>
-        <td>
+        <td class="decrease-row">
           <nz-button-group>
             <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa" (click)="update(data.maKho)">
               <i nz-icon type="edit" theme="outline"></i>

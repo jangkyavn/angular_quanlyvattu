@@ -38,7 +38,7 @@
       <tr *ngFor="let data of table.data">
         <td [innerHTML]="data.tenHM | highlight : pagingParams.keyword"></td>
         <td [innerHTML]="data.ghiChu | highlight : pagingParams.keyword"></td>
-        <td>
+        <td class="decrease-row">
           <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa" (click)="update(data.maHM)">
             <i nz-icon type="edit" theme="outline"></i>
           </button>

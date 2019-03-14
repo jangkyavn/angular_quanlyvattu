@@ -50,7 +50,7 @@
           <ng-template #checkedTemplate><i nz-icon type="check" nz-tooltip nzTitle="Kích hoạt"></i></ng-template>
           <ng-template #unCheckedTemplate><i nz-icon type="close" nz-tooltip nzTitle="Khóa"></i></ng-template>
         </td>
-        <td>
+        <td class="decrease-row">
           <nz-button-group>
             <button *ngIf="(authService.currentUser.userName === 'admin') || (data.userName !== 'admin')" nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
               (click)="update(data.id)">

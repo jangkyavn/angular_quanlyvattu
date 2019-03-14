@@ -70,7 +70,7 @@
         <td class="text-right" [innerHTML]="data.tongSoTien | number: '1.0-0' | highlight : pagingParams.keyword"></td>
         <td class="text-center" [innerHTML]="data.chietKhau | highlight : pagingParams.keyword"></td>
         <td class="text-right" [innerHTML]="data.thanhTien | number: '1.0-0' | highlight : pagingParams.keyword"></td>
-        <td class="text-center">
+        <td class="text-center decrease-row">
           <nz-button-group >
             <button *ngIf="data.status" nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
               [routerLink]="['/nghiep-vu/nhap/sua-phieu-nhap', data.maPhieuNhap]">

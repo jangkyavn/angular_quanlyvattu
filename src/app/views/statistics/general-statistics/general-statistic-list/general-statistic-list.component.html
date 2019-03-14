@@ -67,11 +67,11 @@
         <td>{{data.tongThanhLy}}</td>
         <td>{{data.tongKiemKe}}</td>
         <td>{{data.tonCuoiKy}}</td>
-        <td>
+        <td class="decrease-row">
           <nz-button-group>
             <button [routerLink]="['/thong-ke-bao-cao/thong-ke-nhap-xuat-ton/xem-chi-tiet', data.maVatTu]"
               [queryParams]="{fromDate: statisticParams.fromDate, toDate: statisticParams.toDate, tonDauKy: data.tonDauKy, tonCuoiKy: data.tonCuoiKy}"
-              nz-button nzType="default" class="btn-primary" nz-tooltip nzTitle="Xem" (click)="collapseMenu()">
+              nz-button nzType="default" class="btn-primary" nz-tooltip nzTitle="Xem">
               <i nz-icon type="eye" theme="outline"></i>
             </button>
           </nz-button-group>

@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 
 import { MaterialService } from 'src/app/shared/services/material.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
-import { UtilitiesService } from 'src/app/shared/services/utilities.service';
 
 import { Material } from 'src/app/shared/models/material.model';
 import { Pagination, PaginatedResult } from 'src/app/shared/models/pagination.model';
@@ -32,7 +31,6 @@ export class SearchMaterialListComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private materialService: MaterialService,
-    private utilities: UtilitiesService,
     private notify: NotifyService) { }
 
   ngOnInit() {
@@ -73,9 +71,5 @@ export class SearchMaterialListComponent implements OnInit {
   search(keyword: string) {
     this.pagingParams.keyword = keyword;
     this.loadData(true);
-  }
-
-  collapseMenu() {
-    this.utilities.changeCollapsed(true);
   }
 }

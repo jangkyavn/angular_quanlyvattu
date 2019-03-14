@@ -66,8 +66,8 @@
         <td class="text-right">{{data.tongSoTien | number: '1.0-0'}}</td>
         <td class="text-center">{{data.chietKhau}}</td>
         <td class="text-right">{{data.tongSoTien * (1 - data.chietKhau / 100) | number: '1.0-0'}}</td>
-        <td class="text-center">
-          <nz-button-group >
+        <td class="text-center decrease-row">
+          <nz-button-group>
             <button *ngIf="data.status" nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
               [routerLink]="['/nghiep-vu/xuat/sua-phieu-xuat', data.maPhieuXuat]">
               <i nz-icon type="edit" theme="outline"></i>

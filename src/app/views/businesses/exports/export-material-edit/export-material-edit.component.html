@@ -126,7 +126,7 @@
           <td class="text-center">{{data.maPhieuNhap}}</td>
           <td>{{data.ngayNhap | date:'dd/MM/yyyy'}}</td>
           <td class="text-center">{{data.soLuongTon}}</td>
-          <td class="text-center">
+          <td class="text-center decrease-row">
             <button nz-button nzType="primary" nz-tooltip nzTitle="Xuất" (click)="exportMaterial(data)"
               *ngIf="data.soLuongTon > 0">
               <i nz-icon type="caret-down" theme="outline"></i>
@@ -154,7 +154,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let data of exportDetailTable.data">
-          <td class="text-center">
+          <td class="text-center decrease-row">
             <nz-button-group>
               <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
                 (click)="updateExportDetail(data)">
