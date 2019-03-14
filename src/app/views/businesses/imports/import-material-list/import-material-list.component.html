@@ -71,8 +71,8 @@
         <td class="text-center" [innerHTML]="data.chietKhau | highlight : pagingParams.keyword"></td>
         <td class="text-right" [innerHTML]="data.thanhTien | number: '1.0-0' | highlight : pagingParams.keyword"></td>
         <td class="text-center">
-          <nz-button-group>
-            <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
+          <nz-button-group >
+            <button *ngIf="data.status" nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
               [routerLink]="['/nghiep-vu/nhap/sua-phieu-nhap', data.maPhieuNhap]">
               <i nz-icon type="edit" theme="outline"></i>
             </button>
@@ -80,7 +80,7 @@
               (click)="view(data.maPhieuNhap)">
               <i nz-icon type="eye" theme="outline"></i>
             </button>
-            <button nz-button nzType="default" class="btn-danger" nz-tooltip nzTitle="Xóa"
+            <button *ngIf="data.status" nz-button nzType="default" class="btn-danger" nz-tooltip nzTitle="Xóa"
               (click)="delete(data.maPhieuNhap)">
               <i nz-icon type="delete" theme="outline"></i>
             </button>

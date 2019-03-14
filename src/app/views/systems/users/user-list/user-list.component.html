@@ -45,14 +45,14 @@
         <td [innerHTML]="data.email | highlight : pagingParams.keyword"></td>
         <td [innerHTML]="data.roles.toString() | highlight : pagingParams.keyword">{{data.roles.toString()}}</td>
         <td>
-          <nz-switch [ngModel]="data.status" [nzCheckedChildren]="checkedTemplate"
+          <nz-switch *ngIf="data.userName !== 'admin'" [ngModel]="data.status" [nzCheckedChildren]="checkedTemplate"
             [nzUnCheckedChildren]="unCheckedTemplate" (click)="changeStatus(data.id)"></nz-switch>
           <ng-template #checkedTemplate><i nz-icon type="check" nz-tooltip nzTitle="Kích hoạt"></i></ng-template>
           <ng-template #unCheckedTemplate><i nz-icon type="close" nz-tooltip nzTitle="Khóa"></i></ng-template>
         </td>
         <td>
           <nz-button-group>
-            <button *appHasRole="['Admin']" nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
+            <button *ngIf="(authService.currentUser.userName === 'admin') || (data.userName !== 'admin')" nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
               (click)="update(data.id)">
               <i nz-icon type="edit" theme="outline"></i>
             </button>

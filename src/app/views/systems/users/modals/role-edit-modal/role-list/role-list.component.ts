@@ -25,6 +25,7 @@ export class RoleListComponent implements OnInit {
   sortKey = null;
   roleForm: FormGroup;
   disabledAddNewButton: boolean;
+  disabledButtonGroup: boolean;
 
   pagination: Pagination = {
     currentPage: 1,
@@ -122,6 +123,7 @@ export class RoleListComponent implements OnInit {
       isSave: true,
     }, ...this.roles];
     this.disabledAddNewButton = true;
+    this.disabledButtonGroup = true;
     this.createForm();
   }
 
@@ -168,6 +170,7 @@ export class RoleListComponent implements OnInit {
     const role: Role = Object.assign({}, this.roleForm.value);
     role.phanQuyens = [];
     this.disabledAddNewButton = false;
+    this.disabledButtonGroup = false;
     if (role.id == null) {
       this.roleService.addNew(role).subscribe((res: any) => {
         if (res) {
@@ -196,11 +199,13 @@ export class RoleListComponent implements OnInit {
       this.roles.splice(index, 1);
     }
     this.disabledAddNewButton = false;
+    this.disabledButtonGroup = false;
     this.roles[index].isSave = false;
   }
 
   search(keyword: string) {
     this.disabledAddNewButton = false;
+    this.disabledButtonGroup = false;
     this.pagingParams.keyword = keyword;
     this.loadData(true);
   }

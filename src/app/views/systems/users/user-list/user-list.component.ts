@@ -2,6 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd';
 
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { UserService } from 'src/app/shared/services/user.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
 import { RoleService } from 'src/app/shared/services/role.service';
@@ -43,6 +44,7 @@ export class UserListComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
     private modalService: NzModalService,
+    public authService: AuthService,
     private userService: UserService,
     private roleService: RoleService,
     private notify: NotifyService) { }

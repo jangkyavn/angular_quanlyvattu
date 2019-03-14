@@ -1,0 +1,40 @@
+<form nz-form [formGroup]="inventoryMaterialDetailForm" (ngSubmit)="saveChanges()" autocomplete="off">
+  <div>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="tenVatTu">Vật tư</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input nz-input formControlName="tenVatTu" id="tenVatTu" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="maPhieuNhap">Mã phiếu nhập</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input nz-input formControlName="maPhieuNhap" id="maPhieuNhap" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="soLuongTheoDoi">Số lượng theo dõi</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input nz-input formControlName="soLuongTheoDoi" id="soLuongTheoDoi" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzFor="soLuongThucTon">Số lượng thực tồn</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-input-number formControlName="soLuongThucTon" [nzMin]="0" [nzStep]="1"></nz-input-number>
+        <nz-form-explain
+          *ngIf="inventoryMaterialDetailForm.get('soLuongThucTon').dirty && inventoryMaterialDetailForm.get('soLuongThucTon').errors">
+          <ng-container *ngIf="inventoryMaterialDetailForm.get('soLuongThucTon').hasError('required')">
+            Vui lòng nhập số lượng thực tồn!
+          </ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="ghiChu">Ghi chú</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <textarea nz-input formControlName="ghiChu" id="ghiChu"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+</form>

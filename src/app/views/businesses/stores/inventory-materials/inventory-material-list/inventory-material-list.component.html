@@ -1,7 +1,7 @@
 <nz-breadcrumb style="margin:16px 0;">
   <nz-breadcrumb-item>Nghiệp vụ</nz-breadcrumb-item>
-  <nz-breadcrumb-item>Xuất</nz-breadcrumb-item>
-  <nz-breadcrumb-item>Danh sách phiếu xuất</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Kho</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Phiếu kiểm kê kho</nz-breadcrumb-item>
 </nz-breadcrumb>
 
 <div style="padding:24px; background: #fff; min-height: 70vh">
@@ -32,7 +32,7 @@
 
     </div>
     <div nz-col nzSpan="8" nzOffset="8" class="text-right">
-      <button nz-button nzType="primary" [routerLink]="['/nghiep-vu/xuat/tao-phieu-xuat']">
+      <button nz-button nzType="primary" [routerLink]="['/nghiep-vu/kho/phieu-kiem-ke-kho/tao-phieu-kiem-ke']">
         <i nz-icon type="plus" theme="outline"></i> Thêm
       </button>
     </div>
@@ -47,37 +47,35 @@
     </ng-template>
     <thead (nzSortChange)="sort($event)" nzSingleSort>
       <tr>
-        <th nzWidth="12%" nzShowSort nzSortKey="tenKho">Tên kho</th>
-        <th nzWidth="15%" nzShowSort nzSortKey="tenNS">Nhân sự</th>
-        <th nzWidth="10%" nzShowSort nzSortKey="ngayNhap">Ngày xuất</th>
-        <th nzWidth="10%" nzShowSort nzSortKey="tongSoLuong">Tổng lượng</th>
-        <th nzWidth="15%" nzShowSort nzSortKey="tongSoTien">Tổng tiền</th>
-        <th nzWidth="10%" nzShowSort nzSortKey="chietKhau">Chiết khấu</th>
-        <th nzWidth="15%" nzShowSort nzSortKey="thanhTien">Giá trị thực</th>
-        <th nzWidth="13%">Thao tác</th>
+        <th nzWidth="15%" nzShowSort nzSortKey="maPhieuKiemKe">Mã phiếu</th>
+        <th nzWidth="15%" nzShowSort nzSortKey="tenKho">Tên kho</th>
+        <th nzWidth="16%" nzShowSort nzSortKey="tenNS">Nhân sự</th>
+        <th nzWidth="15%" nzShowSort nzSortKey="ngayKiemKe">Ngày kiểm kê</th>
+        <th nzWidth="12%" nzShowSort nzSortKey="tongTheoDoi">Tổng theo dõi</th>
+        <th nzWidth="12%" nzShowSort nzSortKey="tongThucTon">Tổng thực tồn</th>
+        <th nzWidth="15%">Thao tác</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let data of table.data">
+        <td class="text-center">{{data.maPhieuKiemKe}}</td>
         <td>{{data.tenKho}}</td>
         <td>{{data.tenNS}}</td>
-        <td>{{data.ngayNhap | date:'dd/MM/yyyy'}}</td>
-        <td class="text-center">{{data.tongSoLuong}}</td>
-        <td class="text-right">{{data.tongSoTien | number: '1.0-0'}}</td>
-        <td class="text-center">{{data.chietKhau}}</td>
-        <td class="text-right">{{data.tongSoTien * (1 - data.chietKhau / 100) | number: '1.0-0'}}</td>
+        <td>{{data.ngayKiemKe | date:'dd/MM/yyyy'}}</td>
+        <td class="text-center">{{data.tongTheoDoi}}</td>
+        <td class="text-center">{{data.tongThucTon}}</td>
         <td class="text-center">
-          <nz-button-group >
-            <button *ngIf="data.status" nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
-              [routerLink]="['/nghiep-vu/xuat/sua-phieu-xuat', data.maPhieuXuat]">
+          <nz-button-group>
+            <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
+              [routerLink]="['/nghiep-vu/kho/phieu-kiem-ke-kho/sua-phieu-kiem-ke', data.maPhieuKiemKe]">
               <i nz-icon type="edit" theme="outline"></i>
             </button>
             <button nz-button nzType="default" class="btn-primary" nz-tooltip nzTitle="Xem"
-              (click)="view(data.maPhieuXuat)">
+              (click)="view(data.maPhieuKiemKe)">
               <i nz-icon type="eye" theme="outline"></i>
             </button>
-            <button *ngIf="data.status" nz-button nzType="default" class="btn-danger" nz-tooltip nzTitle="Xóa"
-              (click)="delete(data.maPhieuXuat)">
+            <button nz-button nzType="default" class="btn-danger" nz-tooltip nzTitle="Xóa"
+              (click)="delete(data.maPhieuKiemKe)">
               <i nz-icon type="delete" theme="outline"></i>
             </button>
           </nz-button-group>

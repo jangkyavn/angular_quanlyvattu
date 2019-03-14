@@ -20,6 +20,10 @@ const routes: Routes = [
             {
                 path: 'thanh-ly-vat-tu',
                 loadChildren: './liquidation-materials/liquidation-materials.module#LiquidationMaterialsModule'
+            },
+            {
+                path: 'phieu-kiem-ke-kho',
+                loadChildren: './inventory-materials/inventory-materials.module#InventoryMaterialsModule'
             }
         ]
     }

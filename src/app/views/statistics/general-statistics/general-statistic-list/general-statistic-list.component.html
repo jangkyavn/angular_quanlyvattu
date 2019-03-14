@@ -48,11 +48,12 @@
   <nz-table #table [nzData]="dataSet" [nzLoading]="loading" [nzNoResult]="'Không tìm thấy kết quả.'" nzSize="middle">
     <thead>
       <tr>
-        <th nzWidth="40%">Tên vật tư</th>
+        <th nzWidth="30%">Tên vật tư</th>
         <th nzWidth="10%">Tồn đầu kỳ</th>
         <th nzWidth="10%">Tổng nhập</th>
         <th nzWidth="10%">Tổng xuất</th>
         <th nzWidth="10%">Tổng thanh lý</th>
+        <th nzWidth="10%">Tổng kiểm kê</th>
         <th nzWidth="10%">Tồn cuối kỳ</th>
         <th nzWidth="10%"></th>
       </tr>
@@ -64,6 +65,7 @@
         <td>{{data.tongNhap}}</td>
         <td>{{data.tongXuat}}</td>
         <td>{{data.tongThanhLy}}</td>
+        <td>{{data.tongKiemKe}}</td>
         <td>{{data.tonCuoiKy}}</td>
         <td>
           <nz-button-group>

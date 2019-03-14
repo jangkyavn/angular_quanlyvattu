@@ -55,13 +55,13 @@
       </td>
       <td>
         <nz-button-group *ngIf="data.name !== 'Admin' && data.isSave === false">
-          <button nz-button nzType="default" class="btn-info" title="Sửa" (click)="updateRow(data, i)">
+          <button [disabled]="disabledButtonGroup" nz-button nzType="default" class="btn-info" title="Sửa" (click)="updateRow(data, i)">
             <i nz-icon type="edit" theme="outline"></i>
           </button>
-          <button nz-button nzType="default" class="btn-primary" title="Phân quyền" (click)="permission(data)">
+          <button [disabled]="disabledButtonGroup" nz-button nzType="default" class="btn-primary" title="Phân quyền" (click)="permission(data)">
             <i nz-icon type="user-add" theme="outline"></i>
           </button>
-          <button *ngIf="data.userName !== 'admin'" nz-button nzType="default" class="btn-danger" title="Xóa"
+          <button [disabled]="disabledButtonGroup" *ngIf="data.userName !== 'admin'" nz-button nzType="default" class="btn-danger" title="Xóa"
              nz-popconfirm nzTitle="Sure to delete?" (nzOnConfirm)="deleteRow(data.id)">
             <i nz-icon type="delete" theme="outline"></i>
           </button>

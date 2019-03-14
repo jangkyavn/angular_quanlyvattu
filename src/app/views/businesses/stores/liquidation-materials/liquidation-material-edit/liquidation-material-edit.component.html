@@ -1,11 +1,11 @@
 <nz-breadcrumb style="margin:16px 0;">
     <nz-breadcrumb-item>Nghiệp vụ</nz-breadcrumb-item>
     <nz-breadcrumb-item>Kho</nz-breadcrumb-item>
+    <nz-breadcrumb-item>Thanh lý vật tư</nz-breadcrumb-item>
     <nz-breadcrumb-item>Sửa phiếu thanh lý</nz-breadcrumb-item>
   </nz-breadcrumb>
   
   <div style="padding:24px; background: #fff; min-height: 70vh">
-  
     <nz-card style="width:100%;" nzTitle="Thanh lý vật tư" [nzExtra]="extraTemplate">
       <form nz-form [formGroup]="liquidationMaterialForm" (ngSubmit)="saveChanges()" autocomplete="off">
         <table style="width: 100%;">

@@ -21,7 +21,6 @@ import {
   LiquidationMaterialDetailAddEditModalComponent
 } from '../modals/liquidation-material-detail-add-edit-modal/liquidation-material-detail-add-edit-modal.component';
 
-
 @Component({
   selector: 'app-liquidation-material-edit',
   templateUrl: './liquidation-material-edit.component.html',

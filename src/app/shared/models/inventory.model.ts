@@ -5,4 +5,6 @@ export interface Inventory {
     soLuongTon?: number;
     tenKho?: string;
     tenVatTu?: string;
+
+    inserted?: boolean;
 }

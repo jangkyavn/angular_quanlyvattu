@@ -1,0 +1,170 @@
+<nz-breadcrumb style="margin:16px 0;">
+  <nz-breadcrumb-item>Nghiệp vụ</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Kho</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Phiếu kiểm kê kho</nz-breadcrumb-item>
+  <nz-breadcrumb-item>Sửa phiếu kiểm kê</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div style="padding:24px; background: #fff; min-height: 70vh">
+  <nz-card style="width:100%;" nzTitle="Sửa phiếu kiểm kê" [nzExtra]="extraTemplate">
+    <form nz-form [formGroup]="inventoryMaterialForm" (ngSubmit)="saveChanges()" autocomplete="off">
+      <table style="width: 100%;">
+        <tr>
+          <td style="width: 35%">
+            <nz-form-item>
+              <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzFor="tenKho">Kho hàng</nz-form-label>
+              <nz-form-control [nzSm]="16" [nzXs]="24">
+                <input readonly nz-input formControlName="tenKho" id="tenKho" />
+              </nz-form-control>
+            </nz-form-item>
+          </td>
+          <td style="width: 35%">
+            <nz-form-item>
+              <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzFor="maNS">Nhân sự</nz-form-label>
+              <nz-form-control [nzSm]="16" [nzXs]="24">
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn nhân sự" formControlName="maNS" id="maNS">
+                  <nz-option *ngFor="let item of personnels" [nzValue]="item.maNS" [nzLabel]="item.hoTen"></nz-option>
+                </nz-select>
+                <nz-form-explain
+                  *ngIf="inventoryMaterialForm.get('maNS').dirty && inventoryMaterialForm.get('maNS').errors">
+                  <ng-container *ngIf="inventoryMaterialForm.get('maNS').hasError('required')">
+                    Vui lòng chọn nhân sự!
+                  </ng-container>
+                </nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+          </td>
+          <td style="width: 30%">
+            <nz-form-item>
+              <nz-form-label [nzSm]="10" [nzXs]="24" nzRequired nzFor="ngayKiemKe">Ngày kiểm kê</nz-form-label>
+              <nz-form-control [nzSm]="14" [nzXs]="24">
+                <input type="date" nz-input formControlName="ngayKiemKe" id="ngayKiemKe" />
+                <nz-form-explain
+                  *ngIf="inventoryMaterialForm.get('ngayKiemKe').dirty && inventoryMaterialForm.get('ngayKiemKe').errors">
+                  <ng-container *ngIf="inventoryMaterialForm.get('ngayKiemKe').hasError('required')">
+                    Vui lòng chọn ngày kiểm kê!
+                  </ng-container>
+                </nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" style="text-align: right;">
+            <button type="button" nz-button nzType="default" [routerLink]="['/nghiep-vu/kho/phieu-kiem-ke-kho']">
+              <i nz-icon type="close" theme="outline"></i> Hủy
+            </button>
+            <button type="submit" nz-button nzType="primary" style="margin-left:1rem;"
+              [disabled]="!inventoryMaterialForm.dirty">
+              <i nz-icon type="save" theme="outline"></i> Lưu
+            </button>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </nz-card>
+  <ng-template #extraTemplate>
+    <button type="button" nzSize="small" nz-tooltip nzTitle="Tạo phiếu kiểm kê" nz-button nzType="primary"
+      [routerLink]="['/nghiep-vu/kho/phieu-kiem-ke-kho/tao-phieu-kiem-ke']"><i nz-icon type="plus" theme="outline"></i>
+    </button>
+  </ng-template>
+  <br />
+  <nz-card style="width:100%;" nzTitle="Danh sách tồn kho">
+    <div nz-row style="margin-bottom: 0.5rem">
+      <div nz-col nzSpan="8">
+        <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
+          <input type="text" nz-input placeholder="Tìm kiếm..." #keywordInventory
+            (keyup.enter)="searchInventory(keywordInventory.value)">
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+          <button nz-button nzType="primary" nzSearch (click)="searchInventory(keywordInventory.value)"><i nz-icon
+              type="search"></i></button>
+        </ng-template>
+      </div>
+      <div nz-col nzSpan="8" nzOffset="8" class="text-right">
+        <label nz-checkbox [(ngModel)]="isShowAllInventories" (ngModelChange)="loadInventories()">Hiện tất tả</label>
+      </div>
+    </div>
+    <nz-table #inventoryTable [nzFrontPagination]="false" [nzData]="inventories" [nzLoading]="loadingInventories"
+      [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage"
+      [(nzPageSize)]="pagination.itemsPerPage" [nzNoResult]="'Không tìm thấy kết quả.'"
+      (nzPageIndexChange)="loadInventories()" (nzPageSizeChange)="loadInventories(true)" [nzShowTotal]="rangeTemplate"
+      nzSize="middle" nzBordered>
+      <ng-template #rangeTemplate let-range="range" let-total>
+        {{range[0]}}-{{range[1]}} của {{total}} bản ghi
+      </ng-template>
+      <thead (nzSortChange)="sortInventories($event)" nzSingleSort>
+        <tr>
+          <th nzWidth="30%" nzShowSort nzSortKey="tenVatTu">Vật tư</th>
+          <th nzWidth="20%" nzShowSort nzSortKey="maPhieuNhap">Mã phiếu nhập</th>
+          <th nzWidth="20%" nzShowSort nzSortKey="maPhieuNhap">Ngày nhập</th>
+          <th nzWidth="20%" nzShowSort nzSortKey="soLuongTon">Số lượng tồn</th>
+          <th nzWidth="10%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of inventoryTable.data">
+          <td>{{data.tenVatTu}}</td>
+          <td class="text-center">{{data.maPhieuNhap}}</td>
+          <td>{{data.ngayNhap | date:'dd/MM/yyyy'}}</td>
+          <td class="text-center">{{data.soLuongTon}}</td>
+          <td class="text-center">
+            <button nz-button nzType="primary" nz-tooltip nzTitle="Xuất" (click)="createInventoryMaterialDetail(data)"
+              *ngIf="!data.inserted">
+              <i nz-icon type="caret-down" theme="outline"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
+  <br />
+  <nz-card style="width:100%;" nzTitle="Danh sách kiểm kê chi tiết" *ngIf="inventoryMaterailDetails.length > 0">
+    <nz-table #inventoryMaterailDetailTable [nzData]="inventoryMaterailDetails" nzBordered
+      [nzLoading]="loadingInventoryMaterialDetails" [nzShowPagination]="false" nzSize="middle">
+      <thead>
+        <tr>
+          <th nzWidth="10%"></th>
+          <th nzWidth="15%">Mã phiếu KK</th>
+          <th nzWidth="15%">Mã phiếu nhập</th>
+          <th nzWidth="20%">Tên vật tư</th>
+          <th nzWidth="10%">SL theo dõi</th>
+          <th nzWidth="10%">SL thực tồn</th>
+          <th nzWidth="10%">SL kiểm kê</th>
+          <th nzWidth="10%">Ghi chú</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of inventoryMaterailDetailTable.data">
+          <td class="text-center">
+            <nz-button-group>
+              <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
+                (click)="updateInventoryMaterialDetail(data)">
+                <i nz-icon type="edit" theme="outline"></i>
+              </button>
+              <button nz-button nzType="default" class="btn-danger" nz-tooltip nzTitle="Xóa"
+                (click)="deleteInventoryMaterialDetail(data)">
+                <i nz-icon type="delete" theme="outline"></i>
+              </button>
+            </nz-button-group>
+          </td>
+          <td class="text-center">{{data.maPhieuKiemKe}}</td>
+          <td class="text-center">{{data.maPhieuNhap}}</td>
+          <td>{{data.tenVatTu}}</td>
+          <td class="text-center">{{data.soLuongTheoDoi}}</td>
+          <td class="text-center">{{data.soLuongThucTon}}</td>
+          <td class="text-center">{{data.soLuongKiemKe}}</td>
+          <td>{{data.ghiChu}}</td>
+        </tr>
+        <!-- <tr class="bg-footer-price">
+          <td colspan="7" class="text-right">
+            <strong>Tổng cộng:</strong>
+          </td>
+          <td class="text-center">
+            <strong>{{totalQuantity | number: '1.0-0'}}</strong>
+          </td>
+        </tr> -->
+      </tbody>
+    </nz-table>
+  </nz-card>
+</div>
