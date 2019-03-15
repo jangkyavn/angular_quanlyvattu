@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { MaterialStoreService } from 'src/app/shared/services/material-store.service';
@@ -23,6 +23,7 @@ export class ExportMaterialCreateComponent implements OnInit {
   parserPercent = value => value.replace(' %', '');
 
   constructor(
+    private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
     private materialStoreService: MaterialStoreService,
@@ -32,6 +33,14 @@ export class ExportMaterialCreateComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.route.data.subscribe(data => {
+      const result = data['check-permission-create'];
+      if (!result) {
+        this.router.navigate(['/']);
+        this.notify.warning('Bạn không có quyền');
+      }
+    });
+
     this.loadAllMaterialStores();
     this.loadAllPersonnels();
     this.createForm();

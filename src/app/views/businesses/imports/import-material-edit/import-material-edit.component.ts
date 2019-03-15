@@ -30,7 +30,7 @@ export class ImportMaterialEditComponent implements OnInit {
   materialItems: MaterialItem[];
   importMaterialForm: FormGroup;
   materialItemId: number;
-  importMaterialDetails: ImportMaterialDetail[];
+  importMaterialDetails: ImportMaterialDetail[] = [];
   totalAmount: number;
   totalAmountAfterDiscount: number;
   discountPrice: number;
@@ -50,7 +50,6 @@ export class ImportMaterialEditComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private modalService: NzModalService,
-    private roleService: RoleService,
     private importMaterialService: ImportMaterialService,
     private materialStoreService: MaterialStoreService,
     private materialItemService: MaterialItemService,
@@ -59,16 +58,14 @@ export class ImportMaterialEditComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.roleService.checkPermission('NHAP_VAT_TU', 'Update')
-    .subscribe((response: boolean) => {
-      if (!response) {
+    this.route.data.subscribe(data => {
+      const result = data['check-permission-update'];
+      if (!result) {
         this.router.navigate(['/']);
         this.notify.warning('Bạn không có quyền');
       }
     });
 
-
-    this.importMaterialDetails = [];
     this.createForm();
   }
 

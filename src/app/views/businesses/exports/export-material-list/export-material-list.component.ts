@@ -1,6 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import { RoleService } from 'src/app/shared/services/role.service';
 import { ExportMaterialService } from 'src/app/shared/services/export-material.service';
 import { NotifyService } from 'src/app/shared/services/notify.service';
 import { NzModalService } from 'ng-zorro-antd';
@@ -39,7 +40,14 @@ export class ExportMaterialListComponent implements OnInit {
   @HostListener('window:keydown', ['$event'])
   onKeyPress($event: KeyboardEvent) {
     if (($event.ctrlKey || $event.metaKey) && ($event.keyCode === 73 || $event.keyCode === 105)) {
-      this.router.navigate(['/nghiep-vu/xuat/tao-phieu-xuat']);
+      this.roleService.checkPermission('XUAT_VAT_TU', 'Create')
+        .subscribe((response: boolean) => {
+          if (response) {
+            this.router.navigate(['/nghiep-vu/xuat/tao-phieu-xuat']);
+          } else {
+            this.notify.warning('Bạn không có quyền');
+          }
+        });
     }
   }
 
@@ -47,6 +55,7 @@ export class ExportMaterialListComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private modalService: NzModalService,
+    private roleService: RoleService,
     private exportMaterialService: ExportMaterialService,
     private notify: NotifyService) { }
 
@@ -74,15 +83,35 @@ export class ExportMaterialListComponent implements OnInit {
         this.loading = false;
         this.pagination = res.pagination;
         this.dataSet = res.result;
-      }, error => {
-        this.notify.error('Có lỗi xảy ra');
-        console.log('error getAllPagingExportMaterial');
-      }, () => {
+
         if (this.dataSet.length === 0 && this.pagination.currentPage !== 1) {
           this.pagination.currentPage -= 1;
           this.loadData();
         }
       });
+  }
+
+  addNew() {
+    this.roleService.checkPermission('XUAT_VAT_TU', 'Create')
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.router.navigate(['/nghiep-vu/xuat/tao-phieu-xuat']);
+        } else {
+          this.notify.warning('Bạn không có quyền');
+        }
+      });
+  }
+
+  update(id: number) {
+    this.roleService.checkPermission('XUAT_VAT_TU', 'Update')
+    .subscribe((response: boolean) => {
+      if (response) {
+        this.router.navigate(['/nghiep-vu/xuat/sua-phieu-xuat', id]);
+      } else {
+        this.notify.warning('Bạn không có quyền');
+        return false;
+      }
+    });
   }
 
   view(id: number) {
@@ -108,16 +137,21 @@ export class ExportMaterialListComponent implements OnInit {
   }
 
   delete(id: number) {
-    this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
-      this.exportMaterialService.delete(id).subscribe((res: boolean) => {
-        if (res) {
-          this.loadData();
-          this.notify.success('Xóa thành công');
+    this.roleService.checkPermission('XUAT_VAT_TU', 'Delete')
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
+            this.exportMaterialService.delete(id).subscribe((res: boolean) => {
+              if (res) {
+                this.loadData();
+                this.notify.success('Xóa thành công');
+              }
+            });
+          });
+        } else {
+          this.notify.warning('Bạn không có quyền');
         }
-      }, error => {
-        console.log('error deleteExportMaterial');
       });
-    });
   }
 
   search() {

@@ -32,7 +32,7 @@
 
     </div>
     <div nz-col nzSpan="8" nzOffset="8" class="text-right">
-      <button nz-button nzType="primary" [routerLink]="['/nghiep-vu/xuat/tao-phieu-xuat']">
+      <button nz-button nzType="primary" (click)="addNew()">
         <i nz-icon type="plus" theme="outline"></i> Thêm
       </button>
     </div>
@@ -68,8 +68,7 @@
         <td class="text-right">{{data.tongSoTien * (1 - data.chietKhau / 100) | number: '1.0-0'}}</td>
         <td class="text-center decrease-row">
           <nz-button-group>
-            <button *ngIf="data.status" nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
-              [routerLink]="['/nghiep-vu/xuat/sua-phieu-xuat', data.maPhieuXuat]">
+            <button *ngIf="data.status" nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa" (click)="update(data.maPhieuXuat)">
               <i nz-icon type="edit" theme="outline"></i>
             </button>
             <button nz-button nzType="default" class="btn-primary" nz-tooltip nzTitle="Xem"

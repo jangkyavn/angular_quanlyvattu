@@ -28,6 +28,8 @@ import {
 
 import { ExportMaterialListResolver } from 'src/app/shared/resolvers/export-list-resolver';
 import { ExportMaterialResolver } from 'src/app/shared/resolvers/export-material.resolver';
+import { ExportMaterialCreateResolver } from 'src/app/shared/resolvers/export-material-create.resolver';
+import { ExportMaterialEditResolver } from 'src/app/shared/resolvers/export-material-edit.resolver';
 
 @NgModule({
   imports: [
@@ -51,7 +53,9 @@ import { ExportMaterialResolver } from 'src/app/shared/resolvers/export-material
   providers: [
     { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig },
     ExportMaterialListResolver,
-    ExportMaterialResolver
+    ExportMaterialResolver,
+    ExportMaterialCreateResolver,
+    ExportMaterialEditResolver
   ],
 })
 export class ExportsModule { }

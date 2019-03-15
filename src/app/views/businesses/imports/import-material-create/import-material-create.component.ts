@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -25,23 +25,24 @@ export class ImportMaterialCreateComponent implements OnInit {
   formatterPercent = value => `${value} %`;
   parserPercent = value => value.replace(' %', '');
 
-  constructor(private router: Router,
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
     private fb: FormBuilder,
     private authService: AuthService,
-    private roleService: RoleService,
     private importMaterialService: ImportMaterialService,
     private materialStoreService: MaterialStoreService,
     private materialItemService: MaterialItemService,
     private notify: NotifyService) { }
 
   ngOnInit() {
-    this.roleService.checkPermission('NHAP_VAT_TU', 'Create')
-      .subscribe((response: boolean) => {
-        if (!response) {
-          this.router.navigate(['/']);
-          this.notify.warning('Bạn không có quyền');
-        }
-      });
+    this.route.data.subscribe(data => {
+      const result = data['check-permission-create'];
+      if (!result) {
+        this.router.navigate(['/']);
+        this.notify.warning('Bạn không có quyền');
+      }
+    });
 
     this.loadAllMaterialStores();
     this.loadAllMaterialItems();

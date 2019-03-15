@@ -7,6 +7,8 @@ import { ExportMaterialEditComponent } from './export-material-edit/export-mater
 
 import { ExportMaterialListResolver } from 'src/app/shared/resolvers/export-list-resolver';
 import { ExportMaterialResolver } from 'src/app/shared/resolvers/export-material.resolver';
+import { ExportMaterialCreateResolver } from 'src/app/shared/resolvers/export-material-create.resolver';
+import { ExportMaterialEditResolver } from 'src/app/shared/resolvers/export-material-edit.resolver';
 
 const routes: Routes = [
     {
@@ -28,7 +30,8 @@ const routes: Routes = [
                 component: ExportMaterialCreateComponent,
                 data: {
                     title: 'Tạo phiếu xuất'
-                }
+                },
+                resolve: { 'check-permission-create': ExportMaterialCreateResolver }
             },
             {
                 path: 'sua-phieu-xuat/:id',
@@ -36,7 +39,10 @@ const routes: Routes = [
                 data: {
                     title: 'Sửa phiếu xuất'
                 },
-                resolve: { 'export-material': ExportMaterialResolver }
+                resolve: {
+                    'export-material': ExportMaterialResolver,
+                    'check-permission-update': ExportMaterialEditResolver
+                }
             },
             {
                 path: '',

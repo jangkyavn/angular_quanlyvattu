@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+
+import { UtilitiesService } from './utilities.service';
+
 import { ExportMaterial } from '../models/export-material.model';
 import { PagingParams } from '../params/paging.param';
 import { PaginatedResult } from '../models/pagination.model';
@@ -14,10 +17,12 @@ import { Inventory } from '../models/inventory.model';
 export class ExportMaterialService {
     baseUrl = environment.apiUrl;
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient,
+        private utility: UtilitiesService) { }
 
     getAll() {
-        return this.http.get(this.baseUrl + 'XuatVatTu');
+        return this.http.get(this.baseUrl + 'XuatVatTu')
+            .pipe(catchError(error => this.utility.handleError(error, 'getAllExportMaterial')));
     }
 
     getAllPaging(page?: any, itemsPerPage?: any, pagingParams?: PagingParams): Observable<PaginatedResult<ExportMaterial[]>> {
@@ -45,16 +50,19 @@ export class ExportMaterialService {
                         paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
                     }
                     return paginatedResult;
-                })
+                }),
+                catchError(error => this.utility.handleError(error, 'getAllPagingExportMaterial'))
             );
     }
 
     getDetail(id: number) {
-        return this.http.get(this.baseUrl + 'XuatVatTu/GetDetail/' + id);
+        return this.http.get(this.baseUrl + 'XuatVatTu/GetDetail/' + id)
+            .pipe(catchError(error => this.utility.handleError(error, 'getDetailExportMaterial')));
     }
 
     addNew(exportMaterial: ExportMaterial) {
-        return this.http.post(this.baseUrl + 'XuatVatTu/insertXuatVatTu', exportMaterial);
+        return this.http.post(this.baseUrl + 'XuatVatTu/insertXuatVatTu', exportMaterial)
+            .pipe(catchError(error => this.utility.handleError(error, 'addNewExportMaterial')));
     }
 
     getImportsByStoreId(storeId: number) {
@@ -116,11 +124,13 @@ export class ExportMaterialService {
     }
 
     update(exportMaterial: ExportMaterial) {
-        return this.http.put(this.baseUrl + 'XuatVatTu/updateXuatVatTu', exportMaterial);
+        return this.http.put(this.baseUrl + 'XuatVatTu/updateXuatVatTu', exportMaterial)
+            .pipe(catchError(error => this.utility.handleError(error, 'updateExportMaterial')));
     }
 
     delete(exportId: any) {
-        return this.http.delete(this.baseUrl + 'XuatVatTu/' + exportId);
+        return this.http.delete(this.baseUrl + 'XuatVatTu/' + exportId)
+            .pipe(catchError(error => this.utility.handleError(error, 'deleteExportMaterial')));
     }
 
     deleteExportDetails(exportId, importId, materialId, inventoryId) {

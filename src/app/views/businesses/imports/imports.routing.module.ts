@@ -7,6 +7,8 @@ import { ImportMaterialEditComponent } from './import-material-edit/import-mater
 
 import { ImportMaterialListResolver } from 'src/app/shared/resolvers/import-list.resolver';
 import { ImportMaterialResolver } from 'src/app/shared/resolvers/import-material.resolver';
+import { ImportMaterialCreateResolver } from 'src/app/shared/resolvers/import-material-create.resolver';
+import { ImportMaterialEditResolver } from 'src/app/shared/resolvers/import-material-edit.resolver';
 
 const routes: Routes = [
     {
@@ -28,7 +30,8 @@ const routes: Routes = [
                 component: ImportMaterialCreateComponent,
                 data: {
                     title: 'Tạo phiếu nhập'
-                }
+                },
+                resolve: { 'check-permission-create': ImportMaterialCreateResolver }
             },
             {
                 path: 'sua-phieu-nhap/:id',
@@ -36,7 +39,10 @@ const routes: Routes = [
                 data: {
                     title: 'Sửa phiếu nhập'
                 },
-                resolve: { 'import-material': ImportMaterialResolver }
+                resolve: {
+                    'import-material': ImportMaterialResolver,
+                    'check-permission-update': ImportMaterialEditResolver
+                }
             },
             {
                 path: '',

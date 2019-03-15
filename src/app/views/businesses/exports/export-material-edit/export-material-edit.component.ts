@@ -73,6 +73,14 @@ export class ExportMaterialEditComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.route.data.subscribe(data => {
+      const result = data['check-permission-update'];
+      if (!result) {
+        this.router.navigate(['/']);
+        this.notify.warning('Bạn không có quyền');
+      }
+    });
+
     this.inventories = [];
     this.exportMaterialDetails = [];
 
