@@ -26,11 +26,11 @@ export class UtilitiesService {
 
   handleError(error, message) {
     if (error.status === 401) {
-      this.notify.error('Bạn không có quyền');
+      this.notify.warning('Bạn không có quyền');
+      this.router.navigate(['/']);
     } else {
       this.notify.error('Có lỗi xảy ra');
     }
-    this.router.navigate(['/']);
     console.log(`error ${message}`);
     return of(null);
   }

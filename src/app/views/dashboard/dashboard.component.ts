@@ -10,9 +10,13 @@ import { Observable } from 'rxjs';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  totalUsers$: Observable<any>;
-  totalMaterials$: Observable<any>;
-  totalInventories$: Observable<any>;
+  loadingTotalUsers: boolean;
+  loadingTotalMaterials: boolean;
+  loadingTotalInventories: boolean;
+
+  totalUsers: any;
+  totalMaterials: any;
+  totalInventories: any;
 
   constructor(private userService: UserService,
     private materialService: MaterialService,
@@ -23,8 +27,35 @@ export class DashboardComponent implements OnInit {
   }
 
   getTotal() {
-    this.totalUsers$ = this.userService.getTotalCount();
-    this.totalMaterials$ = this.materialService.getTotalCount();
-    this.totalInventories$ = this.inventoryService.getTotalCount();
+    this.getTotalUsers();
+    this.getTotalMaterials();
+    this.getTotalInventories();
+  }
+
+  getTotalUsers() {
+    this.loadingTotalUsers = true;
+    this.userService.getTotalCount()
+      .subscribe((res: any) => {
+        this.totalUsers = res;
+        this.loadingTotalUsers = false;
+      });
+  }
+
+  getTotalMaterials() {
+    this.loadingTotalMaterials = true;
+    this.materialService.getTotalCount()
+      .subscribe((res: any) => {
+        this.totalMaterials = res;
+        this.loadingTotalMaterials = false;
+      });
+  }
+
+  getTotalInventories() {
+    this.loadingTotalInventories = true;
+    this.inventoryService.getTotalCount()
+      .subscribe((res: any) => {
+        this.totalInventories = res;
+        this.loadingTotalInventories = false;
+      });
   }
 }

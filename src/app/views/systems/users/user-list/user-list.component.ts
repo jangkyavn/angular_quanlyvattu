@@ -80,87 +80,108 @@ export class UserListComponent implements OnInit {
   }
 
   addNew() {
-    const modal = this.modalService.create({
-      nzTitle: 'Thêm mới người dùng',
-      nzContent: UserAddEditModalComponent,
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzComponentParams: {
-        user: {},
-        isAddNew: true
-      },
-      nzFooter: [
-        {
-          label: 'Hủy',
-          shape: 'default',
-          onClick: () => modal.destroy()
-        },
-        {
-          label: 'Lưu',
-          type: 'primary',
-          onClick: (componentInstance) => {
-            componentInstance.saveChanges();
-          }
-        }
-      ]
-    });
+    this.roleService.checkPermission('NGUOI_DUNG', 'Create')
+      .subscribe((response: boolean) => {
+        if (response) {
+          const modal = this.modalService.create({
+            nzTitle: 'Thêm mới người dùng',
+            nzContent: UserAddEditModalComponent,
+            nzMaskClosable: false,
+            nzClosable: false,
+            nzComponentParams: {
+              user: {},
+              isAddNew: true
+            },
+            nzFooter: [
+              {
+                label: 'Hủy',
+                shape: 'default',
+                onClick: () => modal.destroy()
+              },
+              {
+                label: 'Lưu',
+                type: 'primary',
+                onClick: (componentInstance) => {
+                  componentInstance.saveChanges();
+                }
+              }
+            ]
+          });
 
-    modal.afterClose.subscribe((result: boolean) => {
-      if (result) {
-        this.loadData();
-      }
-    });
+          modal.afterClose.subscribe((result: boolean) => {
+            if (result) {
+              this.loadData();
+            }
+          });
+        } else {
+          this.notify.warning('Bạn không có quyền');
+        }
+      });
   }
 
   update(id: any) {
-    this.userService.getDetail(id).subscribe((user: User) => {
-      const modal = this.modalService.create({
-        nzTitle: 'Sửa thông tin người dùng',
-        nzContent: UserAddEditModalComponent,
-        nzMaskClosable: false,
-        nzClosable: false,
-        nzComponentParams: {
-          user,
-          isAddNew: false
-        },
-        nzFooter: [
-          {
-            label: 'Hủy',
-            shape: 'default',
-            onClick: () => modal.destroy()
-          },
-          {
-            label: 'Lưu',
-            type: 'primary',
-            onClick: (componentInstance) => {
-              componentInstance.saveChanges();
-            }
-          }
-        ]
-      });
+    this.roleService.checkPermission('NGUOI_DUNG', 'Update')
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.userService.getDetail(id).subscribe((user: User) => {
+            const modal = this.modalService.create({
+              nzTitle: 'Sửa thông tin người dùng',
+              nzContent: UserAddEditModalComponent,
+              nzMaskClosable: false,
+              nzClosable: false,
+              nzComponentParams: {
+                user,
+                isAddNew: false
+              },
+              nzFooter: [
+                {
+                  label: 'Hủy',
+                  shape: 'default',
+                  onClick: () => modal.destroy()
+                },
+                {
+                  label: 'Lưu',
+                  type: 'primary',
+                  onClick: (componentInstance) => {
+                    componentInstance.saveChanges();
+                  }
+                }
+              ]
+            });
 
-      modal.afterClose.subscribe((result: boolean) => {
-        if (result) {
-          this.loadData();
+            modal.afterClose.subscribe((result: boolean) => {
+              if (result) {
+                this.loadData();
+              }
+            });
+          });
+        } else {
+          this.notify.warning('Bạn không có quyền');
         }
       });
-    });
   }
 
   delete(id: any) {
-    this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
-      this.userService.delete(id).subscribe((res: boolean) => {
-        if (res) {
-          this.notify.success('Xóa thành công!');
-          this.loadData();
+    this.roleService.checkPermission('NGUOI_DUNG', 'Delete')
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
+            this.userService.delete(id).subscribe((res: boolean) => {
+              if (res) {
+                this.notify.success('Xóa thành công!');
+                this.loadData();
+              } else {
+                console.log('Delete failed');
+              }
+            }, error => {
+              console.log(error);
+              this.notify.error('Có lỗi xảy ra!');
+            });
+          });
         } else {
-          console.log('Delete failed');
+          this.notify.warning('Bạn không có quyền');
         }
-      }, error => {
-        console.log(error);
-        this.notify.error('Có lỗi xảy ra!');
       });
-    });
   }
 
   editRoles(user: User) {

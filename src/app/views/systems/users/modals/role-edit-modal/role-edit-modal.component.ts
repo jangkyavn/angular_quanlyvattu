@@ -35,11 +35,11 @@ export class RoleEditModalComponent implements OnInit {
 
   viewPermission(event: any) {
     if (event.showPermission) {
+      this.role = event.role;
       this.tabListTitle = 'Quay lại';
-      this.tabDetailTitle = 'Chức năng';
+      this.tabDetailTitle = this.role.name;
       this.visibleTabDetail = true;
       this.selectedIndex = 2;
-      this.role = event.role;
     }
   }
 

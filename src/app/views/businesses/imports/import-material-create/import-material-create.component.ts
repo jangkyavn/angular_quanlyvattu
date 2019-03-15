@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { RoleService } from 'src/app/shared/services/role.service';
 import { MaterialStoreService } from 'src/app/shared/services/material-store.service';
 import { MaterialItemService } from 'src/app/shared/services/material-item.service';
 import { ImportMaterialService } from 'src/app/shared/services/import-material.service';
@@ -27,12 +28,21 @@ export class ImportMaterialCreateComponent implements OnInit {
   constructor(private router: Router,
     private fb: FormBuilder,
     private authService: AuthService,
+    private roleService: RoleService,
     private importMaterialService: ImportMaterialService,
     private materialStoreService: MaterialStoreService,
     private materialItemService: MaterialItemService,
     private notify: NotifyService) { }
 
   ngOnInit() {
+    this.roleService.checkPermission('NHAP_VAT_TU', 'Create')
+      .subscribe((response: boolean) => {
+        if (!response) {
+          this.router.navigate(['/']);
+          this.notify.warning('Bạn không có quyền');
+        }
+      });
+
     this.loadAllMaterialStores();
     this.loadAllMaterialItems();
     this.createForm();
@@ -82,10 +92,6 @@ export class ImportMaterialCreateComponent implements OnInit {
         this.notify.success('Thêm mới thành công');
         this.router.navigate(['/nghiep-vu/nhap/sua-phieu-nhap', res]);
       }
-    }, error => {
-      this.notify.error('Có lỗi xảy ra');
-      console.log('error addImportMaterial');
-      console.log(error);
     });
   }
 }

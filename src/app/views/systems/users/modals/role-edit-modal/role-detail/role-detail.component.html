@@ -1,4 +1,3 @@
-<p>Quyền: <strong>{{role.name}}</strong></p>
 <nz-table #basicTable nzShowSizeChanger [nzFrontPagination]="false" [nzData]="functions" [nzLoading]="loading"
   [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage" [(nzPageSize)]="pagination.itemsPerPage"
   [nzNoResult]="'Không tìm thấy kết quả.'" (nzPageIndexChange)="loadData()" (nzPageSizeChange)="loadData(true)"

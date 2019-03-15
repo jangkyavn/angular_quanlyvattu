@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { map, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { ImportMaterialDetail } from '../models/import-material-detail.model';
+
+import { UtilitiesService } from './utilities.service';
 
 @Injectable({
     providedIn: 'root'
@@ -11,14 +11,17 @@ import { ImportMaterialDetail } from '../models/import-material-detail.model';
 export class ImportMaterialDetailService {
     baseUrl = environment.apiUrl;
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient,
+        private utility: UtilitiesService) { }
 
     addNew(importDetailParams: any) {
-        return this.http.post(this.baseUrl + 'NhapVatTu/insertChiTiet', importDetailParams);
+        return this.http.post(this.baseUrl + 'NhapVatTu/insertChiTiet', importDetailParams)
+            .pipe(catchError(error => this.utility.handleError(error, 'addNewImportMaterialDetail')));
     }
 
     update(importDetailParams: any) {
-        return this.http.put(this.baseUrl + 'NhapVatTu/updateNhapChiTiet', importDetailParams);
+        return this.http.put(this.baseUrl + 'NhapVatTu/updateNhapChiTiet', importDetailParams)
+        .pipe(catchError(error => this.utility.handleError(error, 'updateImportMaterialDetail')));
     }
 
     checkDuplicate(importId: any, materialId: any) {
@@ -34,6 +37,7 @@ export class ImportMaterialDetailService {
     }
 
     delete(importId: number, materialId: number, storeId: number) {
-        return this.http.delete(this.baseUrl + `NhapVatTu/removeNhapchitiet/${importId}/${materialId}/${storeId}`);
+        return this.http.delete(this.baseUrl + `NhapVatTu/removeNhapchitiet/${importId}/${materialId}/${storeId}`)
+        .pipe(catchError(error => this.utility.handleError(error, 'deleteImportMaterialDetail')));
     }
 }

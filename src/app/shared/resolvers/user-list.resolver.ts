@@ -7,25 +7,16 @@ import { UserService } from '../services/user.service';
 import { NotifyService } from '../services/notify.service';
 
 import { User } from '../models/user.model';
+import { PaginatedResult } from '../models/pagination.model';
 
 @Injectable()
-export class UserListResolver implements Resolve<User[]> {
+export class UserListResolver implements Resolve<PaginatedResult<User[]>> {
     pageNumber = 1;
     pageSize = 10;
 
-    constructor(
-        private router: Router,
-        private userService: UserService,
-        private notify: NotifyService) { }
+    constructor(private userService: UserService) { }
 
-    resolve(route: ActivatedRouteSnapshot): Observable<User[]> {
-        return this.userService.getAllPaging(this.pageNumber, this.pageSize).pipe(
-            catchError(_ => {
-                this.notify.error('Có lỗi xảy ra');
-                console.log('error getAllPagingUsers');
-                this.router.navigate(['/']);
-                return of(null);
-            })
-        );
+    resolve(route: ActivatedRouteSnapshot): Observable<PaginatedResult<User[]>> {
+        return this.userService.getAllPaging(this.pageNumber, this.pageSize);
     }
 }

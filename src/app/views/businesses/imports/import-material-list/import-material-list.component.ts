@@ -11,6 +11,7 @@ import { PagingParams } from 'src/app/shared/params/paging.param';
 import {
   ImportMaterialViewDetailModalComponent
 } from '../modals/import-material-view-detail-modal/import-material-view-detail-modal.component';
+import { RoleService } from 'src/app/shared/services/role.service';
 
 @Component({
   selector: 'app-import-material-list',
@@ -39,7 +40,14 @@ export class ImportMaterialListComponent implements OnInit {
   @HostListener('window:keydown', ['$event'])
   onKeyPress($event: KeyboardEvent) {
     if (($event.ctrlKey || $event.metaKey) && ($event.keyCode === 73 || $event.keyCode === 105)) {
-      this.router.navigate(['/nghiep-vu/nhap/tao-phieu-nhap']);
+      this.roleService.checkPermission('NHAP_VAT_TU', 'Create')
+        .subscribe((response: boolean) => {
+          if (response) {
+            this.router.navigate(['/nghiep-vu/nhap/tao-phieu-nhap']);
+          } else {
+            this.notify.warning('Bạn không có quyền');
+          }
+        });
     }
   }
 
@@ -47,6 +55,7 @@ export class ImportMaterialListComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private modalService: NzModalService,
+    private roleService: RoleService,
     private importMaterialService: ImportMaterialService,
     private notify: NotifyService) { }
 
@@ -74,13 +83,34 @@ export class ImportMaterialListComponent implements OnInit {
         this.loading = false;
         this.pagination = res.pagination;
         this.dataSet = res.result;
-      }, error => {
-        this.notify.error('Có lỗi xảy ra');
-        console.log('error getAllPagingImportMaterial');
-      }, () => {
+
         if (this.dataSet.length === 0 && this.pagination.currentPage !== 1) {
           this.pagination.currentPage -= 1;
           this.loadData();
+        }
+      });
+  }
+
+  addNew() {
+    this.roleService.checkPermission('NHAP_VAT_TU', 'Create')
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.router.navigate(['/nghiep-vu/nhap/tao-phieu-nhap']);
+        } else {
+          this.notify.warning('Bạn không có quyền');
+          return false;
+        }
+      });
+  }
+
+  update(id: number) {
+    this.roleService.checkPermission('NHAP_VAT_TU', 'Update')
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.router.navigate(['/nghiep-vu/nhap/sua-phieu-nhap', id]);
+        } else {
+          this.notify.warning('Bạn không có quyền');
+          return false;
         }
       });
   }
@@ -108,18 +138,25 @@ export class ImportMaterialListComponent implements OnInit {
   }
 
   delete(id: number) {
-    this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
-      this.importMaterialService.delete(id).subscribe((res: boolean) => {
-        if (res) {
-          this.loadData();
-          this.notify.success('Xóa thành công');
+    this.roleService.checkPermission('NHAP_VAT_TU', 'Delete')
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.notify.confirm('Bạn có chắc chắn muốn xóa không?', () => {
+            this.importMaterialService.delete(id).subscribe((res: boolean) => {
+              if (res) {
+                this.loadData();
+                this.notify.success('Xóa thành công');
+              } else {
+                this.notify.warning('Phiếu có vật tư xuất, không được xóa!');
+              }
+            }, error => {
+              console.log('error deleteImport');
+            });
+          });
         } else {
-          this.notify.warning('Phiếu có vật tư xuất, không được xóa!');
+          this.notify.warning('Bạn không có quyền');
         }
-      }, error => {
-        console.log('error deleteImport');
       });
-    });
   }
 
   search() {

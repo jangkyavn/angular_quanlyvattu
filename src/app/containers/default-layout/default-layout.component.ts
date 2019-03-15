@@ -3,8 +3,11 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 import { AuthService } from '../../shared/services/auth.service';
-import { User } from '../../shared/models/user.model';
+import { RoleService } from 'src/app/shared/services/role.service';
 import { UtilitiesService } from 'src/app/shared/services/utilities.service';
+import { NotifyService } from 'src/app/shared/services/notify.service';
+
+import { User } from '../../shared/models/user.model';
 
 @Component({
   selector: 'app-default-layout',
@@ -27,6 +30,8 @@ export class DefaultLayoutComponent implements OnInit {
   constructor(
     private router: Router,
     public authService: AuthService,
+    private roleService: RoleService,
+    private notify: NotifyService,
     private utilities: UtilitiesService) { }
 
   ngOnInit() {
@@ -57,6 +62,18 @@ export class DefaultLayoutComponent implements OnInit {
         this.openMap[key] = false;
       }
     }
+  }
+
+  goToCreateImportMaterial() {
+    this.roleService.checkPermission('NHAP_VAT_TU', 'Create')
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.router.navigate(['/nghiep-vu/nhap/tao-phieu-nhap']);
+        } else {
+          this.notify.warning('Bạn không có quyền');
+          return false;
+        }
+      });
   }
 
   logout() {

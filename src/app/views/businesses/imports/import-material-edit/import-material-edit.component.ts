@@ -6,6 +6,7 @@ import { NzModalService } from 'ng-zorro-antd';
 import { MaterialItem } from 'src/app/shared/models/material-item.model';
 import { MaterialStore } from 'src/app/shared/models/material-store.model';
 
+import { RoleService } from 'src/app/shared/services/role.service';
 import { MaterialStoreService } from 'src/app/shared/services/material-store.service';
 import { MaterialItemService } from 'src/app/shared/services/material-item.service';
 import { ImportMaterialService } from 'src/app/shared/services/import-material.service';
@@ -49,6 +50,7 @@ export class ImportMaterialEditComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private modalService: NzModalService,
+    private roleService: RoleService,
     private importMaterialService: ImportMaterialService,
     private materialStoreService: MaterialStoreService,
     private materialItemService: MaterialItemService,
@@ -57,6 +59,15 @@ export class ImportMaterialEditComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.roleService.checkPermission('NHAP_VAT_TU', 'Update')
+    .subscribe((response: boolean) => {
+      if (!response) {
+        this.router.navigate(['/']);
+        this.notify.warning('Bạn không có quyền');
+      }
+    });
+
+
     this.importMaterialDetails = [];
     this.createForm();
   }

@@ -5,37 +5,34 @@
 <div style="padding:24px; background: #fff; min-height: 70vh">
   <div nz-row nzGutter="16">
     <div nz-col nzXs="24" nzSm="8" nzMd="8" nzLg="8" nzXl="8">
-      <nz-card *ngIf="totalUsers$ | async as totalUser; else loadingTotalUsers" class="card1" [nzBordered]="false"
-        [routerLink]="['/he-thong/nguoi-dung/danh-sach']">
+      <nz-card class="card1" [nzBordered]="false" [routerLink]="['/he-thong/nguoi-dung/danh-sach']">
         <h6>Người dùng</h6>
-        <h1>{{totalUser}}</h1>
+        <h1>{{totalUsers}}</h1>
         <i nz-icon type="user" theme="outline"></i>
       </nz-card>
-      <ng-template #loadingTotalUsers>
+      <!-- <ng-template #loadingTotalUsers>
         <nz-skeleton [nzActive]="true"></nz-skeleton>
-      </ng-template>
+      </ng-template> -->
     </div>
     <div nz-col nzXs="24" nzSm="8" nzMd="8" nzLg="8" nzXl="8">
-      <nz-card *ngIf="totalMaterials$ | async as totalMaterials; else loadingTotalMaterials" class="card2"
-        [nzBordered]="false" [routerLink]="['/danh-muc/thong-tin-vat-tu/vat-tu']">
+      <nz-card class="card2" [nzBordered]="false" [routerLink]="['/danh-muc/thong-tin-vat-tu/vat-tu']">
         <h6>Vật tư</h6>
         <h1>{{totalMaterials}}</h1>
         <i nz-icon type="dropbox" theme="outline"></i>
       </nz-card>
-      <ng-template #loadingTotalMaterials>
+      <!-- <ng-template #loadingTotalMaterials>
         <nz-skeleton [nzActive]="true"></nz-skeleton>
-      </ng-template>
+      </ng-template> -->
     </div>
     <div nz-col nzXs="24" nzSm="8" nzMd="8" nzLg="8" nzXl="8">
-      <nz-card *ngIf="totalInventories$ | async as totalInventories; else loadingTotalInventories" class="card3"
-        [nzBordered]="false" [routerLink]="['/nghiep-vu/kho/vat-tu-ton-kho']">
+      <nz-card class="card3" [nzBordered]="false" [routerLink]="['/nghiep-vu/kho/vat-tu-ton-kho']">
         <h6>Tồn kho</h6>
         <h1>{{totalInventories}}</h1>
         <i nz-icon type="appstore" theme="outline"></i>
       </nz-card>
-      <ng-template #loadingTotalInventories>
+      <!-- <ng-template #loadingTotalInventories>
         <nz-skeleton [nzActive]="true"></nz-skeleton>
-      </ng-template>
+      </ng-template> -->
     </div>
   </div>
 </div>

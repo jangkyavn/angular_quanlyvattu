@@ -84,10 +84,12 @@ export class InventoryMateriaDetailAddEditModalComponent implements OnInit {
         });
     } else {
       this.inventoryMaterialDetailService.update(kiemKeChiTietParams)
-        .subscribe((res: any) => {
-          if (res) {
+        .subscribe((res: number) => {
+          if (res === 1) {
             this.notify.success('Sửa thành công!');
             this.modal.destroy(true);
+          } else if (res === -1) {
+            this.notify.success('Đã xuất hoặc thanh lý. Không được sửa!');
           }
         });
     }
