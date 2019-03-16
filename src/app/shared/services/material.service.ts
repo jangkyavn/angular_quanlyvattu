@@ -75,7 +75,8 @@ export class MaterialService {
             paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
           }
           return paginatedResult;
-        })
+        }),
+        catchError(error => this.utility.handleError(error, 'getAllPagingSearchMaterial'))
       );
   }
 

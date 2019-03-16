@@ -14,6 +14,7 @@ import {
 
 import { MaterialDetailResolver } from 'src/app/shared/resolvers/material-detail.resolver';
 import { SearchMaterialListResolver } from 'src/app/shared/resolvers/search-material-list.resolver';
+import { SearchMaterialDetailResolver } from 'src/app/shared/resolvers/search-material-detail.resolver';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { SearchMaterialListResolver } from 'src/app/shared/resolvers/search-mate
   ],
   providers: [
     SearchMaterialListResolver,
-    MaterialDetailResolver
+    MaterialDetailResolver,
+    SearchMaterialDetailResolver
   ]
 })
 export class SearchMaterialsModule { }

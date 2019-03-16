@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { NzModalService } from 'ng-zorro-antd';
@@ -61,6 +61,7 @@ export class InventoryMaterialEditComponent implements OnInit, AfterViewInit {
   };
 
   constructor(private route: ActivatedRoute,
+    private router: Router,
     private fb: FormBuilder,
     private modalService: NzModalService,
     private materialStoreService: MaterialStoreService,
@@ -73,6 +74,14 @@ export class InventoryMaterialEditComponent implements OnInit, AfterViewInit {
     private utilities: UtilitiesService) { }
 
   ngOnInit() {
+    this.route.data.subscribe(data => {
+      const result = data['check-permission-update'];
+      if (!result) {
+        this.router.navigate(['/']);
+        this.notify.warning('Bạn không có quyền');
+      }
+    });
+
     this.inventories = [];
     this.loadingInventoryMaterialDetails = true;
 

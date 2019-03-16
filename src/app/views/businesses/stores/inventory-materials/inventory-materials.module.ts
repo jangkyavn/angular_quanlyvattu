@@ -13,6 +13,8 @@ import {
 
 import { InventoryMaterialListResolver } from 'src/app/shared/resolvers/inventory-material-list.resolver';
 import { InventoryMaterialResolver } from 'src/app/shared/resolvers/inventory-material.resolver';
+import { InventoryMaterialCreateResolver } from 'src/app/shared/resolvers/inventory-material-create.resolver';
+import { InventoryMaterialEditResolver } from 'src/app/shared/resolvers/inventory-material-edit.resolver';
 
 @NgModule({
   imports: [
@@ -30,7 +32,9 @@ import { InventoryMaterialResolver } from 'src/app/shared/resolvers/inventory-ma
   entryComponents: [InventoryMateriaDetailAddEditModalComponent],
   providers: [
     InventoryMaterialListResolver,
-    InventoryMaterialResolver
+    InventoryMaterialResolver,
+    InventoryMaterialCreateResolver,
+    InventoryMaterialEditResolver
   ]
 })
 export class InventoryMaterialsModule { }

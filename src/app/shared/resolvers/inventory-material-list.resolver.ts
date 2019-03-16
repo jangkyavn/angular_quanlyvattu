@@ -1,25 +1,20 @@
 import { Injectable } from '@angular/core';
-import { Resolve, Router, ActivatedRouteSnapshot } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
+import { Observable } from 'rxjs';
 
 import { InventoryMaterialService } from '../services/inventory-material.service';
-import { UtilitiesService } from '../services/utilities.service';
 
 import { InventoryMaterial } from '../models/inventory-material.model';
+import { PaginatedResult } from '../models/pagination.model';
 
 @Injectable()
-export class InventoryMaterialListResolver implements Resolve<InventoryMaterial[]> {
+export class InventoryMaterialListResolver implements Resolve<PaginatedResult<InventoryMaterial[]>> {
     pageNumber = 1;
     pageSize = 10;
 
-    constructor(
-        private inventoryMaterialService: InventoryMaterialService,
-        private utility: UtilitiesService) { }
+    constructor(private inventoryMaterialService: InventoryMaterialService) { }
 
-    resolve(route: ActivatedRouteSnapshot): Observable<InventoryMaterial[]> {
-        return this.inventoryMaterialService.getAllPaging(this.pageNumber, this.pageSize).pipe(
-            catchError(error => this.utility.handleError(error, 'getAllPagingInventoryMaterial'))
-        );
+    resolve(route: ActivatedRouteSnapshot): Observable<PaginatedResult<InventoryMaterial[]>> {
+        return this.inventoryMaterialService.getAllPaging(this.pageNumber, this.pageSize);
     }
 }

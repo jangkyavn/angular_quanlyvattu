@@ -6,11 +6,14 @@ import { map } from 'rxjs/operators';
 import { RoleService } from '../services/role.service';
 
 @Injectable()
-export class LiquidationMaterialEditResolver implements Resolve<boolean> {
+export class SearchMaterialDetailResolver implements Resolve<boolean> {
+    pageNumber = 1;
+    pageSize = 10;
+
     constructor(private roleService: RoleService) { }
 
     resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
-        return this.roleService.checkPermission('THANH_LY_VAT_TU', 'Update')
+        return this.roleService.checkPermission('TIM_KIEM_VAT_TU', 'Read')
             .pipe(map((response: boolean) => response));
     }
 }

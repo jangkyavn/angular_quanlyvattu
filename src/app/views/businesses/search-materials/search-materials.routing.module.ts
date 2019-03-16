@@ -6,6 +6,7 @@ import { SearchMaterialDetailComponent } from './search-material-detail/search-m
 
 import { MaterialDetailResolver } from 'src/app/shared/resolvers/material-detail.resolver';
 import { SearchMaterialListResolver } from 'src/app/shared/resolvers/search-material-list.resolver';
+import { SearchMaterialDetailResolver } from 'src/app/shared/resolvers/search-material-detail.resolver';
 
 const routes: Routes = [
     {
@@ -28,7 +29,10 @@ const routes: Routes = [
                 data: {
                     title: 'Chi tiết tìm kiếm vật tư'
                 },
-                resolve: { 'search-material': MaterialDetailResolver }
+                resolve: {
+                    'search-material': MaterialDetailResolver,
+                    'check-permission-read': SearchMaterialDetailResolver
+                }
             },
             {
                 path: '',

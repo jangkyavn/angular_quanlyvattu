@@ -32,7 +32,7 @@
 
     </div>
     <div nz-col nzSpan="8" nzOffset="8" class="text-right">
-      <button nz-button nzType="primary" [routerLink]="['/nghiep-vu/kho/phieu-kiem-ke-kho/tao-phieu-kiem-ke']">
+      <button nz-button nzType="primary" (click)="addNew()">
         <i nz-icon type="plus" theme="outline"></i> Thêm
       </button>
     </div>
@@ -67,7 +67,7 @@
         <td class="text-center decrease-row">
           <nz-button-group>
             <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
-              [routerLink]="['/nghiep-vu/kho/phieu-kiem-ke-kho/sua-phieu-kiem-ke', data.maPhieuKiemKe]">
+              (click)="update(data.maPhieuKiemKe)">
               <i nz-icon type="edit" theme="outline"></i>
             </button>
             <button nz-button nzType="default" class="btn-primary" nz-tooltip nzTitle="Xem"

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { MaterialStoreService } from 'src/app/shared/services/material-store.service';
 import { PersonnelService } from 'src/app/shared/services/personnel.service';
@@ -20,7 +20,9 @@ export class InventoryMaterialCreateComponent implements OnInit {
   personnels: Personnel[];
   inventoryMaterialForm: FormGroup;
 
-  constructor(private router: Router,
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
     private fb: FormBuilder,
     private materialStoreService: MaterialStoreService,
     private personnelService: PersonnelService,
@@ -28,6 +30,14 @@ export class InventoryMaterialCreateComponent implements OnInit {
     private notify: NotifyService) { }
 
   ngOnInit() {
+    this.route.data.subscribe(data => {
+      const result = data['check-permission-create'];
+      if (!result) {
+        this.router.navigate(['/']);
+        this.notify.warning('Bạn không có quyền');
+      }
+    });
+
     this.loadAllMaterialStores();
     this.loadAllPersonnels();
     this.createForm();

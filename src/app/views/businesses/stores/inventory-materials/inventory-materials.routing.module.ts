@@ -7,6 +7,8 @@ import { InventoryMaterialEditComponent } from './inventory-material-edit/invent
 
 import { InventoryMaterialListResolver } from 'src/app/shared/resolvers/inventory-material-list.resolver';
 import { InventoryMaterialResolver } from 'src/app/shared/resolvers/inventory-material.resolver';
+import { InventoryMaterialCreateResolver } from 'src/app/shared/resolvers/inventory-material-create.resolver';
+import { InventoryMaterialEditResolver } from 'src/app/shared/resolvers/inventory-material-edit.resolver';
 
 const routes: Routes = [
     {
@@ -28,7 +30,8 @@ const routes: Routes = [
                 component: InventoryMaterialCreateComponent,
                 data: {
                     title: 'Tạo phiếu kiểm kê'
-                }
+                },
+                resolve: { 'check-permission-create': InventoryMaterialCreateResolver }
             },
             {
                 path: 'sua-phieu-kiem-ke/:id',
@@ -36,7 +39,10 @@ const routes: Routes = [
                 data: {
                     title: 'Sửa phiếu kiểm kê'
                 },
-                resolve: { 'inventory-material': InventoryMaterialResolver }
+                resolve: {
+                    'inventory-material': InventoryMaterialResolver,
+                    'check-permission-update': InventoryMaterialEditResolver
+                }
             },
             {
                 path: '',
