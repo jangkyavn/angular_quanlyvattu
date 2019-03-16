@@ -7,6 +7,8 @@ import { LiquidationMaterialEditComponent } from './liquidation-material-edit/li
 
 import { LiquidationMaterialListResolver } from 'src/app/shared/resolvers/liquidation-material-list.resolver';
 import { LiquidationMaterialResolver } from 'src/app/shared/resolvers/liquidation-material.resolver';
+import { LiquidationMaterialCreateResolver } from 'src/app/shared/resolvers/liquidation-material-create.resolver';
+import { LiquidationMaterialEditResolver } from 'src/app/shared/resolvers/liquidation-material-edit.resolver';
 
 const routes: Routes = [
     {
@@ -28,7 +30,8 @@ const routes: Routes = [
                 component: LiquidationMaterialCreateComponent,
                 data: {
                     title: 'Tạo phiếu thanh lý'
-                }
+                },
+                resolve: { 'check-permission-create': LiquidationMaterialCreateResolver }
             },
             {
                 path: 'sua-phieu-thanh-ly/:id',
@@ -36,7 +39,10 @@ const routes: Routes = [
                 data: {
                     title: 'Sửa phiếu thanh lý'
                 },
-                resolve: { 'liquidation-material': LiquidationMaterialResolver }
+                resolve: {
+                    'liquidation-material': LiquidationMaterialResolver,
+                    'check-permission-update': LiquidationMaterialEditResolver
+                }
             },
             {
                 path: '',

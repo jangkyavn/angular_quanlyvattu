@@ -1,31 +1,20 @@
 import { Injectable } from '@angular/core';
-import { Resolve, Router, ActivatedRouteSnapshot } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
+import { Observable } from 'rxjs';
 
 import { ImportMaterialService } from '../services/import-material.service';
-import { NotifyService } from '../services/notify.service';
 
 import { ImportMaterial } from '../models/import-material.model';
+import { PaginatedResult } from '../models/pagination.model';
 
 @Injectable()
-export class ImportMaterialListResolver implements Resolve<ImportMaterial[]> {
+export class ImportMaterialListResolver implements Resolve<PaginatedResult<ImportMaterial[]>> {
     pageNumber = 1;
     pageSize = 10;
 
-    constructor(
-        private router: Router,
-        private importMaterialService: ImportMaterialService,
-        private notify: NotifyService) { }
+    constructor(private importMaterialService: ImportMaterialService) { }
 
-    resolve(route: ActivatedRouteSnapshot): Observable<ImportMaterial[]> {
-        return this.importMaterialService.getAllPaging(this.pageNumber, this.pageSize).pipe(
-            catchError(_ => {
-                this.notify.error('Có lỗi xảy ra');
-                console.log('error getAllPagingImportMaterial');
-                this.router.navigate(['/']);
-                return of(null);
-            })
-        );
+    resolve(route: ActivatedRouteSnapshot): Observable<PaginatedResult<ImportMaterial[]>> {
+        return this.importMaterialService.getAllPaging(this.pageNumber, this.pageSize);
     }
 }

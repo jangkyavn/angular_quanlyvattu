@@ -16,6 +16,8 @@ import {
 
 import { LiquidationMaterialListResolver } from 'src/app/shared/resolvers/liquidation-material-list.resolver';
 import { LiquidationMaterialResolver } from 'src/app/shared/resolvers/liquidation-material.resolver';
+import { LiquidationMaterialCreateResolver } from 'src/app/shared/resolvers/liquidation-material-create.resolver';
+import { LiquidationMaterialEditResolver } from 'src/app/shared/resolvers/liquidation-material-edit.resolver';
 
 @NgModule({
   imports: [
@@ -37,7 +39,9 @@ import { LiquidationMaterialResolver } from 'src/app/shared/resolvers/liquidatio
   ],
   providers: [
     LiquidationMaterialListResolver,
-    LiquidationMaterialResolver
+    LiquidationMaterialResolver,
+    LiquidationMaterialCreateResolver,
+    LiquidationMaterialEditResolver
   ],
 })
 export class LiquidationMaterialsModule { }

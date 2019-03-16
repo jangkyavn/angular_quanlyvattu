@@ -61,6 +61,14 @@ export class LiquidationMaterialEditComponent implements OnInit {
     private notify: NotifyService) { }
 
   ngOnInit() {
+    this.route.data.subscribe(data => {
+      const result = data['check-permission-update'];
+      if (!result) {
+        this.router.navigate(['/']);
+        this.notify.warning('Bạn không có quyền');
+      }
+    });
+
     this.inventories = [];
     this.loadingLiquidationDetails = true;
 

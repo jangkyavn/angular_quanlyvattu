@@ -28,11 +28,9 @@
   </div>
   <hr style="border: 0.5px solid #E8E8E8;" />
   <div nz-row style="margin-bottom: 0.5rem">
-    <div nz-col nzSpan="8">
-
-    </div>
+    <div nz-col nzSpan="8"></div>
     <div nz-col nzSpan="8" nzOffset="8" class="text-right">
-      <button nz-button nzType="primary" [routerLink]="['/nghiep-vu/kho/thanh-ly-vat-tu/tao-phieu-thanh-ly']">
+      <button nz-button nzType="primary" (click)="addNew()">
         <i nz-icon type="plus" theme="outline"></i> Thêm
       </button>
     </div>
@@ -65,7 +63,7 @@
         <td class="text-center decrease-row">
           <nz-button-group>
             <button *ngIf="data.status" nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
-              [routerLink]="['/nghiep-vu/kho/thanh-ly-vat-tu/sua-phieu-thanh-ly', data.maPhieuThanhLy]">
+              (click)="update(data.maPhieuThanhLy)">
               <i nz-icon type="edit" theme="outline"></i>
             </button>
             <button nz-button nzType="default" class="btn-primary" nz-tooltip nzTitle="Xem"
