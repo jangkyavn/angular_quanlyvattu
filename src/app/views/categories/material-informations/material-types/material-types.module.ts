@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MaterialTypesRoutingModule } from './material-types.routing.module';
 import { SharedModule } from 'src/app/shared.module';
@@ -11,6 +11,7 @@ import { MaterialTypeListResolver } from 'src/app/shared/resolvers/material-type
 
 @NgModule({
   imports: [
+    FormsModule,
     ReactiveFormsModule,
     MaterialTypesRoutingModule,
     SharedModule

@@ -6,4 +6,6 @@ export interface PagingParams {
     sortKey?: string;
     fromDate?: string;
     toDate?: string;
+    searchKey?: string;
+    searchValue?: string;
 }

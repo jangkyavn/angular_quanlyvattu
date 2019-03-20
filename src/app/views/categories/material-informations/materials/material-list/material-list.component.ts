@@ -35,7 +35,9 @@ export class MaterialListComponent implements OnInit {
   pagingParams: PagingParams = {
     keyword: '',
     sortKey: '',
-    sortValue: ''
+    sortValue: '',
+    searchKey: '',
+    searchValue: ''
   };
 
   @HostListener('window:keydown', ['$event'])
@@ -350,5 +352,16 @@ export class MaterialListComponent implements OnInit {
         }
       }
     });
+  }
+
+  searchColumn(searchKey: string) {
+    this.pagingParams.searchKey = searchKey;
+    this.loadData(true);
+  }
+
+  reset() {
+    this.pagingParams.searchKey = '';
+    this.pagingParams.searchValue = '';
+    this.loadData(true);
   }
 }

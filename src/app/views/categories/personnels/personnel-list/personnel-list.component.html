@@ -4,9 +4,9 @@
 </nz-breadcrumb>
 
 <div style="padding:24px; background: #fff; min-height: 70vh">
-    <div nz-row style="margin-bottom: 1rem">
+  <div nz-row style="margin-bottom: 1rem">
     <div nz-col nzSpan="8">
-      <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
+      <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
         <input type="text" nz-input placeholder="Tìm kiếm..." #keyword (keyup.enter)="search(keyword.value)">
       </nz-input-group>
       <ng-template #suffixIconButton>
@@ -21,28 +21,76 @@
     </div>
   </div>
 
-  <nz-table #table nzShowSizeChanger [nzFrontPagination]="false"
-    [nzData]="dataSet" [nzLoading]="loading" [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage"
-    [(nzPageSize)]="pagination.itemsPerPage" [nzNoResult]="'Không tìm thấy kết quả.'" (nzPageIndexChange)="loadData()"
-    (nzPageSizeChange)="loadData(true)" nzSize="middle" nzShowQuickJumper [nzShowTotal]="rangeTemplate">
+  <nz-table #table nzShowSizeChanger [nzFrontPagination]="false" [nzData]="dataSet" [nzLoading]="loading"
+    [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage" [(nzPageSize)]="pagination.itemsPerPage"
+    [nzNoResult]="'Không tìm thấy kết quả.'" (nzPageIndexChange)="loadData()" (nzPageSizeChange)="loadData(true)"
+    nzSize="middle" nzShowQuickJumper [nzShowTotal]="rangeTemplate">
     <ng-template #rangeTemplate let-range="range" let-total>
       {{range[0]}}-{{range[1]}} của {{total}} bản ghi
     </ng-template>
     <thead (nzSortChange)="sort($event)" nzSingleSort>
       <tr>
-        <th nzWidth="20%" nzShowSort nzSortKey="hoTen">Họ tên</th>
-        <th nzWidth="15%" nzShowSort nzSortKey="ngaySinh">Ngày sinh</th>
-        <th nzWidth="30%" nzShowSort nzSortKey="queQuan">Quê quán</th>
-        <th nzWidth="15%" nzShowSort nzSortKey="danToc">Dân tộc</th>
+        <th nzWidth="20%" nzShowSort nzSortKey="hoTen" nzCustomFilter>Họ tên
+          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
+            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown.nzVisible"
+              nz-dropdown></i>
+            <div class="search-box">
+              <input type="text" nz-input placeholder="Tìm họ tên" [(ngModel)]="pagingParams.searchValue"
+                (keyup.enter)="searchColumn('hoTen')">
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" nzType="primary"
+                (click)="searchColumn('hoTen')" class="search-button">Tìm</button>
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" (click)="reset()">Reset</button>
+            </div>
+          </nz-dropdown>
+        </th>
+        <th nzWidth="15%" nzShowSort nzSortKey="ngaySinh" nzCustomFilter>Ngày sinh
+          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
+            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown.nzVisible"
+              nz-dropdown></i>
+            <div class="search-box">
+              <input type="text" nz-input placeholder="Tìm ngày sinh" [(ngModel)]="pagingParams.searchValue"
+                (keyup.enter)="searchColumn('ngaySinh')">
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" nzType="primary"
+                (click)="searchColumn('ngaySinh')" class="search-button">Tìm</button>
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" (click)="reset()">Reset</button>
+            </div>
+          </nz-dropdown>
+        </th>
+        <th nzWidth="30%" nzShowSort nzSortKey="queQuan" nzCustomFilter>Quê quán
+          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
+            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown.nzVisible"
+              nz-dropdown></i>
+            <div class="search-box">
+              <input type="text" nz-input placeholder="Tìm quê quán" [(ngModel)]="pagingParams.searchValue"
+                (keyup.enter)="searchColumn('queQuan')">
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" nzType="primary"
+                (click)="searchColumn('queQuan')" class="search-button">Tìm</button>
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" (click)="reset()">Reset</button>
+            </div>
+          </nz-dropdown>
+        </th>
+        <th nzWidth="15%" nzShowSort nzSortKey="danToc" nzCustomFilter>Dân tộc
+          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
+            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown.nzVisible"
+              nz-dropdown></i>
+            <div class="search-box">
+              <input type="text" nz-input placeholder="Tìm dân tộc" [(ngModel)]="pagingParams.searchValue"
+                (keyup.enter)="searchColumn('danToc')">
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" nzType="primary"
+                (click)="searchColumn('danToc')" class="search-button">Tìm</button>
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" (click)="reset()">Reset</button>
+            </div>
+          </nz-dropdown>
+        </th>
         <th nzWidth="20%">Thao tác</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let data of table.data">
-        <td [innerHTML]="data.hoTen | highlight : pagingParams.keyword"></td>
-        <td [innerHTML]="data.ngaySinh | date:'dd/MM/yyyy' | highlight : pagingParams.keyword"></td>
-        <td [innerHTML]="data.queQuan | highlight : pagingParams.keyword"></td>
-        <td [innerHTML]="data.danToc | highlight : pagingParams.keyword"></td>
+        <td>{{data.hoTen}}</td>
+        <td>{{data.ngaySinh | date:'dd/MM/yyyy'}}</td>
+        <td>{{data.queQuan}}</td>
+        <td>{{data.danToc}}</td>
         <td class="decrease-row">
           <nz-button-group>
             <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa" (click)="update(data.maNS)">

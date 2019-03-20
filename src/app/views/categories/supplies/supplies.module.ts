@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { SuppliesRoutingModule } from './supplies.routing.module';
 import { SharedModule } from 'src/app/shared.module';
@@ -11,6 +11,7 @@ import { SupplyListResolver } from 'src/app/shared/resolvers/supply-list.resolve
 
 @NgModule({
   imports: [
+    FormsModule,
     ReactiveFormsModule,
     SuppliesRoutingModule,
     SharedModule

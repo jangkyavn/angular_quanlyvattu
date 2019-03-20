@@ -6,7 +6,7 @@
 <div style="padding:24px; background: #fff; min-height: 70vh">
   <div nz-row style="margin-bottom: 1rem">
     <div nz-col nzSpan="8">
-      <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
+      <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
         <input type="text" nz-input placeholder="Tìm kiếm..." #keyword (keyup.enter)="search(keyword.value)">
       </nz-input-group>
       <ng-template #suffixIconButton>
@@ -26,12 +26,11 @@
     </div>
   </div>
 
-  <nz-table #table nzShowSizeChanger [nzFrontPagination]="false"
-    [nzData]="dataSet" [nzLoading]="loading" [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage"
-    [(nzPageSize)]="pagination.itemsPerPage" [nzNoResult]="'Không tìm thấy kết quả.'"
-    (nzPageIndexChange)="loadData(); refreshStatus()"
-    (nzPageSizeChange)="loadData(true); refreshStatus()" nzShowQuickJumper
-    [nzShowTotal]="rangeTemplate" nzSize="middle" (nzCurrentPageDataChange)="currentPageDataChange($event)">
+  <nz-table #table nzShowSizeChanger [nzFrontPagination]="false" [nzData]="dataSet" [nzLoading]="loading"
+    [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage" [(nzPageSize)]="pagination.itemsPerPage"
+    [nzNoResult]="'Không tìm thấy kết quả.'" (nzPageIndexChange)="loadData(); refreshStatus()"
+    (nzPageSizeChange)="loadData(true); refreshStatus()" nzShowQuickJumper [nzShowTotal]="rangeTemplate" nzSize="middle"
+    (nzCurrentPageDataChange)="currentPageDataChange($event)">
     <ng-template #rangeTemplate let-range="range" let-total>
       {{range[0]}}-{{range[1]}} của {{total}} bản ghi
     </ng-template>
@@ -39,18 +38,28 @@
       <tr>
         <th nzWidth="10%" nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
           (nzCheckedChange)="checkAll($event)"></th>
-        <th nzWidth="70%" nzShowSort nzSortKey="tenDVT">Tên đơn vị tính</th>
+        <th nzWidth="70%" nzShowSort nzSortKey="tenDVT" nzCustomFilter>Tên đơn vị tính
+          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
+            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown.nzVisible"
+              nz-dropdown></i>
+            <div class="search-box">
+              <input type="text" nz-input placeholder="Tìm đơn vị tính" [(ngModel)]="pagingParams.searchValue" (keyup.enter)="searchColumn('tenDVT')">
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" nzType="primary"
+                (click)="searchColumn('tenDVT')" class="search-button">Tìm</button>
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" (click)="reset()">Reset</button>
+            </div>
+          </nz-dropdown>
+        </th>
         <th nzWidth="20%">Thao tác</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let data of table.data">
         <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()"></td>
-        <td [innerHTML]="data.tenDVT | highlight : pagingParams.keyword"></td>
+        <td>{{data.tenDVT}}</td>
         <td class="decrease-row">
           <nz-button-group>
-            <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
-              (click)="update(data.maDVT)">
+            <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa" (click)="update(data.maDVT)">
               <i nz-icon type="edit" theme="outline"></i>
             </button>
             <button nz-button nzTypse="default" class="btn-danger" nz-tooltip nzTitle="Xóa"

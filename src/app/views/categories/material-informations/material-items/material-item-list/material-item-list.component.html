@@ -7,7 +7,7 @@
 <div style="padding:24px; background: #fff; min-height: 70vh">
   <div nz-row style="margin-bottom: 1rem">
     <div nz-col nzSpan="8">
-      <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
+      <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
         <input type="text" nz-input placeholder="Tìm kiếm..." #keyword (keyup.enter)="search(keyword.value)">
       </nz-input-group>
       <ng-template #suffixIconButton>
@@ -29,15 +29,37 @@
     </ng-template>
     <thead (nzSortChange)="sort($event)" nzSingleSort>
       <tr>
-        <th nzWidth="50%" nzShowSort nzSortKey="tenHM">Tên hạng mục</th>
-        <th nzWidth="40%" nzShowSort nzSortKey="ghiChu">Ghi chú</th>
+        <th nzWidth="50%" nzShowSort nzSortKey="tenHM" nzCustomFilter>Tên hạng mục
+          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
+            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown.nzVisible"
+              nz-dropdown></i>
+            <div class="search-box">
+              <input type="text" nz-input placeholder="Tìm hạng mục" [(ngModel)]="pagingParams.searchValue" (keyup.enter)="searchColumn('tenHM')">
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" nzType="primary"
+                (click)="searchColumn('tenHM')" class="search-button">Tìm</button>
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" (click)="reset()">Reset</button>
+            </div>
+          </nz-dropdown>
+        </th>
+        <th nzWidth="40%" nzShowSort nzSortKey="ghiChu" nzCustomFilter>Ghi chú
+          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
+            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown.nzVisible"
+              nz-dropdown></i>
+            <div class="search-box">
+              <input type="text" nz-input placeholder="Tìm ghi chú" [(ngModel)]="pagingParams.searchValue" (keyup.enter)="searchColumn('ghiChu')">
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" nzType="primary"
+                (click)="searchColumn('ghiChu')" class="search-button">Tìm</button>
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" (click)="reset()">Reset</button>
+            </div>
+          </nz-dropdown>
+        </th>
         <th nzWidth="10%">Thao tác</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let data of table.data">
-        <td [innerHTML]="data.tenHM | highlight : pagingParams.keyword"></td>
-        <td [innerHTML]="data.ghiChu | highlight : pagingParams.keyword"></td>
+        <td>{{data.tenHM}}</td>
+        <td>{{data.ghiChu}}</td>
         <td class="decrease-row">
           <button nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa" (click)="update(data.maHM)">
             <i nz-icon type="edit" theme="outline"></i>

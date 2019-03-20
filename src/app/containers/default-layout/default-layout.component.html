@@ -1,8 +1,8 @@
 <nz-layout>
   <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzWidth]="width" [nzBreakpoint]="'sm'"
     [nzTrigger]="triggerTemplate">
-    <div class="logo" [routerLink]="['/']" style="cursor: pointer;">
-    </div>
+    <div class="logo" [routerLink]="['/']" style="cursor: pointer;"></div>
+
     <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed" id="sidebarMenu">
       <!-- menu quản trị -->
       <li nz-submenu [(nzOpen)]="openMap.sub1" (nzOpenChange)="openHandler('sub1')">

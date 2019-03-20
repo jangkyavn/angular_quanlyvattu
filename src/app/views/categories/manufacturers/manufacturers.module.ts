@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ManufacturersRoutingModule } from './manufacturers.routing.module';
 import { SharedModule } from 'src/app/shared.module';
@@ -11,6 +11,7 @@ import { ManufacturerListResolver } from 'src/app/shared/resolvers/manufacturer-
 
 @NgModule({
   imports: [
+    FormsModule,
     ReactiveFormsModule,
     ManufacturersRoutingModule,
     SharedModule

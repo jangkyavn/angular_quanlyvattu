@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ProducingCountriesRoutingModule } from './producing-countries.routing.module';
 import { SharedModule } from 'src/app/shared.module';
@@ -13,6 +13,7 @@ import { ProducingCountryListResolver } from 'src/app/shared/resolvers/producing
 
 @NgModule({
   imports: [
+    FormsModule,
     ReactiveFormsModule,
     ProducingCountriesRoutingModule,
     SharedModule

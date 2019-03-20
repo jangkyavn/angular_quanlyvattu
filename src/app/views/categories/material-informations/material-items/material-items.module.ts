@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MaterialItemsRoutingModule } from './material-items.routing.module';
 import { SharedModule } from 'src/app/shared.module';
@@ -11,6 +11,7 @@ import { MaterialItemListResolver } from 'src/app/shared/resolvers/material-item
 
 @NgModule({
   imports: [
+    FormsModule,
     ReactiveFormsModule,
     MaterialItemsRoutingModule,
     SharedModule

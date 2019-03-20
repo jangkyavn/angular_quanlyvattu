@@ -26,7 +26,9 @@ export class MaterialItemListComponent implements OnInit {
   pagingParams: PagingParams = {
     keyword: '',
     sortKey: '',
-    sortValue: ''
+    sortValue: '',
+    searchKey: '',
+    searchValue: ''
   };
 
   constructor(
@@ -134,6 +136,17 @@ export class MaterialItemListComponent implements OnInit {
 
   search(keyword: string) {
     this.pagingParams.keyword = keyword;
+    this.loadData(true);
+  }
+
+  searchColumn(searchKey: string) {
+    this.pagingParams.searchKey = searchKey;
+    this.loadData(true);
+  }
+
+  reset() {
+    this.pagingParams.searchKey = '';
+    this.pagingParams.searchValue = '';
     this.loadData(true);
   }
 }
