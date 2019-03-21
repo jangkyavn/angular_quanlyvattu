@@ -33,6 +33,8 @@ export class InventoryMaterialService {
       params = params.append('keyword', pagingParams.keyword);
       params = params.append('sortKey', pagingParams.sortKey);
       params = params.append('sortValue', pagingParams.sortValue);
+      params = params.append('searchKey', pagingParams.searchKey);
+      params = params.append('searchValue', pagingParams.searchValue);
     }
 
     return this.http.get<InventoryMaterial[]>(this.baseUrl + 'KiemKeVatTu/getAllPaging', { observe: 'response', params })
@@ -69,13 +71,13 @@ export class InventoryMaterialService {
   }
 
   getInventories(page?: any,
-      itemsPerPage?: any,
-      pagingParams?: PagingParams,
-      storeId?: any,
-      importId?: any,
-      materialId?: any,
-      inventoryMaterialId?: any,
-      status?: any): Observable<PaginatedResult<Inventory[]>> {
+    itemsPerPage?: any,
+    pagingParams?: PagingParams,
+    storeId?: any,
+    importId?: any,
+    materialId?: any,
+    inventoryMaterialId?: any,
+    status?: any): Observable<PaginatedResult<Inventory[]>> {
     const paginatedResult = new PaginatedResult<Inventory[]>();
 
     let params = new HttpParams();
@@ -88,6 +90,8 @@ export class InventoryMaterialService {
       params = params.append('keyword', pagingParams.keyword);
       params = params.append('sortKey', pagingParams.sortKey);
       params = params.append('sortValue', pagingParams.sortValue);
+      params = params.append('searchKey', pagingParams.searchKey);
+      params = params.append('searchValue', pagingParams.searchValue);
     }
 
     params = params.append('maKho', storeId);

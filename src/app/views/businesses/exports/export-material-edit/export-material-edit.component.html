@@ -6,12 +6,12 @@
 
 <div style="padding:24px; background: #fff; min-height: 70vh">
   <form nz-form [formGroup]="exportMaterialForm" (ngSubmit)="saveChanges()" autocomplete="off">
-    <nz-card style="width:100%;" nzTitle="Xuất vật tư" [nzExtra]="extraTemplate">
+    <nz-card style="width:100%;" nzTitle="Thông tin phiếu xuất" [nzExtra]="extraTemplate">
       <table style="width: 100%;">
         <tr>
           <td style="width: 50%;">
             <nz-form-item>
-              <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzFor="ngayNhap">Ngày nhập</nz-form-label>
+              <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzFor="ngayNhap">Ngày xuất</nz-form-label>
               <nz-form-control [nzSm]="16" [nzXs]="24">
                 <input type="date" nz-input formControlName="ngayNhap" id="ngayNhap" />
                 <nz-form-explain
@@ -69,13 +69,17 @@
           </td>
         </tr>
         <tr>
-          <td colspan="2" style="text-align: right;">
-            <button type="button" nz-button nzType="default" [routerLink]="['/nghiep-vu/xuat']">
-              <i nz-icon type="close" theme="outline"></i> Hủy
-            </button>
-            <button type="submit" nz-button nzType="primary" style="margin-left:1rem;">
-              <i nz-icon type="save" theme="outline"></i> Lưu
-            </button>
+          <td colspan="2">
+            <div nz-row>
+              <div nz-col [nzOffset]="4" nzXs="24" nzSm="20" nzMd="20" nzLg="20" nzXl="20" class="text-left">
+                <button type="submit" nz-button nzType="primary" style="margin-right:1rem;">
+                  <i nz-icon type="save" theme="outline"></i> Lưu
+                </button>
+                <button type="button" nz-button nzType="default" [routerLink]="['/nghiep-vu/xuat']">
+                  <i nz-icon type="close" theme="outline"></i> Hủy
+                </button>
+              </div>
+            </div>
           </td>
         </tr>
       </table>
@@ -90,7 +94,7 @@
   <nz-card style="width:100%;" nzTitle="Danh sách tồn kho">
     <div nz-row style="margin-bottom: 0.5rem">
       <div nz-col nzSpan="8">
-        <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
           <input type="text" nz-input placeholder="Tìm kiếm..." #keywordInventory
             (keyup.enter)="searchInventory(keywordInventory.value)">
         </nz-input-group>
@@ -105,18 +109,65 @@
     <nz-table #inventoryTable [nzFrontPagination]="false" [nzData]="inventories" [nzLoading]="loadingInventories"
       [nzTotal]="pagination.totalItems" [(nzPageIndex)]="pagination.currentPage"
       [(nzPageSize)]="pagination.itemsPerPage" [nzNoResult]="'Không tìm thấy kết quả.'"
-      (nzPageIndexChange)="loadInventoriesByStoreId()"
-      (nzPageSizeChange)="loadInventoriesByStoreId(true)" [nzShowTotal]="rangeTemplate"
-      nzSize="middle" nzBordered>
+      (nzPageIndexChange)="loadInventoriesByStoreId()" (nzPageSizeChange)="loadInventoriesByStoreId(true)"
+      [nzShowTotal]="rangeTemplate" nzSize="middle" nzBordered>
       <ng-template #rangeTemplate let-range="range" let-total>
         {{range[0]}}-{{range[1]}} của {{total}} bản ghi
       </ng-template>
       <thead (nzSortChange)="sortInventories($event)" nzSingleSort>
         <tr>
-          <th nzWidth="30%" nzShowSort nzSortKey="tenVatTu">Vật tư</th>
-          <th nzWidth="20%" nzShowSort nzSortKey="maPhieuNhap">Mã phiếu nhập</th>
-          <th nzWidth="20%" nzShowSort nzSortKey="maPhieuNhap">Ngày nhập</th>
-          <th nzWidth="20%" nzShowSort nzSortKey="soLuongTon">Số lượng tồn</th>
+          <th nzWidth="30%" nzShowSort nzSortKey="tenVatTu" nzCustomFilter>Vật tư
+            <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown1>
+              <i nz-icon nzType="search" class="ant-table-filter-icon"
+                [class.ant-table-filter-open]="dropdown1.nzVisible" nz-dropdown></i>
+              <div class="search-box">
+                <input type="text" nz-input placeholder="Tìm vật tư" [(ngModel)]="pagingParams.searchValue"
+                  (keyup.enter)="searchColumn('tenVatTu')">
+                <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" nzType="primary"
+                  (click)="searchColumn('tenVatTu')" class="search-button">Tìm</button>
+                <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" (click)="reset()">Reset</button>
+              </div>
+            </nz-dropdown>
+          </th>
+          <th nzWidth="20%" nzShowSort nzSortKey="maPhieuNhap" nzCustomFilter>Mã phiếu nhập
+            <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown2>
+              <i nz-icon nzType="search" class="ant-table-filter-icon"
+                [class.ant-table-filter-open]="dropdown2.nzVisible" nz-dropdown></i>
+              <div class="search-box">
+                <input type="text" nz-input placeholder="Tìm mã phiếu nhập" [(ngModel)]="pagingParams.searchValue"
+                  (keyup.enter)="searchColumn('maPhieuNhap')">
+                <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" nzType="primary"
+                  (click)="searchColumn('maPhieuNhap')" class="search-button">Tìm</button>
+                <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" (click)="reset()">Reset</button>
+              </div>
+            </nz-dropdown>
+          </th>
+          <th nzWidth="20%" nzShowSort nzSortKey="ngayNhap" nzCustomFilter>Ngày nhập
+            <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown3>
+              <i nz-icon nzType="search" class="ant-table-filter-icon"
+                [class.ant-table-filter-open]="dropdown3.nzVisible" nz-dropdown></i>
+              <div class="search-box">
+                <input type="text" nz-input placeholder="Tìm ngày nhập" [(ngModel)]="pagingParams.searchValue"
+                  (keyup.enter)="searchColumn('ngayNhap')">
+                <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" nzType="primary"
+                  (click)="searchColumn('ngayNhap')" class="search-button">Tìm</button>
+                <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" (click)="reset()">Reset</button>
+              </div>
+            </nz-dropdown>
+          </th>
+          <th nzWidth="20%" nzShowSort nzSortKey="soLuongTon" nzCustomFilter>Số lượng tồn
+            <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown3>
+              <i nz-icon nzType="search" class="ant-table-filter-icon"
+                [class.ant-table-filter-open]="dropdown3.nzVisible" nz-dropdown></i>
+              <div class="search-box">
+                <input type="text" nz-input placeholder="Tìm số lượng tồn" [(ngModel)]="pagingParams.searchValue"
+                  (keyup.enter)="searchColumn('soLuongTon')">
+                <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" nzType="primary"
+                  (click)="searchColumn('soLuongTon')" class="search-button">Tìm</button>
+                <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" (click)="reset()">Reset</button>
+              </div>
+            </nz-dropdown>
+          </th>
           <th nzWidth="10%"></th>
         </tr>
       </thead>
@@ -137,7 +188,7 @@
     </nz-table>
   </nz-card>
   <br />
-  <nz-card style="width:100%;" nzTitle="Danh sách xuất vật tư" *ngIf="exportMaterialDetails.length > 0">
+  <nz-card style="width:100%;" nzTitle="Danh sách chi tiết xuất vật tư" *ngIf="exportMaterialDetails.length > 0">
     <nz-table #exportDetailTable [nzData]="exportMaterialDetails" nzBordered [nzLoading]="loadingExportDetails"
       [nzShowPagination]="false" nzSize="middle">
       <thead>

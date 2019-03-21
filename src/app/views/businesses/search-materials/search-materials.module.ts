@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { SearchMaterialsRoutingModule } from './search-materials.routing.module';
 import { SharedModule } from 'src/app/shared.module';
@@ -18,6 +19,7 @@ import { SearchMaterialDetailResolver } from 'src/app/shared/resolvers/search-ma
 
 @NgModule({
   imports: [
+    FormsModule,
     SearchMaterialsRoutingModule,
     SharedModule
   ],

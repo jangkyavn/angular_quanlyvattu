@@ -6,7 +6,7 @@
 
 <div style="padding:24px; background: #fff; min-height: 70vh">
   <form nz-form [formGroup]="exportMaterialForm" (ngSubmit)="saveChanges()" autocomplete="off">
-    <nz-card style="width:100%;" nzTitle="Xuất vật tư">
+    <nz-card style="width:100%;" nzTitle="Thông tin phiếu xuất">
       <table style="width: 100%;">
         <tr>
           <td style="width: 50%;">
@@ -27,7 +27,7 @@
             <nz-form-item>
               <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="chietKhau">Chiết khấu</nz-form-label>
               <nz-form-control [nzSm]="16" [nzXs]="24">
-                  <nz-input-number id="chietKhau" formControlName="chietKhau" [nzMin]="0" [nzMax]="100" [nzStep]="1"
+                <nz-input-number id="chietKhau" formControlName="chietKhau" [nzMin]="0" [nzMax]="100" [nzStep]="1"
                   [nzFormatter]="formatterPercent" [nzParser]="parserPercent"></nz-input-number>
               </nz-form-control>
             </nz-form-item>
@@ -78,13 +78,17 @@
           </td>
         </tr>
         <tr>
-          <td colspan="2" style="text-align: right;">
-            <button type="button" nz-button nzType="default" [routerLink]="['/nghiep-vu/xuat']">
-              <i nz-icon type="close" theme="outline"></i> Hủy
-            </button>
-            <button type="submit" nz-button nzType="primary" style="margin-left:1rem;">
-              <i nz-icon type="save" theme="outline"></i> Lưu
-            </button>
+          <td colspan="2">
+            <div nz-row>
+              <div nz-col [nzOffset]="4" nzXs="24" nzSm="20" nzMd="20" nzLg="20" nzXl="20" class="text-left">
+                <button type="submit" nz-button nzType="primary" style="margin-right:1rem;">
+                  <i nz-icon type="save" theme="outline"></i> Lưu
+                </button>
+                <button type="button" nz-button nzType="default" [routerLink]="['/nghiep-vu/xuat']">
+                  <i nz-icon type="close" theme="outline"></i> Hủy
+                </button>
+              </div>
+            </div>
           </td>
         </tr>
       </table>

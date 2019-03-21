@@ -39,6 +39,8 @@ export class ImportMaterialService {
             params = params.append('toDate', pagingParams.toDate);
             params = params.append('sortKey', pagingParams.sortKey);
             params = params.append('sortValue', pagingParams.sortValue);
+            params = params.append('searchKey', pagingParams.searchKey);
+            params = params.append('searchValue', pagingParams.searchValue);
         }
 
         return this.http.get<ImportMaterial[]>(this.baseUrl + 'NhapVatTu/getAllPaging', { observe: 'response', params })

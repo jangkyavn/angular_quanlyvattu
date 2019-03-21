@@ -33,6 +33,8 @@ export class UserListComponent implements OnInit {
     keyword: '',
     sortKey: '',
     sortValue: '',
+    searchKey: '',
+    searchValue: ''
   };
 
   @HostListener('window:keydown', ['$event'])
@@ -291,5 +293,16 @@ export class UserListComponent implements OnInit {
         }
       ]
     });
+  }
+
+  searchColumn(searchKey: string) {
+    this.pagingParams.searchKey = searchKey;
+    this.loadData(true);
+  }
+
+  reset() {
+    this.pagingParams.searchKey = '';
+    this.pagingParams.searchValue = '';
+    this.loadData(true);
   }
 }

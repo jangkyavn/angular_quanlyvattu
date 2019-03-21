@@ -35,6 +35,8 @@ export class LiquidationMaterialService {
             params = params.append('toDate', pagingParams.toDate);
             params = params.append('sortKey', pagingParams.sortKey);
             params = params.append('sortValue', pagingParams.sortValue);
+            params = params.append('searchKey', pagingParams.searchKey);
+            params = params.append('searchValue', pagingParams.searchValue);
         }
 
         return this.http.get<LiquidationMaterial[]>(this.baseUrl + 'ThanhLyVatTu/getAllPaging', { observe: 'response', params })
@@ -90,6 +92,8 @@ export class LiquidationMaterialService {
             params = params.append('toDate', pagingParams.toDate);
             params = params.append('sortKey', pagingParams.sortKey);
             params = params.append('sortValue', pagingParams.sortValue);
+            params = params.append('searchKey', pagingParams.searchKey);
+            params = params.append('searchValue', pagingParams.searchValue);
         }
 
         if (storeId != null) {

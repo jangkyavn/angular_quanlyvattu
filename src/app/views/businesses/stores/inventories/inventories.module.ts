@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { InventoriesRoutingModule } from './inventories.routing.module';
 import { SharedModule } from 'src/app/shared.module';
@@ -10,6 +10,7 @@ import { InventoryListResolver } from 'src/app/shared/resolvers/inventory-list.r
 
 @NgModule({
   imports: [
+    FormsModule,
     ReactiveFormsModule,
     InventoriesRoutingModule,
     SharedModule

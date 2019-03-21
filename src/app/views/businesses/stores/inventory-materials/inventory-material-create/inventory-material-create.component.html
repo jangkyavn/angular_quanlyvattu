@@ -7,7 +7,7 @@
 
 <div style="padding:24px; background: #fff; min-height: 70vh">
   <form nz-form [formGroup]="inventoryMaterialForm" (ngSubmit)="saveChanges()" autocomplete="off">
-    <nz-card style="width:100%;" nzTitle="Tạo phiếu kiểm kê">
+    <nz-card style="width:100%;" nzTitle="Thông tin phiếu kiểm kê">
       <table style="width: 100%;">
         <tr>
           <td style="width: 35%">
@@ -60,12 +60,16 @@
         </tr>
         <tr>
           <td colspan="3" style="text-align: right;">
-            <button type="button" nz-button nzType="default" [routerLink]="['/nghiep-vu/kho/phieu-kiem-ke-kho']">
-              <i nz-icon type="close" theme="outline"></i> Hủy
-            </button>
-            <button type="submit" nz-button nzType="primary" style="margin-left:1rem;">
-              <i nz-icon type="save" theme="outline"></i> Lưu
-            </button>
+            <div nz-row>
+              <div nz-col [nzOffset]="3" nzXs="24" nzSm="21" nzMd="21" nzLg="21" nzXl="21" class="text-left">
+                <button type="submit" nz-button nzType="primary" style="margin-right:1rem;">
+                  <i nz-icon type="save" theme="outline"></i> Lưu
+                </button>
+                <button type="button" nz-button nzType="default" [routerLink]="['/nghiep-vu/kho/phieu-kiem-ke-kho']">
+                  <i nz-icon type="close" theme="outline"></i> Hủy
+                </button>
+              </div>
+            </div>
           </td>
         </tr>
       </table>

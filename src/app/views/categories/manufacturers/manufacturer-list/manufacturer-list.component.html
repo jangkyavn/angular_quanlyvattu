@@ -39,8 +39,8 @@
         <th nzWidth="10%" nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
           (nzCheckedChange)="checkAll($event)"></th>
         <th nzWidth="30%" nzShowSort nzSortKey="tenHang" nzCustomFilter>Tên hãng
-          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
-            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown.nzVisible"
+          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown1>
+            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown1.nzVisible"
               nz-dropdown></i>
             <div class="search-box">
               <input type="text" nz-input placeholder="Tìm tên hãng" [(ngModel)]="pagingParams.searchValue"
@@ -52,8 +52,8 @@
           </nz-dropdown>
         </th>
         <th nzWidth="40%" nzShowSort nzSortKey="ghiChu" nzCustomFilter>Ghi chú
-          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
-            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown.nzVisible"
+          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown2>
+            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown2.nzVisible"
               nz-dropdown></i>
             <div class="search-box">
               <input type="text" nz-input placeholder="Tìm ghi chú" [(ngModel)]="pagingParams.searchValue"

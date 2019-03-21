@@ -6,7 +6,7 @@
 
 <div style="padding:24px; background: #fff; min-height: 70vh">
   <form nz-form [formGroup]="importMaterialForm" (ngSubmit)="saveChanges()" autocomplete="off">
-    <nz-card style="width:100%;" nzTitle="Nhập vật tư (người nhập: {{importMaterialForm.value.nguoiNhap}})"
+    <nz-card style="width:100%;" nzTitle="Thông tin phiếu nhập (người nhập: {{importMaterialForm.value.nguoiNhap}})"
       [nzExtra]="extraTemplate">
       <table style="width: 100%;">
         <tr>
@@ -63,19 +63,24 @@
           </td>
         </tr>
         <tr>
-          <td>
-            <button type="button" nz-button nzType="primary" (click)="addImportDetail()" style="margin-right: 1rem;">
-              <i nz-icon type="plus" theme="outline"></i> Nhập chi tiết
-            </button>
-          </td>
-          <td style="text-align: right;">
-            <button type="button" nz-button nzType="default" [routerLink]="['/nghiep-vu/nhap']">
-              <i nz-icon type="close" theme="outline"></i> Hủy
-            </button>
-            <button type="submit" nz-button nzType="primary" style="margin-left:1rem;"
-              [disabled]="!importMaterialForm.dirty">
-              <i nz-icon type="save" theme="outline"></i> Lưu
-            </button>
+          <td colspan="2">
+            <div nz-row>
+              <div nz-col nzXs="24" nzSm="4" nzMd="4" nzLg="4" nzXl="4">
+                <button type="button" nz-button nzType="primary" (click)="addImportDetail()"
+                  style="margin-right: 1rem;">
+                  <i nz-icon type="plus" theme="outline"></i> Nhập chi tiết
+                </button>
+              </div>
+              <div nz-col nzXs="24" nzSm="20" nzMd="20" nzLg="20" nzXl="20" class="text-left">
+                <button type="submit" nz-button nzType="primary" style="margin-right:1rem;"
+                  [disabled]="!importMaterialForm.dirty">
+                  <i nz-icon type="save" theme="outline"></i> Lưu
+                </button>
+                <button type="button" nz-button nzType="default" [routerLink]="['/nghiep-vu/nhap']">
+                  <i nz-icon type="close" theme="outline"></i> Hủy
+                </button>
+              </div>
+            </div>
           </td>
         </tr>
       </table>
@@ -87,7 +92,7 @@
     </ng-template>
   </form>
   <br />
-  <nz-card style="width:100%;" nzTitle="Danh sách chi tiết phiếu nhập" *ngIf="importMaterialDetails.length > 0"
+  <nz-card style="width:100%;" nzTitle="Danh sách chi tiết nhập vật tư" *ngIf="importMaterialDetails.length > 0"
     [ngSwitch]="materialItemId">
     <!-- Máy TTB - Vật tư y tế - Vật tư hậu cần - Thuốc hóa chất -->
     <nz-table #basicTable nzSize="middle" [nzData]="importMaterialDetails" nzBordered [nzLoading]="loading"
@@ -113,8 +118,8 @@
                 (click)="updateImportDetail(data)">
                 <i nz-icon type="edit" theme="outline"></i>
               </button>
-              <button type="button" nz-button nzType="default" class="btn-danger" nz-tooltip
-                nzTitle="Xóa" (click)="deleteImportDetail(data)">
+              <button type="button" nz-button nzType="default" class="btn-danger" nz-tooltip nzTitle="Xóa"
+                (click)="deleteImportDetail(data)">
                 <i nz-icon type="delete" theme="outline"></i>
               </button>
             </nz-button-group>
@@ -176,8 +181,8 @@
                 (click)="updateImportDetail(data)">
                 <i nz-icon type="edit" theme="outline"></i>
               </button>
-              <button type="button" nz-button nzType="default" class="btn-danger" nz-tooltip
-                nzTitle="Xóa" (click)="deleteImportDetail(data)">
+              <button type="button" nz-button nzType="default" class="btn-danger" nz-tooltip nzTitle="Xóa"
+                (click)="deleteImportDetail(data)">
                 <i nz-icon type="delete" theme="outline"></i>
               </button>
             </nz-button-group>
@@ -241,8 +246,8 @@
                 (click)="updateImportDetail(data)">
                 <i nz-icon type="edit" theme="outline"></i>
               </button>
-              <button type="button" nz-button nzType="default" class="btn-danger" nz-tooltip
-                nzTitle="Xóa" (click)="deleteImportDetail(data)">
+              <button type="button" nz-button nzType="default" class="btn-danger" nz-tooltip nzTitle="Xóa"
+                (click)="deleteImportDetail(data)">
                 <i nz-icon type="delete" theme="outline"></i>
               </button>
             </nz-button-group>
@@ -303,8 +308,8 @@
                 (click)="updateImportDetail(data)">
                 <i nz-icon type="edit" theme="outline"></i>
               </button>
-              <button type="button" nz-button nzType="default" class="btn-danger" nz-tooltip
-                nzTitle="Xóa" (click)="deleteImportDetail(data)">
+              <button type="button" nz-button nzType="default" class="btn-danger" nz-tooltip nzTitle="Xóa"
+                (click)="deleteImportDetail(data)">
                 <i nz-icon type="delete" theme="outline"></i>
               </button>
             </nz-button-group>
@@ -362,8 +367,8 @@
                 (click)="updateImportDetail(data)">
                 <i nz-icon type="edit" theme="outline"></i>
               </button>
-              <button type="button" nz-button nzType="default" class="btn-danger" nz-tooltip
-                nzTitle="Xóa" (click)="deleteImportDetail(data)">
+              <button type="button" nz-button nzType="default" class="btn-danger" nz-tooltip nzTitle="Xóa"
+                (click)="deleteImportDetail(data)">
                 <i nz-icon type="delete" theme="outline"></i>
               </button>
             </nz-button-group>
@@ -421,8 +426,8 @@
                 (click)="updateImportDetail(data)">
                 <i nz-icon type="edit" theme="outline"></i>
               </button>
-              <button type="button" nz-button nzType="default" class="btn-danger" nz-tooltip
-                nzTitle="Xóa" (click)="deleteImportDetail(data)">
+              <button type="button" nz-button nzType="default" class="btn-danger" nz-tooltip nzTitle="Xóa"
+                (click)="deleteImportDetail(data)">
                 <i nz-icon type="delete" theme="outline"></i>
               </button>
             </nz-button-group>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -20,13 +20,14 @@ import { PagingParams } from 'src/app/shared/params/paging.param';
 import {
   LiquidationMaterialDetailAddEditModalComponent
 } from '../modals/liquidation-material-detail-add-edit-modal/liquidation-material-detail-add-edit-modal.component';
+import { UtilitiesService } from 'src/app/shared/services/utilities.service';
 
 @Component({
   selector: 'app-liquidation-material-edit',
   templateUrl: './liquidation-material-edit.component.html',
   styleUrls: ['./liquidation-material-edit.component.scss']
 })
-export class LiquidationMaterialEditComponent implements OnInit {
+export class LiquidationMaterialEditComponent implements OnInit, AfterViewInit {
   materialStores: MaterialStore[];
   personnels: Personnel[];
   liquidationMaterialForm: FormGroup;
@@ -47,7 +48,9 @@ export class LiquidationMaterialEditComponent implements OnInit {
     sortKey: '',
     sortValue: '',
     fromDate: '',
-    toDate: ''
+    toDate: '',
+    searchKey: '',
+    searchValue: ''
   };
 
   constructor(private route: ActivatedRoute,
@@ -58,7 +61,8 @@ export class LiquidationMaterialEditComponent implements OnInit {
     private personnelService: PersonnelService,
     private liquidationMaterialService: LiquidationMaterialService,
     private liquidationDetailService: LiquidationDetailService,
-    private notify: NotifyService) { }
+    private notify: NotifyService,
+    private utilities: UtilitiesService) { }
 
   ngOnInit() {
     this.route.data.subscribe(data => {
@@ -93,6 +97,12 @@ export class LiquidationMaterialEditComponent implements OnInit {
       this.loadInventoriesByStoreId(true);
       this.loadTotalQuantity();
     });
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.utilities.changeCollapsed(true);
+    }, 0);
   }
 
   createForm() {
@@ -285,5 +295,16 @@ export class LiquidationMaterialEditComponent implements OnInit {
     this.liquidationDetails.forEach((item: LiquidationDetail) => {
       this.totalQuantity += item.soLuongThanhLy;
     });
+  }
+
+  searchColumn(searchKey: string) {
+    this.pagingParams.searchKey = searchKey;
+    this.loadInventoriesByStoreId();
+  }
+
+  reset() {
+    this.pagingParams.searchKey = '';
+    this.pagingParams.searchValue = '';
+    this.loadInventoriesByStoreId();
   }
 }

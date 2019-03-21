@@ -54,7 +54,9 @@ export class ExportMaterialEditComponent implements OnInit {
     sortKey: '',
     sortValue: '',
     fromDate: '',
-    toDate: ''
+    toDate: '',
+    searchKey: '',
+    searchValue: ''
   };
 
   formatterPercent = value => `${value} %`;
@@ -309,5 +311,16 @@ export class ExportMaterialEditComponent implements OnInit {
         this.discountPrice = this.totalAmount - this.totalAmountAfterDiscount;
       }
     });
+  }
+
+  searchColumn(searchKey: string) {
+    this.pagingParams.searchKey = searchKey;
+    this.loadInventoriesByStoreId(true);
+  }
+
+  reset() {
+    this.pagingParams.searchKey = '';
+    this.pagingParams.searchValue = '';
+    this.loadInventoriesByStoreId(true);
   }
 }

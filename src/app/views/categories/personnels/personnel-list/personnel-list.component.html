@@ -31,8 +31,8 @@
     <thead (nzSortChange)="sort($event)" nzSingleSort>
       <tr>
         <th nzWidth="20%" nzShowSort nzSortKey="hoTen" nzCustomFilter>Họ tên
-          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
-            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown.nzVisible"
+          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown1>
+            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown1.nzVisible"
               nz-dropdown></i>
             <div class="search-box">
               <input type="text" nz-input placeholder="Tìm họ tên" [(ngModel)]="pagingParams.searchValue"
@@ -44,8 +44,8 @@
           </nz-dropdown>
         </th>
         <th nzWidth="15%" nzShowSort nzSortKey="ngaySinh" nzCustomFilter>Ngày sinh
-          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
-            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown.nzVisible"
+          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown2>
+            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown2.nzVisible"
               nz-dropdown></i>
             <div class="search-box">
               <input type="text" nz-input placeholder="Tìm ngày sinh" [(ngModel)]="pagingParams.searchValue"
@@ -57,8 +57,8 @@
           </nz-dropdown>
         </th>
         <th nzWidth="30%" nzShowSort nzSortKey="queQuan" nzCustomFilter>Quê quán
-          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
-            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown.nzVisible"
+          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown3>
+            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown3.nzVisible"
               nz-dropdown></i>
             <div class="search-box">
               <input type="text" nz-input placeholder="Tìm quê quán" [(ngModel)]="pagingParams.searchValue"
@@ -70,8 +70,8 @@
           </nz-dropdown>
         </th>
         <th nzWidth="15%" nzShowSort nzSortKey="danToc" nzCustomFilter>Dân tộc
-          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
-            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown.nzVisible"
+          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown4>
+            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown4.nzVisible"
               nz-dropdown></i>
             <div class="search-box">
               <input type="text" nz-input placeholder="Tìm dân tộc" [(ngModel)]="pagingParams.searchValue"

@@ -6,7 +6,7 @@
 <div style="padding:24px; background: #fff; min-height: 70vh">
   <div nz-row style="margin-bottom: 1rem">
     <div nz-col nzSpan="8">
-      <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
+      <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
         <input type="text" nz-input placeholder="Tìm kiếm..." #keyword (keyup.enter)="search(keyword.value)">
       </nz-input-group>
       <ng-template #suffixIconButton>
@@ -16,7 +16,6 @@
     </div>
     <div nz-col nzSpan="16" class="text-right">
       <nz-button-group>
-
       </nz-button-group>
     </div>
   </div>
@@ -30,11 +29,71 @@
     </ng-template>
     <thead (nzSortChange)="sort($event)" nzSingleSort>
       <tr>
-        <th nzWidth="25%" nzShowSort nzSortKey="tenVT">Tên vật tư</th>
-        <th nzWidth="20%" nzShowSort nzSortKey="tenLoaiVatTu">Tên loại vật tư</th>
-        <th nzWidth="10%" nzShowSort nzSortKey="tenDVT">ĐVT</th>
-        <th nzWidth="15%" nzShowSort nzSortKey="ghiChu">Ghi chú</th>
-        <th nzWidth="15%" nzShowSort nzSortKey="ghiChu">SL tồn</th>
+        <th nzWidth="25%" nzShowSort nzSortKey="tenVT" nzCustomFilter>Tên vật tư
+          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown1>
+            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown1.nzVisible"
+              nz-dropdown></i>
+            <div class="search-box">
+              <input type="text" nz-input placeholder="Tìm tên vật tư" [(ngModel)]="pagingParams.searchValue"
+                (keyup.enter)="searchColumn('tenVT')">
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" nzType="primary"
+                (click)="searchColumn('tenVT')" class="search-button">Tìm</button>
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" (click)="reset()">Reset</button>
+            </div>
+          </nz-dropdown>
+        </th>
+        <th nzWidth="20%" nzShowSort nzSortKey="tenLoaiVatTu" nzCustomFilter>Tên loại vật tư
+          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown2>
+            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown2.nzVisible"
+              nz-dropdown></i>
+            <div class="search-box">
+              <input type="text" nz-input placeholder="Tìm loại vật tư" [(ngModel)]="pagingParams.searchValue"
+                (keyup.enter)="searchColumn('tenLoaiVatTu')">
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" nzType="primary"
+                (click)="searchColumn('tenLoaiVatTu')" class="search-button">Tìm</button>
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" (click)="reset()">Reset</button>
+            </div>
+          </nz-dropdown>
+        </th>
+        <th nzWidth="10%" nzShowSort nzSortKey="tenDVT" nzCustomFilter>ĐVT
+          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown3>
+            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown3.nzVisible"
+              nz-dropdown></i>
+            <div class="search-box">
+              <input type="text" nz-input placeholder="Tìm đơn vị tính" [(ngModel)]="pagingParams.searchValue"
+                (keyup.enter)="searchColumn('tenDVT')">
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" nzType="primary"
+                (click)="searchColumn('tenDVT')" class="search-button">Tìm</button>
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" (click)="reset()">Reset</button>
+            </div>
+          </nz-dropdown>
+        </th>
+        <th nzWidth="15%" nzShowSort nzSortKey="ghiChu" nzCustomFilter>Ghi chú
+          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown4>
+            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown4.nzVisible"
+              nz-dropdown></i>
+            <div class="search-box">
+              <input type="text" nz-input placeholder="Tìm ghi chú" [(ngModel)]="pagingParams.searchValue"
+                (keyup.enter)="searchColumn('ghiChu')">
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" nzType="primary"
+                (click)="searchColumn('ghiChu')" class="search-button">Tìm</button>
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" (click)="reset()">Reset</button>
+            </div>
+          </nz-dropdown>
+        </th>
+        <th nzWidth="15%" nzShowSort nzSortKey="tongTon" nzCustomFilter>SL tồn
+          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown5>
+            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown5.nzVisible"
+              nz-dropdown></i>
+            <div class="search-box">
+              <input type="text" nz-input placeholder="Tìm số lượng tồn" [(ngModel)]="pagingParams.searchValue"
+                (keyup.enter)="searchColumn('tongTon')">
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" nzType="primary"
+                (click)="searchColumn('tongTon')" class="search-button">Tìm</button>
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" (click)="reset()">Reset</button>
+            </div>
+          </nz-dropdown>
+        </th>
         <th nzWidth="15%">Thao tác</th>
       </tr>
     </thead>
@@ -43,11 +102,12 @@
         <td>{{data.tenVT}}</td>
         <td>{{data.tenLoaiVatTu}}</td>
         <td>{{data.tenDVT}}</td>
-        <td>{{data.ghiChu || 'Không có'}}</td>
+        <td>{{data.ghiChu}}</td>
         <td>{{data.tongTon}}</td>
         <td class="decrease-row">
           <nz-button-group>
-            <button [routerLink]="['/nghiep-vu/tim-kiem-vat-tu/chi-tiet', data.maVatTu]" nz-button nzType="default" class="btn-primary" nz-tooltip nzTitle="Xem">
+            <button [routerLink]="['/nghiep-vu/tim-kiem-vat-tu/chi-tiet', data.maVatTu]" nz-button nzType="default"
+              class="btn-primary" nz-tooltip nzTitle="Xem">
               <i nz-icon type="eye" theme="outline"></i>
             </button>
           </nz-button-group>

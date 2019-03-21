@@ -23,7 +23,9 @@ export class InventoryListComponent implements OnInit {
   pagingParams: PagingParams = {
     keyword: '',
     sortKey: '',
-    sortValue: ''
+    sortValue: '',
+    searchKey: '',
+    searchValue: ''
   };
 
   constructor(
@@ -55,14 +57,22 @@ export class InventoryListComponent implements OnInit {
         this.loading = false;
         this.pagination = res.pagination;
         this.dataSet = res.result;
-      }, error => {
-        this.notify.error('Có lỗi xảy ra');
-        console.log('error getAllPagingInventory');
       });
   }
 
   search(keyword: string) {
     this.pagingParams.keyword = keyword;
+    this.loadData(true);
+  }
+
+  searchColumn(searchKey: string) {
+    this.pagingParams.searchKey = searchKey;
+    this.loadData(true);
+  }
+
+  reset() {
+    this.pagingParams.searchKey = '';
+    this.pagingParams.searchValue = '';
     this.loadData(true);
   }
 }

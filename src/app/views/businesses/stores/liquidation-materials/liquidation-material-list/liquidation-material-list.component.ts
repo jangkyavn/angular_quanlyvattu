@@ -34,7 +34,9 @@ export class LiquidationMaterialListComponent implements OnInit {
     sortKey: '',
     sortValue: '',
     fromDate: '',
-    toDate: ''
+    toDate: '',
+    searchKey: '',
+    searchValue: ''
   };
 
   @HostListener('window:keydown', ['$event'])
@@ -167,6 +169,17 @@ export class LiquidationMaterialListComponent implements OnInit {
     this.pagingParams.keyword = '';
     this.pagingParams.fromDate = '';
     this.pagingParams.toDate = '';
+    this.loadData(true);
+  }
+
+  searchColumn(searchKey: string) {
+    this.pagingParams.searchKey = searchKey;
+    this.loadData(true);
+  }
+
+  reset() {
+    this.pagingParams.searchKey = '';
+    this.pagingParams.searchValue = '';
     this.loadData(true);
   }
 }

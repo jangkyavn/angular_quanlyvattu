@@ -67,6 +67,8 @@ export class MaterialService {
       params = params.append('keyword', pagingParams.keyword);
       params = params.append('sortKey', pagingParams.sortKey);
       params = params.append('sortValue', pagingParams.sortValue);
+      params = params.append('searchKey', pagingParams.searchKey);
+      params = params.append('searchValue', pagingParams.searchValue);
     }
 
     return this.http.get<Material[]>(this.baseUrl + 'VatTu/getAllPagingWithTongTon', { observe: 'response', params })

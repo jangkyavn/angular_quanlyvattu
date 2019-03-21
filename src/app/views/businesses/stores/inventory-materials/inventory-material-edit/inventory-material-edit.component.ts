@@ -57,7 +57,9 @@ export class InventoryMaterialEditComponent implements OnInit, AfterViewInit {
     sortKey: '',
     sortValue: '',
     fromDate: '',
-    toDate: ''
+    toDate: '',
+    searchKey: '',
+    searchValue: ''
   };
 
   constructor(private route: ActivatedRoute,
@@ -325,5 +327,16 @@ export class InventoryMaterialEditComponent implements OnInit, AfterViewInit {
     this.materialSearch = null;
     this.pagingParams.keyword = '';
     this.loadInventories(true);
+  }
+
+  searchColumn(searchKey: string) {
+    this.pagingParams.searchKey = searchKey;
+     this.loadInventories(true);
+  }
+
+  reset() {
+    this.pagingParams.searchKey = '';
+    this.pagingParams.searchValue = '';
+     this.loadInventories(true);
   }
 }

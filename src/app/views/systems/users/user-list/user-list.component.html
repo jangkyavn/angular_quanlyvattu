@@ -6,7 +6,7 @@
 <div style="padding:24px; background: #fff; min-height: 80vh">
   <div nz-row style="margin-bottom: 1rem">
     <div nz-col nzSpan="8">
-      <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
+      <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
         <input type="text" nz-input placeholder="Tìm kiếm..." #keyword (keyup.enter)="search(keyword.value)">
       </nz-input-group>
       <ng-template #suffixIconButton>
@@ -30,20 +30,68 @@
     </ng-template>
     <thead (nzSortChange)="sort($event)" nzSingleSort>
       <tr>
-        <th nzWidth="15%" nzShowSort nzSortKey="userName">Tài khoản</th>
-        <th nzWidth="15%" nzShowSort nzSortKey="fullName">Họ tên</th>
-        <th nzWidth="20%" nzShowSort nzSortKey="email">Email</th>
-        <th nzWidth="20%">Quyền</th>
+        <th nzWidth="15%" nzShowSort nzSortKey="userName" nzCustomFilter>Tài khoản
+          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown1>
+            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown1.nzVisible"
+              nz-dropdown></i>
+            <div class="search-box">
+              <input type="text" nz-input placeholder="Tìm tài khoản" [(ngModel)]="pagingParams.searchValue"
+                (keyup.enter)="searchColumn('userName')">
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" nzType="primary"
+                (click)="searchColumn('userName')" class="search-button">Tìm</button>
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" (click)="reset()">Reset</button>
+            </div>
+          </nz-dropdown>
+        </th>
+        <th nzWidth="15%" nzShowSort nzSortKey="fullName" nzCustomFilter>Họ tên
+          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown2>
+            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown2.nzVisible"
+              nz-dropdown></i>
+            <div class="search-box">
+              <input type="text" nz-input placeholder="Tìm họ tên" [(ngModel)]="pagingParams.searchValue"
+                (keyup.enter)="searchColumn('fullName')">
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" nzType="primary"
+                (click)="searchColumn('fullName')" class="search-button">Tìm</button>
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" (click)="reset()">Reset</button>
+            </div>
+          </nz-dropdown>
+        </th>
+        <th nzWidth="20%" nzShowSort nzSortKey="email" nzCustomFilter>Email
+          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown3>
+            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown3.nzVisible"
+              nz-dropdown></i>
+            <div class="search-box">
+              <input type="text" nz-input placeholder="Tìm email" [(ngModel)]="pagingParams.searchValue"
+                (keyup.enter)="searchColumn('email')">
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" nzType="primary"
+                (click)="searchColumn('email')" class="search-button">Tìm</button>
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" (click)="reset()">Reset</button>
+            </div>
+          </nz-dropdown>
+        </th>
+        <th nzWidth="20%" nzCustomFilter>Quyền
+          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown4>
+            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown4.nzVisible"
+              nz-dropdown></i>
+            <div class="search-box">
+              <input type="text" nz-input placeholder="Tìm quyền" [(ngModel)]="pagingParams.searchValue"
+                (keyup.enter)="searchColumn('roles')">
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" nzType="primary"
+                (click)="searchColumn('roles')" class="search-button">Tìm</button>
+              <button [disabled]="!pagingParams.searchValue" nz-button nzSize="small" (click)="reset()">Reset</button>
+            </div>
+          </nz-dropdown>
+        </th>
         <th nzWidth="10%">Trạng thái</th>
         <th nzWidth="20%">Thao tác</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let data of table.data">
-        <td [innerHTML]="data.userName | highlight : pagingParams.keyword"></td>
-        <td [innerHTML]="data.fullName | highlight : pagingParams.keyword"></td>
-        <td [innerHTML]="data.email | highlight : pagingParams.keyword"></td>
-        <td [innerHTML]="data.roles.toString() | highlight : pagingParams.keyword">{{data.roles.toString()}}</td>
+        <td>{{data.userName}}</td>
+        <td>{{data.fullName}}</td>
+        <td>{{data.email}}</td>
+        <td>{{data.roles.toString()}}</td>
         <td>
           <nz-switch *ngIf="data.userName !== 'admin'" [ngModel]="data.status" [nzCheckedChildren]="checkedTemplate"
             [nzUnCheckedChildren]="unCheckedTemplate" (click)="changeStatus(data.id)"></nz-switch>
@@ -52,8 +100,8 @@
         </td>
         <td class="decrease-row">
           <nz-button-group>
-            <button *ngIf="(authService.currentUser.userName === 'admin') || (data.userName !== 'admin')" nz-button nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa"
-              (click)="update(data.id)">
+            <button *ngIf="(authService.currentUser.userName === 'admin') || (data.userName !== 'admin')" nz-button
+              nzType="default" class="btn-info" nz-tooltip nzTitle="Sửa" (click)="update(data.id)">
               <i nz-icon type="edit" theme="outline"></i>
             </button>
             <button nz-button nzType="default" class="btn-primary" nz-tooltip nzTitle="Xem" (click)="view(data.id)">
