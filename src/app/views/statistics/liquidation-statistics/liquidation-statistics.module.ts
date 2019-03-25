@@ -8,6 +8,7 @@ import { LiquidationStatisticListComponent } from './liquidation-statistic-list/
 import { LiquidationStatisticDetailComponent } from './liquidation-statistic-detail/liquidation-statistic-detail.component';
 
 import { MaterialDetailResolver } from 'src/app/shared/resolvers/material-detail.resolver';
+import { LiquidationStatisticListResolver } from 'src/app/shared/resolvers/liquidation-statistic-list.resolver';
 
 @NgModule({
   imports: [
@@ -19,6 +20,9 @@ import { MaterialDetailResolver } from 'src/app/shared/resolvers/material-detail
     LiquidationStatisticListComponent,
     LiquidationStatisticDetailComponent
   ],
-  providers: [MaterialDetailResolver]
+  providers: [
+    LiquidationStatisticListResolver,
+    MaterialDetailResolver
+  ]
 })
 export class LiquidationStatisticsModule { }

@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+
+import { UtilitiesService } from './utilities.service';
 
 import { ImportStatistic } from '../models/import-statistic.model';
 import { ExportStatistic } from '../models/export-statistic.model';
@@ -15,7 +17,8 @@ import { GeneralStatistic } from '../models/general-statistic.model';
 export class StatisticService {
   baseUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    private utility: UtilitiesService) { }
 
   getImportStatistics(statisticParams?: any): Observable<ImportStatistic[]> {
 
@@ -37,7 +40,8 @@ export class StatisticService {
       .pipe(
         map(response => {
           return response.body;
-        })
+        }),
+        catchError(error => this.utility.handleError(error, 'getAllPagingImportStatistic'))
       );
   }
 
@@ -61,7 +65,8 @@ export class StatisticService {
       .pipe(
         map(response => {
           return response.body;
-        })
+        }),
+        catchError(error => this.utility.handleError(error, 'getAllPagingExportStatistic'))
       );
   }
 
@@ -85,7 +90,8 @@ export class StatisticService {
       .pipe(
         map(response => {
           return response.body;
-        })
+        }),
+        catchError(error => this.utility.handleError(error, 'getAllPagingLiquidationStatistic'))
       );
   }
 
@@ -109,7 +115,8 @@ export class StatisticService {
       .pipe(
         map(response => {
           return response.body;
-        })
+        }),
+        catchError(error => this.utility.handleError(error, 'getAllPagingGeneralStatistic'))
       );
   }
 }

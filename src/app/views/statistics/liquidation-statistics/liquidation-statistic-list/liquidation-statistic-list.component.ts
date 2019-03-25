@@ -9,6 +9,7 @@ import { MaterialStore } from 'src/app/shared/models/material-store.model';
 import { MaterialItem } from 'src/app/shared/models/material-item.model';
 import { MaterialType } from 'src/app/shared/models/material-type.model';
 import { NotifyService } from 'src/app/shared/services/notify.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-liquidation-statistic-list',
@@ -35,6 +36,7 @@ export class LiquidationStatisticListComponent implements OnInit {
   searchValue: any;
 
   constructor(
+    private route: ActivatedRoute,
     private materialStoreService: MaterialStoreService,
     private materialItemService: MaterialItemService,
     private materialTypeService: MaterialTypeService,
@@ -48,7 +50,10 @@ export class LiquidationStatisticListComponent implements OnInit {
     this.getAllMaterialItems();
     this.getAllMaterialTypes();
 
-    this.loadData();
+    this.route.data.subscribe(data => {
+      this.dataSet = data['liquidation-statistic-list'];
+      this.loading = false;
+    });
   }
 
   sort(sort: { key: string, value: string }): void {

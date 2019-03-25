@@ -17,6 +17,7 @@ import {
 } from './general-statistic-detail/card-liquidation-statistics/card-liquidation-statistics.component';
 
 import { MaterialDetailResolver } from 'src/app/shared/resolvers/material-detail.resolver';
+import { GeneralStatisticListResolver } from 'src/app/shared/resolvers/general-statistic-list.resolver';
 
 @NgModule({
   imports: [
@@ -31,6 +32,9 @@ import { MaterialDetailResolver } from 'src/app/shared/resolvers/material-detail
     CardExportStatisticsComponent,
     CardLiquidationStatisticsComponent
   ],
-  providers: [MaterialDetailResolver]
+  providers: [
+    GeneralStatisticListResolver,
+    MaterialDetailResolver
+  ]
 })
 export class GeneralStatisticsModule { }

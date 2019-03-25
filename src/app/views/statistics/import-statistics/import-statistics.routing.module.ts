@@ -5,6 +5,7 @@ import { ImportStatisticListComponent } from './import-statistic-list/import-sta
 import { ImportStatisticDetailComponent } from './import-statistic-detail/import-statistic-detail.component';
 
 import { MaterialDetailResolver } from 'src/app/shared/resolvers/material-detail.resolver';
+import { ImportStatisticListResolver } from 'src/app/shared/resolvers/import-statistic-list.resolver';
 
 const routes: Routes = [
     {
@@ -18,7 +19,8 @@ const routes: Routes = [
                 component: ImportStatisticListComponent,
                 data: {
                     title: 'Danh sách'
-                }
+                },
+                resolve: { 'import-statistic-list': ImportStatisticListResolver }
             },
             {
                 path: 'xem-chi-tiet/:id',

@@ -5,6 +5,7 @@ import { ExportStatisticListComponent } from './export-statistic-list/export-sta
 import { ExportStatisticDetailComponent } from './export-statistic-detail/export-statistic-detail.component';
 
 import { MaterialDetailResolver } from 'src/app/shared/resolvers/material-detail.resolver';
+import { ExportStatisticListResolver } from 'src/app/shared/resolvers/export-statistic-list.resolver';
 
 const routes: Routes = [
     {
@@ -18,7 +19,8 @@ const routes: Routes = [
                 component: ExportStatisticListComponent,
                 data: {
                     title: 'Danh sách'
-                }
+                },
+                resolve: { 'export-statistic-list': ExportStatisticListResolver }
             },
             {
                 path: 'xem-chi-tiet/:id',

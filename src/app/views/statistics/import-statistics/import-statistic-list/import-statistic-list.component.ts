@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 import { MaterialStoreService } from 'src/app/shared/services/material-store.service';
 import { MaterialItemService } from 'src/app/shared/services/material-item.service';
 import { MaterialTypeService } from 'src/app/shared/services/material-type.service';
 import { StatisticService } from 'src/app/shared/services/statistic.service';
+import { NotifyService } from 'src/app/shared/services/notify.service';
 
 import { MaterialStore } from 'src/app/shared/models/material-store.model';
 import { MaterialItem } from 'src/app/shared/models/material-item.model';
 import { MaterialType } from 'src/app/shared/models/material-type.model';
-import { NotifyService } from 'src/app/shared/services/notify.service';
 
 @Component({
   selector: 'app-import-statistic-list',
@@ -17,7 +18,7 @@ import { NotifyService } from 'src/app/shared/services/notify.service';
 })
 export class ImportStatisticListComponent implements OnInit {
   dataSet = [];
-  loading: boolean;
+  loading = true;
   materialStores: MaterialStore[] = [];
   materialItems: MaterialItem[] = [];
   materialTypes: MaterialType[] = [];
@@ -35,6 +36,7 @@ export class ImportStatisticListComponent implements OnInit {
   searchValue: any;
 
   constructor(
+    private route: ActivatedRoute,
     private materialStoreService: MaterialStoreService,
     private materialItemService: MaterialItemService,
     private materialTypeService: MaterialTypeService,
@@ -48,7 +50,10 @@ export class ImportStatisticListComponent implements OnInit {
     this.getAllMaterialItems();
     this.getAllMaterialTypes();
 
-    this.loadData();
+    this.route.data.subscribe(data => {
+      this.dataSet = data['import-statistic-list'];
+      this.loading = false;
+    });
   }
 
   sort(sort: { key: string, value: string }): void {

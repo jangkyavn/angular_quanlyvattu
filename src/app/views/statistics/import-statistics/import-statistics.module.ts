@@ -8,6 +8,7 @@ import { ImportStatisticListComponent } from './import-statistic-list/import-sta
 import { ImportStatisticDetailComponent } from './import-statistic-detail/import-statistic-detail.component';
 
 import { MaterialDetailResolver } from 'src/app/shared/resolvers/material-detail.resolver';
+import { ImportStatisticListResolver } from 'src/app/shared/resolvers/import-statistic-list.resolver';
 
 @NgModule({
   imports: [
@@ -19,6 +20,9 @@ import { MaterialDetailResolver } from 'src/app/shared/resolvers/material-detail
     ImportStatisticListComponent,
     ImportStatisticDetailComponent
   ],
-  providers: [MaterialDetailResolver]
+  providers: [
+    ImportStatisticListResolver,
+    MaterialDetailResolver
+  ]
 })
 export class ImportStatisticsModule { }
