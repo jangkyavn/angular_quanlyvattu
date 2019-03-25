@@ -93,8 +93,9 @@
         <td>{{data.email}}</td>
         <td>{{data.roles.toString()}}</td>
         <td>
-          <nz-switch *ngIf="data.userName !== 'admin'" [ngModel]="data.status" [nzCheckedChildren]="checkedTemplate"
-            [nzUnCheckedChildren]="unCheckedTemplate" (click)="changeStatus(data.id)"></nz-switch>
+          <nz-switch *ngIf="data.userName !== 'admin'" [ngModel]="data.status"
+            [nzCheckedChildren]="checkedTemplate" [nzUnCheckedChildren]="unCheckedTemplate"
+            (click)="changeStatus(data.id)"></nz-switch>
           <ng-template #checkedTemplate><i nz-icon type="check" nz-tooltip nzTitle="Kích hoạt"></i></ng-template>
           <ng-template #unCheckedTemplate><i nz-icon type="close" nz-tooltip nzTitle="Khóa"></i></ng-template>
         </td>
@@ -115,7 +116,7 @@
               nzTitle="Đổi mật khẩu" (click)="changePassword(data.id)">
               <i nz-icon type="safety-certificate" theme="outline"></i>
             </button>
-            <button *ngIf="data.userName !== 'admin'" nz-button nzType="default" class="btn-warning" nz-tooltip
+            <button *appHasRole="['Admin']" nz-button nzType="default" class="btn-warning" nz-tooltip
               nzTitle="Phân quyền" (click)="editRoles(data)">
               <i nz-icon type="usergroup-add" theme="outline"></i>
             </button>

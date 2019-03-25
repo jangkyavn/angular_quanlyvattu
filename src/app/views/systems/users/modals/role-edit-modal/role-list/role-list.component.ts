@@ -196,7 +196,7 @@ export class RoleListComponent implements OnInit {
 
   cancelRow(index: number) {
     if (this.roleForm.value.id == null) {
-      this.roles.splice(index, 1);
+      this.roles = this.roles.filter((data: Role, idx: number) => idx !== index);
     }
     this.disabledAddNewButton = false;
     this.disabledButtonGroup = false;

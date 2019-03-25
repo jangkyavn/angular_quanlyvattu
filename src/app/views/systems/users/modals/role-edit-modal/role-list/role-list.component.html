@@ -1,6 +1,6 @@
 <div nz-row nzGutter="16" style="margin-bottom: 1rem;">
   <div nz-col nzXs="24" nzSm="24" nzMd="18" nzLg="18" nzXl="18">
-    <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
+    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
       <input type="text" nz-input placeholder="Tìm kiếm..." #keyword (keyup.enter)="search(keyword.value)">
     </nz-input-group>
     <ng-template #suffixIconButton>
