@@ -31,8 +31,9 @@
   <tbody>
     <tr *ngFor="let data of table.data; let i = index">
       <td>
-        <label *ngIf="data.isSave === false" nz-checkbox [(ngModel)]="data.checked" [nzDisabled]="data.name === 'Admin' && user.userName === 'admin'"
-          [ngModelOptions]="{standalone: true}" class='chk-role'></label>
+        <label *ngIf="data.isSave === false" nz-checkbox [(ngModel)]="data.checked"
+          [nzDisabled]="data.name === 'Admin' && user.userName === 'admin'" [ngModelOptions]="{standalone: true}"
+          class='chk-role'></label>
       </td>
       <td>
         <div *ngIf="data.isSave; else label">
@@ -55,14 +56,16 @@
       </td>
       <td>
         <nz-button-group *ngIf="data.name !== 'Admin' && data.isSave === false">
-          <button [disabled]="disabledButtonGroup" nz-button nzType="default" class="btn-info" title="Sửa" (click)="updateRow(data, i)">
+          <button [disabled]="disabledButtonGroup" nz-button nzType="default" class="btn-info" title="Sửa"
+            (click)="updateRow(data, i)">
             <i nz-icon type="edit" theme="outline"></i>
           </button>
-          <button [disabled]="disabledButtonGroup" nz-button nzType="default" class="btn-primary" title="Phân quyền" (click)="permission(data)">
+          <button [disabled]="disabledButtonGroup" nz-button nzType="default" class="btn-primary" title="Phân quyền"
+            (click)="permission(data)">
             <i nz-icon type="user-add" theme="outline"></i>
           </button>
-          <button [disabled]="disabledButtonGroup" *ngIf="data.userName !== 'admin'" nz-button nzType="default" class="btn-danger" title="Xóa"
-             nz-popconfirm nzTitle="Sure to delete?" (nzOnConfirm)="deleteRow(data.id)">
+          <button [disabled]="disabledButtonGroup" *ngIf="data.userName !== 'admin'" nz-button nzType="default"
+            class="btn-danger" title="Xóa" nz-popconfirm nzTitle="Sure to delete?" (nzOnConfirm)="deleteRow(data.id)">
             <i nz-icon type="delete" theme="outline"></i>
           </button>
         </nz-button-group>

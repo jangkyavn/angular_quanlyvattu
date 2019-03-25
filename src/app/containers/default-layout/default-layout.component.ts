@@ -64,18 +64,6 @@ export class DefaultLayoutComponent implements OnInit {
     }
   }
 
-  goToCreateImportMaterial() {
-    this.roleService.checkPermission('NHAP_VAT_TU', 'Create')
-      .subscribe((response: boolean) => {
-        if (response) {
-          this.router.navigate(['/nghiep-vu/nhap/tao-phieu-nhap']);
-        } else {
-          this.notify.warning('Bạn không có quyền');
-          return false;
-        }
-      });
-  }
-
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');

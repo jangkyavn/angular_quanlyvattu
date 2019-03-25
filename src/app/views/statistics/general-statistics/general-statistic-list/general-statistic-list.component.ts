@@ -22,12 +22,17 @@ export class GeneralStatisticListComponent implements OnInit {
   materialItems: MaterialItem[] = [];
   materialTypes: MaterialType[] = [];
 
-  statisticParams: any;
+  statisticParams: any = {
+    sortKey: '',
+    sortValue: ''
+  };
   startValue = '';
   endValue = '';
   storeId = null;
   itemId = null;
   typeId = null;
+  searchKey: any;
+  searchValue: any;
 
   constructor(
     private materialStoreService: MaterialStoreService,
@@ -43,6 +48,12 @@ export class GeneralStatisticListComponent implements OnInit {
     this.getAllMaterialItems();
     this.getAllMaterialTypes();
 
+    this.loadData();
+  }
+
+  sort(sort: { key: string, value: string }): void {
+    this.statisticParams.sortKey = sort.key;
+    this.statisticParams.sortValue = sort.value;
     this.loadData();
   }
 
@@ -125,6 +136,18 @@ export class GeneralStatisticListComponent implements OnInit {
     this.typeId = null;
 
     this.initialSearch();
+    this.loadData();
+  }
+
+  searchColumn(searchKey: string) {
+    this.statisticParams.searchValue = this.searchValue;
+    this.statisticParams.searchKey = searchKey;
+    this.loadData();
+  }
+
+  reset() {
+    this.statisticParams.searchKey = '';
+    this.statisticParams.searchValue = '';
     this.loadData();
   }
 }

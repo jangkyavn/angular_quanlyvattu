@@ -46,10 +46,34 @@
   </div>
   <br />
   <nz-table #table [nzData]="dataSet" [nzLoading]="loading" [nzNoResult]="'Không tìm thấy kết quả.'" nzSize="middle">
-    <thead>
+    <thead (nzSortChange)="sort($event)" nzSingleSort>
       <tr>
-        <th nzWidth="40%">Tên vật tư</th>
-        <th nzWidth="20%">Tổng lượng nhập</th>
+        <th nzWidth="40%" nzShowSort nzSortKey="tenVT" nzCustomFilter>Tên vật tư
+          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown1>
+            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown1.nzVisible"
+              nz-dropdown></i>
+            <div class="search-box">
+              <input type="text" nz-input placeholder="Tìm tên vật tư" [(ngModel)]="searchValue"
+                (keyup.enter)="searchColumn('tenVT')">
+              <button [disabled]="!searchValue" nz-button nzSize="small" nzType="primary"
+                (click)="searchColumn('tenVT')" class="search-button">Tìm</button>
+              <button [disabled]="!searchValue" nz-button nzSize="small" (click)="reset()">Reset</button>
+            </div>
+          </nz-dropdown>
+        </th>
+        <th nzWidth="20%" nzShowSort nzSortKey="tongLuongThanhLy" nzCustomFilter>Tổng lượng thanh lý
+          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown2>
+            <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown2.nzVisible"
+              nz-dropdown></i>
+            <div class="search-box">
+              <input type="text" nz-input placeholder="Tìm tổng lượng thanh lý" [(ngModel)]="searchValue"
+                (keyup.enter)="searchColumn('tongLuongThanhLy')">
+              <button [disabled]="!searchValue" nz-button nzSize="small" nzType="primary"
+                (click)="searchColumn('tongLuongThanhLy')" class="search-button">Tìm</button>
+              <button [disabled]="!searchValue" nz-button nzSize="small" (click)="reset()">Reset</button>
+            </div>
+          </nz-dropdown>
+        </th>
         <th nzWidth="20%"></th>
       </tr>
     </thead>

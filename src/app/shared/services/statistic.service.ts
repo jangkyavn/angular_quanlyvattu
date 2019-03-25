@@ -27,6 +27,10 @@ export class StatisticService {
       params = params.append('maLoaiVT', statisticParams.maLoaiVT);
       params = params.append('maHM', statisticParams.maHM);
       params = params.append('maKho', statisticParams.maKho);
+      params = params.append('sortKey', statisticParams.sortKey);
+      params = params.append('sortValue', statisticParams.sortValue);
+      params = params.append('searchKey', statisticParams.searchKey);
+      params = params.append('searchValue', statisticParams.searchValue);
     }
 
     return this.http.get<ImportStatistic[]>(this.baseUrl + 'ThongKeBaoCao/ThongKeNhap', { observe: 'response', params })
@@ -47,6 +51,10 @@ export class StatisticService {
       params = params.append('maLoaiVT', statisticParams.maLoaiVT);
       params = params.append('maHM', statisticParams.maHM);
       params = params.append('maKho', statisticParams.maKho);
+      params = params.append('sortKey', statisticParams.sortKey);
+      params = params.append('sortValue', statisticParams.sortValue);
+      params = params.append('searchKey', statisticParams.searchKey);
+      params = params.append('searchValue', statisticParams.searchValue);
     }
 
     return this.http.get<ExportStatistic[]>(this.baseUrl + 'ThongKeBaoCao/ThongKeXuat', { observe: 'response', params })
@@ -67,6 +75,10 @@ export class StatisticService {
       params = params.append('maLoaiVT', statisticParams.maLoaiVT);
       params = params.append('maHM', statisticParams.maHM);
       params = params.append('maKho', statisticParams.maKho);
+      params = params.append('sortKey', statisticParams.sortKey);
+      params = params.append('sortValue', statisticParams.sortValue);
+      params = params.append('searchKey', statisticParams.searchKey);
+      params = params.append('searchValue', statisticParams.searchValue);
     }
 
     return this.http.get<LiquidationStatistic[]>(this.baseUrl + 'ThongKeBaoCao/ThongKeThanhLy', { observe: 'response', params })
@@ -87,6 +99,10 @@ export class StatisticService {
       params = params.append('maLoaiVT', statisticParams.maLoaiVT);
       params = params.append('maHM', statisticParams.maHM);
       params = params.append('maKho', statisticParams.maKho);
+      params = params.append('sortKey', statisticParams.sortKey);
+      params = params.append('sortValue', statisticParams.sortValue);
+      params = params.append('searchKey', statisticParams.searchKey);
+      params = params.append('searchValue', statisticParams.searchValue);
     }
 
     return this.http.get<GeneralStatistic[]>(this.baseUrl + 'ThongKeBaoCao/ThongKeNhapXuatTon', { observe: 'response', params })
