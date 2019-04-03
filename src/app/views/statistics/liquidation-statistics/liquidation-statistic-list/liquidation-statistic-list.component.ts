@@ -119,16 +119,15 @@ export class LiquidationStatisticListComponent implements OnInit {
   }
 
   initialRangeDate() {
-    const curr = new Date;
-    const first = curr.getDate() - curr.getDay();
-    const last = first + 6;
-
-    const firstday = new Date(curr.setDate(first)).toISOString().split('T')[0];
-    const lastday = new Date(curr.setDate(last)).toISOString().split('T')[0];
+    const dt = new Date();
+    const currentWeekDay = dt.getDay();
+    const lessDays = currentWeekDay === 0 ? 6 : currentWeekDay - 1;
+    const wkStart = new Date(new Date(dt).setDate(dt.getDate() - lessDays));
+    const wkEnd = new Date(new Date(wkStart).setDate(wkStart.getDate() + 6));
 
     return {
-      fromDate: firstday,
-      toDate: lastday,
+      fromDate: wkStart.toISOString().split('T')[0],
+      toDate: wkEnd.toISOString().split('T')[0],
       maLoaiVT: '',
       maHM: '',
       maKho: ''
