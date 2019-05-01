@@ -5,9 +5,9 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { AuthService } from '../../shared/services/auth.service';
 import { RoleService } from 'src/app/shared/services/role.service';
 import { UtilitiesService } from 'src/app/shared/services/utilities.service';
-import { NotifyService } from 'src/app/shared/services/notify.service';
 
 import { User } from '../../shared/models/user.model';
+import { Permission } from 'src/app/shared/models/permission.model';
 
 @Component({
   selector: 'app-default-layout',
@@ -19,6 +19,8 @@ export class DefaultLayoutComponent implements OnInit {
   isCollapsed = false;
   width = 256;
   returnUrl = '';
+  permissions: Permission[] = [];
+  userRoles: any[] = [];
   jwtHelper = new JwtHelperService();
   openMap = {
     sub1: false,
@@ -31,7 +33,6 @@ export class DefaultLayoutComponent implements OnInit {
     private router: Router,
     public authService: AuthService,
     private roleService: RoleService,
-    private notify: NotifyService,
     private utilities: UtilitiesService) { }
 
   ngOnInit() {
@@ -41,8 +42,8 @@ export class DefaultLayoutComponent implements OnInit {
     if (token) {
       this.authService.decodedToken = this.jwtHelper.decodeToken(token);
 
-      const userRoles = this.authService.decodedToken.role as Array<string>;
-      if (!userRoles) {
+      this.userRoles = this.authService.decodedToken.role as Array<string>;
+      if (!this.userRoles) {
         this.router.navigate(['/dang-nhap'], { queryParams: { returnUrl: this.router.url } });
       }
     }
@@ -54,6 +55,31 @@ export class DefaultLayoutComponent implements OnInit {
     this.utilities.currentCollapsed.subscribe((res: boolean) => {
       this.isCollapsed = res;
     });
+
+    this.getListPermissionByRoles();
+  }
+
+  getListPermissionByRoles() {
+    this.roleService.getListPermissionByRoles().subscribe((res: any) => {
+      if (res.status) {
+        this.permissions = res.data;
+      }
+    });
+  }
+
+  checkFunctionPermission(functionId: string, action: string = 'READ') {
+    if (this.userRoles.includes('Admin')) {
+      return true;
+    }
+
+    const length = this.permissions.length;
+    for (let i = 0; i < length; i++) {
+      if (this.permissions[i].maChucNang === functionId && this.permissions[i].maHanhDong === action) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   openHandler(value: string): void {
