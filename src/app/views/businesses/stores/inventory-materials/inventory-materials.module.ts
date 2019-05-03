@@ -15,6 +15,8 @@ import { InventoryMaterialListResolver } from 'src/app/shared/resolvers/inventor
 import { InventoryMaterialResolver } from 'src/app/shared/resolvers/inventory-material.resolver';
 import { InventoryMaterialCreateResolver } from 'src/app/shared/resolvers/inventory-material-create.resolver';
 import { InventoryMaterialEditResolver } from 'src/app/shared/resolvers/inventory-material-edit.resolver';
+// tslint:disable-next-line: max-line-length
+import { InventoryMaterialViewDetailModalComponent } from './modals/inventoryMaterialViewDetailModal/inventoryMaterialViewDetailModal.component';
 
 @NgModule({
   imports: [
@@ -27,9 +29,10 @@ import { InventoryMaterialEditResolver } from 'src/app/shared/resolvers/inventor
     InventoryMaterialListComponent,
     InventoryMaterialCreateComponent,
     InventoryMaterialEditComponent,
-    InventoryMateriaDetailAddEditModalComponent
+    InventoryMateriaDetailAddEditModalComponent,
+    InventoryMaterialViewDetailModalComponent
   ],
-  entryComponents: [InventoryMateriaDetailAddEditModalComponent],
+  entryComponents: [InventoryMateriaDetailAddEditModalComponent,InventoryMaterialViewDetailModalComponent],
   providers: [
     InventoryMaterialListResolver,
     InventoryMaterialResolver,

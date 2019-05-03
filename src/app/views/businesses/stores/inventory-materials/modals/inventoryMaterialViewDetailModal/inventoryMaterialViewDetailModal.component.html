@@ -1,0 +1,41 @@
+<table>
+  <tr>
+    <td style="width: 10%;"><strong>Kho hàng:</strong></td>
+    <td style="width: 20%;">{{InventoryMaterial.tenKho}}</td>
+    <td style="width: 15%;"><strong>Hạng mục vật tư:</strong></td>
+    <td style="width: 25%;">{{InventoryMaterial.tenNS}}</td>
+    <td style="width: 15%;"><strong>Ngày kiểm kê:</strong></td>
+    <td style="width: 15%;">{{InventoryMaterial.ngayKiemKe | date:'dd/MM/yyyy'}}</td>
+  </tr>
+</table>
+<br />
+<nz-table #exportDetailTable [nzData]="InventoryMaterialDetail" nzBordered [nzShowPagination]="false" nzSize="middle">
+  <thead>
+    <tr>
+      <th class="text-center" nzWidth="15%">Mã Phiếu KK</th>
+      <th class="text-center" nzWidth="15%">Mã phiếu nhập</th>
+      <th class="text-center" nzWidth="20%">Vật tư</th>
+      <th class="text-center" nzWidth="15%">Số lượng theo dõi</th>
+      <th class="text-center" nzWidth="15%">Số lượng thực tồn</th>
+      <th class="text-center" nzWidth="15%">Số lượng KK</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of exportDetailTable.data">
+      <td class="text-center">{{data.maPhieuKiemKe}}</td>
+      <td class="text-center">{{data.maPhieuNhap}}</td>
+      <td>{{data.tenVatTu}}</td>
+      <td class="text-center">{{data.soLuongTheoDoi}}</td>
+      <td class="text-center">{{data.soLuongThucTon}}</td>
+      <td class="text-center">{{data.soLuongKiemKe}}</td>
+    </tr>
+    <!-- <tr class="bg-footer-price">
+      <td colspan="6" class="text-right">
+        <strong>Tổng cộng:</strong>
+      </td>
+      <td class="text-center">
+        <strong>{{totalQuantity | number: '1.0-0'}}</strong>
+      </td>
+    </tr> -->
+  </tbody>
+</nz-table>

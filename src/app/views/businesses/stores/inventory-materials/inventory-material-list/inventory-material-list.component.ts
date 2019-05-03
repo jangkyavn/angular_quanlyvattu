@@ -9,6 +9,7 @@ import { Pagination, PaginatedResult } from 'src/app/shared/models/pagination.mo
 import { PagingParams } from 'src/app/shared/params/paging.param';
 import { InventoryMaterial } from 'src/app/shared/models/inventory-material.model';
 import { RoleService } from 'src/app/shared/services/role.service';
+import { InventoryMaterialViewDetailModalComponent } from '../modals/inventoryMaterialViewDetailModal/inventoryMaterialViewDetailModal.component';
 // import {
 //   LiquidationMaterialViewDetailModalComponent
 // } from '../modals/liquidation-material-view-detail-modal/liquidation-material-view-detail-modal.component';
@@ -115,25 +116,25 @@ export class InventoryMaterialListComponent implements OnInit {
   }
 
   view(id: number) {
-    // this.liquidationService.getDetail(id).subscribe((res: any) => {
-    //   const modal = this.modalService.create({
-    //     nzTitle: 'Xem phiếu thanh lý',
-    //     nzContent: LiquidationMaterialViewDetailModalComponent,
-    //     nzMaskClosable: false,
-    //     nzClosable: false,
-    //     nzWidth: 1000,
-    //     nzComponentParams: {
-    //       liquidationMaterialParams: res
-    //     },
-    //     nzFooter: [
-    //       {
-    //         label: 'Hủy',
-    //         shape: 'default',
-    //         onClick: () => modal.destroy()
-    //       }
-    //     ]
-    //   });
-    // });
+    this.inventoryMaterialService.getDetail(id).subscribe((res: any) => {
+      const modal = this.modalService.create({
+        nzTitle: 'Xem phiếu kiểm kê',
+        nzContent: InventoryMaterialViewDetailModalComponent,
+        nzMaskClosable: false,
+        nzClosable: false,
+        nzWidth: 1000,
+        nzComponentParams: {
+          InventoryMaterialParams: res
+        },
+        nzFooter: [
+          {
+            label: 'Hủy',
+            shape: 'default',
+            onClick: () => modal.destroy()
+          }
+        ]
+      });
+    });
   }
 
   delete(id: number) {

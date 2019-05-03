@@ -7,4 +7,6 @@ export interface InventoryMaterial {
     tongTheoDoi?: number;
     tongThucTon?: number;
     status?: boolean;
+    tenKho?: string;
+    tenNS?: string;
 }

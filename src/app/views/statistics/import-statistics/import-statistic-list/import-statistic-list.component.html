@@ -45,7 +45,7 @@
     </div>
   </div>
   <br />
-  <nz-table #table [nzData]="dataSet" [nzLoading]="loading" [nzNoResult]="'Không tìm thấy kết quả.'" nzSize="middle">
+  <nz-table #table [nzData]="dataSet" [nzLoading]="loading" [nzNoResult]="'Không tìm thấy kết quả.'" nzSize="middle" [nzShowPagination]="false">
     <thead (nzSortChange)="sort($event)" nzSingleSort>
       <tr>
         <th nzWidth="40%" nzShowSort nzSortKey="tenVT" nzCustomFilter>Tên vật tư
