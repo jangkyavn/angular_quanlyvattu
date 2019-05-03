@@ -5,10 +5,11 @@
 
     <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed" id="sidebarMenu">
       <!-- menu quản trị -->
-      <li nz-submenu [(nzOpen)]="openMap.sub1" (nzOpenChange)="openHandler('sub1')">
+      <li nz-submenu [(nzOpen)]="openMap.sub1" (nzOpenChange)="openHandler('sub1')"
+        *ngIf="checkFunctionPermission('NGUOI_DUNG')">
         <span title><i nz-icon type="setting"></i><span class="nav-text">Hệ thống</span></span>
         <ul>
-          <li nz-menu-item>
+          <li nz-menu-item *ngIf="checkFunctionPermission('NGUOI_DUNG')">
             <a [routerLink]="['/he-thong/nguoi-dung/danh-sach']">
               <i nz-icon type="user" theme="outline"></i>Danh sách người dùng
             </a>
@@ -21,58 +22,68 @@
         </ul>
       </li>
       <!-- menu danh mục -->
-      <li nz-submenu [(nzOpen)]="openMap.sub2" (nzOpenChange)="openHandler('sub2')">
+      <li nz-submenu [(nzOpen)]="openMap.sub2" (nzOpenChange)="openHandler('sub2')" *ngIf="checkFunctionPermission('NGUON_CUNG_CAP') ||
+          checkFunctionPermission('HANG_MUC_VAT_TU') ||
+          checkFunctionPermission('LOAI_VAT_TU') || 
+          checkFunctionPermission('VAT_TU') ||
+          checkFunctionPermission('DON_VI_TINH') ||
+          checkFunctionPermission('KHO_VAT_TU') ||
+          checkFunctionPermission('HANG_SAN_XUAT') ||
+          checkFunctionPermission('NUOC_SAN_XUAT') ||
+          checkFunctionPermission('NHAN_SU')">
         <span title>
           <i nz-icon type="appstore" theme="outline">
           </i><span class="nav-text">Danh mục</span>
         </span>
         <ul>
-          <li nz-menu-item>
+          <li nz-menu-item *ngIf="checkFunctionPermission('NGUON_CUNG_CAP')">
             <a [routerLink]="['/danh-muc/nguon-cung-cap/danh-sach']">
               <i nz-icon type="credit-card" theme="outline"></i>Nguồn cung cấp
             </a>
           </li>
-          <li nz-submenu>
+          <li nz-submenu *ngIf="checkFunctionPermission('HANG_MUC_VAT_TU') ||
+                                checkFunctionPermission('LOAI_VAT_TU') ||
+                                checkFunctionPermission('VAT_TU')">
             <span title><i nz-icon type="info-circle" theme="outline"></i>Thông tin vật tư</span>
             <ul>
-              <li nz-menu-item>
+              <li nz-menu-item *ngIf="checkFunctionPermission('HANG_MUC_VAT_TU')">
                 <a [routerLink]="['/danh-muc/thong-tin-vat-tu/hang-muc-vat-tu']">
                   <i nz-icon type="build" theme="outline"></i>Hạng mục vật tư
                 </a>
               </li>
-              <li nz-menu-item>
+              <li nz-menu-item *ngIf="checkFunctionPermission('LOAI_VAT_TU')">
                 <a [routerLink]="['/danh-muc/thong-tin-vat-tu/loai-vat-tu']">
                   <i nz-icon type="block" theme="outline"></i>Loại vật tư
                 </a>
               </li>
-              <li nz-menu-item>
+              <li nz-menu-item *ngIf="checkFunctionPermission('VAT_TU')">
                 <a [routerLink]="['/danh-muc/thong-tin-vat-tu/vat-tu']">
                   <i nz-icon type="ordered-list" theme="outline"></i>Vật tư
                 </a>
               </li>
             </ul>
           </li>
-          <li nz-menu-item>
+          <li nz-menu-item *ngIf="checkFunctionPermission('DON_VI_TINH')">
             <a [routerLink]="['/danh-muc/don-vi-tinh/danh-sach']">
               <i nz-icon type="calculator" theme="outline"></i>Đơn vị tính
             </a>
           </li>
-          <li nz-menu-item>
+          <li nz-menu-item *ngIf="checkFunctionPermission('KHO_VAT_TU')">
             <a [routerLink]="['/danh-muc/kho-vat-tu/danh-sach']">
               <i nz-icon type="database" theme="outline"></i>Kho vật tư
             </a>
           </li>
-          <li nz-menu-item>
+          <li nz-menu-item *ngIf="checkFunctionPermission('HANG_SAN_XUAT')">
             <a [routerLink]="['/danh-muc/hang-san-xuat/danh-sach']">
               <i nz-icon type="trademark" theme="outline"></i>Hãng sản xuất
             </a>
           </li>
-          <li nz-menu-item>
+          <li nz-menu-item *ngIf="checkFunctionPermission('NUOC_SAN_XUAT')">
             <a [routerLink]="['/danh-muc/nuoc-san-xuat/danh-sach']">
               <i nz-icon type="global" theme="outline"></i>Nước sản xuất
             </a>
           </li>
-          <li nz-menu-item>
+          <li nz-menu-item *ngIf="checkFunctionPermission('NHAN_SU')">
             <a [routerLink]="['/danh-muc/nhan-su/danh-sach']">
               <i nz-icon type="usergroup-add" theme="outline"></i>Nhân sự
             </a>
@@ -80,21 +91,29 @@
         </ul>
       </li>
       <!-- menu nghiệp vụ -->
-      <li nz-submenu [(nzOpen)]="openMap.sub3" (nzOpenChange)="openHandler('sub3')">
+      <li nz-submenu [(nzOpen)]="openMap.sub3" (nzOpenChange)="openHandler('sub3')" *ngIf="checkFunctionPermission('NHAP_VAT_TU', 'CREATE') ||
+                                        checkFunctionPermission('NHAP_VAT_TU') ||
+                                        checkFunctionPermission('XUAT_VAT_TU', 'CREATE') ||
+                                        checkFunctionPermission('XUAT_VAT_TU') ||
+                                        checkFunctionPermission('KHO_VAT_TU') ||
+                                        checkFunctionPermission('THANH_LY_VAT_TU') ||
+                                        checkFunctionPermission('PHIEU_KIEM_KE_KHO') ||
+                                        checkFunctionPermission('TIM_KIEM_VAT_TU')">
         <span title>
           <i nz-icon type="project" theme="outline"></i>
           <span class="nav-text">Nghiệp vụ</span>
         </span>
         <ul>
-          <li nz-submenu>
+          <li nz-submenu *ngIf="checkFunctionPermission('NHAP_VAT_TU', 'CREATE') ||
+                                checkFunctionPermission('NHAP_VAT_TU')">
             <span title><i nz-icon type="login" theme="outline"></i> Nhập</span>
             <ul>
-              <li nz-menu-item>
+              <li nz-menu-item *ngIf="checkFunctionPermission('NHAP_VAT_TU', 'CREATE')">
                 <a [routerLink]="['/nghiep-vu/nhap/tao-phieu-nhap']">
                   <i nz-icon type="form" theme="outline"></i>Tạo phiếu nhập
                 </a>
               </li>
-              <li nz-menu-item>
+              <li nz-menu-item *ngIf="checkFunctionPermission('NHAP_VAT_TU')">
                 <a [routerLink]="['/nghiep-vu/nhap']">
                   <i nz-icon type="table" theme="outline"></i>
                   Danh sách phiếu nhập
@@ -102,16 +121,17 @@
               </li>
             </ul>
           </li>
-          <li nz-submenu>
+          <li nz-submenu *ngIf="checkFunctionPermission('XUAT_VAT_TU', 'CREATE') ||
+                                checkFunctionPermission('XUAT_VAT_TU')">
             <span title><i nz-icon type="logout" theme="outline"></i> Xuất</span>
             <ul>
-              <li nz-menu-item>
+              <li nz-menu-item *ngIf="checkFunctionPermission('XUAT_VAT_TU', 'CREATE')">
                 <a [routerLink]="['/nghiep-vu/xuat/tao-phieu-xuat']">
                   <i nz-icon type="form" theme="outline"></i>
                   Tạo phiếu xuất
                 </a>
               </li>
-              <li nz-menu-item>
+              <li nz-menu-item *ngIf="checkFunctionPermission('XUAT_VAT_TU')">
                 <a [routerLink]="['/nghiep-vu/xuat']">
                   <i nz-icon type="table" theme="outline"></i>
                   Danh sách phiếu xuất
@@ -119,28 +139,29 @@
               </li>
             </ul>
           </li>
-          <li nz-submenu>
+          <li nz-submenu *ngIf="checkFunctionPermission('KHO_VAT_TU') ||
+                                checkFunctionPermission('THANH_LY_VAT_TU') ||
+                                checkFunctionPermission('PHIEU_KIEM_KE_KHO')">
             <span title><i nz-icon type="appstore" theme="outline"></i> Kho</span>
             <ul>
-              <li nz-menu-item>
+              <li nz-menu-item *ngIf="checkFunctionPermission('KHO_VAT_TU')">
                 <a [routerLink]="['/nghiep-vu/kho/vat-tu-ton-kho']">
-                  <i nz-icon type="border" theme="outline"></i>
-                  Vật tư tồn kho
+                  <i nz-icon type="border" theme="outline"></i>Vật tư tồn kho
                 </a>
               </li>
-              <li nz-menu-item>
+              <li nz-menu-item *ngIf="checkFunctionPermission('THANH_LY_VAT_TU')">
                 <a [routerLink]="['/nghiep-vu/kho/thanh-ly-vat-tu']">
                   <i nz-icon type="pay-circle" theme="outline"></i>Thanh lý vật tư
                 </a>
               </li>
-              <li nz-menu-item>
+              <li nz-menu-item *ngIf="checkFunctionPermission('PHIEU_KIEM_KE_KHO')">
                 <a [routerLink]="['/nghiep-vu/kho/phieu-kiem-ke-kho']">
                   <i nz-icon type="book" theme="outline"></i>Phiếu kiểm kê kho
                 </a>
               </li>
             </ul>
           </li>
-          <li nz-menu-item>
+          <li nz-menu-item *ngIf="checkFunctionPermission('TIM_KIEM_VAT_TU')">
             <a [routerLink]="['/nghiep-vu/tim-kiem-vat-tu']">
               <i nz-icon type="search" theme="outline"></i>Tìm kiếm vật tư
             </a>
@@ -148,28 +169,31 @@
         </ul>
       </li>
       <!-- menu thông kê báo cáo -->
-      <li nz-submenu [(nzOpen)]="openMap.sub4" (nzOpenChange)="openHandler('sub4')">
+      <li nz-submenu [(nzOpen)]="openMap.sub4" (nzOpenChange)="openHandler('sub4')" *ngIf="checkFunctionPermission('THONG_KE_NHAP') ||
+                                checkFunctionPermission('THONG_KE_XUAT') ||
+                                checkFunctionPermission('THONG_KE_THANH_LY') ||
+                                checkFunctionPermission('THONG_KE_NHAP_XUAT_TON')">
         <span title>
           <i nz-icon type="table" theme="outline"></i>
           <span class="nav-text">Thống kê báo cáo</span>
         </span>
         <ul>
-          <li nz-menu-item>
+          <li nz-menu-item *ngIf="checkFunctionPermission('THONG_KE_NHAP')">
             <a [routerLink]="['/thong-ke-bao-cao/thong-ke-nhap']">
               <i nz-icon type="file-add" theme="outline"></i>Thống kê nhập
             </a>
           </li>
-          <li nz-menu-item>
+          <li nz-menu-item *ngIf="checkFunctionPermission('THONG_KE_XUAT')">
             <a [routerLink]="['/thong-ke-bao-cao/thong-ke-xuat']">
               <i nz-icon type="file-done" theme="outline"></i>Thống kê xuất
             </a>
           </li>
-          <li nz-menu-item>
+          <li nz-menu-item *ngIf="checkFunctionPermission('THONG_KE_THANH_LY')">
             <a [routerLink]="['/thong-ke-bao-cao/thong-ke-thanh-ly']">
               <i nz-icon type="file-exclamation" theme="outline"></i>Thống kê thanh lý
             </a>
           </li>
-          <li nz-menu-item>
+          <li nz-menu-item *ngIf="checkFunctionPermission('THONG_KE_NHAP_XUAT_TON')">
             <a [routerLink]="[ '/thong-ke-bao-cao/thong-ke-nhap-xuat-ton']"></a>
             <i nz-icon type="file-sync" theme="outline"></i>Thống kê nhập-xuất-tồn
           </li>

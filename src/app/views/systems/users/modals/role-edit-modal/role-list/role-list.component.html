@@ -65,7 +65,7 @@
             <i nz-icon type="user-add" theme="outline"></i>
           </button>
           <button [disabled]="disabledButtonGroup" *ngIf="data.userName !== 'admin'" nz-button nzType="default"
-            class="btn-danger" title="Xóa" nz-popconfirm nzTitle="Sure to delete?" (nzOnConfirm)="deleteRow(data.id)">
+            class="btn-danger" title="Xóa" nz-popconfirm nzTitle="Bạn có chắc muốn xóa không?" (nzOnConfirm)="deleteRow(data.id)">
             <i nz-icon type="delete" theme="outline"></i>
           </button>
         </nz-button-group>

@@ -76,6 +76,10 @@ export class RoleService {
     return this.http.get(this.baseUrl + 'roles/getListPermissionByRoleId/' + id);
   }
 
+  getListPermissionByRoles() {
+    return this.http.get(this.baseUrl + 'roles/getListPermissionByRoles');
+  }
+
   checkPermission(functionId: string, action: string) {
     return this.http.get(this.baseUrl + `roles/checkPermission/${functionId}/${action}`);
   }
