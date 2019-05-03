@@ -17,7 +17,7 @@ InventoryMaterialDetail: InventoryMaterialDetail[];
   constructor() { }
 
   ngOnInit() {
-    console.log(this.InventoryMaterialParams);
+    // console.log(this.InventoryMaterialParams);
     
     this.InventoryMaterial = this.InventoryMaterialParams.mKiemKeVatTu;
     this.InventoryMaterialDetail = this.InventoryMaterialParams.listKiemKeChiTiet;
